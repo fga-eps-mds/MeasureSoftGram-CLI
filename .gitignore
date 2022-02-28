@@ -27,5 +27,8 @@ var/
 .installed.cfg
 *.egg
 
+# Coverage
+.coverage
+
 # Code editors
 .vscode
