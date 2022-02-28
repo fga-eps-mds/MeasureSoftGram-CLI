@@ -29,6 +29,7 @@ var/
 
 # Coverage
 .coverage
+coverage.xml
 
 # Code editors
 .vscode
