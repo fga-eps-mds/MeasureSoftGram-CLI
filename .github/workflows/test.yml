@@ -24,8 +24,9 @@ jobs:
         run: pip install tox
       - name: Run tests
         run: tox -- --cov=measuresoftgram --cov-report=xml
-      - name: Override Coverage Source Path for Sonar
-        run: sed -i "s/<source>\/home\/runner\/work\/2021-2-MeasureSoftGram-CLI/2021-2-MeasureSoftGram-CLI<\/source>/<source>\/github\/workspace<\/source>/g" /home/runner/work/2021-2-MeasureSoftGram-CLI/2021-2-MeasureSoftGram-CLI/coverage.xml
+      - name: fix code coverage paths
+        run: |
+          sed -i 's/\/home\/runner\/work\/2021-2-MeasureSoftGram-CLI\/2021-2-MeasureSoftGram-CLI\//\/github\/workspace\//g' coverage.xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
