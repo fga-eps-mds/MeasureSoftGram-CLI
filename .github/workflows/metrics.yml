@@ -12,7 +12,7 @@ jobs:
           fetch-depth: 0
 
       - name: Criar diretório
-        run: mkdir analytics-raw-dat
+        run: mkdir analytics-raw-data
 
       - name: Coletar métricas
         run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
