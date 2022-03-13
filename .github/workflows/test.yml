@@ -23,7 +23,7 @@ jobs:
       - name: Install tox
         run: pip install tox
       - name: Run tests
-        run: tox -- --cov=measuresoftgram --cov-report=xml
+        run: tox -- --cov=measuresoftgram --cov-report=xml --junitxml=junittest.xml
       - name: fix code coverage paths
         run: |
           sed -i 's/\/home\/runner\/work\/2021-2-MeasureSoftGram-CLI\/2021-2-MeasureSoftGram-CLI\//\/github\/workspace\//g' coverage.xml
@@ -43,4 +43,3 @@ jobs:
           flags: unittests
           name: 2021-2-MeasureSoftGram-CLI
           verbose: true
-        
