@@ -34,3 +34,6 @@ junit.xml
 
 # Code editors
 .vscode
+
+# analytics-raw-data
+analytics-raw-data/
