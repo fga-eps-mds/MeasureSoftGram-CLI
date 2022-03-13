@@ -1,0 +1,36 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Criar diretório
+        run: mkdir analytics-raw-dat
+
+      - name: Coletar métricas
+        run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
+
+      - name: Adiciona resultado das métricas
+        uses: actions/upload-artifact@v3
+        with:
+          name: metrics/results
+          path: ./analytics-raw-data/*
+
+      - name: Envia métricas para repo de Doc
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_DOC_REPOSITORY }}
+        with:
+          source_file: './analytics-raw-data/*.json'
+          destination_repo: 'fga-mds-eps/2021-2-MeasureSoftGram-Doc'
+          destination_folder: 'analytics-raw-data'
+          user_email: ${{secrets.USER_EMAIL}}
+          user_name: ${{secrets.USER_NAME}}
+          commit_message: 'Adds metric file from ${{ github.event.repository.name }} ${{ github.ref_name }}'
