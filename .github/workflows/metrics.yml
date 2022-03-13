@@ -20,7 +20,7 @@ jobs:
       - name: Adiciona resultado das métricas
         uses: actions/upload-artifact@v3
         with:
-          name: metrics/results
+          name: metrics_results
           path: ./analytics-raw-data/*
 
       - name: Envia métricas para repo de Doc
