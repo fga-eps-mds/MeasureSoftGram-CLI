@@ -9,9 +9,9 @@ Antes de enviar uma alteração para este repositório, se já não houver uma i
 - Critérios de aceitação devidamente cumpridos
 - Testes automatizados para tudo o que for alterado
 
-## Crie branches
+## Crie branches ou fork
 
-Cria uma branch a partir da `develop`, se atentando para o padrão de nomenclatura.
+Crie sua branch para trabalhar, ou faça um fork do repositório, caso seja um desenvolvedor externo.
 
 ## Crie pull request
 
