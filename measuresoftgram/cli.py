@@ -16,16 +16,6 @@ def parse_create():
     pass
 
 
-def parse_import():
-    print("Importing metrics")
-    pass
-
-
-def parse_create():
-    print("Creating a new pre conf")
-    pass
-
-
 def main():
     """Entry point for the application script"""
 
