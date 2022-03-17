@@ -1,6 +1,6 @@
 import argparse
 import sys
-
+from jsonReader import fileReader
 
 def hello_world():
     print("Hello World!")
@@ -37,4 +37,9 @@ def main():
         parser.print_help()
         return
     args.func()
+
     hello_world()
+    fileReader()
+
+if __name__=="__main__":
+    main()
