@@ -15,10 +15,7 @@ def parse_create():
     print("Creating a new pre conf")
     pass
 
-
-def main():
-    """Entry point for the application script"""
-
+def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
     )
@@ -38,6 +35,10 @@ def main():
         return
     args.func()
 
+def main():
+    """Entry point for the application script"""
+
+    #setup()
     hello_world()
     fileReader()
 
