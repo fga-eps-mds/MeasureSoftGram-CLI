@@ -38,7 +38,7 @@ def setup():
 def main():
     """Entry point for the application script"""
 
-    #setup() #Descomentar depois
+    setup()
     hello_world()
     fileReader()
 

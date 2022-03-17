@@ -2,6 +2,7 @@ from fileinput import filename
 from logging import raiseExceptions
 import os
 import json
+from parser import METRICS_SONAR
 
 def fileReader():
 
@@ -17,6 +18,7 @@ def fileReader():
     metrics = jsonFile["baseComponent"]["measures"]
 
     checkMetrics(metrics)
+    checkExpectedMetrics(metrics)
 
 def checkMetrics(metrics):
 
@@ -29,3 +31,17 @@ def checkMetrics(metrics):
 
         if value is None:
             raise ValueError('ERROR, Metrica NaN')
+
+def checkExpectedMetrics(metrics):
+
+    if len(metrics) != len(METRICS_SONAR):
+        raise Exception("ERROR, a quantidade de métricas recebidas e diferente das métricas esperadas")
+
+    newlist = sorted(metrics, key=lambda d: d['metric'])
+    sortedMetrics = sorted(METRICS_SONAR)
+
+    i = 0
+    while i < len(metrics):
+        if newlist[i]["metric"] != sortedMetrics[i]:
+            raise Exception("ERROR, as metricas informadas não coincidem")
+        i = i + 1
