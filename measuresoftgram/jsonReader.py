@@ -1,4 +1,5 @@
 from fileinput import filename
+from logging import raiseExceptions
 import os
 import json
 
@@ -15,4 +16,16 @@ def fileReader():
 
     metrics = jsonFile["baseComponent"]["measures"]
 
-    print(metrics)
+    checkMetrics(metrics)
+
+def checkMetrics(metrics):
+
+    for metric in metrics:
+
+        try:
+            value = float(metric["value"])
+        except ValueError:
+            raise Exception("ERROR, a métrica '{}' é invalida".format( metric["metric"] ))
+
+        if value is None:
+            raise ValueError('ERROR, Metrica NaN')
