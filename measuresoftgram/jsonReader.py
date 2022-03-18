@@ -4,7 +4,7 @@ from parser import METRICS_SONAR
 
 def fileReader(absoluteFilePath):
 
-    checkFileExtention(absoluteFilePath)
+    checkFileExtension(absoluteFilePath)
    
     f = open(absoluteFilePath, "r")
     jsonFile = json.load(f)
@@ -69,7 +69,9 @@ def checkSonarFormat(jsonFile):
     if baseComponentAttributs[0] != "id" or baseComponentAttributs[1] != "key" or baseComponentAttributs[2] != "name" or baseComponentAttributs[3] != "qualifier" or baseComponentAttributs[4] != "measures":
         raise Exception('ERROR, Atributos de baseComponent incorretos')
     
-def checkFileExtention(fileName):
+    return True
+    
+def checkFileExtension(fileName):
     if fileName[-4:] != "json":
         raise Exception('ERRO: Apenas arquivos JSON são aceitos.')
     
