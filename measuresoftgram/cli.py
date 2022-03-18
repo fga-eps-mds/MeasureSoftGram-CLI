@@ -2,18 +2,17 @@ import argparse
 import sys
 from jsonReader import fileReader
 
-def hello_world():
-    print("Hello World!")
-
 
 def parse_import():
     print("Importing metrics")
-    pass
+    userPath = input("Please provide sonar json absolute file path: ")
+    metrics = fileReader(r'{}'.format(userPath))   
 
 
 def parse_create():
     print("Creating a new pre conf")
     pass
+
 
 def setup():
     parser = argparse.ArgumentParser(
@@ -35,12 +34,12 @@ def setup():
         return
     args.func()
 
+
 def main():
     """Entry point for the application script"""
 
     setup()
-    hello_world()
-    fileReader()
 
+   
 if __name__=="__main__":
     main()

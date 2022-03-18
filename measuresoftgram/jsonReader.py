@@ -2,14 +2,12 @@ import os
 import json
 from parser import METRICS_SONAR
 
-def fileReader():
+def fileReader(absoluteFilePath):
 
-    fileName = os.path.join( "C:\\", "Users", "pallo", "Downloads", "Bia", "MDS", "sonar.json")
-
-    if fileName[-4:] != "json":
+    if absoluteFilePath[-4:] != "json":
         raise Exception('ERRO: Apenas arquivos JSON são aceitos.')
 
-    f = open(fileName, "r")
+    f = open(absoluteFilePath, "r")
     jsonFile = json.load(f)
 
     checkSonarFormat(jsonFile)
@@ -18,6 +16,8 @@ def fileReader():
 
     checkMetrics(metrics)
     checkExpectedMetrics(metrics)
+
+    return metrics
 
 
 def checkMetrics(metrics):
@@ -53,8 +53,10 @@ def checkExpectedMetrics(metrics):
                 Métrica esperada: {}
             '''.format(recieved["metric"], expected))
 
+
 def checkSonarFormat(jsonFile):
     attributes = list(jsonFile.keys())
+    
     if len(attributes) != 3:
         raise Exception('ERROR, quantidade de atributos invalida')
     if attributes[0] != "paging" or attributes[1] != "baseComponent" or attributes[2] != "components":
@@ -62,7 +64,9 @@ def checkSonarFormat(jsonFile):
     
     baseComponent = jsonFile["baseComponent"]
     baseComponentAttributs = list(baseComponent.keys())
+
     if len(baseComponentAttributs) != 5:
         raise Exception('ERROR, Quantidade de atributos de baseComponent invalida')
     if baseComponentAttributs[0] != "id" or baseComponentAttributs[1] != "key" or baseComponentAttributs[2] != "name" or baseComponentAttributs[3] != "qualifier" or baseComponentAttributs[4] != "measures":
         raise Exception('ERROR, Atributos de baseComponent incorretos')
+    
