@@ -1,6 +1,6 @@
 import os
 import json
-from parser import METRICS_SONAR
+from .parser import METRICS_SONAR
 
 def fileReader(absoluteFilePath):
 
