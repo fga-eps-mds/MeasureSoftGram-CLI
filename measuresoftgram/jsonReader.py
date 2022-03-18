@@ -57,7 +57,7 @@ def checkSonarFormat(jsonFile):
     attributes = list(jsonFile.keys())
 
     if len(attributes) != 3:
-        raise Exception('ERROR, quantidade de atributos invalida')
+        raise Exception('ERRO: Quantidade de atributos invalida.')
     if attributes[0] != "paging" or attributes[1] != "baseComponent" or attributes[2] != "components":
         raise Exception('ERROR, atributos incorretos')
     
