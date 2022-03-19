@@ -1,16 +1,43 @@
 import argparse
 import sys
 from measuresoftgram.jsonReader import file_reader
+import requests
+from measuresoftgram.create import (
+    define_characteristic,
+    define_subcharacteristics,
+    define_measures,
+)
 
 
 def parse_import():
     print("Importing metrics")
     user_path = input("Please provide sonar json absolute file path: ")
-    file_reader(r'{}'.format(user_path)) 
+    file_reader(r"{}".format(user_path))
+
+
+BASE_URL = "http://localhost:5000/"
 
 
 def parse_create():
     print("Creating a new pre conf")
+
+    available_pre_config = requests.get(
+        BASE_URL + "available-pre-configs", headers={"Accept": "application/json"}
+    ).json()
+
+    [user_characteristics, caracteristics_weights] = define_characteristic(
+        available_pre_config
+    )
+
+    [user_sub_characteristic, sub_characteristic_weights] = define_subcharacteristics(
+        user_characteristics, available_pre_config
+    )
+
+    [user_measures, measures_weights] = define_measures(
+        user_sub_characteristic, available_pre_config
+    )
+
+    pass
 
 
 def setup():
@@ -34,19 +61,7 @@ def setup():
     args.func()
 
 
-def parse_import():
-    print("Importing metrics")
-
-
-def parse_create():
-    print("Creating a new pre conf")
-
-
 def main():
     """Entry point for the application script"""
 
     setup()
-
-   
-if __name__=="__main__":
-    main()
