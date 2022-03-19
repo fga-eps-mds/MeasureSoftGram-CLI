@@ -1,6 +1,6 @@
 import argparse
 import sys
-from jsonReader import fileReader
+from measuresoftgram.jsonReader import fileReader
 
 
 def parse_import():
