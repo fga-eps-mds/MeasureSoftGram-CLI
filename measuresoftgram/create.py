@@ -122,6 +122,23 @@ def define_characteristic(available_pre_config):
     return user_characteristics, characteristics_weights
 
 
+def input_sublevels_selection(
+    available_pre_config, level_key, sublevel_key, current_level
+):
+    while True:
+        local_selected_sublevels = sublevel_cli(
+            available_pre_config[level_key][current_level]["name"],
+            sublevel_key,
+            available_pre_config[level_key][current_level][sublevel_key],
+            available_pre_config[sublevel_key],
+        )
+
+        if validate_check_box_input(len(local_selected_sublevels)):
+            return local_selected_sublevels
+        else:
+            print(VALID_CHECKBOX_ERROR)
+
+
 def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
     sublevels = available_pre_config[sublevel_key]
 
@@ -148,18 +165,9 @@ def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
             )
 
         else:
-            while True:
-                local_selected_sublevels = sublevel_cli(
-                    available_pre_config[level_key][x]["name"],
-                    sublevel_key,
-                    available_pre_config[level_key][x][sublevel_key],
-                    available_pre_config[sublevel_key],
-                )
-
-                if validate_check_box_input(len(local_selected_sublevels)):
-                    break
-                else:
-                    print(VALID_CHECKBOX_ERROR)
+            local_selected_sublevels = input_sublevels_selection(
+                available_pre_config, level_key, sublevel_key, x
+            )
 
             local_selected_weights = []
 
