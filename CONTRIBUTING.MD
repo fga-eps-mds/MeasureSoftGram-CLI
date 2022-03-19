@@ -7,10 +7,11 @@ Antes de enviar uma alteração para este repositório, se já não houver uma i
 - [Código de conduta](https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-CLI/blob/main/code_of_conduct.md)
 - [Padrões no Github](https://fga-eps-mds.github.io/2021-2-MeasureSoftGram-Doc/docs/contribute/github_standards)
 - Critérios de aceitação devidamente cumpridos
+- Testes automatizados para tudo o que for alterado
 
-## Crie branches
+## Crie branches ou fork
 
-Cria uma branch a partir da `develop`, se atentando para o padrão de nomenclatura.
+Crie sua branch para trabalhar, ou faça um fork do repositório, caso seja um desenvolvedor externo.
 
 ## Crie pull request
 
