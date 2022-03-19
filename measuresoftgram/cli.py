@@ -3,7 +3,12 @@ import sys
 from measuresoftgram.jsonReader import file_reader
 from urllib import request
 import requests
-from create import define_characteristic, define_subcharacteristics, define_measures
+from measuresoftgram.create import (
+    define_characteristic,
+    define_subcharacteristics,
+    define_measures,
+)
+
 
 def parse_import():
     print("Importing metrics")
@@ -63,9 +68,6 @@ def main():
 
     setup()
 
-
-if __name__ == "__main__":
-    main()
 
 # Refatoramos a mensagem de erro da caracteristica e sub-caracteristica para uma mensagem só para ambas (VALID_CHECKBOX_ERROR)
 # Fizemos um while para garantir que será selecionada ao menos uma característica(linha 88)

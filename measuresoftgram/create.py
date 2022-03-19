@@ -9,6 +9,7 @@ INVALID_WEIGHT_VALUE = "Invalid weight, " + VALID_WEIGHT_ADVISE
 
 VALID_CHECKBOX_ERROR = "Select at least one Check-Box"
 
+
 def define_weight(data_key, data_name):
     while True:
         weights = [
@@ -74,7 +75,7 @@ def define_characteristic(available_pre_config):
     characteristics = available_pre_config["characteristics"]
 
     if len(characteristics) == 1:
-        user_characteristics = list(characteristics.keys())[0]
+        user_characteristics = list(characteristics.keys())
         characteristics_weights = [{user_characteristics[0]: 100}]
         return user_characteristics, characteristics_weights
 
@@ -125,14 +126,12 @@ def define_measures(user_sub_characteristics, available_pre_config):
     measures = available_pre_config["measures"]
 
     if len(measures) == 1:
-        user_measures = list(measures.keys())[0]
+        user_measures = list(measures.keys())
         measures_weights = [{user_measures[0]: 100}]
         return user_measures, measures_weights
 
     selected_measures = []
     measures_weights = []
-
-    ## CONFERIR SE TA CERTO
 
     for x in user_sub_characteristics:
         if len(available_pre_config["subcharacteristics"][x]["measures"]) == 1:
@@ -183,14 +182,13 @@ def define_subcharacteristics(user_characteristics, available_pre_config):
     sub_characteristic = available_pre_config["subcharacteristics"]
 
     if len(sub_characteristic) == 1:
-        user_sub_characteristics = list(sub_characteristic.keys())[0]
+        user_sub_characteristics = list(sub_characteristic.keys())
         subcharacteristics_weights = [{user_sub_characteristics[0]: 100}]
         return user_sub_characteristics, subcharacteristics_weights
 
     selected_sub_characteristics = []
     sub_characteristic_weights = []
     for x in user_characteristics:
-        # TODO Apply this to measures
         if len(available_pre_config["characteristics"][x]["subcharacteristics"]) == 1:
             local_selected_sub_characteristics = available_pre_config[
                 "characteristics"
