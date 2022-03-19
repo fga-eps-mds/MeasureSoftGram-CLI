@@ -1,11 +1,10 @@
 from measuresoftgram.create import (
+    define_sublevel,
     validate_weight_sum,
     validate_weight_value,
     validate_check_box_input,
     define_weight,
     define_characteristic,
-    define_subcharacteristics,
-    define_measures,
     sublevel_cli,
 )
 
@@ -109,8 +108,8 @@ class TestDefineCharacteristics:
         assert int(resp_characteristics_weights[0]["usability"]) == 100
 
 
-class TestDefineSubCharacteristics:
-    def test_one_sub_char(self):
+class TestDefineSublevels:
+    def test_one_sub_level(self):
         available_conf = {
             "subcharacteristics": {
                 "testability": {
@@ -121,33 +120,11 @@ class TestDefineSubCharacteristics:
 
         u_characteristics = ["reliability"]
 
-        resp_sub_chars, resp_sub_chars_weights = define_subcharacteristics(
-            u_characteristics, available_conf
+        resp_sub_chars, resp_sub_chars_weights = define_sublevel(
+            u_characteristics, available_conf, "characteristics", "subcharacteristics"
         )
 
         assert len(resp_sub_chars) == 1
         assert len(resp_sub_chars_weights) == 1
         assert resp_sub_chars == ["testability"]
         assert int(resp_sub_chars_weights[0]["testability"]) == 100
-
-
-class TestDefineMeasures:
-    def test_one_measure(self):
-        available_conf = {
-            "measures": {
-                "non_complex_functions": {
-                    "name": "Non Complex Functions",
-                }
-            }
-        }
-
-        u_sub_chars = ["testability"]
-
-        resp_measures, resp_measures_weights = define_measures(
-            u_sub_chars, available_conf
-        )
-
-        assert len(resp_measures) == 1
-        assert len(resp_measures_weights) == 1
-        assert resp_measures == ["non_complex_functions"]
-        assert int(resp_measures_weights[0]["non_complex_functions"]) == 100

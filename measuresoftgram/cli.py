@@ -4,8 +4,7 @@ from measuresoftgram.jsonReader import file_reader
 import requests
 from measuresoftgram.create import (
     define_characteristic,
-    define_subcharacteristics,
-    define_measures,
+    define_sublevel,
 )
 
 
@@ -29,12 +28,18 @@ def parse_create():
         available_pre_config
     )
 
-    [user_sub_characteristic, sub_characteristic_weights] = define_subcharacteristics(
-        user_characteristics, available_pre_config
+    [user_sub_characteristic, sub_characteristic_weights] = define_sublevel(
+        user_characteristics,
+        available_pre_config,
+        "characteristics",
+        "subcharacteristics",
     )
 
-    [user_measures, measures_weights] = define_measures(
-        user_sub_characteristic, available_pre_config
+    [user_measures, measures_weights] = define_sublevel(
+        user_characteristics,
+        available_pre_config,
+        "characteristics",
+        "subcharacteristics",
     )
 
     pass
