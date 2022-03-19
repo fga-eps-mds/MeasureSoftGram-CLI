@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="measuresoftgram",
-    version="0.0a2",
+    version="1.0.0",
     extras_require={"dev": ["pytest", "pytest-cov", "setuptools", "wheel"]},
     install_requires=["inquirer", "requests"],
     # To provide executable scripts, use entry points in preference to the
