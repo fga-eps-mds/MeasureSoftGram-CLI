@@ -1,12 +1,12 @@
 import argparse
 import sys
-from measuresoftgram.jsonReader import fileReader
+from measuresoftgram.jsonReader import file_reader
 
 
 def parse_import():
     print("Importing metrics")
     user_path = input("Please provide sonar json absolute file path: ")
-    fileReader(r'{}'.format(user_path)) 
+    file_reader(r'{}'.format(user_path)) 
 
 
 def parse_create():
