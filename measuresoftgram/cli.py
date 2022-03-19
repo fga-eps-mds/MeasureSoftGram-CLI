@@ -1,24 +1,19 @@
 import argparse
 import sys
-
-
-def hello_world():
-    print("Hello World!")
+from measuresoftgram.jsonReader import file_reader
 
 
 def parse_import():
     print("Importing metrics")
-    pass
+    user_path = input("Please provide sonar json absolute file path: ")
+    file_reader(r'{}'.format(user_path)) 
 
 
 def parse_create():
     print("Creating a new pre conf")
-    pass
 
 
-def main():
-    """Entry point for the application script"""
-
+def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
     )
@@ -37,4 +32,21 @@ def main():
         parser.print_help()
         return
     args.func()
-    hello_world()
+
+
+def parse_import():
+    print("Importing metrics")
+
+
+def parse_create():
+    print("Creating a new pre conf")
+
+
+def main():
+    """Entry point for the application script"""
+
+    setup()
+
+   
+if __name__=="__main__":
+    main()
