@@ -1,6 +1,7 @@
 from measuresoftgram import jsonReader
 import pytest
 import json
+import os
 
 def test_ValidFileExtension():
     '''
@@ -28,7 +29,7 @@ def test_validSonarFormat():
         Testa se um objeto json fornecido tem a formatação do Sonar
     '''
 
-    relativeFilePath = "../utils/sonar.json"
+    relativeFilePath = "tests/utils/sonar.json"
     f = open(relativeFilePath, "r")
     jsonFile = json.load(f)
 
@@ -213,7 +214,7 @@ def test_validMetricValues():
     
 def test_fileReaderList():
 
-    metrics = jsonReader.fileReader(r"sonar.json")
+    metrics = jsonReader.fileReader(r"tests/utils/sonar.json")
     expectedMetrics = [{
                 "metric": "duplicated_lines_density",
                 "value": "0.0",
@@ -271,3 +272,234 @@ def test_fileReaderList():
         ]
 
     assert metrics == expectedMetrics
+
+
+
+def test_validBaseComponentAttributs():
+    ''' 
+        Testar se todos os atributos do baseComponent são validos
+    '''
+    jsonFile = \
+    {
+        "baseComponent": {
+            "id": "AX9FgyLHNIj_v_uQK41e",
+            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+            "name": "2021-2-MeasureSoftGram-CLI",
+            "qualifier": "TRK",
+            "measures": [{
+                    "metric": "duplicated_lines_density",
+                    "value": "0.0",
+                    "bestValue": True
+                }
+            ]
+        }
+    }
+  
+    with pytest.raises(Exception) as exec_info:
+        jsonReader.checkSonarFormat(jsonFile) is True
+
+
+def test_notValidBaseComponentAttributs():
+    ''' 
+        Testar se algum dos atributos do baseComponent não é valido
+    '''
+    jsonFile = \
+    {
+        "baseComponent": {
+            "id": "AX9FgyLHNIj_v_uQK41e",
+            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+            "name": "2021-2-MeasureSoftGram-CLI",
+            "qualifier": "TRK",
+            "measures": [{
+                    "metric": "duplicated_lines_density",
+                    "value": "0.0",
+                    "bestValue": True
+                }
+            ]
+        }
+    }
+  
+    with pytest.raises(Exception): 
+        jsonReader.checkSonarFormat(jsonFile)
+    
+    assert 'ERRO: Atributo de baseComponet invalido.'
+
+
+def test_ifThereIsLessThanExpectedMetrics():
+    '''
+        Testar se tem menos metricas do que o esperado
+    '''
+    jsonFile = \
+    {
+        "baseComponent": {
+            "id": "AX9FgyLHNIj_v_uQK41e",
+            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+            "name": "2021-2-MeasureSoftGram-CLI",
+            "qualifier": "TRK",
+            "measures": [{
+                    "metric": "duplicated_lines_density",
+                    "value": "0.0",
+                    "bestValue": True
+                }
+            ]
+        }
+    }
+
+    with pytest.raises(Exception): 
+        jsonReader.checkExpectedMetrics(jsonFile)
+    
+    assert 'ERRO: Menos metricas do que o esperado.'
+
+def test_ifThereIsMoreThanExpectedMetrics():
+    '''
+        Testar se tem mais metricas do que o esperado
+    '''
+    jsonFile = \
+    {
+        "baseComponent": {
+            "id": "AX9FgyLHNIj_v_uQK41e",
+            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+            "name": "2021-2-MeasureSoftGram-CLI",
+            "qualifier": "TRK",
+            "measures": [{
+                    "metric": "duplicated_lines_density",
+                    "value": "0.0",
+                    "bestValue": True
+                },
+                    {
+                    "metric": "duplicated_lines_density",
+                    "value": "0.0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "functions",
+                    "value": "2"
+                },
+                {
+                    "metric": "test_execution_time",
+                    "value": "2"
+                },
+                {
+                    "metric": "test_failures",
+                    "value": "0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "test_errors",
+                    "value": "0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "security_rating",
+                    "value": "1.0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "tests",
+                    "value": "2"
+                },
+                {
+                    "metric": "files",
+                    "value": "1"
+                },
+                {
+                    "metric": "complexity",
+                    "value": "2"
+                },
+                {
+                    "metric": "ncloc",
+                    "value": "4"
+                },
+                {
+                    "metric": "coverage",
+                    "value": "100.0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "comment_lines_density",
+                    "value": "20.0",
+                    "bestValue": False
+                }
+            ]
+        }
+    }
+
+    with pytest.raises(Exception): 
+        jsonReader.checkExpectedMetrics(jsonFile)
+    
+    assert 'ERRO: Mais metricas do que o esperado.'
+
+
+def test_ifThereIsAUnexpectedMetrics():
+    '''
+        Testar se tem mais metricas do que o esperado
+    '''
+    jsonFile = \
+    {
+        "baseComponent": {
+            "id": "AX9FgyLHNIj_v_uQK41e",
+            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+            "name": "2021-2-MeasureSoftGram-CLI",
+            "qualifier": "TRK",
+            "measures": [{
+                    "metric": "duplicated",
+                    "value": "0.0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "functions",
+                    "value": "2"
+                },
+                {
+                    "metric": "test_execution_time",
+                    "value": "2"
+                },
+                {
+                    "metric": "test_failures",
+                    "value": "0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "test_errors",
+                    "value": "0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "security_rating",
+                    "value": "1.0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "tests",
+                    "value": "2"
+                },
+                {
+                    "metric": "files",
+                    "value": "1"
+                },
+                {
+                    "metric": "complexity",
+                    "value": "2"
+                },
+                {
+                    "metric": "ncloc",
+                    "value": "4"
+                },
+                {
+                    "metric": "coverage",
+                    "value": "100.0",
+                    "bestValue": True
+                },
+                {
+                    "metric": "comment_lines_density",
+                    "value": "20.0",
+                    "bestValue": False
+                }
+            ]
+        },
+    }
+
+    with pytest.raises(Exception): 
+        jsonReader.checkExpectedMetrics(jsonFile)
+    
+    assert 'ERRO: Metrica diferente do que o esperado.'

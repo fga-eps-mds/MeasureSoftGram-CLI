@@ -52,6 +52,8 @@ def checkExpectedMetrics(metrics):
                 Métrica esperada: {}
             '''.format(recieved["metric"], expected))
 
+    return True
+
 
 def checkSonarFormat(jsonFile):
     attributes = list(jsonFile.keys())
