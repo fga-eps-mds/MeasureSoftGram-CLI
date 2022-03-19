@@ -1,6 +1,20 @@
 import pytest
 from io import StringIO
-from measuresoftgram.create import *
+from measuresoftgram.create import (
+    validate_check_box_input,
+    validate_weight_sum,
+    validate_weight_value,
+    define_weight,
+    select_characteristics,
+    sublevel_cli,
+    input_weights,
+    print_error_message,
+    print_no_need_define_weights_msg,
+    generic_valid_input,
+    define_characteristic,
+    has_one_sublevel,
+    define_sublevel,
+)
 
 
 def test_validate_weight_value():
