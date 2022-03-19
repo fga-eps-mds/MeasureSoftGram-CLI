@@ -31,27 +31,18 @@ def define_weight(data_key, data_name):
 def validate_weight_sum(items):
     sum = 0
     for x in items:
-        for k, v in x.items():
+        for v in x.values():
             sum += int(v)
 
-    if sum != 100:
-        return False
-    else:
-        return True
+    return sum == 100
 
 
 def validate_weight_value(weight):
-    if weight > 100 or weight <= 0:
-        return False
-    else:
-        return True
+    return weight <= 100 and weight > 0
 
 
 def validate_check_box_input(selected):
-    if selected > 0:
-        return True
-    else:
-        return False
+    return selected > 0
 
 
 def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
@@ -85,7 +76,7 @@ def define_characteristic(available_pre_config):
             inquirer.Checkbox(
                 "characteristics",
                 message="Choose the characteristics",
-                choices=[x["name"] for _, x in characteristics.items()],
+                choices=[x["name"] for x in characteristics.values()],
             )
         ]
 
@@ -95,8 +86,8 @@ def define_characteristic(available_pre_config):
 
         if validate_check_box_input(len(user_characteristics["characteristics"])):
             break
-        else:
-            print(VALID_CHECKBOX_ERROR)
+
+        print(VALID_CHECKBOX_ERROR)
 
     user_characteristics = [
         reversed_characteristics[x] for x in user_characteristics["characteristics"]
@@ -115,9 +106,9 @@ def define_characteristic(available_pre_config):
 
         if validate_weight_sum(characteristics_weights):
             break
-        else:
-            print(INVALID_WEIGHT_SUM_ERROR)
-            characteristics_weights = []
+
+        print(INVALID_WEIGHT_SUM_ERROR)
+        characteristics_weights = []
 
     return user_characteristics, characteristics_weights
 
@@ -135,8 +126,29 @@ def input_sublevels_selection(
 
         if validate_check_box_input(len(local_selected_sublevels)):
             return local_selected_sublevels
-        else:
-            print(VALID_CHECKBOX_ERROR)
+
+        print(VALID_CHECKBOX_ERROR)
+
+
+def input_sublevels_weights(available_pre_config, sublevel_key, selected_sublevels):
+    sublevel_weights = []
+    while True:
+        for y in selected_sublevels:
+            sublevel_weights.append(
+                define_weight(y, available_pre_config[sublevel_key][y]["name"])
+            )
+
+        if validate_weight_sum(sublevel_weights):
+            break
+
+        print(INVALID_WEIGHT_SUM_ERROR)
+        sublevel_weights = []
+
+    return sublevel_weights
+
+
+def has_one_sublevel(available_pre_config, level_key, sublevel_key, current_level):
+    return len(available_pre_config[level_key][current_level][sublevel_key]) == 1
 
 
 def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
@@ -151,7 +163,7 @@ def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
     sublevels_weights = []
 
     for x in user_levels:
-        if len(available_pre_config[level_key][x][sublevel_key]) == 1:
+        if has_one_sublevel(available_pre_config, level_key, sublevel_key, x):
             local_selected_sublevels = available_pre_config[level_key][x][sublevel_key]
             local_selected_weights = [{local_selected_sublevels[0]: 100}]
             print(
@@ -169,21 +181,24 @@ def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
                 available_pre_config, level_key, sublevel_key, x
             )
 
-            local_selected_weights = []
-
-            while True:
-                for y in local_selected_sublevels:
-                    local_selected_weights.append(
-                        define_weight(y, available_pre_config[sublevel_key][y]["name"])
+            if len(local_selected_sublevels) == 1:
+                local_selected_weights = [{local_selected_sublevels[0]: 100}]
+                print(
+                    "\nOnly one %s (%s) selected, no need to define weights\n"
+                    % (
+                        sublevel_key,
+                        available_pre_config[sublevel_key][local_selected_sublevels[0]][
+                            "name"
+                        ],
                     )
+                )
 
-                if validate_weight_sum(local_selected_weights):
-                    break
-                else:
-                    print(INVALID_WEIGHT_SUM_ERROR)
-                    local_selected_weights = []
+            else:
+                local_selected_weights = input_sublevels_weights(
+                    available_pre_config, sublevel_key, local_selected_sublevels
+                )
 
-        selected_sublevels.append(local_selected_sublevels)
-        sublevels_weights.append(local_selected_weights)
+        selected_sublevels.extend(local_selected_sublevels)
+        sublevels_weights.extend(local_selected_weights)
 
     return selected_sublevels, sublevels_weights

@@ -36,13 +36,11 @@ def parse_create():
     )
 
     [user_measures, measures_weights] = define_sublevel(
-        user_characteristics,
+        user_sub_characteristic,
         available_pre_config,
-        "characteristics",
         "subcharacteristics",
+        "measures",
     )
-
-    pass
 
 
 def setup():
