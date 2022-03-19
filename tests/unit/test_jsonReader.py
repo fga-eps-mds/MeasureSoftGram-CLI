@@ -1,7 +1,6 @@
 from measuresoftgram import jsonReader
 import pytest
 import json
-import os
 
 def test_ValidFileExtension():
     '''

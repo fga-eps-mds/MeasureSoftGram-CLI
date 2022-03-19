@@ -1,6 +1,20 @@
 import os
 import json
-from parser import METRICS_SONAR
+
+METRICS_SONAR = [
+    "files",
+    "functions",
+    "complexity",
+    "comment_lines_density",
+    "duplicated_lines_density",
+    "coverage",
+    "ncloc",
+    "tests",
+    "test_errors",
+    "test_failures",
+    "test_execution_time",
+    "security_rating",
+]
 
 def fileReader(absoluteFilePath):
 
