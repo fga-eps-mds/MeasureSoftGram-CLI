@@ -1,4 +1,3 @@
-import os
 import json
 
 METRICS_SONAR = [
@@ -16,51 +15,51 @@ METRICS_SONAR = [
     "security_rating",
 ]
 
-def fileReader(absoluteFilePath):
+def file_reader(absolute_path):
 
-    checkFileExtension(absoluteFilePath)
+    check_file_extension(absolute_path)
    
-    f = open(absoluteFilePath, "r")
-    jsonFile = json.load(f)
+    f = open(absolute_path, "r")
+    json_file = json.load(f)
 
-    checkSonarFormat(jsonFile)
+    check_sonar_format(json_file)
 
-    metrics = jsonFile["baseComponent"]["measures"]
+    metrics = json_file["baseComponent"]["measures"]
 
-    checkMetrics(metrics)
-    checkExpectedMetrics(metrics)
+    check_metrics(metrics)
+    check_expected_metrics(metrics)
 
     return metrics
 
 
-def checkMetrics(metrics):
+def check_metrics(metrics):
 
     for metric in metrics:
 
         try:
-            value = float(metric["value"])
+            float(metric["value"])
         except ValueError:
-            raise Exception('''
+            raise TypeError('''
                 ERRO: A métrica "{}" é invalida.
                 Valor: "{}"
             '''.format(metric["metric"], metric["value"]))
 
 
-def checkExpectedMetrics(metrics):
+def check_expected_metrics(metrics):
 
     if len(metrics) != len(METRICS_SONAR):
-        raise Exception('''
+        raise TypeError('''
             ERRO: Quantidade de métricas recebidas é diferente das métricas esperadas.
             Quantidade de métricas recebidas: {}
             Quantidade de métricas esperadas: {}
         '''.format(len(metrics), len(METRICS_SONAR)))
 
-    sortedRecievedMetrics = sorted(metrics, key=lambda d: d['metric'])
-    sortedExpectedMetrics = sorted(METRICS_SONAR)
+    sorted_recieved_metrics = sorted(metrics, key=lambda d: d['metric'])
+    sorted_expected_metrics = sorted(METRICS_SONAR)
 
-    for recieved, expected in zip(sortedRecievedMetrics, sortedExpectedMetrics):
+    for recieved, expected in zip(sorted_recieved_metrics, sorted_expected_metrics):
         if recieved["metric"] != expected:
-            raise Exception('''
+            raise TypeError('''
                 ERROR: As metricas informadas não coincidem com as métricas esperadas.
                 Métrica informada: {}
                 Métrica esperada: {}
@@ -69,26 +68,26 @@ def checkExpectedMetrics(metrics):
     return True
 
 
-def checkSonarFormat(jsonFile):
-    attributes = list(jsonFile.keys())
+def check_sonar_format(json_file):
+    attributes = list(json_file.keys())
 
     if len(attributes) != 3:
-        raise Exception('ERRO: Quantidade de atributos invalida.')
+        raise TypeError('ERRO: Quantidade de atributos invalida.')
     if attributes[0] != "paging" or attributes[1] != "baseComponent" or attributes[2] != "components":
-        raise Exception('ERROR, atributos incorretos')
+        raise TypeError('ERROR, atributos incorretos')
     
-    baseComponent = jsonFile["baseComponent"]
-    baseComponentAttributs = list(baseComponent.keys())
+    base_component = json_file["baseComponent"]
+    base_component_attributs = list(base_component.keys())
 
-    if len(baseComponentAttributs) != 5:
-        raise Exception('ERROR, Quantidade de atributos de baseComponent invalida')
-    if baseComponentAttributs[0] != "id" or baseComponentAttributs[1] != "key" or baseComponentAttributs[2] != "name" or baseComponentAttributs[3] != "qualifier" or baseComponentAttributs[4] != "measures":
-        raise Exception('ERROR, Atributos de baseComponent incorretos')
+    if len(base_component_attributs) != 5:
+        raise TypeError('ERROR, Quantidade de atributos de baseComponent invalida')
+    if base_component_attributs[0] != "id" or base_component_attributs[1] != "key" or base_component_attributs[2] != "name" or base_component_attributs[3] != "qualifier" or base_component_attributs[4] != "measures":
+        raise TypeError('ERROR, Atributos de baseComponent incorretos')
     
     return True
     
-def checkFileExtension(fileName):
+def check_file_extension(fileName):
     if fileName[-4:] != "json":
-        raise Exception('ERRO: Apenas arquivos JSON são aceitos.')
+        raise TypeError('ERRO: Apenas arquivos JSON são aceitos.')
     
     return True

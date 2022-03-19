@@ -7,9 +7,9 @@ def test_ValidFileExtension():
         Testa se a extensão do arquivo é válida (ex: .json)
     '''
 
-    fileName = "sonar.json" 
+    file_name = "sonar.json" 
 
-    assert jsonReader.checkFileExtension(fileName) is True
+    assert jsonReader.check_file_extension(file_name) is True
 
 
 def test_notValidFileExtension():
@@ -17,10 +17,10 @@ def test_notValidFileExtension():
         Testa se a extensão do arquivo não é válida (ex: .txt, .png, .pdf)
     '''
 
-    fileName = "sonar.txt"
+    file_name = "sonar.txt"
     
-    with pytest.raises(Exception): 
-        jsonReader.checkFileExtension(fileName)
+    with pytest.raises(TypeError): 
+        jsonReader.check_file_extension(file_name)
 
 
 def test_validSonarFormat():
@@ -32,7 +32,7 @@ def test_validSonarFormat():
     f = open(relativeFilePath, "r")
     jsonFile = json.load(f)
 
-    assert jsonReader.checkSonarFormat(jsonFile) is True
+    assert jsonReader.check_sonar_format(jsonFile) is True
 
 
 def test_ifThereIsLessThanExpectedSonarAttributes():
@@ -62,8 +62,8 @@ def test_ifThereIsLessThanExpectedSonarAttributes():
         }
     }
     
-    with pytest.raises(Exception) as exec_info:
-        jsonReader.checkSonarFormat(jsonFile) is True
+    with pytest.raises(TypeError) as exec_info:
+        jsonReader.check_sonar_format(jsonFile) is True
     
     assert exec_info.value.args[0] == 'ERRO: Quantidade de atributos invalida.'
 
@@ -112,8 +112,8 @@ def test_ifThereIsMoreThanExpectedSonarAttributes():
         }
     }
 
-    with pytest.raises(Exception) as exec_info:
-        jsonReader.checkSonarFormat(jsonFile)
+    with pytest.raises(TypeError) as exec_info:
+        jsonReader.check_sonar_format(jsonFile)
     
     assert exec_info.value.args[0] == 'ERRO: Quantidade de atributos invalida.'
 
@@ -158,8 +158,8 @@ def test_expectedJsonMainAtributes():
         }],
     }
 
-    with pytest.raises(Exception) as exec_info:
-        jsonReader.checkSonarFormat(jsonFile)
+    with pytest.raises(TypeError) as exec_info:
+        jsonReader.check_sonar_format(jsonFile)
 
     assert exec_info.value.args[0] == 'ERROR, atributos incorretos'
 
@@ -202,8 +202,8 @@ def test_validMetricValues():
 
     metrics = jsonFile["baseComponent"]["measures"]
 
-    with pytest.raises(Exception) as exec_info:
-        jsonReader.checkMetrics(metrics)
+    with pytest.raises(TypeError) as exec_info:
+        jsonReader.check_metrics(metrics)
 
     assert exec_info.value.args[0] == '''
                 ERRO: A métrica "duplicated_lines_density" é invalida.
@@ -213,7 +213,7 @@ def test_validMetricValues():
     
 def test_fileReaderList():
 
-    metrics = jsonReader.fileReader(r"tests/utils/sonar.json")
+    metrics = jsonReader.file_reader(r"tests/utils/sonar.json")
     expectedMetrics = [{
                 "metric": "duplicated_lines_density",
                 "value": "0.0",
@@ -294,8 +294,8 @@ def test_validBaseComponentAttributs():
         }
     }
   
-    with pytest.raises(Exception) as exec_info:
-        jsonReader.checkSonarFormat(jsonFile) is True
+    with pytest.raises(TypeError) as exec_info:
+        jsonReader.check_sonar_format(jsonFile) is True
 
 
 def test_notValidBaseComponentAttributs():
@@ -318,8 +318,8 @@ def test_notValidBaseComponentAttributs():
         }
     }
   
-    with pytest.raises(Exception): 
-        jsonReader.checkSonarFormat(jsonFile)
+    with pytest.raises(TypeError): 
+        jsonReader.check_sonar_format(jsonFile)
     
     assert 'ERRO: Atributo de baseComponet invalido.'
 
@@ -344,8 +344,8 @@ def test_ifThereIsLessThanExpectedMetrics():
         }
     }
 
-    with pytest.raises(Exception): 
-        jsonReader.checkExpectedMetrics(jsonFile)
+    with pytest.raises(TypeError): 
+        jsonReader.check_expected_metrics(jsonFile)
     
     assert 'ERRO: Menos metricas do que o esperado.'
 
@@ -423,8 +423,8 @@ def test_ifThereIsMoreThanExpectedMetrics():
         }
     }
 
-    with pytest.raises(Exception): 
-        jsonReader.checkExpectedMetrics(jsonFile)
+    with pytest.raises(TypeError): 
+        jsonReader.check_expected_metrics(jsonFile)
     
     assert 'ERRO: Mais metricas do que o esperado.'
 
@@ -498,7 +498,7 @@ def test_ifThereIsAUnexpectedMetrics():
         },
     }
 
-    with pytest.raises(Exception): 
-        jsonReader.checkExpectedMetrics(jsonFile)
+    with pytest.raises(TypeError): 
+        jsonReader.check_expected_metrics(jsonFile)
     
     assert 'ERRO: Metrica diferente do que o esperado.'
