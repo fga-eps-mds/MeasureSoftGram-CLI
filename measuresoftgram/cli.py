@@ -7,11 +7,13 @@ from measuresoftgram.create import (
     define_subcharacteristics,
     define_measures,
 )
+from measuresoftgram.jsonReader import file_reader
 
 
 def parse_import():
     print("Importing metrics")
-    pass
+    user_path = input("Please provide sonar json absolute file path: ")
+    file_reader(r'{}'.format(user_path)) 
 
 
 BASE_URL = "http://localhost:5000/"
@@ -39,10 +41,7 @@ def parse_create():
 
     pass
 
-
-def main():
-    """Entry point for the application script"""
-
+def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
     )
@@ -61,3 +60,14 @@ def main():
         parser.print_help()
         return
     args.func()
+
+
+def main():
+    """Entry point for the application script"""
+
+    setup()
+
+   
+if __name__=="__main__":
+    main()
+
