@@ -1,7 +1,6 @@
 import argparse
 import sys
 from measuresoftgram.jsonReader import file_reader
-from urllib import request
 import requests
 from measuresoftgram.create import (
     define_characteristic,
@@ -20,7 +19,6 @@ BASE_URL = "http://localhost:5000/"
 
 
 def parse_create():
-    headers = {"Content-type": "application/json"}
     print("Creating a new pre conf")
 
     available_pre_config = requests.get(
@@ -67,7 +65,3 @@ def main():
     """Entry point for the application script"""
 
     setup()
-
-
-# Refatoramos a mensagem de erro da caracteristica e sub-caracteristica para uma mensagem só para ambas (VALID_CHECKBOX_ERROR)
-# Fizemos um while para garantir que será selecionada ao menos uma característica(linha 88)

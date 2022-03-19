@@ -140,7 +140,7 @@ def define_measures(user_sub_characteristics, available_pre_config):
             ]
             local_measures_weights = [{local_selected_measures[0]: 100}]
             print(
-                f"\nOnly one measure (%s) available, no need to select or define weights\n"
+                "\nOnly one measure (%s) available, no need to select or define weights\n"
                 % (available_pre_config["measures"][local_selected_measures[0]]["name"])
             )
 
@@ -197,7 +197,7 @@ def define_subcharacteristics(user_characteristics, available_pre_config):
                 {local_selected_sub_characteristics[0]: 100}
             ]
             print(
-                f"\nOnly one subcharacteristic (%s) available, no need to select or define weights\n"
+                "\nOnly one subcharacteristic (%s) available, no need to select or define weights\n"
                 % (
                     available_pre_config["subcharacteristics"][
                         local_selected_sub_characteristics[0]

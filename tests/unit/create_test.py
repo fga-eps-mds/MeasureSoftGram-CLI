@@ -1,5 +1,3 @@
-import pytest
-from pytest_mock import mocker
 from measuresoftgram.create import (
     validate_weight_sum,
     validate_weight_value,
@@ -16,11 +14,11 @@ def test_validate_weight_value():
     """
     Test for validate_weight_value function
     """
-    assert validate_weight_value(0) == False
+    assert validate_weight_value(0) is False
     assert validate_weight_value(50)
     assert validate_weight_value(100)
-    assert validate_weight_value(-30) == False
-    assert validate_weight_value(120) == False
+    assert validate_weight_value(-30) is False
+    assert validate_weight_value(120) is False
 
 
 def test_validate_weight_sum():
@@ -28,21 +26,21 @@ def test_validate_weight_sum():
     Test for validate_weight_value function
     """
 
-    assert validate_weight_sum([{"reliability": "50"}, {"testability": "10"}]) == False
+    assert validate_weight_sum([{"reliability": "50"}, {"testability": "10"}]) is False
     assert validate_weight_sum(
         [{"maintanability": "20"}, {"reliability": "70"}, {"testability": "10"}]
     )
     assert (
-        validate_weight_sum([{"maintanability": "70"}, {"testability": "40"}]) == False
+        validate_weight_sum([{"maintanability": "70"}, {"testability": "40"}]) is False
     )
-    assert validate_weight_sum([]) == False
+    assert validate_weight_sum([]) is False
 
 
 def test_validate_check_box_input():
     """
     Test for validate_check_box_input function
     """
-    assert validate_check_box_input(0) == False
+    assert validate_check_box_input(0) is False
     assert validate_check_box_input(3)
 
 
@@ -81,12 +79,15 @@ def test_sublevel_cli(mocker):
         },
     }
 
-    assert sublevel_cli(
-        "Modifiability",
-        "measures",
-        ["non_complex_file_density", "commented_file_density", "duplication"],
-        available_conf,
-    ) == ["non_complex_file_density", "commented_file_density"]
+    assert (
+        sublevel_cli(
+            "Modifiability",
+            "measures",
+            ["non_complex_file_density", "commented_file_density", "duplication"],
+            available_conf,
+        )
+        == ["non_complex_file_density", "commented_file_density"]
+    )
 
 
 class TestDefineCharacteristics:
