@@ -5,13 +5,12 @@ from measuresoftgram.jsonReader import fileReader
 
 def parse_import():
     print("Importing metrics")
-    userPath = input("Please provide sonar json absolute file path: ")
-    metrics = fileReader(r'{}'.format(userPath))   
+    user_path = input("Please provide sonar json absolute file path: ")
+    fileReader(r'{}'.format(user_path)) 
 
 
 def parse_create():
     print("Creating a new pre conf")
-    pass
 
 
 def setup():
@@ -37,12 +36,10 @@ def setup():
 
 def parse_import():
     print("Importing metrics")
-    pass
 
 
 def parse_create():
     print("Creating a new pre conf")
-    pass
 
 
 def main():
