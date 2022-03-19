@@ -30,7 +30,8 @@ var/
 # Coverage
 .coverage
 coverage.xml
-junit.xml
+junittest.xml
+htmlcov
 
 # Code editors
 .vscode
