@@ -9,6 +9,11 @@ from src.cli.create import (
 )
 
 
+def sigint_handler(*_):
+    print("\n\nExiting MeasureSoftGram...")
+    sys.exit(0)
+
+
 def parse_import():
     print("Importing metrics")
     user_path = input("Please provide sonar json absolute file path: ")
@@ -64,4 +69,9 @@ def setup():
 def main():
     """Entry point for the application script"""
 
-    setup()
+    signal.signal(signal.SIGINT, sigint_handler)
+
+    try:
+        setup()
+    except KeyboardInterrupt:
+        print("\nYou pressed Ctrl + C! No pre conf created.")
