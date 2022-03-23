@@ -5,6 +5,7 @@ import requests
 from measuresoftgram.create import (
     define_characteristic,
     define_sublevel,
+    define_id,
 )
 
 
@@ -40,6 +41,13 @@ def parse_create():
         available_pre_config,
         "subcharacteristics",
         "measures",
+    )
+
+    pre_config_id = define_id()
+
+    print(
+        "Your Pre-Configuration was createad sucessfully!\n"
+        + f"Here is your Configuration ID: {pre_config_id}"
     )
 
 
