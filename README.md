@@ -55,6 +55,10 @@ And with that a help menu will be displayed.
 
 AGPL-3.0 License
 
+# Documentation
+
+The documentation of this project can be accessed at this website: [Documentation](https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc).
+
 # Another informations
 Our services are available on [Docker Hub](https://hub.docker.com/):
 - [Core](https://hub.docker.com/r/measuresoftgram/core)
