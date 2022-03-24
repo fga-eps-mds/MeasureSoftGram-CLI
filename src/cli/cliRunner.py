@@ -1,8 +1,8 @@
 import argparse
-import sys
-from measuresoftgram.jsonReader import file_reader
 import requests
-from measuresoftgram.create import (
+import sys
+from src.cli.jsonReader import file_reader
+from src.cli.create import (
     define_characteristic,
     define_subcharacteristics,
     define_measures,
