@@ -1,4 +1,4 @@
-from measuresoftgram import jsonReader
+from src.cli import jsonReader
 import pytest
 import json
 
@@ -29,8 +29,8 @@ def test_validSonarFormat():
     Testa se um objeto json fornecido tem a formatação do Sonar
     """
 
-    relativeFilePath = "tests/utils/sonar.json"
-    f = open(relativeFilePath, "r")
+    filePath = "tests/unit/data/sonar.json"
+    f = open(filePath, "r")
     jsonFile = json.load(f)
 
     assert jsonReader.check_sonar_format(jsonFile) is True
@@ -194,7 +194,8 @@ def test_validMetricValues():
 
 def test_fileReaderList():
 
-    metrics = jsonReader.file_reader(r"tests/utils/sonar.json")
+    filePath = "tests/unit/data/sonar.json"
+    metrics = jsonReader.file_reader(filePath)
     expectedMetrics = [
         {"metric": "duplicated_lines_density", "value": "0.0", "bestValue": True},
         {"metric": "functions", "value": "2"},
