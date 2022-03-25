@@ -1,6 +1,16 @@
 from src.cli import jsonReader, exceptions
 import pytest
 import json
+from measuresoftgram.exceptions import FileNotFound
+
+
+def test_fileNotExist():
+    """
+    Testar se o arquivo existe na pasta
+    """
+    relativeFilePath = "tests/utils/sona.json"
+    with pytest.raises(FileNotFound):
+        jsonReader.check_file_existance(relativeFilePath)
 
 
 def test_ValidFileExtension():

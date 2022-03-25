@@ -1,5 +1,6 @@
 from src.cli import exceptions
 import json
+from .exceptions import FileNotFound
 
 METRICS_SONAR = [
     "files",
@@ -21,9 +22,8 @@ def file_reader(absolute_path):
 
     check_file_extension(absolute_path)
 
-    f = open(absolute_path, "r")
+    f = check_file_existance(absolute_path)
     json_file = json.load(f)
-
     check_sonar_format(json_file)
 
     metrics = json_file["baseComponent"]["measures"]
@@ -32,6 +32,16 @@ def file_reader(absolute_path):
     check_expected_metrics(metrics)
 
     return metrics
+
+
+def check_file_existance(absolute_path):
+
+    try:
+        file = open(absolute_path, "r")
+    except FileNotFoundError:
+        raise FileNotFound("ERRO: arquivo não encontrado")
+
+    return file
 
 
 def check_metrics(metrics):
