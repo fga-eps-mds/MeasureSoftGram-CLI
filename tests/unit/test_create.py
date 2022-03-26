@@ -1,5 +1,6 @@
 import pytest
 from io import StringIO
+from measuresoftgram import create
 from measuresoftgram.create import (
     validate_check_box_input,
     validate_weight_sum,
@@ -318,6 +319,52 @@ class TestDefineCharacteristics:
 
 
 class TestDefineSublevels:
+    AVAILABLE_PRE_CONF = {
+        "characteristics": {
+            "reliability": {
+                "name": "Reliability",
+                "subcharacteristics": ["testing_status"],
+            },
+            "maintainability": {
+                "name": "Maintainability",
+                "subcharacteristics": ["modifiability"],
+            },
+        },
+        "subcharacteristics": {
+            "testing_status": {
+                "name": "Testing Status",
+                "measures": ["passed_tests", "test_builds", "test_coverage"],
+                "characteristics": ["reliability"],
+            },
+            "modifiability": {
+                "name": "Modifiability",
+                "measures": [
+                    "non_complex_file_density",
+                    "commented_file_density",
+                    "duplication_absense",
+                ],
+                "characteristics": ["maintainability"],
+            },
+        },
+        "measures": {
+            "test_builds": {
+                "name": "Test Builds",
+                "subcharacteristics": ["testing_status"],
+                "characteristics": ["reliability"],
+            },
+            "test_coverage": {
+                "name": "Test Coverage",
+                "subcharacteristics": ["testing_status"],
+                "characteristics": ["reliability"],
+            },
+            "non_complex_file_density": {
+                "name": "Non complex file density",
+                "subcharacteristics": ["modifiability"],
+                "characteristics": ["maintainability"],
+            },
+        },
+    }
+
     def test_one_sub_level(self):
         available_conf = {
             "subcharacteristics": {
@@ -337,3 +384,48 @@ class TestDefineSublevels:
         assert len(resp_sub_chars_weights) == 1
         assert resp_sub_chars == ["testability"]
         assert int(resp_sub_chars_weights[0]["testability"]) == 100
+
+    def test_has_one_sub_level(self, mocker):
+        with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+            u_characteristics = ["maintainability", "reliability"]
+
+            resp_sub_chars, resp_sub_chars_weights = define_sublevel(
+                u_characteristics, self.AVAILABLE_PRE_CONF, "characteristics", "subcharacteristics"
+            )
+
+            testing_status_msg = "Only one subcharacteristics Testing Status selected, no need to define weights"
+            modifiability_msg = "Only one subcharacteristics Modifiability selected, no need to define weights"
+
+            assert modifiability_msg in fake_out.getvalue()
+            assert testing_status_msg in fake_out.getvalue()
+            assert resp_sub_chars == ["modifiability", "testing_status"]
+            assert resp_sub_chars_weights == [{"modifiability": 100}, {"testing_status": 100}]
+
+    def test_has_one_sub_sub_level(self, mocker):
+        u_subcharacteristics = ["modifiability"]
+
+        mocker.patch.object(create, "select_sublevels", return_value=["non_complex_file_density"])
+
+        with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+            resp_measures, resp_measures_weights = define_sublevel(
+                u_subcharacteristics, self.AVAILABLE_PRE_CONF, "subcharacteristics", "measures"
+            )
+
+            warning_msg = "Only one measures Non complex file density selected, no need to define weights"
+
+            assert warning_msg in fake_out.getvalue()
+            assert resp_measures == ["non_complex_file_density"]
+            assert resp_measures_weights == [{"non_complex_file_density": 100}]
+
+    def test_has_more_than_one_sub_sub_level(self, mocker):
+        u_subcharacteristics = ["testing_status"]
+
+        mocker.patch.object(create, "select_sublevels", return_value=["test_builds", "test_coverage"])
+        mocker.patch.object(create, "input_weights", return_value=[{"test_builds": 33.5}, {"test_coverage": 66.5}])
+
+        resp_measures, resp_measures_weights = define_sublevel(
+            u_subcharacteristics, self.AVAILABLE_PRE_CONF, "subcharacteristics", "measures"
+        )
+
+        assert resp_measures == ["test_builds", "test_coverage"]
+        assert resp_measures_weights == [{"test_builds": 33.5}, {"test_coverage": 66.5}]
