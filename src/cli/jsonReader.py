@@ -1,6 +1,7 @@
 from src.cli import exceptions
 import json
-from .exceptions import FileNotFound
+from pickle import NONE
+from .exceptions import FileNotFound, NullMetricValue
 
 METRICS_SONAR = [
     "files",
@@ -62,9 +63,6 @@ def check_metrics(metrics, metrics_validation_steps):
             """.format(
                     metric["metric"], metric["value"]
                 )
-            )
-    if float(metric["value"]):
-        metrics_validation_steps += 1
 
 
 def check_expected_metrics(metrics, metrics_validation_steps):
