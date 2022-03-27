@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import json
 from .exceptions import FileNotFound, NullMetricValue
 
@@ -52,7 +51,7 @@ def check_metrics(metrics, metrics_validation_steps):
 
     for metric in metrics:
 
-        if metric["value"] is not NULL:
+        if metric["value"] is not None:
             try:
                 float(metric["value"])
                 metrics_validation_steps += 1

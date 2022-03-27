@@ -1,5 +1,4 @@
 from src.cli import jsonReader, exceptions
-from asyncio.windows_events import NULL
 import pytest
 import json
 
@@ -218,7 +217,7 @@ def test_nullMetricValues():
             "name": "2021-2-MeasureSoftGram-CLI",
             "qualifier": "TRK",
             "measures": [
-                {"metric": "duplicated_lines_density", "value": NULL, "bestValue": True}
+                {"metric": "duplicated_lines_density", "value": None, "bestValue": True}
             ],
         },
         "components": [
