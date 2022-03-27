@@ -1,6 +1,5 @@
 from src.cli import exceptions
 import json
-from pickle import NONE
 from .exceptions import FileNotFound, NullMetricValue
 
 METRICS_SONAR = [

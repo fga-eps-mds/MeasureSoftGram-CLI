@@ -218,7 +218,7 @@ def test_nullMetricValues():
             "name": "2021-2-MeasureSoftGram-CLI",
             "qualifier": "TRK",
             "measures": [
-                {"metric": "duplicated_lines_density", "value": NULL, "bestValue": True}
+                {"metric": "duplicated_lines_density", "value": None, "bestValue": True}
             ],
         },
         "components": [
