@@ -1,7 +1,7 @@
 from src.cli import jsonReader, exceptions
+from asyncio.windows_events import NULL
 import pytest
 import json
-from measuresoftgram.exceptions import FileNotFound
 
 
 def test_fileNotExist():
@@ -9,7 +9,7 @@ def test_fileNotExist():
     Testar se o arquivo existe na pasta
     """
     relativeFilePath = "tests/utils/sona.json"
-    with pytest.raises(FileNotFound):
+    with pytest.raises(exceptions.FileNotFound):
         jsonReader.check_file_existance(relativeFilePath)
 
 
@@ -161,6 +161,9 @@ def test_expectedJsonMainAtributes():
 
 
 def test_validMetricValues():
+    """
+    Testa se o json recebido possui atributos NaN
+    """
 
     jsonFile = {
         "paging": {"pageIndex": 1, "pageSize": 100, "total": 5},
@@ -196,13 +199,60 @@ def test_validMetricValues():
     assert (
         exec_info.value.args[0]
         == """
-                ERRO: A métrica "duplicated_lines_density" é invalida.
-                Valor: "x"
-            """
+                    ERRO: A métrica "duplicated_lines_density" é invalida.
+                    Valor: "x"
+                """
+    )
+
+
+def test_nullMetricValues():
+    """
+    Testa se o json recebido possui atributos Nulos
+    """
+
+    jsonFile = {
+        "paging": {"pageIndex": 1, "pageSize": 100, "total": 5},
+        "baseComponent": {
+            "id": "AX9FgyLHNIj_v_uQK41e",
+            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+            "name": "2021-2-MeasureSoftGram-CLI",
+            "qualifier": "TRK",
+            "measures": [
+                {"metric": "duplicated_lines_density", "value": NULL, "bestValue": True}
+            ],
+        },
+        "components": [
+            {
+                "id": "AX9GDsKlZuVL7NjXSAZ4",
+                "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/__init__.py",
+                "name": "__init__.py",
+                "qualifier": "UTS",
+                "path": "tests/__init__.py",
+                "language": "py",
+                "measures": [
+                    {"metric": "security_rating", "value": "1.0", "bestValue": True}
+                ],
+            }
+        ],
+    }
+
+    metrics = jsonFile["baseComponent"]["measures"]
+
+    with pytest.raises(exceptions.NullMetricValue) as exec_info:
+        jsonReader.check_metrics(metrics, metrics_validation_steps=0)
+
+    assert (
+        exec_info.value.args[0]
+        == """
+                    ERRO: A métrica "duplicated_lines_density" esta Nula
+                """
     )
 
 
 def test_fileReaderList():
+    """
+    Testa se o json recebido foi lido e interpretado corretamente
+    """
 
     filePath = "tests/unit/data/sonar.json"
     metrics = jsonReader.file_reader(filePath)

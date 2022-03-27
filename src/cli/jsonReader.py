@@ -1,6 +1,6 @@
-from src.cli import exceptions
+from asyncio.windows_events import NULL
 import json
-from .exceptions import FileNotFound
+from .exceptions import FileNotFound, NullMetricValue
 
 METRICS_SONAR = [
     "files",
@@ -52,19 +52,27 @@ def check_metrics(metrics, metrics_validation_steps):
 
     for metric in metrics:
 
-        try:
-            float(metric["value"])
-        except ValueError:
-            raise exceptions.InvalidMetricException(
+        if metric["value"] is not NULL:
+            try:
+                float(metric["value"])
+                metrics_validation_steps += 1
+            except ValueError:
+                raise TypeError(
+                    """
+                    ERRO: A métrica "{}" é invalida.
+                    Valor: "{}"
+                """.format(
+                        metric["metric"], metric["value"]
+                    )
+                )
+        else:
+            raise NullMetricValue(
                 """
-                ERRO: A métrica "{}" é invalida.
-                Valor: "{}"
-            """.format(
-                    metric["metric"], metric["value"]
+                    ERRO: A métrica "{}" esta Nula
+                """.format(
+                    metric["metric"]
                 )
             )
-    if float(metric["value"]):
-        metrics_validation_steps += 1
 
 
 def check_expected_metrics(metrics, metrics_validation_steps):
@@ -106,19 +114,25 @@ def check_sonar_format(json_file):
     attributes = list(json_file.keys())
 
     if len(attributes) != 3:
-        raise exceptions.InvalidSonarFileAttributeException("ERRO: Quantidade de atributos invalida")
+        raise exceptions.InvalidSonarFileAttributeException(
+            "ERRO: Quantidade de atributos invalida"
+        )
     if (
         attributes[0] != "paging"
         or attributes[1] != "baseComponent"
         or attributes[2] != "components"
     ):
-        raise exceptions.InvalidSonarFileAttributeException("ERRO: Atributos incorretos")
+        raise exceptions.InvalidSonarFileAttributeException(
+            "ERRO: Atributos incorretos"
+        )
 
     base_component = json_file["baseComponent"]
     base_component_attributs = list(base_component.keys())
 
     if len(base_component_attributs) != 5:
-        raise exceptions.InvalidBaseComponentException("ERRO: Quantidade de atributos de baseComponent invalida")
+        raise exceptions.InvalidBaseComponentException(
+            "ERRO: Quantidade de atributos de baseComponent invalida"
+        )
     if (
         base_component_attributs[0] != "id"
         or base_component_attributs[1] != "key"
@@ -126,13 +140,17 @@ def check_sonar_format(json_file):
         or base_component_attributs[3] != "qualifier"
         or base_component_attributs[4] != "measures"
     ):
-        raise exceptions.InvalidBaseComponentException("ERRO: Atributos de baseComponent incorretos")
+        raise exceptions.InvalidBaseComponentException(
+            "ERRO: Atributos de baseComponent incorretos"
+        )
 
     return True
 
 
 def check_file_extension(fileName):
     if fileName[-4:] != "json":
-        raise exceptions.InvalidFileTypeException("ERRO: Apenas arquivos JSON são aceitos")
+        raise exceptions.InvalidFileTypeException(
+            "ERRO: Apenas arquivos JSON são aceitos"
+        )
 
     return True
