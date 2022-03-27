@@ -21,7 +21,6 @@ METRICS_SONAR = [
 
 def file_reader(absolute_path):
 
-
     check_file_extension(absolute_path)
 
     f = check_file_existance(absolute_path)
@@ -30,14 +29,15 @@ def file_reader(absolute_path):
 
     metrics = json_file["baseComponent"]["measures"]
 
-    check_metrics(metrics)
-    check_expected_metrics(metrics)
-    print("As métricas foram lidas com sucesso")
+    check_metrics(metrics, metrics_validation_steps)
+    check_expected_metrics(metrics, metrics_validation_steps)
+
+    sucess_read_metrics_message(metrics_validation_steps)
 
     print("As métricas foram lidas com sucesso")
 
     return metrics
-        
+
 
 def check_file_existance(absolute_path):
 
@@ -56,7 +56,6 @@ def check_metrics(metrics):
         if metric["value"] is not None:
             try:
                 float(metric["value"])
-                
             except ValueError:
                 raise TypeError(
                     """
@@ -90,7 +89,6 @@ def check_expected_metrics(metrics):
             )
         )
 
-
     sorted_recieved_metrics = sorted(metrics, key=lambda d: d["metric"])
     sorted_expected_metrics = sorted(METRICS_SONAR)
 
@@ -105,7 +103,6 @@ def check_expected_metrics(metrics):
                     recieved["metric"], expected
                 )
             )
-
 
     return True
 
@@ -150,6 +147,12 @@ def check_sonar_format(json_file):
 def check_file_extension(fileName):
     if fileName[-4:] != "json":
         raise exceptions.InvalidFileTypeException("ERRO: Apenas arquivos JSON são aceitos")
+    return True
+
+
+def sucess_read_metrics_message(metrics_validation_steps):
+    if metrics_validation_steps == 3:
+        print("As métricas foram lidas com sucesso")
     return True
 
 
