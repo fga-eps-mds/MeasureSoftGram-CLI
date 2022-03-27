@@ -31,8 +31,7 @@ def file_reader(absolute_path):
     check_metrics(metrics, metrics_validation_steps)
     check_expected_metrics(metrics, metrics_validation_steps)
 
-    if metrics_validation_steps == 3:
-        print("As métricas foram lidas com sucesso")
+    sucess_read_metrics_message(metrics_validation_steps)
 
     return metrics
 
@@ -54,7 +53,6 @@ def check_metrics(metrics, metrics_validation_steps):
         if metric["value"] is not None:
             try:
                 float(metric["value"])
-                metrics_validation_steps += 1
             except ValueError:
                 raise TypeError(
                     """
@@ -72,6 +70,7 @@ def check_metrics(metrics, metrics_validation_steps):
                     metric["metric"]
                 )
             )
+    metrics_validation_steps += 1
 
 
 def check_expected_metrics(metrics, metrics_validation_steps):
@@ -152,4 +151,10 @@ def check_file_extension(fileName):
             "ERRO: Apenas arquivos JSON são aceitos"
         )
 
+    return True
+
+
+def sucess_read_metrics_message(metrics_validation_steps):
+    if metrics_validation_steps == 3:
+        print("As métricas foram lidas com sucesso")
     return True
