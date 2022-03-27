@@ -1,5 +1,4 @@
 from src.cli import jsonReader, exceptions
-from asyncio.windows_events import NULL
 import pytest
 import json
 from measuresoftgram.exceptions import FileNotFound, NullMetricValue
