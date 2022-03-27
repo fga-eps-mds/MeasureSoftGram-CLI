@@ -20,6 +20,7 @@ METRICS_SONAR = [
 
 
 def file_reader(absolute_path):
+    metrics_validation_steps = 0
 
     check_file_extension(absolute_path)
 
@@ -29,8 +30,11 @@ def file_reader(absolute_path):
 
     metrics = json_file["baseComponent"]["measures"]
 
-    check_metrics(metrics)
-    check_expected_metrics(metrics)
+    check_metrics(metrics, metrics_validation_steps)
+    check_expected_metrics(metrics, metrics_validation_steps)
+
+    if metrics_validation_steps == 3:
+        print("As métricas foram lidas com sucesso")
 
     print("As métricas foram lidas com sucesso")
 
@@ -47,7 +51,7 @@ def check_file_existance(absolute_path):
     return file
 
 
-def check_metrics(metrics):
+def check_metrics(metrics, metrics_validation_steps):
 
     for metric in metrics:
 
@@ -65,7 +69,7 @@ def check_metrics(metrics):
     metrics_validation_steps += 1
 
 
-def check_expected_metrics(metrics):
+def check_expected_metrics(metrics, metrics_validation_steps):
 
     if len(metrics) != len(METRICS_SONAR):
         raise exceptions.InvalidMetricException(
@@ -77,6 +81,8 @@ def check_expected_metrics(metrics):
                 len(metrics), len(METRICS_SONAR)
             )
         )
+    else:
+        metrics_validation_steps += 1
 
     sorted_recieved_metrics = sorted(metrics, key=lambda d: d["metric"])
     sorted_expected_metrics = sorted(METRICS_SONAR)
@@ -92,6 +98,8 @@ def check_expected_metrics(metrics):
                     recieved["metric"], expected
                 )
             )
+        else:
+            metrics_validation_steps += 1
 
     return True
 
