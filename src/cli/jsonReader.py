@@ -60,6 +60,8 @@ def check_metrics(metrics):
             """.format(
                     metric["metric"], metric["value"]
                 )
+            )
+    metrics_validation_steps += 1
 
 
 def check_expected_metrics(metrics):
@@ -128,4 +130,10 @@ def check_file_extension(fileName):
     if fileName[-4:] != "json":
         raise exceptions.InvalidFileTypeException("ERRO: Apenas arquivos JSON são aceitos")
 
+    return True
+
+
+def sucess_read_metrics_message(metrics_validation_steps):
+    if metrics_validation_steps == 3:
+        print("As métricas foram lidas com sucesso")
     return True
