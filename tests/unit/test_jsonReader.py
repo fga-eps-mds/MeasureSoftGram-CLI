@@ -430,3 +430,11 @@ def test_ifThereIsAUnexpectedMetrics():
         jsonReader.check_expected_metrics(jsonFile)
 
     assert "ERRO: Metrica diferente do que o esperado."
+
+
+def test_SucessReadMetricsMessage():
+    metrics_validation_steps = 3
+
+    jsonReader.sucess_read_metrics_message(metrics_validation_steps)
+
+    assert "As métricas foram lidas com sucesso"
