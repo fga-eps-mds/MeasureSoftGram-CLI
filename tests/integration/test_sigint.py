@@ -1,4 +1,4 @@
-from measuresoftgram.cli import main
+from src.cli.cliRunner import main
 from io import StringIO
 
 
