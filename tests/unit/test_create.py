@@ -61,6 +61,16 @@ def test_validate_weight_sum():
         )
         is False
     )
+    assert (
+        validate_weight_sum(
+            [
+                {"maintanability": "37.337"},
+                {"testability": "13.933"},
+                {"reliability": "23.195"},
+            ]
+        )
+        is False
+    )
 
 
 def test_validate_check_box_input():
