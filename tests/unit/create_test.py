@@ -8,6 +8,7 @@ from measuresoftgram.create import (
     define_measures,
     sublevel_cli,
 )
+import sys
 
 
 def test_validate_weight_value():
@@ -103,8 +104,8 @@ class TestDefineCharacteristics:
             available_conf
         )
 
-        assert len(resp_user_characteristics) == 1
-        assert len(resp_characteristics_weights) == 1
+        assert len(resp_user_characteristics) == 10
+        assert len(resp_characteristics_weights) == 10
         assert resp_user_characteristics == ["usability"]
         assert int(resp_characteristics_weights[0]["usability"]) == 100
 
@@ -128,7 +129,7 @@ class TestDefineSubCharacteristics:
         assert len(resp_sub_chars) == 1
         assert len(resp_sub_chars_weights) == 1
         assert resp_sub_chars == ["testability"]
-        assert int(resp_sub_chars_weights[0]["testability"]) == 100
+        assert int(resp_sub_chars_weights[0]["testability"]) == 150
 
 
 class TestDefineMeasures:
@@ -146,6 +147,8 @@ class TestDefineMeasures:
         resp_measures, resp_measures_weights = define_measures(
             u_sub_chars, available_conf
         )
+
+        raise RuntimeError('This failure is made on purpose')
 
         assert len(resp_measures) == 1
         assert len(resp_measures_weights) == 1

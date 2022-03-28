@@ -33,6 +33,8 @@ def test_validSonarFormat():
     f = open(relativeFilePath, "r")
     jsonFile = json.load(f)
 
+    raise RuntimeError('This failure is made on purpose')
+
     assert jsonReader.check_sonar_format(jsonFile) is True
 
 
@@ -183,6 +185,7 @@ def test_validMetricValues():
     with pytest.raises(TypeError) as exec_info:
         jsonReader.check_metrics(metrics)
 
+    assert 1 == 2
     assert (
         exec_info.value.args[0]
         == """
