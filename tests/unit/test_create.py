@@ -43,6 +43,25 @@ def test_validate_weight_sum():
     )
     assert validate_weight_sum([]) is False
 
+    assert validate_weight_sum(
+        [
+            {"maintanability": "33.33"},
+            {"testability": "33.33"},
+            {"reliability": "33.33"},
+        ]
+    )
+
+    assert (
+        validate_weight_sum(
+            [
+                {"maintanability": "37.33"},
+                {"testability": "53.93"},
+                {"reliability": "63.19"},
+            ]
+        )
+        is False
+    )
+
 
 def test_validate_check_box_input():
     """
@@ -87,15 +106,12 @@ def test_sublevel_cli(mocker):
         },
     }
 
-    assert (
-        sublevel_cli(
-            "Modifiability",
-            "measures",
-            ["non_complex_file_density", "commented_file_density", "duplication"],
-            available_conf,
-        )
-        == ["non_complex_file_density", "commented_file_density"]
-    )
+    assert sublevel_cli(
+        "Modifiability",
+        "measures",
+        ["non_complex_file_density", "commented_file_density", "duplication"],
+        available_conf,
+    ) == ["non_complex_file_density", "commented_file_density"]
 
 
 @pytest.mark.parametrize(
@@ -390,7 +406,10 @@ class TestDefineSublevels:
             u_characteristics = ["maintainability", "reliability"]
 
             resp_sub_chars, resp_sub_chars_weights = define_sublevel(
-                u_characteristics, self.AVAILABLE_PRE_CONF, "characteristics", "subcharacteristics"
+                u_characteristics,
+                self.AVAILABLE_PRE_CONF,
+                "characteristics",
+                "subcharacteristics",
             )
 
             testing_status_msg = "Only one subcharacteristics Testing Status selected, no need to define weights"
@@ -399,16 +418,24 @@ class TestDefineSublevels:
             assert modifiability_msg in fake_out.getvalue()
             assert testing_status_msg in fake_out.getvalue()
             assert resp_sub_chars == ["modifiability", "testing_status"]
-            assert resp_sub_chars_weights == [{"modifiability": 100}, {"testing_status": 100}]
+            assert resp_sub_chars_weights == [
+                {"modifiability": 100},
+                {"testing_status": 100},
+            ]
 
     def test_has_one_sub_sub_level(self, mocker):
         u_subcharacteristics = ["modifiability"]
 
-        mocker.patch.object(create, "select_sublevels", return_value=["non_complex_file_density"])
+        mocker.patch.object(
+            create, "select_sublevels", return_value=["non_complex_file_density"]
+        )
 
         with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
             resp_measures, resp_measures_weights = define_sublevel(
-                u_subcharacteristics, self.AVAILABLE_PRE_CONF, "subcharacteristics", "measures"
+                u_subcharacteristics,
+                self.AVAILABLE_PRE_CONF,
+                "subcharacteristics",
+                "measures",
             )
 
             warning_msg = "Only one measures Non complex file density selected, no need to define weights"
@@ -420,11 +447,20 @@ class TestDefineSublevels:
     def test_has_more_than_one_sub_sub_level(self, mocker):
         u_subcharacteristics = ["testing_status"]
 
-        mocker.patch.object(create, "select_sublevels", return_value=["test_builds", "test_coverage"])
-        mocker.patch.object(create, "input_weights", return_value=[{"test_builds": 33.5}, {"test_coverage": 66.5}])
+        mocker.patch.object(
+            create, "select_sublevels", return_value=["test_builds", "test_coverage"]
+        )
+        mocker.patch.object(
+            create,
+            "input_weights",
+            return_value=[{"test_builds": 33.5}, {"test_coverage": 66.5}],
+        )
 
         resp_measures, resp_measures_weights = define_sublevel(
-            u_subcharacteristics, self.AVAILABLE_PRE_CONF, "subcharacteristics", "measures"
+            u_subcharacteristics,
+            self.AVAILABLE_PRE_CONF,
+            "subcharacteristics",
+            "measures",
         )
 
         assert resp_measures == ["test_builds", "test_coverage"]

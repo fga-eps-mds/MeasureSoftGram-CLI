@@ -1,5 +1,4 @@
 import inquirer
-from random import randint
 from inquirer.themes import GreenPassion
 
 VALID_WEIGHT_SUM_ADVISE = "the sum of the weights must be 100"
@@ -31,18 +30,14 @@ def define_weight(data_key, data_name):
     return defined_weight
 
 
-def define_id():
-    return randint(00000000, 99999999)
-
-
 def validate_weight_sum(items):
     sum = 0
     for x in items:
         for v in x.values():
             sum += float(v)
-    if 99.90 <= sum <= 99.99:
-        sum = 100
 
+    if 0 < round(100 - sum, 2) <= 0.01:
+        sum = 100
     return sum == 100
 
 
