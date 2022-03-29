@@ -1,11 +1,17 @@
-import argparse
 import sys
-from measuresoftgram.jsonReader import file_reader
+import signal
 import requests
-from measuresoftgram.create import (
+import argparse
+from src.cli.jsonReader import file_reader
+from src.cli.create import (
     define_characteristic,
     define_sublevel,
 )
+
+
+def sigint_handler(*_):
+    print("\n\nExiting MeasureSoftGram...")
+    sys.exit(0)
 
 
 def parse_import():
@@ -69,4 +75,9 @@ def setup():
 def main():
     """Entry point for the application script"""
 
-    setup()
+    signal.signal(signal.SIGINT, sigint_handler)
+
+    try:
+        setup()
+    except KeyboardInterrupt:
+        print("\nYou pressed Ctrl + C! No pre conf created.")
