@@ -239,7 +239,7 @@ def test_nullMetricValues():
     metrics = jsonFile["baseComponent"]["measures"]
 
     with pytest.raises(NullMetricValue) as exec_info:
-        jsonReader.check_metrics(metrics, metrics_validation_steps=0)
+        jsonReader.check_metrics(metrics)
 
     assert (
         exec_info.value.args[0]
