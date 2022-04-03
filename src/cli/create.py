@@ -54,6 +54,16 @@ def validate_check_box_input(selected):
         return False
 
 
+def validate_preconfig_post(response, saved_preconfig):
+    if response == 200:
+        print(
+            "\nYour Pre Configuration was created with sucess!\n"
+            + f"Pre Configuration ID: {saved_preconfig['_id']}"
+        )
+    else:
+        print("There was a ERROR while creating your Pre Configuration")
+
+
 def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
     reverse_sublevel = {v["name"]: k for k, v in available_pre_config.items()}
 

@@ -7,6 +7,7 @@ from src.cli.create import (
     define_characteristic,
     define_subcharacteristics,
     define_measures,
+    validate_preconfig_post,
 )
 
 
@@ -49,14 +50,7 @@ def parse_create():
 
     saved_preconfig = json.loads(response.text)
 
-    if response.status_code == 200:
-        print(
-            "\nYour Pre Configuration was created with sucess!\n"
-            + f"Pre Configuration ID: {saved_preconfig['_id']}"
-        )
-    else:
-        print("There was a ERROR while creating your Pre Configuration")
-
+    validate_preconfig_post(response.status_code, saved_preconfig)
     pass
 
 
