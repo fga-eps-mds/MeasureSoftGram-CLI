@@ -43,6 +43,20 @@ def parse_create():
         user_sub_characteristic, available_pre_config
     )
 
+    response = requests.post(
+        BASE_URL + "selected-pre-config", json=user_characteristics
+    )
+
+    saved_preconfig = json.loads(response.text)
+
+    if response.status_code == 200:
+        print(
+            "\nYour Pre Configuration was created with sucess!\n"
+            + f"Pre Configuration ID: {saved_preconfig['_id']}"
+        )
+    else:
+        print("There was a ERROR while creating your Pre Configuration")
+
     pass
 
 
