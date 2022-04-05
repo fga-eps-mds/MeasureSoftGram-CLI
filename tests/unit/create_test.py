@@ -7,6 +7,7 @@ from src.cli.create import (
     define_subcharacteristics,
     define_measures,
     sublevel_cli,
+    validate_pre_config_metrics_post
 )
 
 
@@ -51,6 +52,23 @@ def test_define_weight(mocker):
     mocker.patch("inquirer.prompt", return_value={"usability": "50"})
 
     assert define_weight("usability", "Usability") == {"usability": "50"}
+
+
+def test_validate_pre_config_metrics_post():
+    """
+    Test for validate_pre_config_metrics_post function
+    """
+    assert validate_pre_config_metrics_post(
+        response_pre_config_metrics_post=200) == print("\nYour file metrics have been saved successfully")
+
+
+def test_validate_pre_config_metrics_post_error():
+    """
+    Test for validate_pre_config_metrics_post function
+    """
+
+    assert validate_pre_config_metrics_post(
+        response_pre_config_metrics_post=400) == print("There was a ERROR while saving your Metrics")
 
 
 def test_sublevel_cli(mocker):
