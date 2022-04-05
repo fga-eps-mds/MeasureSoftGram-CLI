@@ -29,10 +29,10 @@ def file_reader(absolute_path):
 
     metrics = json_file["baseComponent"]["measures"]
 
-    check_metrics(metrics, metrics_validation_steps)
-    check_expected_metrics(metrics, metrics_validation_steps)
+    check_metrics(metrics)
+    check_expected_metrics(metrics)
 
-    sucess_read_metrics_message(metrics_validation_steps)
+    print("As métricas foram lidas com sucesso")
 
     print("As métricas foram lidas com sucesso")
 

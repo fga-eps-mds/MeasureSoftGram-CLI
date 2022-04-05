@@ -6,7 +6,10 @@ from src.cli.create import (
     define_characteristic,
     define_subcharacteristics,
     define_measures,
+    validate_pre_config_metrics_post,
 )
+
+BASE_URL = "http://localhost:5000/"
 
 
 def sigint_handler(*_):
@@ -16,13 +19,32 @@ def sigint_handler(*_):
 
 def parse_import(file_path, id):
     # user_path = input("Please provide sonar json absolute file path: ")
-    print("ID de pré configuração abaixo: ")
+    print("Pre Config ID bellow: ")
     print(id)
     print("File path return: ")
-    file_reader(r"{}".format(file_path))
+    metrics = file_reader(r"{}".format(file_path))
+    sorted_metrics = sorted(metrics, key=lambda d: d["metric"])
 
+    payload = {
+        "id_wanted": id,
+        "comment_lines_density": sorted_metrics[0]["value"],
+        "complexity": sorted_metrics[1]["value"],
+        "coverage": sorted_metrics[2]["value"],
+        "duplicated_lines_density": sorted_metrics[3]["value"],
+        "files": sorted_metrics[4]["value"],
+        "functions": sorted_metrics[5]["value"],
+        "ncloc": sorted_metrics[6]["value"],
+        "security_rating": sorted_metrics[7]["value"],
+        "test_errors": sorted_metrics[8]["value"],
+        "test_execution_time": sorted_metrics[9]["value"],
+        "test_failures": sorted_metrics[10]["value"],
+        "tests": sorted_metrics[11]["value"],
+    }
 
-BASE_URL = "http://localhost:5000/"
+    response_pre_config_metrics = requests.post(
+        BASE_URL + "pre-config-metrics", data=payload
+    )
+    validate_pre_config_metrics_post(response_pre_config_metrics.status_code)
 
 
 def parse_create():
