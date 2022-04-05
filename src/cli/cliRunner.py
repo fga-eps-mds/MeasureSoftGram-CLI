@@ -11,6 +11,8 @@ from src.cli.create import (
     validate_preconfig_post,
 )
 
+BASE_URL = "http://localhost:5000/"
+
 
 def sigint_handler(*_):
     print("\n\nExiting MeasureSoftGram...")
@@ -70,11 +72,11 @@ def setup():
         description="Command line interface for measuresoftgram"
     )
     subparsers = parser.add_subparsers(
-        dest= "command",
+        dest="command",
         help="sub-command help"
     )
     parser_import = subparsers.add_parser(
-        "import", 
+        "import",
         help="Import a metrics file"
     )
     parser_import.add_argument(
@@ -89,14 +91,12 @@ def setup():
         help="Pre config ID",
     )
     parser_create = subparsers.add_parser(
-        "create", 
+        "create",
         help="Create a new model pre configuration"
     )
 
-
-
     args = parser.parse_args()
-    
+
     # if args is empty show help
     if not sys.argv[1:]:
         parser.print_help()

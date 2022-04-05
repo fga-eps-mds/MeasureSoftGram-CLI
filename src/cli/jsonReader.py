@@ -1,6 +1,7 @@
 from src.cli import exceptions
 import json
 from .exceptions import FileNotFound, NullMetricValue
+import requests
 
 METRICS_SONAR = [
     "files",
@@ -20,7 +21,6 @@ METRICS_SONAR = [
 
 def file_reader(absolute_path):
 
-
     check_file_extension(absolute_path)
 
     f = check_file_existance(absolute_path)
@@ -31,10 +31,11 @@ def file_reader(absolute_path):
 
     check_metrics(metrics)
     check_expected_metrics(metrics)
+
     print("As métricas foram lidas com sucesso")
 
     return metrics
-        
+
 
 def check_file_existance(absolute_path):
 
@@ -77,7 +78,6 @@ def check_expected_metrics(metrics):
             )
         )
 
-
     sorted_recieved_metrics = sorted(metrics, key=lambda d: d["metric"])
     sorted_expected_metrics = sorted(METRICS_SONAR)
 
@@ -92,7 +92,6 @@ def check_expected_metrics(metrics):
                     recieved["metric"], expected
                 )
             )
-
 
     return True
 
