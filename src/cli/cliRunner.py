@@ -18,7 +18,6 @@ def sigint_handler(*_):
 
 
 def parse_import(file_path, id):
-    # user_path = input("Please provide sonar json absolute file path: ")
     print("Pre Config ID bellow: ")
     print(id)
     print("File path return: ")
@@ -76,13 +75,13 @@ def setup():
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
     parser_import = subparsers.add_parser("import", help="Import a metrics file")
     parser_import.add_argument(
-        "--file_path",
+        "path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
         help="Path to the data directory",
     )
     parser_import.add_argument(
-        "--id",
+        "id",
         type=str,
         help="Pre config ID",
     )
@@ -97,7 +96,7 @@ def setup():
         parser.print_help()
         return
     elif args.command == "import":
-        parse_import(args.file_path, args.id)
+        parse_import(args.path, args.id)
     elif args.command == "create":
         parse_create()
 
