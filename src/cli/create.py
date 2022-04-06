@@ -20,7 +20,9 @@ def define_weight(data_key, data_name):
                 + f" ({VALID_WEIGHT_SUM_ADVISE})",
             )
         ]
-        defined_weight = inquirer.prompt(weights, theme=GreenPassion(), raise_keyboard_interrupt=True)
+        defined_weight = inquirer.prompt(
+            weights, theme=GreenPassion(), raise_keyboard_interrupt=True
+        )
         if validate_weight_value(int(defined_weight[data_key])):
             break
         print(INVALID_WEIGHT_VALUE)
@@ -55,7 +57,7 @@ def validate_check_box_input(selected):
 
 
 def validate_preconfig_post(response, saved_preconfig):
-    if response == 200:
+    if response == 201:
         print(
             "\nYour Pre Configuration was created with sucess!\n"
             + f"Pre Configuration ID: {saved_preconfig['_id']}"
@@ -74,7 +76,9 @@ def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
             choices=[available_pre_config[x]["name"] for x in sublevels],
         )
     ]
-    user_sublevels = inquirer.prompt(sublevels_answer, theme=GreenPassion(), raise_keyboard_interrupt=True)
+    user_sublevels = inquirer.prompt(
+        sublevels_answer, theme=GreenPassion(), raise_keyboard_interrupt=True
+    )
 
     user_sublevels = [reverse_sublevel[x] for x in user_sublevels["sublevels"]]
 
