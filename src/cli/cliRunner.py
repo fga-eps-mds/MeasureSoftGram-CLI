@@ -44,9 +44,11 @@ def parse_create():
         user_sub_characteristic, available_pre_config
     )
 
-    response = requests.post(
-        BASE_URL + "selected-pre-config", json=user_characteristics
-    )
+    pre_config_name = "teste"
+
+    data = {"characteristics": user_characteristics, "name": pre_config_name}
+
+    response = requests.post(BASE_URL + "/pre-configs", json=data)
 
     saved_preconfig = json.loads(response.text)
 
