@@ -1,9 +1,7 @@
 import argparse
 import sys
 import signal
-from measuresoftgram.jsonReader import file_reader
 import requests
-import sys
 from src.cli.jsonReader import file_reader
 from src.cli.create import (
     define_characteristic,
