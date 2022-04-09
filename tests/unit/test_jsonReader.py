@@ -9,7 +9,7 @@ def test_fileNotExist():
     Testar se o arquivo existe na pasta
     """
     relativeFilePath = "tests/utils/sona.json"
-    with pytest.raises(FileNotFound):
+    with pytest.raises(exceptions.FileNotFound):
         jsonReader.check_file_existance(relativeFilePath)
 
 
@@ -238,7 +238,7 @@ def test_nullMetricValues():
 
     metrics = jsonFile["baseComponent"]["measures"]
 
-    with pytest.raises(NullMetricValue) as exec_info:
+    with pytest.raises(exceptions.NullMetricValue) as exec_info:
         jsonReader.check_metrics(metrics)
 
     assert (

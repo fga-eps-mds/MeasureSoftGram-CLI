@@ -128,7 +128,6 @@ def check_sonar_format(json_file):
 def check_file_extension(fileName):
     if fileName[-4:] != "json":
         raise exceptions.InvalidFileTypeException("ERRO: Apenas arquivos JSON são aceitos")
-
     return True
 
 
