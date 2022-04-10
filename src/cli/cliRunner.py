@@ -1,4 +1,5 @@
 import argparse
+import json
 import sys
 import signal
 import requests
@@ -46,14 +47,21 @@ def parse_create():
 
     pre_config_name = "teste"
 
-    data = {"characteristics": user_characteristics, "name": pre_config_name}
+    data = {
+        "name": pre_config_name,
+        "characteristics": user_characteristics,
+        "subcharacteristics": user_sub_characteristic,
+        "measures": user_measures,
+        "characteristics_weights": caracteristics_weights,
+        "subcharacteristics_weights": sub_characteristic_weights,
+        "measures_weights": measures_weights,
+    }
 
     response = requests.post(BASE_URL + "/pre-configs", json=data)
 
     saved_preconfig = json.loads(response.text)
 
     validate_preconfig_post(response.status_code, saved_preconfig)
-    pass
 
 
 def setup():
