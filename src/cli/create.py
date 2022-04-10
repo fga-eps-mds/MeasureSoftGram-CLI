@@ -56,14 +56,15 @@ def validate_check_box_input(selected):
         return False
 
 
-def validate_preconfig_post(response, saved_preconfig):
-    if response == 201:
+def validate_preconfig_post(status_code, response):
+    if status_code == 201:
         print(
-            "\nYour Pre Configuration was created with sucess!\n"
-            + f"Pre Configuration ID: {saved_preconfig['_id']}"
+            f"\nYour Pre Configuration was created with sucess!\nPre Configuration ID: {response['_id']}"
         )
     else:
-        print("There was a ERROR while creating your Pre Configuration")
+        print(
+            f"\nThere was an ERROR while creating your Pre Configuration:  {response['error']}"
+        )
 
 
 def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
