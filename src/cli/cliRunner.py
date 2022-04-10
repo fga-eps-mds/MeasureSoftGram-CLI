@@ -21,23 +21,11 @@ def parse_import(file_path, id):
     print("Pre Config ID bellow: ")
     print(id)
     print("File path return: ")
-    metrics = file_reader(r"{}".format(file_path))
-    sorted_metrics = sorted(metrics, key=lambda d: d["metric"])
+    components = file_reader(r"{}".format(file_path))
 
     payload = {
-        "id_wanted": id,
-        "comment_lines_density": sorted_metrics[0]["value"],
-        "complexity": sorted_metrics[1]["value"],
-        "coverage": sorted_metrics[2]["value"],
-        "duplicated_lines_density": sorted_metrics[3]["value"],
-        "files": sorted_metrics[4]["value"],
-        "functions": sorted_metrics[5]["value"],
-        "ncloc": sorted_metrics[6]["value"],
-        "security_rating": sorted_metrics[7]["value"],
-        "test_errors": sorted_metrics[8]["value"],
-        "test_execution_time": sorted_metrics[9]["value"],
-        "test_failures": sorted_metrics[10]["value"],
-        "tests": sorted_metrics[11]["value"],
+        "pre_config_id": id,
+        "components": components
     }
 
     response_pre_config_metrics = requests.post(

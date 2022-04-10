@@ -27,10 +27,7 @@ def file_reader(absolute_path):
     json_file = json.load(f)
     check_sonar_format(json_file)
 
-    metrics = json_file["baseComponent"]["measures"]
-
-    check_metrics(metrics)
-    check_expected_metrics(metrics)
+    components = json_file["components"]
 
     print("As métricas foram lidas com sucesso")
 
