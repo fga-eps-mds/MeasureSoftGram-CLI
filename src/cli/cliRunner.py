@@ -18,9 +18,6 @@ def sigint_handler(*_):
 
 
 def parse_import(file_path, id):
-    print("Pre Config ID bellow: ")
-    print(id)
-    print("File path return: ")
     components = file_reader(r"{}".format(file_path))
 
     payload = {
