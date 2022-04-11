@@ -1,4 +1,5 @@
 import argparse
+import json
 import sys
 import signal
 import requests
@@ -7,6 +8,7 @@ from src.cli.create import (
     define_characteristic,
     define_subcharacteristics,
     define_measures,
+    validate_preconfig_post,
 )
 
 
@@ -43,7 +45,23 @@ def parse_create():
         user_sub_characteristic, available_pre_config
     )
 
-    pass
+    pre_config_name = "teste"
+
+    data = {
+        "name": pre_config_name,
+        "characteristics": user_characteristics,
+        "subcharacteristics": user_sub_characteristic,
+        "measures": user_measures,
+        "characteristics_weights": caracteristics_weights,
+        "subcharacteristics_weights": sub_characteristic_weights,
+        "measures_weights": measures_weights,
+    }
+
+    response = requests.post(BASE_URL + "/pre-configs", json=data)
+
+    saved_preconfig = json.loads(response.text)
+
+    validate_preconfig_post(response.status_code, saved_preconfig)
 
 
 def setup():
