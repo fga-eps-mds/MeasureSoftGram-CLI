@@ -58,21 +58,23 @@ def setup():
         description="Command line interface for measuresoftgram"
     )
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
+
     parser_import = subparsers.add_parser("import", help="Import a metrics file")
+
     parser_import.add_argument(
         "path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
         help="Path to the data directory",
     )
+
     parser_import.add_argument(
         "id",
         type=str,
         help="Pre config ID",
     )
-    parser_create = subparsers.add_parser(
-        "create", help="Create a new model pre configuration"
-    )
+
+    subparsers.add_parser("create", help="Create a new model pre configuration")
 
     args = parser.parse_args()
 
