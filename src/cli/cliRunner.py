@@ -1,9 +1,11 @@
 import argparse
 import json
 import sys
-import signal
 import requests
-from src.cli.jsonReader import file_reader
+import signal
+from pathlib import Path
+from random import randrange
+from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import (
     define_characteristic,
     define_subcharacteristics,
@@ -11,19 +13,22 @@ from src.cli.create import (
     validate_preconfig_post,
 )
 
+BASE_URL = "http://localhost:5000/"
+
 
 def sigint_handler(*_):
     print("\n\nExiting MeasureSoftGram...")
     sys.exit(0)
 
 
-def parse_import():
-    print("Importing metrics")
-    user_path = input("Please provide sonar json absolute file path: ")
-    file_reader(r"{}".format(user_path))
+def parse_import(file_path, id):
+    components = file_reader(r"{}".format(file_path))
 
+    payload = {"pre_config_id": id, "components": components}
 
-BASE_URL = "http://localhost:5000/"
+    response = requests.post(BASE_URL + "import-metrics", json=payload)
+
+    validate_metrics_post(response.status_code, json.loads(response.text))
 
 
 def parse_create():
@@ -45,7 +50,7 @@ def parse_create():
         user_sub_characteristic, available_pre_config
     )
 
-    pre_config_name = "teste"
+    pre_config_name = f"msg_pre_config_{randrange(5)}"
 
     data = {
         "name": pre_config_name,
@@ -68,21 +73,35 @@ def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
     )
-    subparsers = parser.add_subparsers(help="sub-command help")
+    subparsers = parser.add_subparsers(dest="command", help="sub-command help")
+
     parser_import = subparsers.add_parser("import", help="Import a metrics file")
-    parser_create = subparsers.add_parser(
-        "create", help="Create a new model pre configuration"
+
+    parser_import.add_argument(
+        "path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the data directory",
     )
 
-    parser_import.set_defaults(func=parse_import)
-    parser_create.set_defaults(func=parse_create)
+    parser_import.add_argument(
+        "id",
+        type=str,
+        help="Pre config ID",
+    )
+
+    subparsers.add_parser("create", help="Create a new model pre configuration")
 
     args = parser.parse_args()
+
     # if args is empty show help
     if not sys.argv[1:]:
         parser.print_help()
         return
-    args.func()
+    elif args.command == "import":
+        parse_import(args.path, args.id)
+    elif args.command == "create":
+        parse_create()
 
 
 def main():

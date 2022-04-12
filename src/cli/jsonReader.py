@@ -1,6 +1,7 @@
 from src.cli import exceptions
 import json
 
+
 METRICS_SONAR = [
     "files",
     "functions",
@@ -21,84 +22,48 @@ def file_reader(absolute_path):
 
     check_file_extension(absolute_path)
 
-    f = open(absolute_path, "r")
+    f = check_file_existance(absolute_path)
     json_file = json.load(f)
-
     check_sonar_format(json_file)
 
-    metrics = json_file["baseComponent"]["measures"]
+    components = json_file["components"]
 
-    check_metrics(metrics)
-    check_expected_metrics(metrics)
-
-    return metrics
+    return components
 
 
-def check_metrics(metrics):
+def check_file_existance(absolute_path):
 
-    for metric in metrics:
+    try:
+        file = open(absolute_path, "r")
+    except FileNotFoundError:
+        raise exceptions.FileNotFound("ERRO: arquivo não encontrado")
 
-        try:
-            float(metric["value"])
-        except ValueError:
-            raise exceptions.InvalidMetricException(
-                """
-                ERRO: A métrica "{}" é invalida.
-                Valor: "{}"
-            """.format(
-                    metric["metric"], metric["value"]
-                )
-            )
-
-
-def check_expected_metrics(metrics):
-
-    if len(metrics) != len(METRICS_SONAR):
-        raise exceptions.InvalidMetricException(
-            """
-            ERRO: Quantidade de métricas recebidas é diferente das métricas esperadas.
-            Quantidade de métricas recebidas: {}
-            Quantidade de métricas esperadas: {}
-        """.format(
-                len(metrics), len(METRICS_SONAR)
-            )
-        )
-
-    sorted_recieved_metrics = sorted(metrics, key=lambda d: d["metric"])
-    sorted_expected_metrics = sorted(METRICS_SONAR)
-
-    for recieved, expected in zip(sorted_recieved_metrics, sorted_expected_metrics):
-        if recieved["metric"] != expected:
-            raise exceptions.InvalidMetricException(
-                """
-                ERRO: As metricas informadas não coincidem com as métricas esperadas.
-                Métrica informada: {}
-                Métrica esperada: {}
-            """.format(
-                    recieved["metric"], expected
-                )
-            )
-
-    return True
+    return file
 
 
 def check_sonar_format(json_file):
     attributes = list(json_file.keys())
 
     if len(attributes) != 3:
-        raise exceptions.InvalidSonarFileAttributeException("ERRO: Quantidade de atributos invalida")
+        raise exceptions.InvalidSonarFileAttributeException(
+            "ERRO: Quantidade de atributos invalida"
+        )
     if (
         attributes[0] != "paging"
         or attributes[1] != "baseComponent"
         or attributes[2] != "components"
     ):
-        raise exceptions.InvalidSonarFileAttributeException("ERRO: Atributos incorretos")
+        raise exceptions.InvalidSonarFileAttributeException(
+            "ERRO: Atributos incorretos"
+        )
 
     base_component = json_file["baseComponent"]
     base_component_attributs = list(base_component.keys())
 
     if len(base_component_attributs) != 5:
-        raise exceptions.InvalidBaseComponentException("ERRO: Quantidade de atributos de baseComponent invalida")
+        raise exceptions.InvalidBaseComponentException(
+            "ERRO: Quantidade de atributos de baseComponent invalida"
+        )
     if (
         base_component_attributs[0] != "id"
         or base_component_attributs[1] != "key"
@@ -106,13 +71,28 @@ def check_sonar_format(json_file):
         or base_component_attributs[3] != "qualifier"
         or base_component_attributs[4] != "measures"
     ):
-        raise exceptions.InvalidBaseComponentException("ERRO: Atributos de baseComponent incorretos")
+        raise exceptions.InvalidBaseComponentException(
+            "ERRO: Atributos de baseComponent incorretos"
+        )
 
     return True
 
 
 def check_file_extension(fileName):
     if fileName[-4:] != "json":
-        raise exceptions.InvalidFileTypeException("ERRO: Apenas arquivos JSON são aceitos")
-
+        raise exceptions.InvalidFileTypeException(
+            "ERRO: Apenas arquivos JSON são aceitos"
+        )
     return True
+
+
+def validate_metrics_post(response_status, response):
+    if response_status == 201:
+        print("\nThe imported metrics were saved for the pre-configuration")
+    else:
+        print("\nThere was a ERROR while saving your Metrics:\n")
+
+        for key, value in response.items():
+            field_name = "General" if key == "__all__" else key
+
+            print(f"\t{field_name} => {value}")

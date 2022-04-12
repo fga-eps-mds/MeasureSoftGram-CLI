@@ -79,15 +79,12 @@ def test_sublevel_cli(mocker):
         },
     }
 
-    assert (
-        sublevel_cli(
-            "Modifiability",
-            "measures",
-            ["non_complex_file_density", "commented_file_density", "duplication"],
-            available_conf,
-        )
-        == ["non_complex_file_density", "commented_file_density"]
-    )
+    assert sublevel_cli(
+        "Modifiability",
+        "measures",
+        ["non_complex_file_density", "commented_file_density", "duplication"],
+        available_conf,
+    ) == ["non_complex_file_density", "commented_file_density"]
 
 
 class TestDefineCharacteristics:
