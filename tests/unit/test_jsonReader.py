@@ -1,6 +1,16 @@
-from measuresoftgram import jsonReader
+from src.cli import jsonReader, exceptions
 import pytest
 import json
+from io import StringIO
+
+
+def test_fileNotExist():
+    """
+    Testar se o arquivo existe na pasta
+    """
+    relativeFilePath = "tests/utils/sona.json"
+    with pytest.raises(exceptions.FileNotFound):
+        jsonReader.check_file_existance(relativeFilePath)
 
 
 def test_ValidFileExtension():
@@ -20,7 +30,7 @@ def test_notValidFileExtension():
 
     file_name = "sonar.txt"
 
-    with pytest.raises(TypeError):
+    with pytest.raises(exceptions.InvalidFileTypeException):
         jsonReader.check_file_extension(file_name)
 
 
@@ -29,8 +39,8 @@ def test_validSonarFormat():
     Testa se um objeto json fornecido tem a formatação do Sonar
     """
 
-    relativeFilePath = "tests/utils/sonar.json"
-    f = open(relativeFilePath, "r")
+    filePath = "tests/unit/data/sonar.json"
+    f = open(filePath, "r")
     jsonFile = json.load(f)
 
     assert jsonReader.check_sonar_format(jsonFile) is True
@@ -59,10 +69,10 @@ def test_ifThereIsLessThanExpectedSonarAttributes():
         },
     }
 
-    with pytest.raises(TypeError) as exec_info:
+    with pytest.raises(exceptions.InvalidSonarFileAttributeException) as exec_info:
         jsonReader.check_sonar_format(jsonFile) is True
 
-    assert exec_info.value.args[0] == "ERRO: Quantidade de atributos invalida."
+    assert exec_info.value.args[0] == "ERRO: Quantidade de atributos invalida"
 
 
 def test_ifThereIsMoreThanExpectedSonarAttributes():
@@ -102,10 +112,10 @@ def test_ifThereIsMoreThanExpectedSonarAttributes():
         "someOtherAttribute": {"hello": "world", "value": None},
     }
 
-    with pytest.raises(TypeError) as exec_info:
+    with pytest.raises(exceptions.InvalidSonarFileAttributeException) as exec_info:
         jsonReader.check_sonar_format(jsonFile)
 
-    assert exec_info.value.args[0] == "ERRO: Quantidade de atributos invalida."
+    assert exec_info.value.args[0] == "ERRO: Quantidade de atributos invalida"
 
 
 def test_expectedJsonMainAtributes():
@@ -144,73 +154,10 @@ def test_expectedJsonMainAtributes():
         ],
     }
 
-    with pytest.raises(TypeError) as exec_info:
+    with pytest.raises(exceptions.InvalidSonarFileAttributeException) as exec_info:
         jsonReader.check_sonar_format(jsonFile)
 
-    assert exec_info.value.args[0] == "ERROR, atributos incorretos"
-
-
-def test_validMetricValues():
-
-    jsonFile = {
-        "paging": {"pageIndex": 1, "pageSize": 100, "total": 5},
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {"metric": "duplicated_lines_density", "value": "x", "bestValue": True}
-            ],
-        },
-        "components": [
-            {
-                "id": "AX9GDsKlZuVL7NjXSAZ4",
-                "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/__init__.py",
-                "name": "__init__.py",
-                "qualifier": "UTS",
-                "path": "tests/__init__.py",
-                "language": "py",
-                "measures": [
-                    {"metric": "security_rating", "value": "1.0", "bestValue": True}
-                ],
-            }
-        ],
-    }
-
-    metrics = jsonFile["baseComponent"]["measures"]
-
-    with pytest.raises(TypeError) as exec_info:
-        jsonReader.check_metrics(metrics)
-
-    assert (
-        exec_info.value.args[0]
-        == """
-                ERRO: A métrica "duplicated_lines_density" é invalida.
-                Valor: "x"
-            """
-    )
-
-
-def test_fileReaderList():
-
-    metrics = jsonReader.file_reader(r"tests/utils/sonar.json")
-    expectedMetrics = [
-        {"metric": "duplicated_lines_density", "value": "0.0", "bestValue": True},
-        {"metric": "functions", "value": "2"},
-        {"metric": "test_execution_time", "value": "2"},
-        {"metric": "test_failures", "value": "0", "bestValue": True},
-        {"metric": "test_errors", "value": "0", "bestValue": True},
-        {"metric": "security_rating", "value": "1.0", "bestValue": True},
-        {"metric": "tests", "value": "2"},
-        {"metric": "files", "value": "1"},
-        {"metric": "complexity", "value": "2"},
-        {"metric": "ncloc", "value": "4"},
-        {"metric": "coverage", "value": "100.0", "bestValue": True},
-        {"metric": "comment_lines_density", "value": "20.0", "bestValue": False},
-    ]
-
-    assert metrics == expectedMetrics
+    assert exec_info.value.args[0] == "ERRO: Atributos incorretos"
 
 
 def test_validBaseComponentAttributs():
@@ -233,7 +180,7 @@ def test_validBaseComponentAttributs():
         }
     }
 
-    with pytest.raises(TypeError):
+    with pytest.raises(exceptions.InvalidSonarFileAttributeException):
         jsonReader.check_sonar_format(jsonFile) is True
 
 
@@ -257,116 +204,39 @@ def test_notValidBaseComponentAttributs():
         }
     }
 
-    with pytest.raises(TypeError):
+    with pytest.raises(exceptions.InvalidSonarFileAttributeException):
         jsonReader.check_sonar_format(jsonFile)
 
     assert "ERRO: Atributo de baseComponet invalido."
 
 
-def test_ifThereIsLessThanExpectedMetrics():
+def test_validate_metrics_post_success(mocker):
     """
-    Testar se tem menos metricas do que o esperado
+    Test for validate_metrics_post_post function
     """
-    jsonFile = {
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                }
-            ],
+
+    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        jsonReader.validate_metrics_post(response_status=201, response={})
+
+        assert (
+            "The imported metrics were saved for the pre-configuration"
+            in fake_out.getvalue()
+        )
+
+
+def test_validate_metrics_post_error(mocker):
+    """
+    Test for validate_metrics_post_post function
+    """
+
+    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        response = {
+            "pre_config_id": "There is no pre configurations with ID 624b45ebac582da342adffc3"
         }
-    }
 
-    with pytest.raises(TypeError):
-        jsonReader.check_expected_metrics(jsonFile)
+        jsonReader.validate_metrics_post(response_status=404, response=response)
 
-    assert "ERRO: Menos metricas do que o esperado."
-
-
-def test_ifThereIsMoreThanExpectedMetrics():
-    """
-    Testar se tem mais metricas do que o esperado
-    """
-    jsonFile = {
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {"metric": "functions", "value": "2"},
-                {"metric": "test_execution_time", "value": "2"},
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "tests", "value": "2"},
-                {"metric": "files", "value": "1"},
-                {"metric": "complexity", "value": "2"},
-                {"metric": "ncloc", "value": "4"},
-                {"metric": "coverage", "value": "100.0", "bestValue": True},
-                {
-                    "metric": "comment_lines_density",
-                    "value": "20.0",
-                    "bestValue": False,
-                },
-            ],
-        }
-    }
-
-    with pytest.raises(TypeError):
-        jsonReader.check_expected_metrics(jsonFile)
-
-    assert "ERRO: Mais metricas do que o esperado."
-
-
-def test_ifThereIsAUnexpectedMetrics():
-    """
-    Testar se tem mais metricas do que o esperado
-    """
-    jsonFile = {
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {"metric": "duplicated", "value": "0.0", "bestValue": True},
-                {"metric": "functions", "value": "2"},
-                {"metric": "test_execution_time", "value": "2"},
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "tests", "value": "2"},
-                {"metric": "files", "value": "1"},
-                {"metric": "complexity", "value": "2"},
-                {"metric": "ncloc", "value": "4"},
-                {"metric": "coverage", "value": "100.0", "bestValue": True},
-                {
-                    "metric": "comment_lines_density",
-                    "value": "20.0",
-                    "bestValue": False,
-                },
-            ],
-        },
-    }
-
-    with pytest.raises(TypeError):
-        jsonReader.check_expected_metrics(jsonFile)
-
-    assert "ERRO: Metrica diferente do que o esperado."
+        assert (
+            "pre_config_id => There is no pre configurations with ID 624b45ebac582da342adffc3"
+            in fake_out.getvalue()
+        )

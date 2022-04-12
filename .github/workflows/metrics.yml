@@ -36,3 +36,10 @@ jobs:
           git add .
           git commit -m "Adds metric file from ${{ github.event.repository.name }} ${{ github.ref_name }}"
           git push
+
+      - name: Faz upload das metricas como asset da release
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'analytics-raw-data/*'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ github.ref_name }}
