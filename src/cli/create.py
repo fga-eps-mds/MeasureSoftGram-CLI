@@ -2,7 +2,7 @@ import inquirer
 from inquirer.themes import GreenPassion
 
 VALID_WEIGHT_SUM_ADVISE = "the sum of the weights must be 100"
-INVALID_WEIGHT_SUM_ERROR = "Invalid weights," + VALID_WEIGHT_SUM_ADVISE
+INVALID_WEIGHT_SUM_ERROR = "Invalid weights, " + VALID_WEIGHT_SUM_ADVISE
 
 VALID_WEIGHT_ADVISE = "the weight must be between 0 and 100"
 INVALID_WEIGHT_VALUE = "Invalid weight, " + VALID_WEIGHT_ADVISE
@@ -23,7 +23,7 @@ def define_weight(data_key, data_name):
         defined_weight = inquirer.prompt(
             weights, theme=GreenPassion(), raise_keyboard_interrupt=True
         )
-        if validate_weight_value(int(defined_weight[data_key])):
+        if validate_weight_value(float(defined_weight[data_key])):
             break
         print(INVALID_WEIGHT_VALUE)
 
@@ -33,27 +33,20 @@ def define_weight(data_key, data_name):
 def validate_weight_sum(items):
     sum = 0
     for x in items:
-        for k, v in x.items():
-            sum += int(v)
+        for v in x.values():
+            sum += float(v)
 
-    if sum != 100:
-        return False
-    else:
-        return True
+    if 0 < round(100 - sum, 2) <= 0.01:
+        sum = 100
+    return sum == 100
 
 
 def validate_weight_value(weight):
-    if weight > 100 or weight <= 0:
-        return False
-    else:
-        return True
+    return 0 < weight <= 100
 
 
 def validate_check_box_input(selected):
-    if selected > 0:
-        return True
-    else:
-        return False
+    return selected > 0
 
 
 def validate_preconfig_post(status_code, response):
@@ -65,6 +58,11 @@ def validate_preconfig_post(status_code, response):
         print(
             f"\nThere was an ERROR while creating your Pre Configuration:  {response['error']}"
         )
+
+
+def print_error_message(message, is_input_valid):
+    if not is_input_valid:
+        print(message)
 
 
 def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
@@ -94,156 +92,156 @@ def define_characteristic(available_pre_config):
         characteristics_weights = [{user_characteristics[0]: 100}]
         return user_characteristics, characteristics_weights
 
-    reversed_characteristics = {v["name"]: k for k, v in characteristics.items()}
-    while True:
-        characteristics_answer = [
-            inquirer.Checkbox(
-                "characteristics",
-                message="Choose the characteristics",
-                choices=[x["name"] for _, x in characteristics.items()],
-            )
-        ]
-
-        user_characteristics = inquirer.prompt(
-            characteristics_answer, theme=GreenPassion(), raise_keyboard_interrupt=True
-        )
-
-        if validate_check_box_input(len(user_characteristics["characteristics"])):
-            break
-        else:
-            print(VALID_CHECKBOX_ERROR)
-
-    user_characteristics = [
-        reversed_characteristics[x] for x in user_characteristics["characteristics"]
-    ]
+    user_characteristics = select_characteristics(characteristics)
 
     if len(user_characteristics) == 1:
         print("\nOnly one characteristic selected, no need to define weights")
         characteristics_weights = [{user_characteristics[0]: 100}]
         return user_characteristics, characteristics_weights
 
-    characteristics_weights = []
-
-    while True:
-        for x in user_characteristics:
-            characteristics_weights.append(define_weight(x, characteristics[x]["name"]))
-
-        if validate_weight_sum(characteristics_weights):
-            break
-        else:
-            print(INVALID_WEIGHT_SUM_ERROR)
-            characteristics_weights = []
+    characteristics_weights = input_weights(characteristics, user_characteristics)
 
     return user_characteristics, characteristics_weights
 
 
-def define_measures(user_sub_characteristics, available_pre_config):
-    measures = available_pre_config["measures"]
+def select_characteristics(characteristics):
+    reversed_characteristics = {v["name"]: k for k, v in characteristics.items()}
 
-    if len(measures) == 1:
-        user_measures = list(measures.keys())
-        measures_weights = [{user_measures[0]: 100}]
-        return user_measures, measures_weights
+    def body_func():
+        characteristics_answer = [
+            inquirer.Checkbox(
+                "characteristics",
+                message="Choose the characteristics",
+                choices=[x["name"] for x in characteristics.values()],
+            )
+        ]
 
-    selected_measures = []
-    measures_weights = []
+        return inquirer.prompt(
+            characteristics_answer,
+            theme=GreenPassion(),
+            raise_keyboard_interrupt=True,
+        )
 
-    for x in user_sub_characteristics:
-        if len(available_pre_config["subcharacteristics"][x]["measures"]) == 1:
-            local_selected_measures = available_pre_config["subcharacteristics"][x][
-                "measures"
-            ]
-            local_measures_weights = [{local_selected_measures[0]: 100}]
-            print(
-                "\nOnly one measure (%s) available, no need to select or define weights\n"
-                % (available_pre_config["measures"][local_selected_measures[0]]["name"])
+    def validation_func(values):
+        return validate_check_box_input(len(values["characteristics"]))
+
+    user_characteristics = generic_valid_input(
+        validation_func,
+        body_func,
+        VALID_CHECKBOX_ERROR,
+        {"characteristics": []},
+    )
+
+    user_characteristics = [
+        reversed_characteristics[x] for x in user_characteristics["characteristics"]
+    ]
+
+    return user_characteristics
+
+
+def select_sublevels(available_pre_config, level_key, sublevel_key, current_level):
+    def body_func():
+        return sublevel_cli(
+            available_pre_config[level_key][current_level]["name"],
+            sublevel_key,
+            available_pre_config[level_key][current_level][sublevel_key],
+            available_pre_config[sublevel_key],
+        )
+
+    def validation_func(values):
+        return validate_check_box_input(len(values))
+
+    return generic_valid_input(
+        validation_func,
+        body_func,
+        VALID_CHECKBOX_ERROR,
+    )
+
+
+def generic_valid_input(
+    validation_function, body_function, error_message, initial_value=None
+):
+    values = [] if initial_value is None else initial_value
+    valid_input = validation_function(values)
+
+    while not valid_input:
+        values = body_function()
+
+        valid_input = validation_function(values)
+
+        print_error_message(error_message, valid_input)
+
+    return values
+
+
+def input_weights(sublevels_config, user_sublevels):
+    def body_func():
+        sublevels_weights = []
+        for x in user_sublevels:
+            sublevels_weights.append(define_weight(x, sublevels_config[x]["name"]))
+        return sublevels_weights
+
+    def validation_func(values):
+        return validate_weight_sum(values)
+
+    return generic_valid_input(
+        validation_func, body_func, INVALID_WEIGHT_SUM_ERROR, [{"empty": 0}]
+    )
+
+
+def has_one_sublevel(available_pre_config, level_key, sublevel_key, current_level):
+    return len(available_pre_config[level_key][current_level][sublevel_key]) == 1
+
+
+def print_no_need_define_weights_msg(sublevel_key, key_value):
+    print(
+        f"\nOnly one {sublevel_key} {key_value} selected, no need to define weights\n"
+    )
+
+
+def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
+    sublevels = available_pre_config[sublevel_key]
+
+    if len(sublevels) == 1:
+        user_sublevels = list(sublevels.keys())
+        sublevels_weights = [{user_sublevels[0]: 100}]
+
+        return user_sublevels, sublevels_weights
+
+    selected_sublevels = []
+    sublevels_weights = []
+
+    for x in user_levels:
+        if has_one_sublevel(available_pre_config, level_key, sublevel_key, x):
+            local_selected_sublevels = available_pre_config[level_key][x][sublevel_key]
+            local_selected_weights = [{local_selected_sublevels[0]: 100}]
+
+            print_no_need_define_weights_msg(
+                sublevel_key,
+                available_pre_config[sublevel_key][local_selected_sublevels[0]]["name"],
             )
 
         else:
-            while True:
-                local_selected_measures = sublevel_cli(
-                    available_pre_config["subcharacteristics"][x]["name"],
-                    "measures",
-                    available_pre_config["subcharacteristics"][x]["measures"],
-                    available_pre_config["measures"],
+            local_selected_sublevels = select_sublevels(
+                available_pre_config, level_key, sublevel_key, x
+            )
+
+            if len(local_selected_sublevels) == 1:
+                local_selected_weights = [{local_selected_sublevels[0]: 100}]
+
+                print_no_need_define_weights_msg(
+                    sublevel_key,
+                    available_pre_config[sublevel_key][local_selected_sublevels[0]][
+                        "name"
+                    ],
                 )
 
-                if validate_check_box_input(len(local_selected_measures)):
-                    break
-                else:
-                    print(VALID_CHECKBOX_ERROR)
-
-        local_measures_weights = []
-
-        while True:
-            for y in local_selected_measures:
-                local_measures_weights.append(
-                    define_weight(y, available_pre_config["measures"][y]["name"])
-                )
-
-            if validate_weight_sum(local_measures_weights):
-                break
             else:
-                print(INVALID_WEIGHT_SUM_ERROR)
-                local_measures_weights = []
-
-        selected_measures.extend(local_selected_measures)
-        measures_weights.extend(local_measures_weights)
-
-    return selected_measures, measures_weights
-
-
-def define_subcharacteristics(user_characteristics, available_pre_config):
-    sub_characteristic = available_pre_config["subcharacteristics"]
-
-    if len(sub_characteristic) == 1:
-        user_sub_characteristics = list(sub_characteristic.keys())
-        subcharacteristics_weights = [{user_sub_characteristics[0]: 100}]
-        return user_sub_characteristics, subcharacteristics_weights
-
-    selected_sub_characteristics = []
-    sub_characteristic_weights = []
-    for x in user_characteristics:
-        if len(available_pre_config["characteristics"][x]["subcharacteristics"]) == 1:
-            local_selected_sub_characteristics = available_pre_config[
-                "characteristics"
-            ][x]["subcharacteristics"]
-            local_sub_characteristics_weights = [
-                {local_selected_sub_characteristics[0]: 100}
-            ]
-            print(
-                "\nOnly one subcharacteristic (%s) available, no need to select or define weights\n"
-                % (
-                    available_pre_config["subcharacteristics"][
-                        local_selected_sub_characteristics[0]
-                    ]["name"]
+                local_selected_weights = input_weights(
+                    available_pre_config[sublevel_key], local_selected_sublevels
                 )
-            )
-        else:
-            local_selected_sub_characteristics = sublevel_cli(
-                available_pre_config["characteristics"][x]["name"],
-                "subcharacteristics",
-                available_pre_config["characteristics"][x]["subcharacteristics"],
-                available_pre_config["subcharacteristics"],
-            )
 
-            local_sub_characteristics_weights = []
+        selected_sublevels.extend(local_selected_sublevels)
+        sublevels_weights.extend(local_selected_weights)
 
-            while True:
-                for y in local_selected_sub_characteristics:
-                    local_sub_characteristics_weights.append(
-                        define_weight(
-                            y, available_pre_config["subcharacteristics"][y]["name"]
-                        )
-                    )
-
-                if validate_weight_sum(local_sub_characteristics_weights):
-                    break
-                else:
-                    print(INVALID_WEIGHT_SUM_ERROR)
-                    local_sub_characteristics_weights = []
-
-        selected_sub_characteristics.extend(local_selected_sub_characteristics)
-        sub_characteristic_weights.extend(local_sub_characteristics_weights)
-
-    return selected_sub_characteristics, sub_characteristic_weights
+    return selected_sublevels, sublevels_weights
