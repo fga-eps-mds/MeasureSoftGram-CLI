@@ -7,7 +7,6 @@ from src.cli.create import (
     define_subcharacteristics,
     define_measures,
     sublevel_cli,
-    validate_pre_config_metrics_post
 )
 
 
@@ -54,23 +53,6 @@ def test_define_weight(mocker):
     assert define_weight("usability", "Usability") == {"usability": "50"}
 
 
-def test_validate_pre_config_metrics_post():
-    """
-    Test for validate_pre_config_metrics_post function
-    """
-    assert validate_pre_config_metrics_post(
-        response_status=200) == print("Your file and ID have been successfully submitted for review")
-
-
-def test_validate_pre_config_metrics_post_error():
-    """
-    Test for validate_pre_config_metrics_post function
-    """
-
-    assert validate_pre_config_metrics_post(
-        response_status=400) == print("There was a ERROR while saving your Metrics")
-
-
 def test_sublevel_cli(mocker):
     """
     Test for sublevel_cli function
@@ -97,15 +79,12 @@ def test_sublevel_cli(mocker):
         },
     }
 
-    assert (
-        sublevel_cli(
-            "Modifiability",
-            "measures",
-            ["non_complex_file_density", "commented_file_density", "duplication"],
-            available_conf,
-        )
-        == ["non_complex_file_density", "commented_file_density"]
-    )
+    assert sublevel_cli(
+        "Modifiability",
+        "measures",
+        ["non_complex_file_density", "commented_file_density", "duplication"],
+        available_conf,
+    ) == ["non_complex_file_density", "commented_file_density"]
 
 
 class TestDefineCharacteristics:
