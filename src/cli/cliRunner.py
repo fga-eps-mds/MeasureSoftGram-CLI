@@ -1,12 +1,16 @@
 import argparse
-import requests
+import json
 import sys
-from src.cli.jsonReader import file_reader
+import requests
+import signal
+from pathlib import Path
+from random import randrange
+from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import (
     define_characteristic,
     define_subcharacteristics,
     define_measures,
-    validate_pre_config_metrics_post,
+    validate_preconfig_post,
 )
 
 BASE_URL = "http://localhost:5000/"
@@ -20,15 +24,11 @@ def sigint_handler(*_):
 def parse_import(file_path, id):
     components = file_reader(r"{}".format(file_path))
 
-    payload = {
-        "pre_config_id": id,
-        "components": components
-    }
+    payload = {"pre_config_id": id, "components": components}
 
-    response_pre_config_metrics = requests.post(
-        BASE_URL + "pre-config-metrics", data=payload
-    )
-    validate_pre_config_metrics_post(response_pre_config_metrics.status_code)
+    response = requests.post(BASE_URL + "import-metrics", json=payload)
+
+    validate_metrics_post(response.status_code, json.loads(response.text))
 
 
 def parse_create():
@@ -50,7 +50,23 @@ def parse_create():
         user_sub_characteristic, available_pre_config
     )
 
-    pass
+    pre_config_name = f"msg_pre_config_{randrange(5)}"
+
+    data = {
+        "name": pre_config_name,
+        "characteristics": user_characteristics,
+        "subcharacteristics": user_sub_characteristic,
+        "measures": user_measures,
+        "characteristics_weights": caracteristics_weights,
+        "subcharacteristics_weights": sub_characteristic_weights,
+        "measures_weights": measures_weights,
+    }
+
+    response = requests.post(BASE_URL + "/pre-configs", json=data)
+
+    saved_preconfig = json.loads(response.text)
+
+    validate_preconfig_post(response.status_code, saved_preconfig)
 
 
 def setup():

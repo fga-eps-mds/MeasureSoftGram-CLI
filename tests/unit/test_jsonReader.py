@@ -1,7 +1,7 @@
 from src.cli import jsonReader, exceptions
 import pytest
 import json
-from measuresoftgram.exceptions import FileNotFound, NullMetricValue
+from io import StringIO
 
 
 def test_fileNotExist():
@@ -210,118 +210,33 @@ def test_notValidBaseComponentAttributs():
     assert "ERRO: Atributo de baseComponet invalido."
 
 
-def test_ifThereIsLessThanExpectedMetrics():
+def test_validate_metrics_post_success(mocker):
     """
-    Testar se tem menos metricas do que o esperado
+    Test for validate_metrics_post_post function
     """
-    jsonFile = {
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                }
-            ],
+
+    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        jsonReader.validate_metrics_post(response_status=201, response={})
+
+        assert (
+            "The imported metrics were saved for the pre-configuration"
+            in fake_out.getvalue()
+        )
+
+
+def test_validate_metrics_post_error(mocker):
+    """
+    Test for validate_metrics_post_post function
+    """
+
+    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        response = {
+            "pre_config_id": "There is no pre configurations with ID 624b45ebac582da342adffc3"
         }
-    }
 
-    with pytest.raises(exceptions.InvalidMetricException):
-        jsonReader.check_expected_metrics(jsonFile)
+        jsonReader.validate_metrics_post(response_status=404, response=response)
 
-    assert "ERRO: Menos metricas do que o esperado."
-
-
-def test_ifThereIsMoreThanExpectedMetrics():
-    """
-    Testar se tem mais metricas do que o esperado
-    """
-    jsonFile = {
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "keys": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {"metric": "functions", "value": "2"},
-                {"metric": "test_execution_time", "value": "2"},
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "tests", "value": "2"},
-                {"metric": "files", "value": "1"},
-                {"metric": "complexity", "value": "2"},
-                {"metric": "ncloc", "value": "4"},
-                {"metric": "coverage", "value": "100.0", "bestValue": True},
-                {
-                    "metric": "comment_lines_density",
-                    "value": "20.0",
-                    "bestValue": False,
-                },
-            ],
-        }
-    }
-
-    with pytest.raises(exceptions.InvalidMetricException):
-        jsonReader.check_expected_metrics(jsonFile)
-
-    assert "ERRO: Mais metricas do que o esperado."
-
-
-def test_ifThereIsAUnexpectedMetrics():
-    """
-    Testar se tem mais metricas do que o esperado
-    """
-    jsonFile = {
-        "baseComponent": {
-            "id": "AX9FgyLHNIj_v_uQK41e",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
-            "name": "2021-2-MeasureSoftGram-CLI",
-            "qualifier": "TRK",
-            "measures": [
-                {"metric": "duplicated", "value": "0.0", "bestValue": True},
-                {"metric": "functions", "value": "2"},
-                {"metric": "test_execution_time", "value": "2"},
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "tests", "value": "2"},
-                {"metric": "files", "value": "1"},
-                {"metric": "complexity", "value": "2"},
-                {"metric": "ncloc", "value": "4"},
-                {"metric": "coverage", "value": "100.0", "bestValue": True},
-                {
-                    "metric": "comment_lines_density",
-                    "value": "20.0",
-                    "bestValue": False,
-                },
-            ],
-        },
-    }
-
-    with pytest.raises(exceptions.InvalidMetricException):
-        jsonReader.check_expected_metrics(jsonFile)
-
-    assert "ERRO: Metrica diferente do que o esperado."
-
-
-def test_SucessReadMetricsMessage():
-    metrics_validation_steps = 3
-
-    jsonReader.sucess_read_metrics_message(metrics_validation_steps)
-
-    assert "As métricas foram lidas com sucesso"
+        assert (
+            "pre_config_id => There is no pre configurations with ID 624b45ebac582da342adffc3"
+            in fake_out.getvalue()
+        )

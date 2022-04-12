@@ -1,7 +1,6 @@
 from src.cli import exceptions
 import json
-from .exceptions import FileNotFound, NullMetricValue
-import requests
+
 
 METRICS_SONAR = [
     "files",
@@ -29,11 +28,7 @@ def file_reader(absolute_path):
 
     components = json_file["components"]
 
-    print("As métricas foram lidas com sucesso")
-
-    print("As métricas foram lidas com sucesso")
-
-    return metrics
+    return components
 
 
 def check_file_existance(absolute_path):
@@ -41,67 +36,9 @@ def check_file_existance(absolute_path):
     try:
         file = open(absolute_path, "r")
     except FileNotFoundError:
-        raise FileNotFound("ERRO: arquivo não encontrado")
+        raise exceptions.FileNotFound("ERRO: arquivo não encontrado")
 
     return file
-
-
-def check_metrics(metrics):
-
-    for metric in metrics:
-
-        if metric["value"] is not None:
-            try:
-                float(metric["value"])
-            except ValueError:
-                raise TypeError(
-                    """
-                    ERRO: A métrica "{}" é invalida.
-                    Valor: "{}"
-                """.format(
-                        metric["metric"], metric["value"]
-                    )
-                )
-        else:
-            raise NullMetricValue(
-                """
-                    ERRO: A métrica "{}" esta Nula
-                """.format(
-                    metric["metric"]
-                )
-            )
-    metrics_validation_steps += 1
-
-
-def check_expected_metrics(metrics):
-
-    if len(metrics) != len(METRICS_SONAR):
-        raise exceptions.InvalidMetricException(
-            """
-            ERRO: Quantidade de métricas recebidas é diferente das métricas esperadas.
-            Quantidade de métricas recebidas: {}
-            Quantidade de métricas esperadas: {}
-        """.format(
-                len(metrics), len(METRICS_SONAR)
-            )
-        )
-
-    sorted_recieved_metrics = sorted(metrics, key=lambda d: d["metric"])
-    sorted_expected_metrics = sorted(METRICS_SONAR)
-
-    for recieved, expected in zip(sorted_recieved_metrics, sorted_expected_metrics):
-        if recieved["metric"] != expected:
-            raise exceptions.InvalidMetricException(
-                """
-                ERRO: As metricas informadas não coincidem com as métricas esperadas.
-                Métrica informada: {}
-                Métrica esperada: {}
-            """.format(
-                    recieved["metric"], expected
-                )
-            )
-
-    return True
 
 
 def check_sonar_format(json_file):
@@ -149,13 +86,13 @@ def check_file_extension(fileName):
     return True
 
 
-def sucess_read_metrics_message(metrics_validation_steps):
-    if metrics_validation_steps == 3:
-        print("As métricas foram lidas com sucesso")
-    return True
+def validate_metrics_post(response_status, response):
+    if response_status == 201:
+        print("\nThe imported metrics were saved for the pre-configuration")
+    else:
+        print("\nThere was a ERROR while saving your Metrics:\n")
 
+        for key, value in response.items():
+            field_name = "General" if key == "__all__" else key
 
-def sucess_read_metrics_message(metrics_validation_steps):
-    if metrics_validation_steps == 3:
-        print("As métricas foram lidas com sucesso")
-    return True
+            print(f"\t{field_name} => {value}")
