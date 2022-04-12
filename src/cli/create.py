@@ -20,7 +20,9 @@ def define_weight(data_key, data_name):
                 + f" ({VALID_WEIGHT_SUM_ADVISE})",
             )
         ]
-        defined_weight = inquirer.prompt(weights, theme=GreenPassion())
+        defined_weight = inquirer.prompt(
+            weights, theme=GreenPassion(), raise_keyboard_interrupt=True
+        )
         if validate_weight_value(int(defined_weight[data_key])):
             break
         print(INVALID_WEIGHT_VALUE)
@@ -54,6 +56,17 @@ def validate_check_box_input(selected):
         return False
 
 
+def validate_preconfig_post(status_code, response):
+    if status_code == 201:
+        print(
+            f"\nYour Pre Configuration was created with sucess!\nPre Configuration ID: {response['_id']}"
+        )
+    else:
+        print(
+            f"\nThere was an ERROR while creating your Pre Configuration:  {response['error']}"
+        )
+
+
 def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
     reverse_sublevel = {v["name"]: k for k, v in available_pre_config.items()}
 
@@ -64,7 +77,9 @@ def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
             choices=[available_pre_config[x]["name"] for x in sublevels],
         )
     ]
-    user_sublevels = inquirer.prompt(sublevels_answer, theme=GreenPassion())
+    user_sublevels = inquirer.prompt(
+        sublevels_answer, theme=GreenPassion(), raise_keyboard_interrupt=True
+    )
 
     user_sublevels = [reverse_sublevel[x] for x in user_sublevels["sublevels"]]
 
@@ -90,7 +105,7 @@ def define_characteristic(available_pre_config):
         ]
 
         user_characteristics = inquirer.prompt(
-            characteristics_answer, theme=GreenPassion()
+            characteristics_answer, theme=GreenPassion(), raise_keyboard_interrupt=True
         )
 
         if validate_check_box_input(len(user_characteristics["characteristics"])):
