@@ -1,5 +1,6 @@
 from src.cli import exceptions
 import json
+import math
 
 
 METRICS_SONAR = [
@@ -34,6 +35,8 @@ def file_reader(absolute_path):
     json_data = open_json_file(absolute_path)
 
     check_sonar_format(json_data)
+
+    check_metrics_values(json_data)
 
     return json_data["components"]
 
@@ -91,6 +94,24 @@ def check_sonar_format(json_data):
 def check_file_extension(fileName):
     if fileName[-4:] != "json":
         raise exceptions.InvalidMetricsJsonFile("Only JSON files are accepted")
+
+
+def check_metrics_values(json_data):
+    try:
+        for component in json_data["components"]:
+            for measure in component["measures"]:
+                value = measure["value"]
+
+                if value is None or math.isnan(float(value)):
+                    raise exceptions.InvalidMetricException(
+                        'Invalid metric value in "{}" component for the "{}" metric'.format(
+                            component["key"], measure["metric"]
+                        )
+                    )
+    except KeyError:
+        raise exceptions.InvalidMetricsJsonFile(
+            "Failed to validate Sonar JSON metrics. Please check if the file is a valid Sonar JSON"
+        )
 
 
 def validate_metrics_post(response_status, response):
