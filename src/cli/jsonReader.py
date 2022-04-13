@@ -17,73 +17,80 @@ METRICS_SONAR = [
     "security_rating",
 ]
 
+REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
+
+REQUIRED_SONAR_BASE_COMPONENT_KEYS = [
+    "id",
+    "key",
+    "name",
+    "qualifier",
+    "measures",
+]
+
 
 def file_reader(absolute_path):
-
     check_file_extension(absolute_path)
 
-    f = check_file_existance(absolute_path)
-    json_file = json.load(f)
-    check_sonar_format(json_file)
+    json_data = open_json_file(absolute_path)
 
-    components = json_file["components"]
+    check_sonar_format(json_data)
 
-    return components
+    return json_data["components"]
 
 
-def check_file_existance(absolute_path):
-
+def open_json_file(absolute_path):
     try:
-        file = open(absolute_path, "r")
+        with open(absolute_path, "r") as file:
+            return json.load(file)
     except FileNotFoundError:
-        raise exceptions.FileNotFound("ERRO: arquivo não encontrado")
-
-    return file
-
-
-def check_sonar_format(json_file):
-    attributes = list(json_file.keys())
-
-    if len(attributes) != 3:
-        raise exceptions.InvalidSonarFileAttributeException(
-            "ERRO: Quantidade de atributos invalida"
-        )
-    if (
-        attributes[0] != "paging"
-        or attributes[1] != "baseComponent"
-        or attributes[2] != "components"
-    ):
-        raise exceptions.InvalidSonarFileAttributeException(
-            "ERRO: Atributos incorretos"
+        raise exceptions.FileNotFound("The file was not found")
+    except OSError as error:
+        raise exceptions.UnableToOpenFile(f"Failed to open the file. Error: {error}")
+    except json.JSONDecodeError as error:
+        raise exceptions.InvalidMetricsJsonFile(
+            f"Failed to decode the JSON file. Error: {error}"
         )
 
-    base_component = json_file["baseComponent"]
-    base_component_attributs = list(base_component.keys())
 
-    if len(base_component_attributs) != 5:
-        raise exceptions.InvalidBaseComponentException(
-            "ERRO: Quantidade de atributos de baseComponent invalida"
-        )
-    if (
-        base_component_attributs[0] != "id"
-        or base_component_attributs[1] != "key"
-        or base_component_attributs[2] != "name"
-        or base_component_attributs[3] != "qualifier"
-        or base_component_attributs[4] != "measures"
-    ):
-        raise exceptions.InvalidBaseComponentException(
-            "ERRO: Atributos de baseComponent incorretos"
+def get_missing_keys_str(attrs, required_attrs):
+    missing_keys = []
+
+    for req_key in required_attrs:
+        if req_key not in attrs:
+            missing_keys.append(req_key)
+
+    return ", ".join(missing_keys)
+
+
+def check_sonar_format(json_data):
+    attributes = list(json_data.keys())
+    missing_keys = get_missing_keys_str(attributes, REQUIRED_SONAR_JSON_KEYS)
+
+    if len(missing_keys) > 0:
+        raise exceptions.InvalidMetricsJsonFile(
+            f"Invalid Sonar JSON keys. Missing keys are: {missing_keys}"
         )
 
-    return True
+    base_component = json_data["baseComponent"]
+    base_component_attrs = list(base_component.keys())
+    missing_keys = get_missing_keys_str(
+        base_component_attrs, REQUIRED_SONAR_BASE_COMPONENT_KEYS
+    )
+
+    if len(missing_keys) > 0:
+        raise exceptions.InvalidMetricsJsonFile(
+            f"Invalid Sonar baseComponent keys. Missing keys are: {missing_keys}"
+        )
+
+    if len(json_data["components"]) == 0:
+        raise exceptions.InvalidMetricsJsonFile(
+            "Invalid Sonar JSON components value. It must have at least one component"
+        )
 
 
 def check_file_extension(fileName):
     if fileName[-4:] != "json":
-        raise exceptions.InvalidFileTypeException(
-            "ERRO: Apenas arquivos JSON são aceitos"
-        )
-    return True
+        raise exceptions.InvalidMetricsJsonFile("Only JSON files are accepted")
 
 
 def validate_metrics_post(response_status, response):
