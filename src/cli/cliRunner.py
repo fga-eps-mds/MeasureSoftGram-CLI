@@ -8,8 +8,7 @@ from random import randrange
 from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import (
     define_characteristic,
-    define_subcharacteristics,
-    define_measures,
+    define_sublevel,
     validate_preconfig_post,
 )
 
@@ -42,12 +41,18 @@ def parse_create():
         available_pre_config
     )
 
-    [user_sub_characteristic, sub_characteristic_weights] = define_subcharacteristics(
-        user_characteristics, available_pre_config
+    [user_sub_characteristic, sub_characteristic_weights] = define_sublevel(
+        user_characteristics,
+        available_pre_config,
+        "characteristics",
+        "subcharacteristics",
     )
 
-    [user_measures, measures_weights] = define_measures(
-        user_sub_characteristic, available_pre_config
+    [user_measures, measures_weights] = define_sublevel(
+        user_sub_characteristic,
+        available_pre_config,
+        "subcharacteristics",
+        "measures",
     )
 
     pre_config_name = f"msg_pre_config_{randrange(5)}"
