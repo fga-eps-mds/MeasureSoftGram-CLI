@@ -10,6 +10,17 @@ INVALID_WEIGHT_VALUE = "Invalid weight, " + VALID_WEIGHT_ADVISE
 VALID_CHECKBOX_ERROR = "Select at least one Check-Box"
 
 
+def sum_weight_file(measures: list):
+
+    sum_weights = 0
+
+    for item in measures:
+        for v in item.values():
+            sum_weights += float(v)
+
+    return sum_weights
+
+
 def define_weight(data_key, data_name):
     while True:
         weights = [
@@ -31,10 +42,7 @@ def define_weight(data_key, data_name):
 
 
 def validate_weight_sum(items):
-    sum = 0
-    for x in items:
-        for v in x.values():
-            sum += float(v)
+    sum = sum_weight_file(items)
 
     if 0 < round(100 - sum, 2) <= 0.01:
         sum = 100
