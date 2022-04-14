@@ -3,21 +3,6 @@ import json
 import math
 
 
-METRICS_SONAR = [
-    "files",
-    "functions",
-    "complexity",
-    "comment_lines_density",
-    "duplicated_lines_density",
-    "coverage",
-    "ncloc",
-    "tests",
-    "test_errors",
-    "test_failures",
-    "test_execution_time",
-    "security_rating",
-]
-
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
 
 REQUIRED_SONAR_BASE_COMPONENT_KEYS = [
@@ -91,9 +76,15 @@ def check_sonar_format(json_data):
         )
 
 
-def check_file_extension(fileName):
-    if fileName[-4:] != "json":
+def check_file_extension(file_name):
+    if file_name.split(".")[-1] != "json":
         raise exceptions.InvalidMetricsJsonFile("Only JSON files are accepted")
+
+
+def raise_invalid_metric(key, metric):
+    raise exceptions.InvalidMetricException(
+        'Invalid metric value in "{}" component for the "{}" metric'.format(key, metric)
+    )
 
 
 def check_metrics_values(json_data):
@@ -102,12 +93,11 @@ def check_metrics_values(json_data):
             for measure in component["measures"]:
                 value = measure["value"]
 
-                if value is None or math.isnan(float(value)):
-                    raise exceptions.InvalidMetricException(
-                        'Invalid metric value in "{}" component for the "{}" metric'.format(
-                            component["key"], measure["metric"]
-                        )
-                    )
+                try:
+                    if value is None or math.isnan(float(value)):
+                        raise_invalid_metric(component["key"], measure["metric"])
+                except (ValueError, TypeError):
+                    raise_invalid_metric(component["key"], measure["metric"])
     except KeyError:
         raise exceptions.InvalidMetricsJsonFile(
             "Failed to validate Sonar JSON metrics. Please check if the file is a valid Sonar JSON"
@@ -115,10 +105,13 @@ def check_metrics_values(json_data):
 
 
 def validate_metrics_post(response_status, response):
-    if response_status == 201:
+    if 200 <= response_status <= 299:
         print("\nThe imported metrics were saved for the pre-configuration")
     else:
-        print("\nThere was a ERROR while saving your Metrics:\n")
+        print("\nThere was an ERROR while saving your Metrics\n")
+
+        if len(response) == 0:
+            return
 
         for key, value in response.items():
             field_name = "General" if key == "__all__" else key
