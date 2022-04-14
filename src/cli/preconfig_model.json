@@ -1,0 +1,73 @@
+{"preconfig": {
+        "characteristics": {
+            "reliability": {
+                "name": "Reliability",
+                "subcharacteristics": ["testing_status"]
+            },
+            "maintainability": {
+                "name": "Maintainability",
+                "subcharacteristics": ["modifiability"]
+            }
+        },
+        "subcharacteristics": {
+            "testing_status": {
+                "name": "Testing Status",
+                "measures": ["passed_tests", "test_builds", "test_coverage"],
+                "characteristics": ["reliability"]
+            },
+            "modifiability": {
+                "name": "Modifiability",
+                "measures": [
+                    "non_complex_file_density",
+                    "commented_file_density",
+                    "duplication_absense"
+                ],
+                "characteristics": ["maintainability"]
+            }
+        },
+        "measures": {
+            "passed_tests": {
+                "weight":"",
+                "name": "Passed Tests",
+                "subcharacteristics": ["testing_status"],
+                "characteristics": ["reliability"],
+                "metrics": ["test_success_density"]
+            },
+            "test_builds": {
+                "weight":"",
+                "name": "Test Builds",
+                "subcharacteristics": ["testing_status"],
+                "characteristics": ["reliability"],
+                "metrics": ["tests", "test_execution_time"]
+            },
+            "test_coverage": {
+                "weight":"",
+                "name": "Test Coverage",
+                "subcharacteristics": ["testing_status"],
+                "characteristics": ["reliability"],
+                "metrics": ["coverage"]
+            },
+            "non_complex_file_density": {
+                "weight":"",
+                "name": "Non complex file density",
+                "subcharacteristics": ["modifiability"],
+                "characteristics": ["maintainability"],
+                "metrics": ["complexity", "functions"]
+            },
+            "commented_file_density": {
+                "weight":"",
+                "name": "Commented file density",
+                "subcharacteristics": ["modifiability"],
+                "characteristics": ["maintainability"],
+                "metrics": ["comment_lines_density"]
+            },
+            "duplication_absense": {
+                "weight":"",
+                "name": "Duplication abscense",
+                "subcharacteristics": ["modifiability"],
+                "characteristics": ["maintainability"],
+                "metrics": ["duplicated_lines_density"]
+            }
+        }
+    }
+}
