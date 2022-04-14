@@ -2,7 +2,6 @@ from src.cli import exceptions
 import json
 
 from src.cli.create import (validate_weight_sum,
-                            sum_weight_file,
                             validate_weight_value)
 
 METRICS_SONAR = [
