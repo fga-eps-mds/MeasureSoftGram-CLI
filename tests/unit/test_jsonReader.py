@@ -240,3 +240,61 @@ def test_validate_metrics_post_error(mocker):
             "pre_config_id => There is no pre configurations with ID 624b45ebac582da342adffc3"
             in fake_out.getvalue()
         )
+
+
+def test_invalid_file_characteristic():
+    file_characteristics = {
+        "reliability": {
+            "name": "Reliability",
+            "subcharacteristics": ["testing_status"]
+        },
+        "maintainability": {
+            "name": "Maintainability",
+            "subcharacteristics": []
+        }
+    }
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        jsonReader.validate_file_characteristics(file_characteristics)
+
+    file_characteristics = {
+        "maintainability": {
+            "name": "Maintainability"
+        }
+    }
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        jsonReader.validate_file_characteristics(file_characteristics)
+
+
+def test_invalid_file_subcharacteristic():
+
+    file_subcharacteristics = {
+        "testing_status": {
+            "name": "Testing Status",
+            "measures": ["passed_tests", "test_builds", "test_coverage"],
+            "characteristics": ["reliability"]
+        },
+        "modifiability": {
+            "name": "Modifiability",
+            "measures": [],
+            "characteristics": ["maintainability"]
+        }
+    }
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.validate_file_subcharacteristics(file_subcharacteristics)
+
+    file_subcharacteristics = {
+        "testing_status": {
+            "name": "Testing Status",
+            "measures": ["passed_tests", "test_builds", "test_coverage"],
+            "characteristics": ["reliability"]
+        },
+        "modifiability": {
+            "name": "Modifiability",
+            "characteristics": ["maintainability"]
+        }
+    }
+
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.validate_file_subcharacteristics(file_subcharacteristics)
