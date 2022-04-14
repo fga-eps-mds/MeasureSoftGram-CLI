@@ -95,6 +95,4 @@ Do you want to contribute with our project? Access our [contribution guide](http
 Our services are available on [Docker Hub](https://hub.docker.com/):
 - [Core](https://hub.docker.com/r/measuresoftgram/core)
 - [Service](https://hub.docker.com/r/measuresoftgram/service)
-
-# More Informations
-For more informations about the MeasureSoftGram access this website: [Wiki](https://fga-eps-mds.github.io/2021-2-MeasureSoftGram-Doc/).
+- [Wiki](https://fga-eps-mds.github.io/2021-2-MeasureSoftGram-Doc/)
