@@ -1,6 +1,9 @@
 from src.cli import exceptions
 import json
 
+from src.cli.create import (validate_weight_sum,
+                            sum_weight_file,
+                            validate_weight_value)
 
 METRICS_SONAR = [
     "files",
@@ -16,6 +19,29 @@ METRICS_SONAR = [
     "test_execution_time",
     "security_rating",
 ]
+
+
+def preconfig_file_reader(absolute_path):
+
+    check_file_extension(absolute_path)
+
+    j = check_file_existance(absolute_path)
+    preconfig_json_file = json.load(j)
+
+    preconfig = preconfig_json_file["preconfig"]
+
+    preconfig_file_measures = preconfig["preconfig"]["measures"]
+
+    for measure in preconfig_file_measures.items():
+        if not validate_weight_value(float(measure[1]["weight"])):
+            raise exceptions.InvalidWeightValue(
+                f"ERROR: {measure[0]} measure has weight outside valid parameters (must be between 0 and 100).")
+            pass
+
+    sum_weight_file(preconfig_file_measures.items())
+    validate_weight_sum()
+
+    return preconfig
 
 
 def file_reader(absolute_path):
