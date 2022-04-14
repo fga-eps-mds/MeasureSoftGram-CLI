@@ -63,7 +63,7 @@ pip install -r requirements.txt
 ```
 
 
-We are using tox for the tests, sp it is good to install the tox:
+We are using tox for the tests, so it is good to install the tox:
 
 ```
 pip install tox
