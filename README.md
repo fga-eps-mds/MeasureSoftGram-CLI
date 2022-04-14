@@ -10,9 +10,6 @@ Download the scripts of start and stop:
 curl https://raw.githubusercontent.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc/main/installation/start.sh -o start.sh && curl https://raw.githubusercontent.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc/main/installation/stop.sh -o stop.sh
 ```
 
-# Contribute
-
-Do you want to contribute with our project? Access our [contribution guide](https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-CLI/blob/develop/CONTRIBUTING.MD) where we explain how you do it. 
 # Scripts
 
 ## Start
@@ -58,6 +55,10 @@ AGPL-3.0 License
 # Documentation
 
 The documentation of this project can be accessed at this website: [Documentation](https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc).
+
+# Contribute
+
+Do you want to contribute with our project? Access our [contribution guide](https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-CLI/blob/develop/CONTRIBUTING.MD) where we explain how you do it. 
 
 # Another informations
 Our services are available on [Docker Hub](https://hub.docker.com/):
