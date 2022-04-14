@@ -50,3 +50,15 @@ class InvalidWeightValue(MeasureSoftGramCliException):
     """Raised when a invalid weight value is provided to the MeasureSoftGram"""
 
     pass
+
+
+class InvalidCharacteristic(MeasureSoftGramCLIException):
+    """Raised when a invalid characteristic is provided to the MeasureSoftGram"""
+
+    pass
+
+
+class InvalidSubcharacteristic(MeasureSoftGramCLIException):
+    """Raised when a invalid subcharacteristic is provided to the MeasureSoftGram"""
+
+    pass
