@@ -42,11 +42,11 @@ def define_weight(data_key, data_name):
 
 
 def validate_weight_sum(items):
-    sum = sum_weight_file(items)
+    sum_of_weights = sum_weight_file(items)
 
-    if 0 < round(100 - sum, 2) <= 0.01:
-        sum = 100
-    return sum == 100
+    if 0 < round(100 - sum_of_weights, 2) <= 0.01:
+        sum_of_weights = 100
+    return sum_of_weights == 100
 
 
 def validate_weight_value(weight):

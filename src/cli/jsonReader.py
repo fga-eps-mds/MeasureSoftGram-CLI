@@ -37,8 +37,7 @@ def preconfig_file_reader(absolute_path):
     validate_file_subcharacteristics(preconfig_file_subcharacteristics)
     validate_file_measures(preconfig_file_measures)
 
-    sum_weight_file(preconfig_file_measures.items())
-    validate_weight_sum()
+    validate_weight_sum(preconfig_file_measures.items())
 
     return preconfig
 
@@ -50,7 +49,7 @@ def validate_file_characteristics(preconfig_file_characteristics):
             raise exceptions.InvalidCharacteristic(
                 "ERROR: {characteristic[0]} (does not have subcharacteristics field in preconfig file)")
 
-        if not len(characteristic[1]["subcharacteristics"]) > 0:
+        if len(characteristic[1]["subcharacteristics"]) <= 0:
             raise exceptions.InvalidCharacteristic(
                 "ERROR: {characteristic[0]} (must have at least one sub-characteristic)")
 
@@ -61,7 +60,7 @@ def validate_file_subcharacteristics(preconfig_file_subcharacteristics):
             raise exceptions.InvalidSubcharacteristic(
                 "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
 
-        if not len(subcharacteristic[1]["measures"]) > 0:
+        if len(subcharacteristic[1]["measures"]) <= 0:
             raise exceptions.InvalidSubcharacteristic(
                 "ERROR: {characteristic[0]} (must have at least one measure)")
 
