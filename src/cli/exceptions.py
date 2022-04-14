@@ -44,3 +44,9 @@ class NullMetricValue(MeasureSoftGramCliException):
     """Raised when a NULL metric value is provided to the MeasureSoftGram"""
 
     pass
+
+
+class InvalidWeightValue(MeasureSoftGramCliException):
+    """Raised when a invalid weight value is provided to the MeasureSoftGram"""
+
+    pass
