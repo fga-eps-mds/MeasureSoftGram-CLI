@@ -15,6 +15,7 @@ from src.cli.create import (
     define_characteristic,
     has_one_sublevel,
     define_sublevel,
+    sum_weight_file,
 )
 
 
@@ -71,6 +72,13 @@ def test_validate_weight_sum():
         )
         is False
     )
+
+
+def test_sum_weight_file():
+    assert (sum_weight_file([
+        {"Passed Tests": "50"},
+        {"Test Builds": "50"}
+    ])) == 100
 
 
 def test_validate_check_box_input():
