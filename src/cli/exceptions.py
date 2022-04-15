@@ -10,37 +10,19 @@ class InvalidMetricException(MeasureSoftGramCLIException):
     pass
 
 
-class InvalidSonarFileAttributeException(MeasureSoftGramCLIException):
-    """Raised when an sonar file attribute is incorrect"""
+class InvalidMetricsJsonFile(MeasureSoftGramCLIException):
+    """Raised when the metrics file is invalid"""
 
     pass
 
 
-class InvalidBaseComponentException(MeasureSoftGramCLIException):
-    """Raised when the field baseComponent from sonar metrics file is incorrect"""
+class FileNotFound(MeasureSoftGramCLIException):
+    """Raised when a file is not found"""
 
     pass
 
 
-class InvalidFileTypeException(MeasureSoftGramCLIException):
-    """' Raised when the file type is not JSON"""
-
-    pass
-
-
-class MeasureSoftGramCliException(Exception):
-    """Base MeasureSoftGram Cli exception"""
-
-    pass
-
-
-class FileNotFound(MeasureSoftGramCliException):
-    """Raised when a invalid file path is provided to the MeasureSoftGram"""
-
-    pass
-
-
-class NullMetricValue(MeasureSoftGramCliException):
-    """Raised when a NULL metric value is provided to the MeasureSoftGram"""
+class UnableToOpenFile(MeasureSoftGramCLIException):
+    """Raised when a file could not be opened"""
 
     pass
