@@ -23,17 +23,19 @@ jobs:
       - name: Install tox
         run: pip install tox
       - name: Run tests
-        continue-on-error: true
         run: tox -- --cov=src --cov-report=xml --junitxml=junittest.xml
       - name: fix code coverage paths
+        if: always()
         run: |
           sed -i 's/\/home\/runner\/work\/2021-2-MeasureSoftGram-CLI\/2021-2-MeasureSoftGram-CLI\//\/github\/workspace\//g' coverage.xml
       - name: SonarCloud Scan
+        if: always()
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload coverage to Codecov
+        if: always()
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
