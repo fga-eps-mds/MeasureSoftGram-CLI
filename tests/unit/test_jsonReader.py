@@ -244,72 +244,7 @@ def test_validate_metrics_post_error(mocker):
         )
 
 
-# Refatorar função validate_file_characteristics para suportar o novo modelo de preconfig em truemodel.json
-def test_invalid_file_characteristic():
-    file_characteristics = {
-        "reliability": {
-            "name": "Reliability",
-            "subcharacteristics": ["testing_status"]
-        },
-        "maintainability": {
-            "name": "Maintainability",
-            "subcharacteristics": []
-        }
-    }
-
-    with pytest.raises(exceptions.InvalidCharacteristic):
-        jsonReader.validate_file_characteristics(file_characteristics)
-
-    file_characteristics = {
-        "maintainability": {
-            "name": "Maintainability"
-        }
-    }
-
-    with pytest.raises(exceptions.InvalidCharacteristic):
-        jsonReader.validate_file_characteristics(file_characteristics)
-
-
-# Refatorar função validate_file_subcharacteristics para suportar o novo modelo de preconfig em truemodel.json
-def test_invalid_file_subcharacteristic():
-
-    file_subcharacteristics = {
-        "testing_status": {
-            "name": "Testing Status",
-            "measures": ["passed_tests", "test_builds", "test_coverage"],
-            "characteristics": ["reliability"]
-        },
-        "modifiability": {
-            "name": "Modifiability",
-            "measures": [],
-            "characteristics": ["maintainability"]
-        }
-    }
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
-        jsonReader.validate_file_subcharacteristics(file_subcharacteristics)
-
-    file_subcharacteristics = {
-        "testing_status": {
-            "name": "Testing Status",
-            "measures": ["passed_tests", "test_builds", "test_coverage"],
-            "characteristics": ["reliability"]
-        },
-        "modifiability": {
-            "name": "Modifiability",
-            "characteristics": ["maintainability"]
-        }
-    }
-
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
-        jsonReader.validate_file_subcharacteristics(file_subcharacteristics)
-
-
-# TODO: Validar measures de acordo com o novo modelo de preconfig em truemodel.json
-def test_invalid_file_measures():
-    pass
-
-
-def test_read_file_characteristics():
+def test_valid_read_file_characteristics():
     file_characteristics = {
         "characteristics": [
             {
@@ -342,6 +277,84 @@ def test_read_file_characteristics():
 
     assert characteristics[0] == ["Reliability"]
     assert characteristics[1] == {"Reliability": 50}
+
+
+def test_invalid_read_file_characteristics():
+
+    file_characteristics_without_weights = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 100.0,
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 100.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 100.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 100.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        jsonReader.read_file_characteristics(file_characteristics_without_weights)
+
+    file_characteristics_without_name = {
+        "characteristics": [
+            {
+                "weight": 50,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 100.0,
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 100.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 100.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 100.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        jsonReader.read_file_characteristics(file_characteristics_without_name)
+
+    file_characteristics_without_subc = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 50,
+                "subcharacteristics": []
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        jsonReader.read_file_characteristics(file_characteristics_without_subc)
 
 
 def test_read_file_sub_characteristics():
