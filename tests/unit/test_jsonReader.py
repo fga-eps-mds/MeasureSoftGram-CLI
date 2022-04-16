@@ -2,6 +2,8 @@ from src.cli import jsonReader, exceptions
 import pytest
 import json
 from io import StringIO
+# from src.cli.jsonReader import validate_file_format
+from tests.test_helpers import read_json
 
 
 def test_fileNotExist():
@@ -242,6 +244,7 @@ def test_validate_metrics_post_error(mocker):
         )
 
 
+# Refatorar função validate_file_characteristics para suportar o novo modelo de preconfig em truemodel.json
 def test_invalid_file_characteristic():
     file_characteristics = {
         "reliability": {
@@ -267,6 +270,7 @@ def test_invalid_file_characteristic():
         jsonReader.validate_file_characteristics(file_characteristics)
 
 
+# Refatorar função validate_file_subcharacteristics para suportar o novo modelo de preconfig em truemodel.json
 def test_invalid_file_subcharacteristic():
 
     file_subcharacteristics = {
@@ -298,3 +302,114 @@ def test_invalid_file_subcharacteristic():
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
         jsonReader.validate_file_subcharacteristics(file_subcharacteristics)
+
+
+# TODO: Validar measures de acordo com o novo modelo de preconfig em truemodel.json
+def test_invalid_file_measures():
+    pass
+
+
+def test_read_file_characteristics():
+    file_characteristics = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 50.0,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 100.0,
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 100.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 100.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 100.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    characteristics = jsonReader.read_file_characteristics(file_characteristics)
+
+    assert characteristics[0] == ["Reliability"]
+    assert characteristics[1] == {"Reliability": 50}
+
+
+def test_read_file_sub_characteristics():
+    file_subcharacteristics = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 25.0,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 30.0,
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 40.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 30.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 30.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    subcharacteristics = jsonReader.read_file_sub_characteristics(file_subcharacteristics)
+
+    assert subcharacteristics[0] == ["Testing_status"]
+    assert subcharacteristics[1] == {"Testing_status": 30}
+
+
+def test_read_file_measures():
+    file_measures = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 25.0,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 30.0,
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 40.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 30.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 30.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    measures = jsonReader.read_file_measures(file_measures)
+
+    assert measures[0] == ["passed_tests", "test_builds", "test_coverage"]
+    assert measures[1] == {"passed_tests": 40, "test_builds": 30, "test_coverage": 30}

@@ -20,46 +20,133 @@ METRICS_SONAR = [
 ]
 
 
-def preconfig_file_reader(absolute_path):
+def preconfig_file_reader(absolute_path, available_pre_configs):
 
     check_file_extension(absolute_path)
 
     j = check_file_existance(absolute_path)
     preconfig_json_file = json.load(j)
 
-    preconfig = preconfig_json_file["preconfig"]
-    preconfig_file_characteristics = preconfig["preconfig"]["characteristics"]
-    preconfig_file_subcharacteristics = preconfig["preconfig"]["subcharacteristics"]
-    preconfig_file_measures = preconfig["preconfig"]["measures"]
+    preconfig_file_name = preconfig_json_file["pre_config_name"]
 
-    validate_file_characteristics(preconfig_file_characteristics)
-    validate_file_subcharacteristics(preconfig_file_subcharacteristics)
-    validate_file_measures(preconfig_file_measures)
+    file_characteristics = read_file_characteristics(preconfig_json_file)
+    file_sub_characteristics = read_file_sub_characteristics(preconfig_json_file)
+    file_measures = read_file_measures(preconfig_json_file)
 
-    validate_weight_sum(preconfig_file_measures.items())
+    preconfig = {
+        "name": preconfig_file_name,
+        "characteristics": file_characteristics[0],
+        "subcharacteristics": file_sub_characteristics[0],
+        "measures": file_measures[0],
+        "characteristics_weights": [file_characteristics[1]],
+        "subcharacteristics_weights": [file_sub_characteristics[1]],
+        "measures_weights": [file_measures[1]],
+    }
 
     return preconfig
 
 
+def read_file_characteristics(preconfig_json_file):
+
+    characteristics_names = []
+    characteristics_weights = {}
+
+    count_char = 0
+
+    while count_char < len(preconfig_json_file["characteristics"]):
+        characteristics_names.append(
+            preconfig_json_file["characteristics"][count_char]["name"])
+        for item in preconfig_json_file["characteristics"][count_char].items():
+            characteristics_weights.update(
+                {preconfig_json_file["characteristics"][count_char]["name"]: preconfig_json_file["characteristics"][count_char]["weight"]})
+        count_char += 1
+
+    return [characteristics_names, characteristics_weights]
+
+
+def read_file_sub_characteristics(preconfig_json_file):
+
+    sub_characteristics_names = []
+    sub_characteristics_weights = {}
+
+    count_char = 0
+    count_sub = 0
+
+    while count_char < len(preconfig_json_file["characteristics"]):
+        count_sub = 0
+        while count_sub < len(preconfig_json_file["characteristics"][count_char]["subcharacteristics"]):
+            sub_characteristics_names.append(
+                preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]["name"])
+            for item in preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub].items():
+                sub_characteristics_weights.update({preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]
+                                                    ["name"]: preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]["weight"]})
+            count_sub += 1
+        count_char += 1
+
+    return [sub_characteristics_names, sub_characteristics_weights]
+
+
+def read_file_measures(preconfig_json_file):
+
+    measures_names = []
+    measures_weights = {}
+
+    count_char = 0
+    count_sub = 0
+    count_meas = 0
+
+    while count_char < len(preconfig_json_file["characteristics"]):
+        count_sub = 0
+        while count_sub < len(preconfig_json_file["characteristics"][count_char]["subcharacteristics"]):
+            count_meas = 0
+            while count_meas < len(preconfig_json_file["characteristics"]
+                                   [count_char]["subcharacteristics"][count_sub]["measures"]):
+                measures_names.append(
+                    preconfig_json_file["characteristics"][count_char]["subcharacteristics"]
+                    [count_sub]["measures"][count_meas]["name"])
+                for item in preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]["measures"][count_meas].items():
+                    measures_weights.update({preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]
+                                             ["measures"][count_meas]["name"]: preconfig_json_file["characteristics"][
+                        count_char]["subcharacteristics"][count_sub]
+                        ["measures"][count_meas]["weight"]})
+                count_meas += 1
+            count_sub += 1
+        count_char += 1
+
+    return [measures_names, measures_weights]
+
+
 def validate_file_characteristics(preconfig_file_characteristics):
 
-    for characteristic in preconfig_file_characteristics.items():
-        if "subcharacteristics" not in characteristic[1].keys():
+    for characteristics in preconfig_file_characteristics.items():
+        if "passed_tests" not in characteristics[1].keys():
             raise exceptions.InvalidCharacteristic(
                 "ERROR: {characteristic[0]} (does not have subcharacteristics field in preconfig file)")
 
-        if len(characteristic[1]["subcharacteristics"]) <= 0:
+        if "name" not in characteristics[1].keys():
+            raise exceptions.InvalidCharacteristic(
+                "ERROR: {characteristic[0]} (does not have name field in preconfig file)")
+
+        if len(characteristics[1]["subcharacteristics"]) <= 0:
             raise exceptions.InvalidCharacteristic(
                 "ERROR: {characteristic[0]} (must have at least one sub-characteristic)")
 
 
 def validate_file_subcharacteristics(preconfig_file_subcharacteristics):
-    for subcharacteristic in preconfig_file_subcharacteristics.items():
-        if "measures" not in subcharacteristic[1].keys():
+    for subcharacteristics in preconfig_file_subcharacteristics.items():
+        if "measures" not in subcharacteristics[1].keys():
             raise exceptions.InvalidSubcharacteristic(
                 "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
 
-        if len(subcharacteristic[1]["measures"]) <= 0:
+        if "name" not in subcharacteristics[1].keys():
+            raise exceptions.InvalidSubcharacteristic(
+                "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
+
+        if "characteristics" not in subcharacteristics[1].keys():
+            raise exceptions.InvalidSubcharacteristic(
+                "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
+
+        if len(subcharacteristics[1]["measures"]) <= 0:
             raise exceptions.InvalidSubcharacteristic(
                 "ERROR: {characteristic[0]} (must have at least one measure)")
 
