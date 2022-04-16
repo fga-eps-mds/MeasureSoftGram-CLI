@@ -357,7 +357,7 @@ def test_invalid_read_file_characteristics():
         jsonReader.read_file_characteristics(file_characteristics_without_subc)
 
 
-def test_read_file_sub_characteristics():
+def test_valid_read_file_sub_characteristics():
     file_subcharacteristics = {
         "characteristics": [
             {
@@ -390,6 +390,107 @@ def test_read_file_sub_characteristics():
 
     assert subcharacteristics[0] == ["Testing_status"]
     assert subcharacteristics[1] == {"Testing_status": 30}
+
+
+def test_invalid_read_file_sub_characteristics():
+    file_without_name_subcharacteristics = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 25.0,
+                "subcharacteristics": [
+                    {
+                        "weight": 30.0,
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 40.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 30.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 30.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.read_file_sub_characteristics(file_without_name_subcharacteristics)
+
+    file_without_weight_subcharacteristics = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 25.0,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "measures": [
+                            {
+                                "name": "passed_tests",
+                                "weight": 40.0
+                            },
+                            {
+                                "name": "test_builds",
+                                "weight": 30.0
+                            },
+                            {
+                                "name": "test_coverage",
+                                "weight": 30.0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.read_file_sub_characteristics(file_without_weight_subcharacteristics)
+
+    file_without_measures_subcharacteristics = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 25.0,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 30.0,
+                    }
+                ]
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.read_file_sub_characteristics(file_without_measures_subcharacteristics)
+
+    file_empty_measures_subcharacteristics = {
+        "characteristics": [
+            {
+                "name": "Reliability",
+                "weight": 25.0,
+                "subcharacteristics": [
+                    {
+                        "name": "Testing_status",
+                        "weight": 30.0,
+                        "measures": []
+                    }
+                ]
+            }
+        ]
+    }
+
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.read_file_sub_characteristics(file_empty_measures_subcharacteristics)
 
 
 def test_read_file_measures():

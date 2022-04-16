@@ -50,29 +50,29 @@ def read_file_characteristics(preconfig_json_file):
     characteristics_names = []
     characteristics_weights = {}
 
-    for item in preconfig_json_file["characteristics"]:
-        if "name" not in item.keys():
+    for characteristic in preconfig_json_file["characteristics"]:
+        if "name" not in characteristic.keys():
             raise exceptions.InvalidCharacteristic(
                 "ERROR: Expected characteristic name field."
             )
 
-        if "weight" not in item.keys():
+        if "weight" not in characteristic.keys():
             raise exceptions.InvalidCharacteristic(
-                "ERROR: {} does not have weight field defined.".format(item["name"])
+                "ERROR: {} does not have weight field defined.".format(characteristic["name"])
             )
 
-        if "subcharacteristics" not in item.keys():
+        if "subcharacteristics" not in characteristic.keys():
             raise exceptions.InvalidCharacteristic(
-                "ERROR: {} does not have subcharacteristics field defined.".format(item["name"])
+                "ERROR: {} does not have subcharacteristics field defined.".format(characteristic["name"])
             )
 
-        if item["subcharacteristics"] is None or len(item["subcharacteristics"]) == 0:
+        if characteristic["subcharacteristics"] is None or len(characteristic["subcharacteristics"]) == 0:
             raise exceptions.InvalidCharacteristic(
-                "ERROR: {} needs to have at least one subcharacteristic defined.".format(item["name"])
+                "ERROR: {} needs to have at least one subcharacteristic defined.".format(characteristic["name"])
             )
 
-        characteristics_names.append(item["name"])
-        characteristics_weights.update({item["name"]: item["weight"]})
+        characteristics_names.append(characteristic["name"])
+        characteristics_weights.update({characteristic["name"]: characteristic["weight"]})
 
     return [characteristics_names, characteristics_weights]
 
@@ -82,19 +82,31 @@ def read_file_sub_characteristics(preconfig_json_file):
     sub_characteristics_names = []
     sub_characteristics_weights = {}
 
-    count_char = 0
-    count_sub = 0
+    for characteristic in preconfig_json_file["characteristics"]:
+        for subcharacteristic in characteristic["subcharacteristics"]:
 
-    while count_char < len(preconfig_json_file["characteristics"]):
-        count_sub = 0
-        while count_sub < len(preconfig_json_file["characteristics"][count_char]["subcharacteristics"]):
-            sub_characteristics_names.append(
-                preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]["name"])
-            for item in preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub].items():
-                sub_characteristics_weights.update({preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]
-                                                    ["name"]: preconfig_json_file["characteristics"][count_char]["subcharacteristics"][count_sub]["weight"]})
-            count_sub += 1
-        count_char += 1
+            if "name" not in subcharacteristic.keys():
+                raise exceptions.InvalidSubcharacteristic(
+                    "ERROR: Expected sub-characteristic name field."
+                )
+
+            if "weight" not in subcharacteristic.keys():
+                raise exceptions.InvalidSubcharacteristic(
+                    "ERROR: {} does not have weight field defined.".format(subcharacteristic["name"])
+                )
+
+            if "measures" not in subcharacteristic.keys():
+                raise exceptions.InvalidSubcharacteristic(
+                    "ERROR: {} does not have measures field defined.".format(subcharacteristic["name"])
+                )
+
+            if subcharacteristic["measures"] is None or len(subcharacteristic["measures"]) == 0:
+                raise exceptions.InvalidSubcharacteristic(
+                    "ERROR: {} needs to have at least one measure defined.".format(subcharacteristic["name"])
+                )
+
+            sub_characteristics_names.append(subcharacteristic["name"])
+            sub_characteristics_weights.update({subcharacteristic["name"]: subcharacteristic["weight"]})
 
     return [sub_characteristics_names, sub_characteristics_weights]
 
@@ -127,48 +139,6 @@ def read_file_measures(preconfig_json_file):
         count_char += 1
 
     return [measures_names, measures_weights]
-
-
-# def validate_file_characteristics(file_characteristics, available_pre_configs):
-
-    # validar se todas as caracteristicas tem pesos
-    # validar se todas as caracteristicas tem pelo menos uma subcaracteristica
-    # validar se as caracteristicas estão inclusas em available_pre_configs
-
-    # for weight in file_characteristics[1].items():
-    # if weight is None:
-    # raise exceptions.InvalidCharacteristic
-    # for characteristics in preconfig_file_characteristics.items():
-    #     if "passed_tests" not in characteristics[1].keys():
-    #         raise exceptions.InvalidCharacteristic(
-    #             "ERROR: {characteristic[0]} (does not have subcharacteristics field in preconfig file)")
-
-    #     if "name" not in characteristics[1].keys():
-    #         raise exceptions.InvalidCharacteristic(
-    #             "ERROR: {characteristic[0]} (does not have name field in preconfig file)")
-
-    #     if len(characteristics[1]["subcharacteristics"]) <= 0:
-    #         raise exceptions.InvalidCharacteristic(
-    #             "ERROR: {characteristic[0]} (must have at least one sub-characteristic)")
-
-
-# def validate_file_subcharacteristics(preconfig_file_subcharacteristics):
-#     for subcharacteristics in preconfig_file_subcharacteristics.items():
-#         if "measures" not in subcharacteristics[1].keys():
-#             raise exceptions.InvalidSubcharacteristic(
-#                 "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
-
-#         if "name" not in subcharacteristics[1].keys():
-#             raise exceptions.InvalidSubcharacteristic(
-#                 "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
-
-#         if "characteristics" not in subcharacteristics[1].keys():
-#             raise exceptions.InvalidSubcharacteristic(
-#                 "ERROR: {characteristic[0]} (does not have measures field in preconfig file)")
-
-#         if len(subcharacteristics[1]["measures"]) <= 0:
-#             raise exceptions.InvalidSubcharacteristic(
-#                 "ERROR: {characteristic[0]} (must have at least one measure)")
 
 
 # def validate_file_measures(preconfig_file_measures):
