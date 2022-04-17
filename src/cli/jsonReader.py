@@ -33,14 +33,17 @@ def preconfig_file_reader(absolute_path, available_pre_configs):
     file_sub_characteristics = read_file_sub_characteristics(preconfig_json_file)
     file_measures = read_file_measures(preconfig_json_file)
 
+    validate_core_available(available_pre_configs,
+                            file_characteristics[0], file_sub_characteristics[0], file_measures[0])
+
     preconfig = {
         "name": preconfig_file_name,
         "characteristics": file_characteristics[0],
         "subcharacteristics": file_sub_characteristics[0],
         "measures": file_measures[0],
-        "characteristics_weights": [file_characteristics[1]],
-        "subcharacteristics_weights": [file_sub_characteristics[1]],
-        "measures_weights": [file_measures[1]],
+        "characteristics_weights": file_characteristics[1],
+        "subcharacteristics_weights": file_sub_characteristics[1],
+        "measures_weights": file_measures[1],
     }
 
     return preconfig
@@ -126,7 +129,7 @@ def read_file_sub_characteristics(preconfig_json_file):
 
         if not validate_weight_sum([sub_characteristics_weights]):
             raise exceptions.InvalidSubcharacteristic(
-                "ERROR: {} weights does not sum 100.".format(characteristic["name"])
+                "ERROR: {} weights does not sum 100.".format(subcharacteristic["name"])
             )
 
     return [sub_characteristics_names, sub_characteristics_weights]
@@ -165,6 +168,23 @@ def read_file_measures(preconfig_json_file):
                 )
 
     return [measures_names, measures_weights]
+
+
+def validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics, file_measures):
+
+    for i in range(len(file_characteristics)):
+        if file_characteristics[i] not in available_pre_configs["characteristics"].keys():
+            raise exceptions.InvalidCharacteristic("The characteristic is not in MeasureSoftGram data base")
+
+    for i in range(len(file_subcharacteristics)):
+        if file_subcharacteristics[i] not in available_pre_configs["subcharacteristics"].keys():
+            raise exceptions.InvalidSubcharacteristic("The subcharacteristic is not in MeasureSoftGram data base")
+
+    for i in range(len(file_measures)):
+        if file_measures[i] not in available_pre_configs["measures"].keys():
+            raise exceptions.InvalidMeasure("The measure is not in MeasureSoftGram data base")
+
+    return True
 
 
 def file_reader(absolute_path):

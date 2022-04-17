@@ -655,3 +655,46 @@ def test_invalid_read_file_measures():
 
     with pytest.raises(exceptions.InvalidMeasure):
         jsonReader.read_file_measures(file_invalid_weight_sum_measures)
+
+
+def test_valid_validate_core_available():
+
+    available_pre_configs = read_json("tests/unit/data/measuresoftgramFormat.json")
+
+    file_characteristics = ["reliability", "maintainability"]
+    file_subcharacteristics = ["testing_status", "modifiability"]
+    file_measures = ['passed_tests', 'test_builds', 'test_coverage',
+                     'non_complex_file_density', 'commented_file_density', 'duplication_absense']
+
+    jsonReader.validate_core_available(available_pre_configs, file_characteristics,
+                                       file_subcharacteristics, file_measures)
+    assert True
+
+
+def test_invalid_validate_core_available():
+
+    available_pre_configs = read_json("tests/unit/data/measuresoftgramFormat.json")
+
+    file_characteristics = ["true", "maintainability"]
+    file_subcharacteristics = ["testing_status", "modifiability"]
+    file_measures = ['passed_tests', 'test_builds', 'test_coverage',
+                     'non_complex_file_density', 'commented_file_density', 'duplication_absense']
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        jsonReader.validate_core_available(available_pre_configs, file_characteristics,
+                                           file_subcharacteristics, file_measures)
+
+    file_characteristics = ["reliability", "maintainability"]
+    file_subcharacteristics = ["testing_lol", "modifiability"]
+
+    with pytest.raises(exceptions.InvalidSubcharacteristic):
+        jsonReader.validate_core_available(available_pre_configs, file_characteristics,
+                                           file_subcharacteristics, file_measures)
+
+    file_subcharacteristics = ["testing_status", "modifiability"]
+    file_measures = ['passed_tests', 'test_builds', 'wow',
+                     'non_complex_file_density', 'commented_file_density', 'duplication_absense']
+
+    with pytest.raises(exceptions.InvalidMeasure):
+        jsonReader.validate_core_available(available_pre_configs, file_characteristics,
+                                           file_subcharacteristics, file_measures)
