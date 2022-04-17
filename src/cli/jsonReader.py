@@ -70,6 +70,14 @@ def read_file_characteristics(preconfig_json_file):
                 "ERROR: {} does not have weight value inside parameters (0 to 100).".format(characteristic["name"])
             )
 
+        if "expected_value" not in characteristic.keys():
+            raise exceptions.InvalidCharacteristic(
+                "The file don't have expected_value field"
+            )
+
+        if not validate_expected_value(characteristic["expected_value"]):
+            raise exceptions.InvalidCharacteristic("The expected value does not inside parameters (0 to 100) ")
+
         if "weight" in characteristic.keys():
             sum_of_characteristics_weights = sum_of_characteristics_weights + characteristic["weight"]
 
@@ -203,6 +211,10 @@ def validate_sum_of_weights(sum_weights):
         return False
 
     return True
+
+
+def validate_expected_value(expected_value):
+    return 0 < expected_value <= 100
 
 
 def validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics, file_measures):
