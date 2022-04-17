@@ -498,11 +498,11 @@ def test_valid_read_file_measures():
         "characteristics": [
             {
                 "name": "Reliability",
-                "weight": 25.0,
+                "weight": 100.0,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
-                        "weight": 30.0,
+                        "weight": 100.0,
                         "measures": [
                             {
                                 "name": "passed_tests",
@@ -510,11 +510,11 @@ def test_valid_read_file_measures():
                             },
                             {
                                 "name": "test_builds",
-                                "weight": 30.0
+                                "weight": 20.0
                             },
                             {
                                 "name": "test_coverage",
-                                "weight": 30.0
+                                "weight": 40.0
                             }
                         ]
                     }
@@ -526,7 +526,7 @@ def test_valid_read_file_measures():
     measures = jsonReader.read_file_measures(file_measures)
 
     assert measures[0] == ["passed_tests", "test_builds", "test_coverage"]
-    assert measures[1] == {"passed_tests": 40, "test_builds": 30, "test_coverage": 30}
+    assert measures[1] == {"passed_tests": 40, "test_builds": 20, "test_coverage": 40}
 
 
 def test_invalid_read_file_measures():
@@ -698,3 +698,22 @@ def test_invalid_validate_core_available():
     with pytest.raises(exceptions.InvalidMeasure):
         jsonReader.validate_core_available(available_pre_configs, file_characteristics,
                                            file_subcharacteristics, file_measures)
+
+
+def test_round_of_sum_weights():
+    sum_weights = 99.99
+
+    sum_weights = jsonReader.round_sum_of_weights(sum_weights)
+    assert sum_weights == 100
+
+
+def test_validate_sum_of_weights():
+    sum_weights = 100
+
+    validate = jsonReader.validate_sum_of_weights(sum_weights)
+    assert validate is True
+
+    sum_weights = 99.99
+
+    validate = jsonReader.validate_sum_of_weights(sum_weights)
+    assert validate is False
