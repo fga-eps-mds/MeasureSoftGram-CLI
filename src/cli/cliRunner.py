@@ -5,7 +5,11 @@ import requests
 import signal
 from pathlib import Path
 from random import randrange
-from src.cli.jsonReader import file_reader, validate_metrics_post
+from src.cli.jsonReader import(
+    file_reader,
+    validate_metrics_post,
+    preconfig_file_reader
+)
 from src.cli.create import (
     define_characteristic,
     define_sublevel,
@@ -74,6 +78,21 @@ def parse_create():
     validate_preconfig_post(response.status_code, saved_preconfig)
 
 
+def parse_preconfig(file_path):
+    available_pre_config = requests.get(
+        BASE_URL + "available-pre-configs", headers={"Accept": "application/json"}
+    ).json()
+
+    preconfig = preconfig_file_reader(r"{}".format(file_path), available_pre_config)
+
+    response = requests.post(BASE_URL + "/pre-configs", json=preconfig)
+    print(response.text)
+
+    saved_preconfig = json.loads(response.text)
+
+    validate_preconfig_post(response.status_code, saved_preconfig)
+
+
 def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
@@ -97,6 +116,15 @@ def setup():
 
     subparsers.add_parser("create", help="Create a new model pre configuration")
 
+    parser_preconfig = subparsers.add_parser("preconfig", help="Import a preconfigs by file")
+
+    parser_preconfig.add_argument(
+        "path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the data directory",
+    )
+
     args = parser.parse_args()
 
     # if args is empty show help
@@ -107,6 +135,8 @@ def setup():
         parse_import(args.path, args.id)
     elif args.command == "create":
         parse_create()
+    elif args.command == "preconfig":
+        parse_preconfig(args.path)
 
 
 def main():
