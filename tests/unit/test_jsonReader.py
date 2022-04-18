@@ -950,6 +950,8 @@ def test_validate_expected_value():
 
     validate = jsonReader.validate_expected_value(expected_value)
     assert validate is False
+
+
 class TestCheckSonarFormat:
     """
     Tests check_sonar_format function
