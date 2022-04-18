@@ -111,8 +111,8 @@ def read_file_characteristics(preconfig_json_file):
 
 def read_file_sub_characteristics(preconfig_json_file):
 
-    sub_characteristics_names = []
-    sub_characteristics_weights = {}
+    subcharacteristics = {}
+    sub_mea_list = []
 
     for characteristic in preconfig_json_file["characteristics"]:
 
@@ -149,8 +149,18 @@ def read_file_sub_characteristics(preconfig_json_file):
                     "ERROR: {} needs to have at least one measure defined.".format(subcharacteristic["name"])
                 )
 
-            sub_characteristics_names.append(subcharacteristic["name"])
-            sub_characteristics_weights.update({subcharacteristic["name"]: subcharacteristic["weight"]})
+            subcharacteristic_auxiliar = {
+                "weight": {characteristic["name"]: subcharacteristic["weight"]},
+            }
+
+            for measure in subcharacteristic["measures"]:
+                sub_mea_list.append(measure["name"])
+
+                subcharacteristic_auxiliar.update({"measures": sub_mea_list})
+            sub_mea_list = []
+
+            subcharacteristics.update(
+                {subcharacteristic["name"]: subcharacteristic_auxiliar})
 
         sum_of_subcharacteristics_weights = round_sum_of_weights(sum_of_subcharacteristics_weights)
 
@@ -158,7 +168,7 @@ def read_file_sub_characteristics(preconfig_json_file):
             raise exceptions.InvalidSubcharacteristic(
                 "The sum of subcharacteristics weights is not 100")
 
-    return [sub_characteristics_names, sub_characteristics_weights]
+    return subcharacteristics
 
 
 def read_file_measures(preconfig_json_file):

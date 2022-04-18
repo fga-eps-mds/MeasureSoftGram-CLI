@@ -398,7 +398,7 @@ def test_valid_read_file_sub_characteristics():
         "characteristics": [
             {
                 "name": "Reliability",
-                "weight": 25.0,
+                "weight": 100.0,
                 "expected_value": 35,
                 "subcharacteristics": [
                     {
@@ -425,8 +425,8 @@ def test_valid_read_file_sub_characteristics():
     }
     subcharacteristics = jsonReader.read_file_sub_characteristics(file_subcharacteristics)
 
-    assert subcharacteristics[0] == ["Testing_status"]
-    assert subcharacteristics[1] == {"Testing_status": 100}
+    assert subcharacteristics == {'Testing_status': {'weight': {'Reliability': 100.0},
+                                                     'measures': ['passed_tests', 'test_builds', 'test_coverage']}}
 
 
 def test_invalid_read_file_sub_characteristics():
