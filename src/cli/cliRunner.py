@@ -5,7 +5,7 @@ import requests
 import signal
 from pathlib import Path
 from random import randrange
-from src.cli.jsonReader import(
+from src.cli.jsonReader import (
     file_reader,
     validate_metrics_post,
     preconfig_file_reader

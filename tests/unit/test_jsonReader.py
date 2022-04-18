@@ -312,8 +312,7 @@ def test_valid_validate_file_characteristics():
     }
     characteristics = jsonReader.validate_file_characteristics(file_characteristics)
 
-    assert characteristics[0] == ["Reliability"]
-    assert characteristics[1] == {"Reliability": 100.0}
+    assert characteristics == ["Reliability"]
 
 
 def test_invalid_validate_file_characteristics():
@@ -497,8 +496,7 @@ def test_valid_validate_file_sub_characteristics():
     }
     subcharacteristics = jsonReader.validate_file_sub_characteristics(file_subcharacteristics)
 
-    assert subcharacteristics[0] == ["Testing_status"]
-    assert subcharacteristics[1] == {"Testing_status": 100}
+    assert subcharacteristics == ["Testing_status"]
 
 
 def test_invalid_validate_file_sub_characteristics():
@@ -676,8 +674,7 @@ def test_valid_validate_file_measures():
 
     measures = jsonReader.validate_file_measures(file_measures)
 
-    assert measures[0] == ["passed_tests", "test_builds", "test_coverage"]
-    assert measures[1] == {"passed_tests": 40, "test_builds": 30, "test_coverage": 30}
+    assert measures == ["passed_tests", "test_builds", "test_coverage"]
 
 
 def test_invalid_validate_file_measures():

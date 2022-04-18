@@ -62,3 +62,15 @@ class InvalidSubcharacteristic(MeasureSoftGramCLIException):
     """Raised when a invalid subcharacteristic is provided to the MeasureSoftGram"""
 
     pass
+
+
+class InvalidMeasure(MeasureSoftGramCLIException):
+    """Raised when a invalid measure is provided to the MeasureSoftGram"""
+
+    pass
+
+
+class InvalidMeasuresoftgramFormat(MeasureSoftGramCLIException):
+    """Raised when a invalid format file is provided to the MeasureSoftGram"""
+
+    pass

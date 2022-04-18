@@ -30,11 +30,18 @@ def preconfig_file_reader(absolute_path, available_pre_configs):
     preconfig_file_name = preconfig_json_file["pre_config_name"]
 
     file_characteristics = read_file_characteristics(preconfig_json_file)
+    file_validate_characteristics = validate_file_characteristics(preconfig_json_file)
+
     file_sub_characteristics = read_file_sub_characteristics(preconfig_json_file)
+    file_validate_sub_characteristics = validate_file_sub_characteristics(preconfig_json_file)
+
     file_measures = read_file_measures(preconfig_json_file)
+    file_validate_measures = validate_file_measures(preconfig_json_file)
 
     validate_core_available(core_format,
-                            file_characteristics[0], file_sub_characteristics[0], file_measures[0])
+                            file_validate_characteristics[0],
+                            file_validate_sub_characteristics[0],
+                            file_validate_measures[0])
 
     preconfig = {
         "name": preconfig_file_name,
@@ -113,7 +120,6 @@ def validate_file_characteristics(preconfig_json_file):
 
     sum_of_characteristics_weights = 0
     characteristics_names = []
-    characteristics_weights = {}
 
     for characteristic in preconfig_json_file["characteristics"]:
         if "name" not in characteristic.keys():
@@ -153,7 +159,6 @@ def validate_file_characteristics(preconfig_json_file):
             )
 
         characteristics_names.append(characteristic["name"])
-        characteristics_weights.update({characteristic["name"]: characteristic["weight"]})
 
     sum_of_characteristics_weights = round_sum_of_weights(sum_of_characteristics_weights)
 
@@ -161,7 +166,7 @@ def validate_file_characteristics(preconfig_json_file):
         raise exceptions.InvalidCharacteristic(
             "The sum of characteristics weights of is not 100")
 
-    return [characteristics_names, characteristics_weights]
+    return characteristics_names
 
 
 def validate_file_sub_characteristics(preconfig_json_file):
@@ -171,7 +176,6 @@ def validate_file_sub_characteristics(preconfig_json_file):
     for characteristic in preconfig_json_file["characteristics"]:
 
         sum_of_subcharacteristics_weights = 0
-        sub_characteristics_weights = {}
 
         for subcharacteristic in characteristic["subcharacteristics"]:
 
@@ -205,7 +209,6 @@ def validate_file_sub_characteristics(preconfig_json_file):
                 )
 
             sub_characteristics_names.append(subcharacteristic["name"])
-            sub_characteristics_weights.update({subcharacteristic["name"]: subcharacteristic["weight"]})
 
         sum_of_subcharacteristics_weights = round_sum_of_weights(sum_of_subcharacteristics_weights)
 
@@ -213,13 +216,12 @@ def validate_file_sub_characteristics(preconfig_json_file):
             raise exceptions.InvalidSubcharacteristic(
                 "The sum of subcharacteristics weights is not 100")
 
-    return [sub_characteristics_names, sub_characteristics_weights]
+    return sub_characteristics_names
 
 
 def validate_file_measures(preconfig_json_file):
 
     measures_names = []
-    measures_weights = {}
 
     for characteristic in preconfig_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
@@ -247,7 +249,6 @@ def validate_file_measures(preconfig_json_file):
                     sum_of_measures_weights = sum_of_measures_weights + measure["weight"]
 
                 measures_names.append(measure["name"])
-                measures_weights.update({measure["name"]: measure["weight"]})
 
             sum_of_measures_weights = round_sum_of_weights(sum_of_measures_weights)
 
@@ -257,7 +258,7 @@ def validate_file_measures(preconfig_json_file):
                 raise exceptions.InvalidMeasure(
                     "The sum of measures weights is not 100")
 
-    return [measures_names, measures_weights]
+    return measures_names
 
 
 def round_sum_of_weights(sum_weights):
