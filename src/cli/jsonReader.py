@@ -38,20 +38,17 @@ def preconfig_file_reader(absolute_path, available_pre_configs):
 
     preconfig = {
         "name": preconfig_file_name,
-        "characteristics": file_characteristics[0],
-        "subcharacteristics": file_sub_characteristics[0],
-        "measures": file_measures[0],
-        "characteristics_weights": file_characteristics[1],
-        "subcharacteristics_weights": file_sub_characteristics[1],
-        "measures_weights": file_measures[1],
+        "characteristics": file_characteristics,
+        "subcharacteristics": file_sub_characteristics,
+        "measures": file_measures,
     }
 
     return preconfig
 
 
 def read_file_characteristics(preconfig_json_file):
-    characteristics_names = []
-    characteristics_weights = {}
+    characteristics = {}
+    char_sub_list = []
     sum_of_characteristics_weights = 0
 
     for characteristic in preconfig_json_file["characteristics"]:
@@ -91,8 +88,17 @@ def read_file_characteristics(preconfig_json_file):
                 "ERROR: {} needs to have at least one subcharacteristic defined.".format(characteristic["name"])
             )
 
-        characteristics_names.append(characteristic["name"])
-        characteristics_weights.update({characteristic["name"]: characteristic["weight"]})
+        characteristic_auxiliar = {
+            "expected_value": characteristic["expected_value"],
+            "weight": characteristic["weight"]}
+
+        for subcharacteristic in characteristic["subcharacteristics"]:
+            char_sub_list.append(subcharacteristic["name"])
+
+            characteristic_auxiliar.update({"subcharacteristics": char_sub_list})
+    char_sub_list = []
+
+    characteristics.update({characteristic["name"]: characteristic_auxiliar})
 
     sum_of_characteristics_weights = round_sum_of_weights(sum_of_characteristics_weights)
 
@@ -100,7 +106,7 @@ def read_file_characteristics(preconfig_json_file):
         raise exceptions.InvalidCharacteristic(
             "The sum of characteristics weights of is not 100")
 
-    return [characteristics_names, characteristics_weights]
+    return characteristics
 
 
 def read_file_sub_characteristics(preconfig_json_file):

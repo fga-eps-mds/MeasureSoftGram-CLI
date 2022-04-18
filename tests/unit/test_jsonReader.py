@@ -276,8 +276,8 @@ def test_valid_read_file_characteristics():
     }
     characteristics = jsonReader.read_file_characteristics(file_characteristics)
 
-    assert characteristics[0] == ["Reliability"]
-    assert characteristics[1] == {"Reliability": 100.0}
+    assert characteristics == {'Reliability': {'expected_value': 22,
+                                               'weight': 100.0, 'subcharacteristics': ['Testing_status']}}
 
 
 def test_invalid_read_file_characteristics():
