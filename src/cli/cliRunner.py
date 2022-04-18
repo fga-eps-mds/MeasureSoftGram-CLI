@@ -10,6 +10,7 @@ from src.cli.jsonReader import (
     validate_metrics_post,
     preconfig_file_reader
 )
+from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.create import (
     define_characteristic,
     define_sublevel,
@@ -25,7 +26,11 @@ def sigint_handler(*_):
 
 
 def parse_import(file_path, id):
-    components = file_reader(r"{}".format(file_path))
+    try:
+        components = file_reader(r"{}".format(file_path))
+    except MeasureSoftGramCLIException as error:
+        print("Error: ", error)
+        return
 
     payload = {"pre_config_id": id, "components": components}
 
