@@ -567,8 +567,8 @@ def test_valid_read_file_measures():
 
     measures = jsonReader.read_file_measures(file_measures)
 
-    assert measures[0] == ["passed_tests", "test_builds", "test_coverage"]
-    assert measures[1] == {"passed_tests": 40, "test_builds": 20, "test_coverage": 40}
+    assert measures == {'passed_tests': {'weights': {'Testing_status': 40.0}}, 'test_builds': {
+        'weights': {'Testing_status': 20.0}}, 'test_coverage': {'weights': {'Testing_status': 40.0}}}
 
 
 def test_invalid_read_file_measures():
