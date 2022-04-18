@@ -47,9 +47,73 @@ def preconfig_file_reader(absolute_path, available_pre_configs):
 
 
 def read_file_characteristics(preconfig_json_file):
+
     characteristics = {}
     char_sub_list = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+
+        characteristic_auxiliar = {
+            "expected_value": characteristic["expected_value"],
+            "weight": characteristic["weight"]}
+
+        for subcharacteristic in characteristic["subcharacteristics"]:
+            char_sub_list.append(subcharacteristic["name"])
+
+            characteristic_auxiliar.update({"subcharacteristics": char_sub_list})
+        char_sub_list = []
+
+        characteristics.update({characteristic["name"]: characteristic_auxiliar})
+
+    return characteristics
+
+
+def read_file_sub_characteristics(preconfig_json_file):
+
+    subcharacteristics = {}
+    sub_mea_list = []
+    for characteristic in preconfig_json_file["characteristics"]:
+        for subcharacteristic in characteristic["subcharacteristics"]:
+
+            subcharacteristic_auxiliar = {
+                "weights": {characteristic["name"]: subcharacteristic["weight"]},
+            }
+
+            for measure in subcharacteristic["measures"]:
+                sub_mea_list.append(measure["name"])
+
+                subcharacteristic_auxiliar.update({"measures": sub_mea_list})
+            sub_mea_list = []
+
+            subcharacteristics.update(
+                {subcharacteristic["name"]: subcharacteristic_auxiliar})
+
+    return subcharacteristics
+
+
+def read_file_measures(preconfig_json_file):
+
+    measures = {}
+
+    for characteristic in preconfig_json_file["characteristics"]:
+        for subcharacteristic in characteristic["subcharacteristics"]:
+
+            sub_name = subcharacteristic["name"]
+
+            for measure in subcharacteristic["measures"]:
+
+                measure_auxiliar = {"weights": {sub_name: measure["weight"]}}
+
+                measures.update({measure["name"]: measure_auxiliar})
+
+    return measures
+
+
+def validate_file_characteristics(preconfig_json_file):
+
     sum_of_characteristics_weights = 0
+    characteristics_names = []
+    characteristics_weights = {}
 
     for characteristic in preconfig_json_file["characteristics"]:
         if "name" not in characteristic.keys():
@@ -88,17 +152,8 @@ def read_file_characteristics(preconfig_json_file):
                 "ERROR: {} needs to have at least one subcharacteristic defined.".format(characteristic["name"])
             )
 
-        characteristic_auxiliar = {
-            "expected_value": characteristic["expected_value"],
-            "weight": characteristic["weight"]}
-
-        for subcharacteristic in characteristic["subcharacteristics"]:
-            char_sub_list.append(subcharacteristic["name"])
-
-            characteristic_auxiliar.update({"subcharacteristics": char_sub_list})
-    char_sub_list = []
-
-    characteristics.update({characteristic["name"]: characteristic_auxiliar})
+        characteristics_names.append(characteristic["name"])
+        characteristics_weights.update({characteristic["name"]: characteristic["weight"]})
 
     sum_of_characteristics_weights = round_sum_of_weights(sum_of_characteristics_weights)
 
@@ -106,17 +161,17 @@ def read_file_characteristics(preconfig_json_file):
         raise exceptions.InvalidCharacteristic(
             "The sum of characteristics weights of is not 100")
 
-    return characteristics
+    return [characteristics_names, characteristics_weights]
 
 
-def read_file_sub_characteristics(preconfig_json_file):
+def validate_file_sub_characteristics(preconfig_json_file):
 
-    subcharacteristics = {}
-    sub_mea_list = []
+    sub_characteristics_names = []
 
     for characteristic in preconfig_json_file["characteristics"]:
 
         sum_of_subcharacteristics_weights = 0
+        sub_characteristics_weights = {}
 
         for subcharacteristic in characteristic["subcharacteristics"]:
 
@@ -149,18 +204,8 @@ def read_file_sub_characteristics(preconfig_json_file):
                     "ERROR: {} needs to have at least one measure defined.".format(subcharacteristic["name"])
                 )
 
-            subcharacteristic_auxiliar = {
-                "weight": {characteristic["name"]: subcharacteristic["weight"]},
-            }
-
-            for measure in subcharacteristic["measures"]:
-                sub_mea_list.append(measure["name"])
-
-                subcharacteristic_auxiliar.update({"measures": sub_mea_list})
-            sub_mea_list = []
-
-            subcharacteristics.update(
-                {subcharacteristic["name"]: subcharacteristic_auxiliar})
+            sub_characteristics_names.append(subcharacteristic["name"])
+            sub_characteristics_weights.update({subcharacteristic["name"]: subcharacteristic["weight"]})
 
         sum_of_subcharacteristics_weights = round_sum_of_weights(sum_of_subcharacteristics_weights)
 
@@ -168,18 +213,18 @@ def read_file_sub_characteristics(preconfig_json_file):
             raise exceptions.InvalidSubcharacteristic(
                 "The sum of subcharacteristics weights is not 100")
 
-    return subcharacteristics
+    return [sub_characteristics_names, sub_characteristics_weights]
 
 
-def read_file_measures(preconfig_json_file):
+def validate_file_measures(preconfig_json_file):
 
-    measures = {}
+    measures_names = []
+    measures_weights = {}
 
     for characteristic in preconfig_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
 
             sum_of_measures_weights = 0
-            sub_name = subcharacteristic["name"]
 
             for measure in subcharacteristic["measures"]:
 
@@ -201,8 +246,8 @@ def read_file_measures(preconfig_json_file):
                 if "weight" in measure.keys():
                     sum_of_measures_weights = sum_of_measures_weights + measure["weight"]
 
-                measure_auxiliar = {"weights": {sub_name: measure["weight"]}}
-                measures.update({measure["name"]: measure_auxiliar})
+                measures_names.append(measure["name"])
+                measures_weights.update({measure["name"]: measure["weight"]})
 
             sum_of_measures_weights = round_sum_of_weights(sum_of_measures_weights)
 
@@ -212,7 +257,7 @@ def read_file_measures(preconfig_json_file):
                 raise exceptions.InvalidMeasure(
                     "The sum of measures weights is not 100")
 
-    return measures
+    return [measures_names, measures_weights]
 
 
 def round_sum_of_weights(sum_weights):
