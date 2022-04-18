@@ -4,23 +4,29 @@ from flask import request
 from flask_restful import Resource
 import requests
 import mongoengine as me
-from src.util.constants import CORE_URL
-
-# available_entries = requests.get(
-#     CORE_URL + "/available-pre-configs",
-#     headers={"Accept": "application/json"},
-# ).json()
+from src.cli.cliRunner import BASE_URL
+import argparse
 
 pre_configs_id = requests.get(
-    CORE_URL + "/pre-configs/<string:pre_config_id>",
+    BASE_URL + "/pre-configs/<string:pre_config_id>",
     headers={"Accept": "application/json"},
 ).json()
 
 pre_config_goals = requests.get(
-    CORE_URL + "/pre-configs/<string:pre_config2>",
+    BASE_URL + "/pre-configs/<string:pre_config2>",
     headers={"Accept": "application/json"},
 ).json()
 
+list = argparse.ArgumentParser() 
+list.add_argument('list', help='list all pre configurations presents.', type=dict)
+args = list.parse_args()
+# my_list = [int(pre_configs_id) for pre_configs_id in args.list.split(',')]
 
-def search_id (pre_configs_id):
-    pass
+show = argparse.ArgumentParser()
+show.add_argument('show', help='select the desired preset', type=str)
+args2 = show.parse_args()
+
+
+
+
+    
