@@ -6,50 +6,25 @@
 The CLI is a command-line interface to the software.
 
 # How to execute
+-[How to use](https://fga-eps-mds.github.io/2021-2-MeasureSoftGram-Doc/docs/artifact/how_to_use)
 
-Create a folder on the system for MeasureSoftGram, as it will be necessary to download some scripts to run it.
-Download the scripts of start and stop:
-```
-curl https://raw.githubusercontent.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc/main/installation/start.sh -o start.sh && curl https://raw.githubusercontent.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc/main/installation/stop.sh -o stop.sh
-```
-
-# Scripts
-
-## Start
- The start script takes 3 optional parameters:
- 1. Core tag version (default latest)
- 2. Service tag version (default latest)
- 3. Service port (default 5000)
-
-Example:
+## How to run only CLI
+Install this packages
 
 ```
-sh start.sh v1.0.4 v1.0.1 5000
+pip install .
 ```
 
-## Stop
-
-The stop script does not take any parameters
-Example:
-
 ```
-sh stop.sh
-```
-# CLI
-
-The CLI is available on [PyPi](https://pypi.org/project/measuresoftgram/). To run the CLI it is necessary to install:
-
-```
-pip install measuresoftgram
+pip install -r requirements.txt
 ```
 
-To execute the program:
+To show all MeasureSoftGram commands
 
 ```
-measuresoftgram
+python3 main.py
 ```
-
-And with that a help menu will be displayed.
+Then put the command that do you want
 
 # How to run tests
 Install this packages
