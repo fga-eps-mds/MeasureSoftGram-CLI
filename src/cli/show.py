@@ -1,24 +1,17 @@
-import inquirer
-from inquirer.themes import GreenPassion
-from flask import request
-from flask_restful import Resource
 import requests
-import mongoengine as me
-from src.cli.cliRunner import BASE_URL
-import argparse
 
-pre_configs_id = requests.get(
-    BASE_URL + "/pre-configs/<string:pre_config_id>",
-    headers={"Accept": "application/json"},
-).json()
+BASE_URL = "http://localhost:5000/"
 
-pre_configs = requests.get()
 
-list = argparse.ArgumentParser()
-list.add_argument("list", help="list all pre configurations presents.", type=dict)
-args = list.parse_args()
-# my_list = [int(pre_configs_id) for pre_configs_id in args.list.split(',')]
+def parse_show(id):
+    response = requests.get(
+        BASE_URL + f"/pre-configs/{id}",
+        headers={"Accept": "application/json"},
+    )
 
-show = argparse.ArgumentParser()
-show.add_argument("show", help="select the desired preset", type=str)
-args2 = show.parse_args()
+    response_data = response.json()
+
+    if 200 <= response.status_code <= 299:
+        print(response_data)
+    else:
+        print("Error: ", response_data["Error"])

@@ -5,6 +5,8 @@ import requests
 import signal
 from pathlib import Path
 from random import randrange
+from src.cli.show import parse_show
+from src.cli.list import parse_list
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import (
@@ -33,38 +35,6 @@ def parse_import(file_path, id):
     response = requests.post(BASE_URL + "import-metrics", json=payload)
 
     validate_metrics_post(response.status_code, json.loads(response.text))
-
-
-def parse_show(id):
-    response = requests.get(
-        BASE_URL + f"/pre-configs/{id}",
-        headers={"Accept": "application/json"},
-    )
-
-    response_data = response.json()
-
-    if response.status_code >= 200 and response.status_code < 300:
-        print(response_data)
-    else:
-        print("Error: ", response_data["Error"])
-
-
-def parse_list():
-    pre_configs = requests.get(
-        BASE_URL + "/pre-configs",
-        headers={"Accept": "application/json"},
-    ).json()
-
-    print(
-        "{:<30} {:<35} {:<30} {:<10}".format("ID", "Name", "Created at", "Metrics file")
-    )
-
-    for pre_config in pre_configs:
-        print(
-            "{:<30} {:<35} {:<30} {:<10}".format(
-                pre_config["_id"], pre_config["name"], pre_config["created_at"], " "
-            )
-        )
 
 
 def parse_create():
