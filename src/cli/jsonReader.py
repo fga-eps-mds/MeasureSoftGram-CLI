@@ -51,18 +51,20 @@ def preconfig_file_reader(absolute_path, available_pre_configs):
 def read_file_characteristics(preconfig_json_file):
 
     characteristics = {}
+    weights_auxiliar = {}
     char_sub_list = []
 
     for characteristic in preconfig_json_file["characteristics"]:
 
-        characteristic_auxiliar = {
-            "expected_value": characteristic["expected_value"],
-            "weight": characteristic["weight"]}
+        characteristic_auxiliar = {"weight": characteristic["weight"]}
+        weights_auxiliar = {}
 
         for subcharacteristic in characteristic["subcharacteristics"]:
             char_sub_list.append(subcharacteristic["name"])
 
-            characteristic_auxiliar.update({"subcharacteristics": char_sub_list})
+            weights_auxiliar.update({subcharacteristic["name"]: subcharacteristic["weight"]})
+
+            characteristic_auxiliar.update({"subcharacteristics": char_sub_list, "weights": weights_auxiliar})
         char_sub_list = []
 
         characteristics.update({characteristic["name"]: characteristic_auxiliar})
@@ -73,10 +75,13 @@ def read_file_characteristics(preconfig_json_file):
 def read_file_sub_characteristics(preconfig_json_file):
 
     subcharacteristics = {}
+    weights_auxiliar = {}
     sub_mea_list = []
+
     for characteristic in preconfig_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
 
+            weights_auxiliar = {}
             subcharacteristic_auxiliar = {
                 "weights": {characteristic["name"]: subcharacteristic["weight"]},
             }
@@ -84,7 +89,8 @@ def read_file_sub_characteristics(preconfig_json_file):
             for measure in subcharacteristic["measures"]:
                 sub_mea_list.append(measure["name"])
 
-                subcharacteristic_auxiliar.update({"measures": sub_mea_list})
+                weights_auxiliar.update({measure["name"]: measure["weight"]})
+                subcharacteristic_auxiliar.update({"weights": weights_auxiliar, "measures": sub_mea_list})
             sub_mea_list = []
 
             subcharacteristics.update(
@@ -95,18 +101,13 @@ def read_file_sub_characteristics(preconfig_json_file):
 
 def read_file_measures(preconfig_json_file):
 
-    measures = {}
+    measures = []
 
     for characteristic in preconfig_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
-
-            sub_name = subcharacteristic["name"]
-
             for measure in subcharacteristic["measures"]:
 
-                measure_auxiliar = {"weights": {sub_name: measure["weight"]}}
-
-                measures.update({measure["name"]: measure_auxiliar})
+                measures.append(measure["name"])
 
     return measures
 
@@ -132,14 +133,6 @@ def validate_file_characteristics(preconfig_json_file):
             raise exceptions.InvalidCharacteristic(
                 "{} does not have weight value inside parameters (0 to 100).".format(characteristic["name"])
             )
-
-        if "expected_value" not in characteristic.keys():
-            raise exceptions.InvalidCharacteristic(
-                "The file don't have expected_value field"
-            )
-
-        if not validate_expected_value(characteristic["expected_value"]):
-            raise exceptions.InvalidCharacteristic("The expected value does not inside parameters (0 to 100) ")
 
         if "weight" in characteristic.keys():
             sum_of_characteristics_weights = sum_of_characteristics_weights + characteristic["weight"]
@@ -269,10 +262,6 @@ def validate_sum_of_weights(sum_weights):
         return False
 
     return True
-
-
-def validate_expected_value(expected_value):
-    return 0 < expected_value <= 100
 
 
 def validate_core_available(available_pre_configs,
