@@ -4,7 +4,6 @@ import sys
 import requests
 import signal
 from pathlib import Path
-from random import randrange
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import (
