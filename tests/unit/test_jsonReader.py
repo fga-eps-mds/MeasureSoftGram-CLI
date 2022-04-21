@@ -318,7 +318,6 @@ def test_valid_read_file_characteristics():
             {
                 "name": "Reliability",
                 "weight": 100.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -344,8 +343,8 @@ def test_valid_read_file_characteristics():
     }
     characteristics = jsonReader.read_file_characteristics(file_characteristics)
 
-    assert characteristics == {'Reliability': {'expected_value': 22,
-                                               'weight': 100.0, 'subcharacteristics': ['Testing_status']}}
+    assert characteristics == {'Reliability': {'weight': 100.0, 'subcharacteristics': [
+        'Testing_status'], 'weights': {'Testing_status': 100.0}}}
 
 
 def test_valid_validate_file_characteristics():
@@ -354,7 +353,6 @@ def test_valid_validate_file_characteristics():
             {
                 "name": "Reliability",
                 "weight": 100.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -389,7 +387,6 @@ def test_invalid_validate_file_characteristics():
         "characteristics": [
             {
                 "name": "Reliability",
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -421,7 +418,6 @@ def test_invalid_validate_file_characteristics():
         "characteristics": [
             {
                 "weight": 50,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -454,7 +450,6 @@ def test_invalid_validate_file_characteristics():
             {
                 "name": "Reliability",
                 "weight": 50,
-                "expected_value": 22,
                 "subcharacteristics": []
             }
         ]
@@ -463,38 +458,6 @@ def test_invalid_validate_file_characteristics():
     with pytest.raises(exceptions.InvalidCharacteristic):
         jsonReader.validate_file_characteristics(file_characteristics_without_subc)
 
-    file_characteristics_without_expected_value = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 100.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {
-                                "name": "passed_tests",
-                                "weight": 100.0
-                            },
-                            {
-                                "name": "test_builds",
-                                "weight": 100.0
-                            },
-                            {
-                                "name": "test_coverage",
-                                "weight": 100.0
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-
-    with pytest.raises(exceptions.InvalidCharacteristic):
-        jsonReader.validate_file_characteristics(file_characteristics_without_expected_value)
-
 
 def test_valid_read_file_sub_characteristics():
     file_subcharacteristics = {
@@ -502,7 +465,6 @@ def test_valid_read_file_sub_characteristics():
             {
                 "name": "Reliability",
                 "weight": 100.0,
-                "expected_value": 35,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -528,7 +490,8 @@ def test_valid_read_file_sub_characteristics():
     }
     subcharacteristics = jsonReader.read_file_sub_characteristics(file_subcharacteristics)
 
-    assert subcharacteristics == {'Testing_status': {'weights': {'Reliability': 100.0},
+    assert subcharacteristics == {'Testing_status': {'weights': {'passed_tests': 40.0, 'test_builds': 30.0,
+                                                                 'test_coverage': 30.0},
                                                      'measures': ['passed_tests', 'test_builds', 'test_coverage']}}
 
 
@@ -538,7 +501,6 @@ def test_valid_validate_file_sub_characteristics():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -573,7 +535,6 @@ def test_invalid_validate_file_sub_characteristics():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "weight": 30.0,
@@ -605,7 +566,6 @@ def test_invalid_validate_file_sub_characteristics():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -637,7 +597,6 @@ def test_invalid_validate_file_sub_characteristics():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -656,7 +615,6 @@ def test_invalid_validate_file_sub_characteristics():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -678,7 +636,6 @@ def test_valid_read_file_measures():
             {
                 "name": "Reliability",
                 "weight": 100.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -705,8 +662,7 @@ def test_valid_read_file_measures():
 
     measures = jsonReader.read_file_measures(file_measures)
 
-    assert measures == {'passed_tests': {'weights': {'Testing_status': 40.0}}, 'test_builds': {
-        'weights': {'Testing_status': 20.0}}, 'test_coverage': {'weights': {'Testing_status': 40.0}}}
+    assert measures == ['passed_tests', 'test_builds', 'test_coverage']
 
 
 def test_valid_validate_file_measures():
@@ -715,7 +671,6 @@ def test_valid_validate_file_measures():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 32,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -751,7 +706,6 @@ def test_invalid_validate_file_measures():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -783,7 +737,6 @@ def test_invalid_validate_file_measures():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -815,7 +768,6 @@ def test_invalid_validate_file_measures():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -848,7 +800,6 @@ def test_invalid_validate_file_measures():
             {
                 "name": "Reliability",
                 "weight": 25.0,
-                "expected_value": 22,
                 "subcharacteristics": [
                     {
                         "name": "Testing_status",
@@ -936,19 +887,6 @@ def test_validate_sum_of_weights():
     sum_weights = 99.99
 
     validate = jsonReader.validate_sum_of_weights(sum_weights)
-    assert validate is False
-
-
-def test_validate_expected_value():
-
-    expected_value = 80
-
-    validate = jsonReader.validate_expected_value(expected_value)
-    assert validate is True
-
-    expected_value = 120
-
-    validate = jsonReader.validate_expected_value(expected_value)
     assert validate is False
 
 
