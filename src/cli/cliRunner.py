@@ -60,10 +60,7 @@ def parse_create():
         "measures",
     )
 
-    pre_config_name = f"msg_pre_config_{randrange(5)}"
-
     data = {
-        "name": pre_config_name,
         "characteristics": user_characteristics,
         "subcharacteristics": user_sub_characteristic,
         "measures": user_measures,
