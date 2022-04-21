@@ -76,6 +76,23 @@ def parse_create():
     validate_preconfig_post(response.status_code, saved_preconfig)
 
 
+def parse_change_name(pre_config_id, new_name):
+    response = requests.patch(
+        BASE_URL + f"pre-configs/{pre_config_id}", json={"name": new_name}
+    )
+
+    response_data = response.json()
+
+    if 200 <= response.status_code <= 299:
+        print(
+            f'Your Pre Configuration name was succesfully changed to "{response_data["name"]}"'
+        )
+    else:
+        print(
+            f"There was an ERROR while changing your Pre Configuration name:  {response_data['error']}"
+        )
+
+
 def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
@@ -99,6 +116,22 @@ def setup():
 
     subparsers.add_parser("create", help="Create a new model pre configuration")
 
+    change_name = subparsers.add_parser(
+        "change-name", help="Change pre configuration name"
+    )
+
+    change_name.add_argument(
+        "pre_config_id",
+        type=str,
+        help="Pre config ID",
+    )
+
+    change_name.add_argument(
+        "new_name",
+        type=str,
+        help="New pre configuration name",
+    )
+
     args = parser.parse_args()
 
     # if args is empty show help
@@ -109,6 +142,8 @@ def setup():
         parse_import(args.path, args.id)
     elif args.command == "create":
         parse_create()
+    elif args.command == "change-name":
+        parse_change_name(args.pre_config_id, args.new_name)
 
 
 def main():
