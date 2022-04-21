@@ -35,6 +35,38 @@ def parse_import(file_path, id):
     validate_metrics_post(response.status_code, json.loads(response.text))
 
 
+def parse_show(id):
+    response = requests.get(
+        BASE_URL + f"/pre-configs/{id}",
+        headers={"Accept": "application/json"},
+    )
+
+    response_data = response.json()
+
+    if response.status_code >= 200 and response.status_code < 300:
+        print(response_data)
+    else:
+        print("Error: ", response_data["Error"])
+
+
+def parse_list():
+    pre_configs = requests.get(
+        BASE_URL + "/pre-configs",
+        headers={"Accept": "application/json"},
+    ).json()
+
+    print(
+        "{:<30} {:<35} {:<30} {:<10}".format("ID", "Name", "Created at", "Metrics file")
+    )
+
+    for pre_config in pre_configs:
+        print(
+            "{:<30} {:<35} {:<30} {:<10}".format(
+                pre_config["_id"], pre_config["name"], pre_config["created_at"], " "
+            )
+        )
+
+
 def parse_create():
     print("Creating a new pre conf")
 
@@ -102,6 +134,16 @@ def setup():
 
     subparsers.add_parser("create", help="Create a new model pre configuration")
 
+    subparsers.add_parser("list", help="List all pre configurations")
+
+    parser_show = subparsers.add_parser("show", help="show all pre configurations")
+
+    parser_show.add_argument(
+        "pre_config_id",
+        type=str,
+        help="Pre config ID",
+    )
+
     args = parser.parse_args()
 
     # if args is empty show help
@@ -112,6 +154,10 @@ def setup():
         parse_import(args.path, args.id)
     elif args.command == "create":
         parse_create()
+    elif args.command == "list":
+        parse_list()
+    elif args.command == "show":
+        parse_show(args.pre_config_id)
 
 
 def main():

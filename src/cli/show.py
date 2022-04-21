@@ -12,21 +12,13 @@ pre_configs_id = requests.get(
     headers={"Accept": "application/json"},
 ).json()
 
-pre_config_goals = requests.get(
-    BASE_URL + "/pre-configs/<string:pre_config2>",
-    headers={"Accept": "application/json"},
-).json()
+pre_configs = requests.get()
 
-list = argparse.ArgumentParser() 
-list.add_argument('list', help='list all pre configurations presents.', type=dict)
+list = argparse.ArgumentParser()
+list.add_argument("list", help="list all pre configurations presents.", type=dict)
 args = list.parse_args()
 # my_list = [int(pre_configs_id) for pre_configs_id in args.list.split(',')]
 
 show = argparse.ArgumentParser()
-show.add_argument('show', help='select the desired preset', type=str)
+show.add_argument("show", help="select the desired preset", type=str)
 args2 = show.parse_args()
-
-
-
-
-    
