@@ -831,44 +831,126 @@ def test_invalid_validate_file_measures():
 def test_valid_validate_core_available():
 
     available_pre_configs = read_json("tests/unit/data/measuresoftgramFormat.json")
+    file_characteristics = {
+        "characteristics": {
+            "reliability": {
+                "name": "Reliability",
+                "subcharacteristics": ["testing_status"]
+            },
+            "maintainability": {
+                "name": "Maintainability",
+                "subcharacteristics": ["modifiability"]
+            }
+        }
+    }
+    file_subcharacteristics = {
+        "subcharacteristics": {
+            "testing_status": {
+                "name": "Testing Status",
+                "measures": ["passed_tests", "test_builds", "test_coverage"],
+                "characteristics": ["reliability"]
+            },
+        }
+    }
 
-    file_characteristics = ["reliability", "maintainability"]
-    file_subcharacteristics = ["testing_status", "modifiability"]
-    file_measures = ['passed_tests', 'test_builds', 'test_coverage',
-                     'non_complex_file_density', 'commented_file_density', 'duplication_absense']
-
-    jsonReader.validate_core_available(available_pre_configs, file_characteristics,
-                                       file_subcharacteristics, file_measures)
-    assert True
+    assert jsonReader.validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics)
 
 
 def test_invalid_validate_core_available():
 
     available_pre_configs = read_json("tests/unit/data/measuresoftgramFormat.json")
+    file_characteristics = {"characteristics":
+                            {
+                                "usability": {
+                                    "weight": 50,
+                                    "subcharacteristics": ["testing_status"],
+                                    "weights": {"testing_status": 100.0},
+                                },
+                                "maintainability": {
+                                    "weight": 50,
+                                    "subcharacteristics": ["modifiability"],
+                                    "weights": {"modifiability": 100.0},
+                                },
+                            }
+                            }
+    file_subcharacteristics = {
+        "subcharacteristics": {
+            "testing_status": {
+                "weights": {"passed_tests": 100.0},
+                "measures": ["passed_tests"],
+            },
+            "modifiability": {
+                "weights": {"non_complex_file_density": 100.0},
+                "measures": ["non_complex_file_density"],
+            },
+        },
+    }
 
-    file_characteristics = ["true", "maintainability"]
-    file_subcharacteristics = ["testing_status", "modifiability"]
-    file_measures = ['passed_tests', 'test_builds', 'test_coverage',
-                     'non_complex_file_density', 'commented_file_density', 'duplication_absense']
+    assert list(available_pre_configs["characteristics"].keys()) != list(
+        file_characteristics["characteristics"].keys())
 
     with pytest.raises(exceptions.InvalidCharacteristic):
-        jsonReader.validate_core_available(available_pre_configs, file_characteristics,
-                                           file_subcharacteristics, file_measures)
+        jsonReader.validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics)
 
-    file_characteristics = ["reliability", "maintainability"]
-    file_subcharacteristics = ["testing_lol", "modifiability"]
+    file_characteristics = {
+        "characteristics": {
+            "reliability": {
+                "weight": 50,
+                "subcharacteristics": ["modifiability"],
+                "weights": {"testing_status": 100.0},
+            },
+            "maintainability": {
+                "weight": 50,
+                "subcharacteristics": ["modifiability"],
+                "weights": {"modifiability": 100.0},
+            },
+        }
+    }
+    file_subcharacteristics = {
+        "subcharacteristics": {
+            "testing_status": {
+                "weights": {"passed_tests": 100.0},
+                "measures": ["passed_tests"],
+            },
+            "modifiability": {
+                "weights": {"non_complex_file_density": 100.0},
+                "measures": ["non_complex_file_density"],
+            },
+        }
+    }
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
-        jsonReader.validate_core_available(available_pre_configs, file_characteristics,
-                                           file_subcharacteristics, file_measures)
+        jsonReader.validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics)
 
-    file_subcharacteristics = ["testing_status", "modifiability"]
-    file_measures = ['passed_tests', 'test_builds', 'wow',
-                     'non_complex_file_density', 'commented_file_density', 'duplication_absense']
+    file_characteristics = {
+        "characteristics": {
+            "reliability": {
+                "weight": 50,
+                "subcharacteristics": ["testing_status"],
+                "weights": {"testing_status": 100.0},
+            },
+            "maintainability": {
+                "weight": 50,
+                "subcharacteristics": ["modifiability"],
+                "weights": {"modifiability": 100.0},
+            },
+        }
+    }
+    file_subcharacteristics = {
+        "subcharacteristics": {
+            "testing_status": {
+                "weights": {"passed_tests": 100.0},
+                "measures": ["non_complex_file_density"],
+            },
+            "modifiability": {
+                "weights": {"non_complex_file_density": 100.0},
+                "measures": ["passed_tests"],
+            },
+        }
+    }
 
     with pytest.raises(exceptions.InvalidMeasure):
-        jsonReader.validate_core_available(available_pre_configs, file_characteristics,
-                                           file_subcharacteristics, file_measures)
+        jsonReader.validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics)
 
 
 def test_round_of_sum_weights():
@@ -928,7 +1010,7 @@ class TestCheckSonarFormat:
         ),
     ]
 
-    @pytest.mark.parametrize("json_data, error_msg", INVALID_CHECK_SONAR_FORMAT_PARAMS)
+    @ pytest.mark.parametrize("json_data, error_msg", INVALID_CHECK_SONAR_FORMAT_PARAMS)
     def test_check_sonar_format_invalid_json(self, json_data, error_msg):
         """
         Test invalid Sonar JSON data
