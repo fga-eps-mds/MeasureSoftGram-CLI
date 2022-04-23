@@ -24,16 +24,21 @@ def sigint_handler(*_):
 def parse_analysis(id):
     data = {"pre_config_id": id}
     response = requests.post(BASE_URL + "analysis", json=data)
+    print(response.text)
 
 
-def parse_import(file_path, id):
+def parse_import(file_path, id, language_extension):
     try:
         components = file_reader(r"{}".format(file_path))
     except MeasureSoftGramCLIException as error:
         print("Error: ", error)
         return
 
-    payload = {"pre_config_id": id, "components": components}
+    payload = {
+        "pre_config_id": id,
+        "components": components,
+        "language_extension": language_extension,
+    }
 
     response = requests.post(BASE_URL + "import-metrics", json=payload)
 
@@ -103,6 +108,12 @@ def setup():
         "id",
         type=str,
         help="Pre config ID",
+    )
+
+    parser_import.add_argument(
+        "language_extension",
+        type=str,
+        help="The source code language extension",
     )
 
     subparsers.add_parser("create", help="Create a new model pre configuration")
