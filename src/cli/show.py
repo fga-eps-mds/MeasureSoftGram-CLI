@@ -11,6 +11,7 @@ def parse_show(id):
 
     response_data = response.json()
 
+    # TODO - Pretty print the response
     if 200 <= response.status_code <= 299:
         print(response_data)
     else:
