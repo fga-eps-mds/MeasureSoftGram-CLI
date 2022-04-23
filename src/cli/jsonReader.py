@@ -265,7 +265,7 @@ def validate_sum_of_weights(sum_weights):
 
 def validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics):
     core_characteristics = list(available_pre_configs["characteristics"].keys())
-    characteristics = list(file_characteristics["characteristics"].keys())
+    characteristics = list(file_characteristics.keys())
 
     core_characteristics.sort()
     characteristics.sort()
@@ -273,13 +273,13 @@ def validate_core_available(available_pre_configs, file_characteristics, file_su
     if characteristics != core_characteristics:
         raise exceptions.InvalidCharacteristic("The characteristic is not in MeasureSoftGram data base")
 
-    for char in file_characteristics["characteristics"].keys():
-        if not all(elem in file_characteristics["characteristics"][char]["subcharacteristics"]
+    for char in file_characteristics.keys():
+        if not all(elem in file_characteristics[char]["subcharacteristics"]
                    for elem in available_pre_configs["characteristics"][char]["subcharacteristics"]):
             raise exceptions.InvalidSubcharacteristic("The sub-characteristic is not in MeasureSoftGram data base")
 
-    for sub in file_subcharacteristics["subcharacteristics"].keys():
-        if not all(elem in file_subcharacteristics["subcharacteristics"][sub]["measures"]
+    for sub in file_subcharacteristics.keys():
+        if not all(elem in file_subcharacteristics[sub]["measures"]
                    for elem in available_pre_configs["subcharacteristics"][sub]["measures"]):
             raise exceptions.InvalidMeasure("The measure is not in MeasureSoftgram data base")
 
