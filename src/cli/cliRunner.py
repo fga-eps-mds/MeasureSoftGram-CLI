@@ -7,6 +7,7 @@ from pathlib import Path
 from random import randrange
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.jsonReader import file_reader, validate_metrics_post
+from src.cli.results import validade_analysis_response
 from src.cli.create import (
     define_characteristic,
     define_sublevel,
@@ -24,7 +25,7 @@ def sigint_handler(*_):
 def parse_analysis(id):
     data = {"pre_config_id": id}
     response = requests.post(BASE_URL + "analysis", json=data)
-    print(response.text)
+    validade_analysis_response(response)
 
 
 def parse_import(file_path, id, language_extension):
