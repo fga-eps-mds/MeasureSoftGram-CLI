@@ -3,12 +3,13 @@ import json
 import sys
 import requests
 import signal
+import textwrap
 from pathlib import Path
 from random import randrange
 from src.cli.jsonReader import (
     file_reader,
     validate_metrics_post,
-    preconfig_file_reader
+    preconfig_file_reader,
 )
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.create import (
@@ -98,6 +99,39 @@ def parse_preconfig(file_path):
     validate_preconfig_post(response.status_code, saved_preconfig)
 
 
+def get_available_preconfig_help_string():
+
+    available_pre_configs = requests.get(
+        BASE_URL + "available-pre-configs",
+        headers={"Accept": "application/json"}
+    ).json()
+
+    message = "\nThese are all items available in the MeasureSoftGram database in the following order:\
+            \nCharacteristics -> Subcharacteristics -> Measures -> Necessary Metrics"
+
+    for characteristic in available_pre_configs["characteristics"]:
+        message = message + (
+            "\n\n    {}:".format(available_pre_configs["characteristics"][characteristic]["name"]))
+
+        for subcharacteristic in available_pre_configs["subcharacteristics"]:
+            if available_pre_configs["characteristics"][characteristic]["name"].lower().replace(" ", "_") in \
+                    available_pre_configs["subcharacteristics"][subcharacteristic]["characteristics"]:
+                message = message + (
+                    "\n        {}:".format(available_pre_configs["subcharacteristics"][subcharacteristic]["name"]))
+
+                for measure in available_pre_configs["measures"]:
+                    if available_pre_configs["subcharacteristics"][subcharacteristic]["name"]\
+                        .lower().replace(" ", "_") in \
+                            available_pre_configs["measures"][measure]["subcharacteristics"]:
+                        message = message + (
+                            "\n            {}:".format(available_pre_configs["measures"][measure]["name"]))
+                        message = message + \
+                            ("\n                {}".format(
+                                ', '.join(available_pre_configs["measures"][measure]["metrics"])))
+
+    return message
+
+
 def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
@@ -121,7 +155,12 @@ def setup():
 
     subparsers.add_parser("create", help="Create a new model pre configuration")
 
-    parser_preconfig = subparsers.add_parser("preconfig", help="Import a preconfigs by file")
+    parser_preconfig = subparsers.add_parser(
+        "preconfig",
+        help="Import preconfig by file",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent(get_available_preconfig_help_string())
+    )
 
     parser_preconfig.add_argument(
         "path",
