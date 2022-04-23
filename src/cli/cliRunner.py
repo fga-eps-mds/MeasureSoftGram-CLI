@@ -21,6 +21,11 @@ def sigint_handler(*_):
     sys.exit(0)
 
 
+def parse_analysis(id):
+    data = {"pre_config_id": id}
+    response = requests.post(BASE_URL + "analysis", json=data)
+
+
 def parse_import(file_path, id):
     try:
         components = file_reader(r"{}".format(file_path))
@@ -102,6 +107,13 @@ def setup():
 
     subparsers.add_parser("create", help="Create a new model pre configuration")
 
+    parser_analysis = subparsers.add_parser("analysis", help="Get analysis result")
+    parser_analysis.add_argument(
+        "id",
+        type=str,
+        help="Pre config ID",
+    )
+
     args = parser.parse_args()
 
     # if args is empty show help
@@ -112,6 +124,8 @@ def setup():
         parse_import(args.path, args.id)
     elif args.command == "create":
         parse_create()
+    elif args.command == "analysis":
+        parse_analysis(args.id)
 
 
 def main():
