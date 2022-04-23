@@ -1,13 +1,19 @@
-import sys
-import signal
-import requests
 import argparse
-from src.cli.jsonReader import file_reader
+import json
+import sys
+import requests
+import signal
+from pathlib import Path
+from random import randrange
+from src.cli.exceptions import MeasureSoftGramCLIException
+from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import (
     define_characteristic,
-    define_subcharacteristics,
-    define_measures,
+    define_sublevel,
+    validate_preconfig_post,
 )
+
+BASE_URL = "http://localhost:5000/"
 
 
 def sigint_handler(*_):
@@ -15,13 +21,23 @@ def sigint_handler(*_):
     sys.exit(0)
 
 
-def parse_import():
-    print("Importing metrics")
-    user_path = input("Please provide sonar json absolute file path: ")
-    file_reader(r"{}".format(user_path))
+def parse_analysis(id):
+    data = {"pre_config_id": id}
+    response = requests.post(BASE_URL + "analysis", json=data)
 
 
-BASE_URL = "http://localhost:5000/"
+def parse_import(file_path, id):
+    try:
+        components = file_reader(r"{}".format(file_path))
+    except MeasureSoftGramCLIException as error:
+        print("Error: ", error)
+        return
+
+    payload = {"pre_config_id": id, "components": components}
+
+    response = requests.post(BASE_URL + "import-metrics", json=payload)
+
+    validate_metrics_post(response.status_code, json.loads(response.text))
 
 
 def parse_create():
@@ -35,36 +51,81 @@ def parse_create():
         available_pre_config
     )
 
-    [user_sub_characteristic, sub_characteristic_weights] = define_subcharacteristics(
-        user_characteristics, available_pre_config
+    [user_sub_characteristic, sub_characteristic_weights] = define_sublevel(
+        user_characteristics,
+        available_pre_config,
+        "characteristics",
+        "subcharacteristics",
     )
 
-    [user_measures, measures_weights] = define_measures(
-        user_sub_characteristic, available_pre_config
+    [user_measures, measures_weights] = define_sublevel(
+        user_sub_characteristic,
+        available_pre_config,
+        "subcharacteristics",
+        "measures",
     )
 
-    pass
+    pre_config_name = f"msg_pre_config_{randrange(5)}"
+
+    data = {
+        "name": pre_config_name,
+        "characteristics": user_characteristics,
+        "subcharacteristics": user_sub_characteristic,
+        "measures": user_measures,
+        "characteristics_weights": caracteristics_weights,
+        "subcharacteristics_weights": sub_characteristic_weights,
+        "measures_weights": measures_weights,
+    }
+
+    response = requests.post(BASE_URL + "/pre-configs", json=data)
+
+    saved_preconfig = json.loads(response.text)
+
+    validate_preconfig_post(response.status_code, saved_preconfig)
 
 
 def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
     )
-    subparsers = parser.add_subparsers(help="sub-command help")
+    subparsers = parser.add_subparsers(dest="command", help="sub-command help")
+
     parser_import = subparsers.add_parser("import", help="Import a metrics file")
-    parser_create = subparsers.add_parser(
-        "create", help="Create a new model pre configuration"
+
+    parser_import.add_argument(
+        "path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the data directory",
     )
 
-    parser_import.set_defaults(func=parse_import)
-    parser_create.set_defaults(func=parse_create)
+    parser_import.add_argument(
+        "id",
+        type=str,
+        help="Pre config ID",
+    )
+
+    subparsers.add_parser("create", help="Create a new model pre configuration")
+
+    parser_analysis = subparsers.add_parser("analysis", help="Get analysis result")
+    parser_analysis.add_argument(
+        "id",
+        type=str,
+        help="Pre config ID",
+    )
 
     args = parser.parse_args()
+
     # if args is empty show help
     if not sys.argv[1:]:
         parser.print_help()
         return
-    args.func()
+    elif args.command == "import":
+        parse_import(args.path, args.id)
+    elif args.command == "create":
+        parse_create()
+    elif args.command == "analysis":
+        parse_analysis(args.id)
 
 
 def main():
