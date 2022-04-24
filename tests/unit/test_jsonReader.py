@@ -349,7 +349,7 @@ class TestCheckSonarFormat:
         ),
     ]
 
-    @ pytest.mark.parametrize("json_data, error_msg", INVALID_CHECK_SONAR_FORMAT_PARAMS)
+    @pytest.mark.parametrize("json_data, error_msg", INVALID_CHECK_SONAR_FORMAT_PARAMS)
     def test_check_sonar_format_invalid_json(self, json_data, error_msg):
         """
         Test invalid Sonar JSON data
