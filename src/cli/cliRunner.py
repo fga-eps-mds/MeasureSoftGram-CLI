@@ -5,17 +5,14 @@ import requests
 import signal
 import textwrap
 from pathlib import Path
-from random import randrange
 from src.cli.jsonReader import (
     file_reader,
-    validate_metrics_post,
-    preconfig_file_reader,
+    validate_metrics_post
 )
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.create import (
-    define_characteristic,
-    define_sublevel,
     validate_preconfig_post,
+    preconfig_file_reader
 )
 
 BASE_URL = "http://localhost:5000/"
@@ -40,51 +37,7 @@ def parse_import(file_path, id):
     validate_metrics_post(response.status_code, json.loads(response.text))
 
 
-def parse_create():
-    print("Creating a new pre conf")
-
-    available_pre_config = requests.get(
-        BASE_URL + "available-pre-configs", headers={"Accept": "application/json"}
-    ).json()
-
-    [user_characteristics, caracteristics_weights] = define_characteristic(
-        available_pre_config
-    )
-
-    [user_sub_characteristic, sub_characteristic_weights] = define_sublevel(
-        user_characteristics,
-        available_pre_config,
-        "characteristics",
-        "subcharacteristics",
-    )
-
-    [user_measures, measures_weights] = define_sublevel(
-        user_sub_characteristic,
-        available_pre_config,
-        "subcharacteristics",
-        "measures",
-    )
-
-    pre_config_name = f"msg_pre_config_{randrange(5)}"
-
-    data = {
-        "name": pre_config_name,
-        "characteristics": user_characteristics,
-        "subcharacteristics": user_sub_characteristic,
-        "measures": user_measures,
-        "characteristics_weights": caracteristics_weights,
-        "subcharacteristics_weights": sub_characteristic_weights,
-        "measures_weights": measures_weights,
-    }
-
-    response = requests.post(BASE_URL + "/pre-configs", json=data)
-
-    saved_preconfig = json.loads(response.text)
-
-    validate_preconfig_post(response.status_code, saved_preconfig)
-
-
-def parse_preconfig(file_path):
+def parse_create(file_path):
     available_pre_config = requests.get(
         BASE_URL + "available-pre-configs", headers={"Accept": "application/json"}
     ).json()
@@ -153,16 +106,16 @@ def setup():
         help="Pre config ID",
     )
 
-    subparsers.add_parser("create", help="Create a new model pre configuration")
+    # subparsers.add_parser("create", help="Create a new model pre configuration")
 
-    parser_preconfig = subparsers.add_parser(
-        "preconfig",
+    parser_create = subparsers.add_parser(
+        "create",
         help="Import preconfig by file",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent(get_available_preconfig_help_string())
     )
 
-    parser_preconfig.add_argument(
+    parser_create.add_argument(
         "path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
@@ -178,9 +131,7 @@ def setup():
     elif args.command == "import":
         parse_import(args.path, args.id)
     elif args.command == "create":
-        parse_create()
-    elif args.command == "preconfig":
-        parse_preconfig(args.path)
+        parse_create(args.path)
 
 
 def main():

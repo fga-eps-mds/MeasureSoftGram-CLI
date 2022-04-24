@@ -3,8 +3,6 @@ from src.cli import exceptions
 from src.cli.jsonReader import (check_file_extension,
                                 open_json_file)
 
-BASE_URL = "http://localhost:5000/"
-
 
 def preconfig_file_reader(absolute_path, available_pre_configs):
 
