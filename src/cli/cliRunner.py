@@ -25,6 +25,7 @@ def sigint_handler(*_):
 def parse_analysis(id):
     data = {"pre_config_id": id}
     response = requests.post(BASE_URL + "analysis", json=data)
+
     validade_analysis_response(response)
 
 
