@@ -14,8 +14,10 @@ def parse_list():
     )
 
     for pre_config in pre_configs:
+        pre_config_name = pre_config["name"] if pre_config["name"] else "-"
+
         print(
             "{:<30} {:<35} {:<30} {:<10}".format(
-                pre_config["_id"], pre_config["name"], pre_config["created_at"], " "
+                pre_config["_id"], pre_config_name, pre_config["created_at"], ""
             )
         )
