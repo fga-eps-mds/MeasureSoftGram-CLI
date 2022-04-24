@@ -42,7 +42,9 @@ def test_pre_configs_list(mocker):
         assert header_regexp.match(output_lines[0]) is not None
 
         line_regexp = re.compile(
-            r"(?P<id>[0-9a-z]+)\s+(?P<name>[^\s]+)\s+(?P<created_at>\d{2,}/\d{2,}/\d{4,}\s\d{2,}:\d{2,}:\d{2,})\s+(?P<metrics_file>[^\s]+)"
+            r"(?P<id>[0-9a-z]+)\s+(?P<name>[^\s]+)\s+"
+            + r"(?P<created_at>\d{2,}/\d{2,}/\d{4,}\s\d{2,}:\d{2,}:\d{2,})\s+"
+            + r"(?P<metrics_file>[^\s]+)"
         )
 
         expected_groups = [

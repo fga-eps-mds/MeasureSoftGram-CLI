@@ -1,6 +1,5 @@
 import requests
-import pytz
-from datetime import datetime
+from src.cli.utils import pretty_date_str
 
 BASE_URL = "http://localhost:5000/"
 
@@ -22,13 +21,8 @@ def parse_list():
     )
 
     for pre_config in pre_configs:
+        created_at = pretty_date_str(pre_config["created_at"])
         pre_config_name = pre_config["name"] if pre_config["name"] else "-"
-
-        created_at = datetime.fromisoformat(pre_config["created_at"]).astimezone(
-            pytz.timezone("Brazil/East")
-        )
-
-        created_at = created_at.strftime("%m/%d/%Y %H:%M:%S")
 
         print(
             "{:<30} {:<35} {:<30} {:<10}".format(
