@@ -133,7 +133,7 @@ def setup():
         parser.print_help()
         return
     elif args.command == "import":
-        parse_import(args.path, args.id)
+        parse_import(args.path, args.id, args.language_extension)
     elif args.command == "create":
         parse_create()
     elif args.command == "analysis":
