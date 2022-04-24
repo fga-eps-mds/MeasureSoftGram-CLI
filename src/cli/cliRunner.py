@@ -106,7 +106,9 @@ def setup():
 
     subparsers.add_parser("list", help="List all pre configurations")
 
-    parser_show = subparsers.add_parser("show", help="show all pre configurations")
+    parser_show = subparsers.add_parser(
+        "show", help="Show all information of a pre configuration"
+    )
 
     parser_show.add_argument(
         "pre_config_id",
