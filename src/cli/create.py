@@ -1,60 +1,284 @@
-import inquirer
-from inquirer.themes import GreenPassion
 
-VALID_WEIGHT_SUM_ADVISE = "the sum of the weights must be 100"
-INVALID_WEIGHT_SUM_ERROR = "Invalid weights, " + VALID_WEIGHT_SUM_ADVISE
+from src.cli import exceptions
+from src.cli.jsonReader import (check_file_extension,
+                                open_json_file)
 
-VALID_WEIGHT_ADVISE = "the weight must be between 0 and 100"
-INVALID_WEIGHT_VALUE = "Invalid weight, " + VALID_WEIGHT_ADVISE
-
-VALID_CHECKBOX_ERROR = "Select at least one Check-Box"
+BASE_URL = "http://localhost:5000/"
 
 
-def sum_weight_file(measures: list):
+def preconfig_file_reader(absolute_path, available_pre_configs):
 
-    sum_weights = 0
+    core_format = available_pre_configs
+    check_file_extension(absolute_path)
 
-    for item in measures:
-        for v in item.values():
-            sum_weights += float(v)
+    preconfig_json_file = open_json_file(absolute_path)
+
+    preconfig_file_name = preconfig_json_file["pre_config_name"]
+
+    file_characteristics = read_file_characteristics(preconfig_json_file)
+    validate_file_characteristics(preconfig_json_file)
+
+    file_sub_characteristics = read_file_sub_characteristics(preconfig_json_file)
+    validate_file_sub_characteristics(preconfig_json_file)
+
+    file_measures = read_file_measures(preconfig_json_file)
+    validate_file_measures(preconfig_json_file)
+
+    validate_core_available(core_format,
+                            file_characteristics,
+                            file_sub_characteristics)
+
+    preconfig = {
+        "name": preconfig_file_name,
+        "characteristics": file_characteristics,
+        "subcharacteristics": file_sub_characteristics,
+        "measures": file_measures,
+    }
+
+    return preconfig
+
+
+def read_file_characteristics(preconfig_json_file):
+
+    characteristics = {}
+    weights_auxiliar = {}
+    char_sub_list = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+
+        characteristic_auxiliar = {"weight": characteristic["weight"]}
+        weights_auxiliar = {}
+
+        for subcharacteristic in characteristic["subcharacteristics"]:
+            char_sub_list.append(subcharacteristic["name"])
+
+            weights_auxiliar.update({subcharacteristic["name"]: subcharacteristic["weight"]})
+
+            characteristic_auxiliar.update({"subcharacteristics": char_sub_list, "weights": weights_auxiliar})
+        char_sub_list = []
+
+        characteristics.update({characteristic["name"]: characteristic_auxiliar})
+
+    return characteristics
+
+
+def read_file_sub_characteristics(preconfig_json_file):
+
+    subcharacteristics = {}
+    weights_auxiliar = {}
+    sub_mea_list = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+        for subcharacteristic in characteristic["subcharacteristics"]:
+
+            weights_auxiliar = {}
+            subcharacteristic_auxiliar = {
+                "weights": {characteristic["name"]: subcharacteristic["weight"]},
+            }
+
+            for measure in subcharacteristic["measures"]:
+                sub_mea_list.append(measure["name"])
+
+                weights_auxiliar.update({measure["name"]: measure["weight"]})
+                subcharacteristic_auxiliar.update({"weights": weights_auxiliar, "measures": sub_mea_list})
+            sub_mea_list = []
+
+            subcharacteristics.update(
+                {subcharacteristic["name"]: subcharacteristic_auxiliar})
+
+    return subcharacteristics
+
+
+def read_file_measures(preconfig_json_file):
+
+    measures = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+        for subcharacteristic in characteristic["subcharacteristics"]:
+            for measure in subcharacteristic["measures"]:
+
+                measures.append(measure["name"])
+
+    return measures
+
+
+def validate_file_characteristics(preconfig_json_file):
+
+    sum_of_characteristics_weights = 0
+    characteristics_names = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+
+        if "name" not in characteristic.keys():
+            raise exceptions.InvalidCharacteristic(
+                "Expected characteristic name field."
+            )
+
+        if "weight" not in characteristic.keys():
+            raise exceptions.InvalidCharacteristic(
+                "{} does not have weight field defined.".format(characteristic["name"])
+            )
+
+        if not validate_weight_value(characteristic["weight"]):
+            raise exceptions.InvalidCharacteristic(
+                "{} does not have weight value inside parameters (0 to 100).".format(characteristic["name"])
+            )
+
+        if "weight" in characteristic.keys():
+            sum_of_characteristics_weights = sum_of_characteristics_weights + characteristic["weight"]
+
+        if "subcharacteristics" not in characteristic.keys():
+            raise exceptions.InvalidCharacteristic(
+                "{} does not have subcharacteristics field defined.".format(characteristic["name"])
+            )
+
+        if characteristic["subcharacteristics"] is None or len(characteristic["subcharacteristics"]) == 0:
+            raise exceptions.InvalidCharacteristic(
+                "{} needs to have at least one subcharacteristic defined.".format(characteristic["name"])
+            )
+
+        characteristics_names.append(characteristic["name"])
+
+    sum_of_characteristics_weights = round_sum_of_weights(sum_of_characteristics_weights)
+
+    if validate_sum_of_weights(sum_of_characteristics_weights) is False:
+        raise exceptions.InvalidCharacteristic(
+            "The sum of characteristics weights of is not 100")
+
+    return True
+
+
+def validate_file_sub_characteristics(preconfig_json_file):
+
+    sub_characteristics_names = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+
+        sum_of_subcharacteristics_weights = 0
+
+        for subcharacteristic in characteristic["subcharacteristics"]:
+
+            if "name" not in subcharacteristic.keys():
+                raise exceptions.InvalidSubcharacteristic(
+                    "Expected sub-characteristic name field."
+                )
+
+            if "weight" not in subcharacteristic.keys():
+                raise exceptions.InvalidSubcharacteristic(
+                    "{} does not have weight field defined.".format(subcharacteristic["name"])
+                )
+
+            if not validate_weight_value(subcharacteristic["weight"]):
+                raise exceptions.InvalidSubcharacteristic(
+                    "{} does not have weight value inside parameters (0 to 100).".format(
+                        subcharacteristic["name"])
+                )
+
+            if "weight" in subcharacteristic.keys():
+                sum_of_subcharacteristics_weights = sum_of_subcharacteristics_weights + subcharacteristic["weight"]
+
+            if "measures" not in subcharacteristic.keys():
+                raise exceptions.InvalidSubcharacteristic(
+                    "{} does not have measures field defined.".format(subcharacteristic["name"])
+                )
+
+            if subcharacteristic["measures"] is None or len(subcharacteristic["measures"]) == 0:
+                raise exceptions.InvalidSubcharacteristic(
+                    "{} needs to have at least one measure defined.".format(subcharacteristic["name"])
+                )
+
+            sub_characteristics_names.append(subcharacteristic["name"])
+
+        sum_of_subcharacteristics_weights = round_sum_of_weights(sum_of_subcharacteristics_weights)
+
+        if validate_sum_of_weights(sum_of_subcharacteristics_weights) is False:
+            raise exceptions.InvalidSubcharacteristic(
+                "The sum of subcharacteristics weights is not 100")
+
+    return True
+
+
+def validate_file_measures(preconfig_json_file):
+
+    measures_names = []
+
+    for characteristic in preconfig_json_file["characteristics"]:
+        for subcharacteristic in characteristic["subcharacteristics"]:
+
+            sum_of_measures_weights = 0
+
+            for measure in subcharacteristic["measures"]:
+
+                if "name" not in measure.keys():
+                    raise exceptions.InvalidMeasure(
+                        "Expected measure name field."
+                    )
+
+                if "weight" not in measure.keys():
+                    raise exceptions.InvalidMeasure(
+                        "{} does not have weight field defined.".format(measure["name"])
+                    )
+
+                if not validate_weight_value(measure["weight"]):
+                    raise exceptions.InvalidMeasure(
+                        "{} does not have weight value inside parameters (0 to 100).".format(measure["name"])
+                    )
+
+                if "weight" in measure.keys():
+                    sum_of_measures_weights = sum_of_measures_weights + measure["weight"]
+
+                measures_names.append(measure["name"])
+
+            sum_of_measures_weights = round_sum_of_weights(sum_of_measures_weights)
+
+            if validate_sum_of_weights(sum_of_measures_weights) is False:
+                raise exceptions.InvalidMeasure(
+                    "The sum of measures weights is not 100")
+
+    return True
+
+
+def round_sum_of_weights(sum_weights):
+
+    if 0 < round(100 - sum_weights, 2) <= 0.01:
+        sum_weights = 100
 
     return sum_weights
 
 
-def define_weight(data_key, data_name):
-    while True:
-        weights = [
-            inquirer.Text(
-                data_key,
-                message="Enter the weight of "
-                + data_name
-                + f" ({VALID_WEIGHT_SUM_ADVISE})",
-            )
-        ]
-        defined_weight = inquirer.prompt(
-            weights, theme=GreenPassion(), raise_keyboard_interrupt=True
-        )
-        if validate_weight_value(float(defined_weight[data_key])):
-            break
-        print(INVALID_WEIGHT_VALUE)
+def validate_sum_of_weights(sum_weights):
 
-    return defined_weight
+    if sum_weights != 100.0:
+        return False
+
+    return True
 
 
-def validate_weight_sum(items):
-    sum_of_weights = sum_weight_file(items)
+def validate_core_available(available_pre_configs, file_characteristics, file_subcharacteristics):
+    core_characteristics = list(available_pre_configs["characteristics"].keys())
+    characteristics = list(file_characteristics.keys())
 
-    if 0 < round(100 - sum_of_weights, 2) <= 0.01:
-        sum_of_weights = 100
-    return sum_of_weights == 100
+    core_characteristics.sort()
+    characteristics.sort()
+
+    if characteristics != core_characteristics:
+        raise exceptions.InvalidCharacteristic("The characteristic is not in MeasureSoftGram data base")
+
+    for char in file_characteristics.keys():
+        if not all(elem in file_characteristics[char]["subcharacteristics"]
+                   for elem in available_pre_configs["characteristics"][char]["subcharacteristics"]):
+            raise exceptions.InvalidSubcharacteristic("The sub-characteristic is not in MeasureSoftGram data base")
+
+    for sub in file_subcharacteristics.keys():
+        if not all(elem in file_subcharacteristics[sub]["measures"]
+                   for elem in available_pre_configs["subcharacteristics"][sub]["measures"]):
+            raise exceptions.InvalidMeasure("The measure is not in MeasureSoftgram data base")
+
+    return True
 
 
 def validate_weight_value(weight):
     return 0 < weight <= 100
-
-
-def validate_check_box_input(selected):
-    return selected > 0
 
 
 def validate_preconfig_post(status_code, response):
@@ -66,190 +290,3 @@ def validate_preconfig_post(status_code, response):
         print(
             f"\nThere was an ERROR while creating your Pre Configuration:  {response['error']}"
         )
-
-
-def print_error_message(message, is_input_valid):
-    if not is_input_valid:
-        print(message)
-
-
-def sublevel_cli(level_name, level_alias, sublevels, available_pre_config):
-    reverse_sublevel = {v["name"]: k for k, v in available_pre_config.items()}
-
-    sublevels_answer = [
-        inquirer.Checkbox(
-            "sublevels",
-            message="Choose the " + level_alias + " for " + level_name,
-            choices=[available_pre_config[x]["name"] for x in sublevels],
-        )
-    ]
-    user_sublevels = inquirer.prompt(
-        sublevels_answer, theme=GreenPassion(), raise_keyboard_interrupt=True
-    )
-
-    user_sublevels = [reverse_sublevel[x] for x in user_sublevels["sublevels"]]
-
-    return user_sublevels
-
-
-def define_characteristic(available_pre_config):
-    characteristics = available_pre_config["characteristics"]
-
-    if len(characteristics) == 1:
-        user_characteristics = list(characteristics.keys())
-        characteristics_weights = [{user_characteristics[0]: 100}]
-        return user_characteristics, characteristics_weights
-
-    user_characteristics = select_characteristics(characteristics)
-
-    if len(user_characteristics) == 1:
-        print("\nOnly one characteristic selected, no need to define weights")
-        characteristics_weights = [{user_characteristics[0]: 100}]
-        return user_characteristics, characteristics_weights
-
-    characteristics_weights = input_weights(characteristics, user_characteristics)
-
-    return user_characteristics, characteristics_weights
-
-
-def select_characteristics(characteristics):
-    reversed_characteristics = {v["name"]: k for k, v in characteristics.items()}
-
-    def body_func():
-        characteristics_answer = [
-            inquirer.Checkbox(
-                "characteristics",
-                message="Choose the characteristics",
-                choices=[x["name"] for x in characteristics.values()],
-            )
-        ]
-
-        return inquirer.prompt(
-            characteristics_answer,
-            theme=GreenPassion(),
-            raise_keyboard_interrupt=True,
-        )
-
-    def validation_func(values):
-        return validate_check_box_input(len(values["characteristics"]))
-
-    user_characteristics = generic_valid_input(
-        validation_func,
-        body_func,
-        VALID_CHECKBOX_ERROR,
-        {"characteristics": []},
-    )
-
-    user_characteristics = [
-        reversed_characteristics[x] for x in user_characteristics["characteristics"]
-    ]
-
-    return user_characteristics
-
-
-def select_sublevels(available_pre_config, level_key, sublevel_key, current_level):
-    def body_func():
-        return sublevel_cli(
-            available_pre_config[level_key][current_level]["name"],
-            sublevel_key,
-            available_pre_config[level_key][current_level][sublevel_key],
-            available_pre_config[sublevel_key],
-        )
-
-    def validation_func(values):
-        return validate_check_box_input(len(values))
-
-    return generic_valid_input(
-        validation_func,
-        body_func,
-        VALID_CHECKBOX_ERROR,
-    )
-
-
-def generic_valid_input(
-    validation_function, body_function, error_message, initial_value=None
-):
-    values = [] if initial_value is None else initial_value
-    valid_input = validation_function(values)
-
-    while not valid_input:
-        values = body_function()
-
-        valid_input = validation_function(values)
-
-        print_error_message(error_message, valid_input)
-
-    return values
-
-
-def input_weights(sublevels_config, user_sublevels):
-    def body_func():
-        sublevels_weights = []
-        for x in user_sublevels:
-            sublevels_weights.append(define_weight(x, sublevels_config[x]["name"]))
-        return sublevels_weights
-
-    def validation_func(values):
-        return validate_weight_sum(values)
-
-    return generic_valid_input(
-        validation_func, body_func, INVALID_WEIGHT_SUM_ERROR, [{"empty": 0}]
-    )
-
-
-def has_one_sublevel(available_pre_config, level_key, sublevel_key, current_level):
-    return len(available_pre_config[level_key][current_level][sublevel_key]) == 1
-
-
-def print_no_need_define_weights_msg(sublevel_key, key_value):
-    print(
-        f"\nOnly one {sublevel_key} {key_value} selected, no need to define weights\n"
-    )
-
-
-def define_sublevel(user_levels, available_pre_config, level_key, sublevel_key):
-    sublevels = available_pre_config[sublevel_key]
-
-    if len(sublevels) == 1:
-        user_sublevels = list(sublevels.keys())
-        sublevels_weights = [{user_sublevels[0]: 100}]
-
-        return user_sublevels, sublevels_weights
-
-    selected_sublevels = []
-    sublevels_weights = []
-
-    for x in user_levels:
-        if has_one_sublevel(available_pre_config, level_key, sublevel_key, x):
-            local_selected_sublevels = available_pre_config[level_key][x][sublevel_key]
-            local_selected_weights = [{local_selected_sublevels[0]: 100}]
-
-            print_no_need_define_weights_msg(
-                sublevel_key,
-                available_pre_config[sublevel_key][local_selected_sublevels[0]]["name"],
-            )
-
-        else:
-            local_selected_sublevels = select_sublevels(
-                available_pre_config, level_key, sublevel_key, x
-            )
-
-            if len(local_selected_sublevels) == 1:
-                local_selected_weights = [{local_selected_sublevels[0]: 100}]
-
-                print_no_need_define_weights_msg(
-                    sublevel_key,
-                    available_pre_config[sublevel_key][local_selected_sublevels[0]][
-                        "name"
-                    ],
-                )
-
-            else:
-                local_selected_weights = input_weights(
-                    available_pre_config[sublevel_key], local_selected_sublevels
-                )
-
-        selected_sublevels.extend(local_selected_sublevels)
-        sublevels_weights.extend(local_selected_weights)
-
-    return selected_sublevels, sublevels_weights
