@@ -20,8 +20,8 @@ pip install -r requirements.txt
 ```
 
 To show all MeasureSoftGram commands
-If do you want to see all commands use
-use:
+If do you want to see all commands use:
+
 ```
 pip install .
 ```
