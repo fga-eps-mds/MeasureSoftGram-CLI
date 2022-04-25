@@ -168,10 +168,9 @@ def setup():
     elif args.command == "import":
         parse_import(args.path, args.id, args.language_extension)
     elif args.command == "create":
-        parse_create()
+        parse_create(args.path)
     elif args.command == "analysis":
         parse_analysis(args.id)
-        parse_create(args.path)
     elif args.command == "available":
         parse_available()
     elif args.command == "list":

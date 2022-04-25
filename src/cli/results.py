@@ -25,6 +25,6 @@ def validade_analysis_response(status_code, response_json):
     if status_code == 201 or status_code == 200:
         print_results(response_json)
     elif status_code == 404:
-        print(response_json["error"])
+        print("Error: ", response_json["error"])
     else:
         print("Error while making analysis")
