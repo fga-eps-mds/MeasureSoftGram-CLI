@@ -13,7 +13,7 @@ def capture(command):
 
 def test_import_metrics_file_not_found_exception_handling():
     out, _, returncode = capture(
-        ["measuresoftgram", "import", "tests/system/data/sona.json", "123"]
+        ["measuresoftgram", "import", "tests/system/data/sona.json", "123", "py"]
     )
 
     assert returncode == 0
