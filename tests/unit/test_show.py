@@ -65,11 +65,11 @@ def test_pre_configs_show(mocker):
 
 
 def test_error_in_pre_config_list(mocker):
-    error_res = {"Error": "Generic Not Found Error"}
+    error_res = {"error": "Generic Not Found Error"}
 
     mocker.patch("requests.get", return_value=DummyResponse(404, error_res))
 
     with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
         parse_show("abcd")
 
-        assert error_res["Error"] in fake_out.getvalue()
+        assert error_res["error"] in fake_out.getvalue()

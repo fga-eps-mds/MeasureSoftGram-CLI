@@ -34,4 +34,4 @@ def parse_show(id):
 
             print("\n")
     else:
-        print("Error: ", response_data["Error"])
+        print("Error: ", response_data["error"])
