@@ -22,10 +22,10 @@ def print_results(results):
         print(key_sc, "=", f"{truncate((value_sc * 100),2)}%")
 
 
-def validade_analysis_response(response):
-    if response.status_code == 201 or response.status_code == 200:
-        print_results(response.json())
-    elif response.status_code == 404:
-        print(response.json()["error"])
+def validade_analysis_response(status_code, response_json):
+    if status_code == 201 or status_code == 200:
+        print_results(response_json)
+    elif status_code == 404:
+        print(response_json["error"])
     else:
         print("Error while making analysis")

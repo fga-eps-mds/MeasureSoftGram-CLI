@@ -27,4 +27,4 @@ def test_analysis_not_valid_ID():
     out, _, return_code = capture(["measuresoftgram", "analysis", "ABCDE123"])
 
     assert return_code == 0
-    assert "Error while making analysis" in out.decode("utf-8")
+    assert "ABCDE123 is not a valid ID" in out.decode("utf-8")

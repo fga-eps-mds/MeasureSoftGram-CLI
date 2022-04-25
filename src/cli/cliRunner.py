@@ -26,7 +26,7 @@ def parse_analysis(id):
     data = {"pre_config_id": id}
     response = requests.post(BASE_URL + "analysis", json=data)
 
-    validade_analysis_response(response)
+    validade_analysis_response(response.status_code, response.json())
 
 
 def parse_import(file_path, id, language_extension):
