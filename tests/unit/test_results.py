@@ -1,6 +1,4 @@
-from cgi import test
 from src.cli.results import truncate, print_results, validade_analysis_response
-import pytest
 from io import StringIO
 
 
