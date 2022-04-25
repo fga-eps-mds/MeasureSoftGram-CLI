@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="measuresoftgram",
-    version="2.0.0",
+    version="2.0.2",
     extras_require={"dev": ["pytest", "pytest-cov", "setuptools", "wheel"]},
     packages=find_packages(),
     install_requires=["inquirer==2.8.0", "requests"],
