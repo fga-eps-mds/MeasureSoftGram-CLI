@@ -2,43 +2,42 @@ from src.cli import exceptions
 from src.cli.jsonReader import check_file_extension, open_json_file
 
 
-def preconfig_file_reader(absolute_path, available_pre_configs):
+def pre_config_file_reader(absolute_path, available_pre_configs):
 
     core_format = available_pre_configs
     check_file_extension(absolute_path)
 
-    preconfig_json_file = open_json_file(absolute_path)
+    pre_config_json_file = open_json_file(absolute_path)
 
-    preconfig_file_name = preconfig_json_file["pre_config_name"]
+    pre_config_file_name = pre_config_json_file["pre_config_name"]
 
-    file_characteristics = read_file_characteristics(preconfig_json_file)
-    validate_file_characteristics(preconfig_json_file)
+    validate_file_characteristics(pre_config_json_file)
+    validate_file_sub_characteristics(pre_config_json_file)
+    validate_file_measures(pre_config_json_file)
 
-    file_sub_characteristics = read_file_sub_characteristics(preconfig_json_file)
-    validate_file_sub_characteristics(preconfig_json_file)
-
-    file_measures = read_file_measures(preconfig_json_file)
-    validate_file_measures(preconfig_json_file)
+    file_characteristics = read_file_characteristics(pre_config_json_file)
+    file_sub_characteristics = read_file_sub_characteristics(pre_config_json_file)
+    file_measures = read_file_measures(pre_config_json_file)
 
     validate_core_available(core_format, file_characteristics, file_sub_characteristics)
 
-    preconfig = {
-        "name": preconfig_file_name,
+    pre_config = {
+        "name": pre_config_file_name,
         "characteristics": file_characteristics,
         "subcharacteristics": file_sub_characteristics,
         "measures": file_measures,
     }
 
-    return preconfig
+    return pre_config
 
 
-def read_file_characteristics(preconfig_json_file):
+def read_file_characteristics(pre_config_json_file):
 
     characteristics = {}
     weights_auxiliar = {}
     char_sub_list = []
 
-    for characteristic in preconfig_json_file["characteristics"]:
+    for characteristic in pre_config_json_file["characteristics"]:
 
         characteristic_auxiliar = {"weight": characteristic["weight"]}
         weights_auxiliar = {}
@@ -60,13 +59,13 @@ def read_file_characteristics(preconfig_json_file):
     return characteristics
 
 
-def read_file_sub_characteristics(preconfig_json_file):
+def read_file_sub_characteristics(pre_config_json_file):
 
     subcharacteristics = {}
     weights_auxiliar = {}
     sub_mea_list = []
 
-    for characteristic in preconfig_json_file["characteristics"]:
+    for characteristic in pre_config_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
 
             weights_auxiliar = {}
@@ -90,11 +89,11 @@ def read_file_sub_characteristics(preconfig_json_file):
     return subcharacteristics
 
 
-def read_file_measures(preconfig_json_file):
+def read_file_measures(pre_config_json_file):
 
     measures = []
 
-    for characteristic in preconfig_json_file["characteristics"]:
+    for characteristic in pre_config_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
             for measure in subcharacteristic["measures"]:
 
@@ -103,22 +102,30 @@ def read_file_measures(preconfig_json_file):
     return measures
 
 
-def validate_file_characteristics(preconfig_json_file):
+def validate_file_characteristics(pre_config_json_file):
 
     sum_of_characteristics_weights = 0
     characteristics_names = []
 
-    for characteristic in preconfig_json_file["characteristics"]:
+    for characteristic in pre_config_json_file["characteristics"]:
 
-        if "name" not in characteristic.keys():
-            raise exceptions.InvalidCharacteristic(
-                "Expected characteristic name field."
-            )
+        characteristics = characteristic.keys()
 
-        if "weight" not in characteristic.keys():
-            raise exceptions.InvalidCharacteristic(
-                "{} does not have weight field defined.".format(characteristic["name"])
-            )
+        check_in_keys(
+            "name",
+            characteristics,
+            exceptions.InvalidCharacteristic,
+            "Expected characteristic name field.",
+        )
+
+        check_in_keys(
+            "weight",
+            characteristics,
+            exceptions.InvalidCharacteristic,
+            "{} characteristic does not have weight field defined.".format(
+                characteristic["name"]
+            ),
+        )
 
         if not validate_weight_value(characteristic["weight"]):
             raise exceptions.InvalidCharacteristic(
@@ -127,17 +134,19 @@ def validate_file_characteristics(preconfig_json_file):
                 )
             )
 
-        if "weight" in characteristic.keys():
+        if "weight" in characteristics:
             sum_of_characteristics_weights = (
                 sum_of_characteristics_weights + characteristic["weight"]
             )
 
-        if "subcharacteristics" not in characteristic.keys():
-            raise exceptions.InvalidCharacteristic(
-                "{} does not have subcharacteristics field defined.".format(
-                    characteristic["name"]
-                )
-            )
+        check_in_keys(
+            "subcharacteristics",
+            characteristics,
+            exceptions.InvalidCharacteristic,
+            "{} does not have subcharacteristics field defined.".format(
+                characteristic["name"]
+            ),
+        )
 
         if (
             characteristic["subcharacteristics"] is None
@@ -151,10 +160,6 @@ def validate_file_characteristics(preconfig_json_file):
 
         characteristics_names.append(characteristic["name"])
 
-    sum_of_characteristics_weights = round_sum_of_weights(
-        sum_of_characteristics_weights
-    )
-
     if validate_sum_of_weights(sum_of_characteristics_weights) is False:
         raise exceptions.InvalidCharacteristic(
             "The sum of characteristics weights of is not 100"
@@ -163,27 +168,33 @@ def validate_file_characteristics(preconfig_json_file):
     return True
 
 
-def validate_file_sub_characteristics(preconfig_json_file):
+def validate_file_sub_characteristics(pre_config_json_file):
 
     sub_characteristics_names = []
 
-    for characteristic in preconfig_json_file["characteristics"]:
+    for characteristic in pre_config_json_file["characteristics"]:
 
         sum_of_subcharacteristics_weights = 0
 
         for subcharacteristic in characteristic["subcharacteristics"]:
 
-            if "name" not in subcharacteristic.keys():
-                raise exceptions.InvalidSubcharacteristic(
-                    "Expected sub-characteristic name field."
-                )
+            subcharacteristics = subcharacteristic.keys()
 
-            if "weight" not in subcharacteristic.keys():
-                raise exceptions.InvalidSubcharacteristic(
-                    "{} does not have weight field defined.".format(
-                        subcharacteristic["name"]
-                    )
-                )
+            check_in_keys(
+                "name",
+                subcharacteristics,
+                exceptions.InvalidSubcharacteristic,
+                "Expected sub-characteristic name field.",
+            )
+
+            check_in_keys(
+                "weight",
+                subcharacteristics,
+                exceptions.InvalidSubcharacteristic,
+                "{} does not have weight field defined.".format(
+                    subcharacteristic["name"]
+                ),
+            )
 
             if not validate_weight_value(subcharacteristic["weight"]):
                 raise exceptions.InvalidSubcharacteristic(
@@ -192,17 +203,19 @@ def validate_file_sub_characteristics(preconfig_json_file):
                     )
                 )
 
-            if "weight" in subcharacteristic.keys():
+            if "weight" in subcharacteristics:
                 sum_of_subcharacteristics_weights = (
                     sum_of_subcharacteristics_weights + subcharacteristic["weight"]
                 )
 
-            if "measures" not in subcharacteristic.keys():
-                raise exceptions.InvalidSubcharacteristic(
-                    "{} does not have measures field defined.".format(
-                        subcharacteristic["name"]
-                    )
-                )
+            check_in_keys(
+                "measures",
+                subcharacteristics,
+                exceptions.InvalidSubcharacteristic,
+                "{} does not have measures field defined.".format(
+                    subcharacteristic["name"]
+                ),
+            )
 
             if (
                 subcharacteristic["measures"] is None
@@ -228,24 +241,32 @@ def validate_file_sub_characteristics(preconfig_json_file):
     return True
 
 
-def validate_file_measures(preconfig_json_file):
+def validate_file_measures(pre_config_json_file):
 
     measures_names = []
 
-    for characteristic in preconfig_json_file["characteristics"]:
+    for characteristic in pre_config_json_file["characteristics"]:
         for subcharacteristic in characteristic["subcharacteristics"]:
 
             sum_of_measures_weights = 0
 
             for measure in subcharacteristic["measures"]:
 
-                if "name" not in measure.keys():
-                    raise exceptions.InvalidMeasure("Expected measure name field.")
+                measures = measure.keys()
 
-                if "weight" not in measure.keys():
-                    raise exceptions.InvalidMeasure(
-                        "{} does not have weight field defined.".format(measure["name"])
-                    )
+                check_in_keys(
+                    "name",
+                    measures,
+                    exceptions.InvalidMeasure,
+                    "Expected measure name field.",
+                )
+
+                check_in_keys(
+                    "weight",
+                    measures,
+                    exceptions.InvalidMeasure,
+                    "{} does not have weight field defined.".format(measure["name"]),
+                )
 
                 if not validate_weight_value(measure["weight"]):
                     raise exceptions.InvalidMeasure(
@@ -254,7 +275,7 @@ def validate_file_measures(preconfig_json_file):
                         )
                     )
 
-                if "weight" in measure.keys():
+                if "weight" in measures:
                     sum_of_measures_weights = (
                         sum_of_measures_weights + measure["weight"]
                     )
@@ -271,6 +292,14 @@ def validate_file_measures(preconfig_json_file):
     return True
 
 
+def check_in_keys(key_for_check, keys, exception, exception_description):
+
+    if key_for_check not in keys:
+        raise exception(exception_description)
+
+    return True
+
+
 def round_sum_of_weights(sum_weights):
 
     if 0 < round(100 - sum_weights, 2) <= 0.01:
@@ -280,6 +309,8 @@ def round_sum_of_weights(sum_weights):
 
 
 def validate_sum_of_weights(sum_weights):
+
+    sum_weights = round_sum_of_weights(sum_weights)
 
     if sum_weights != 100.0:
         return False
@@ -302,21 +333,25 @@ def validate_core_available(
         )
 
     for char in file_characteristics.keys():
-        if not all(
+
+        data_base_subcharacteristics = all(
             elem in file_characteristics[char]["subcharacteristics"]
             for elem in available_pre_configs["characteristics"][char][
                 "subcharacteristics"
             ]
-        ):
+        )
+        if not data_base_subcharacteristics:
             raise exceptions.InvalidSubcharacteristic(
                 "The sub-characteristic is not in MeasureSoftGram data base"
             )
 
     for sub in file_subcharacteristics.keys():
-        if not all(
+
+        data_base_measures = all(
             elem in file_subcharacteristics[sub]["measures"]
             for elem in available_pre_configs["subcharacteristics"][sub]["measures"]
-        ):
+        )
+        if not data_base_measures:
             raise exceptions.InvalidMeasure(
                 "The measure is not in MeasureSoftgram data base"
             )
@@ -328,10 +363,10 @@ def validate_weight_value(weight):
     return 0 < weight <= 100
 
 
-def validate_preconfig_post(status_code, response):
+def validate_pre_config_post(status_code, response):
     if status_code == 201:
         print(
-            f"\nYour Pre Configuration was created with sucess!\nPre Configuration ID: {response['_id']}"
+            f"\nYour Pre Configuration was created with success!\nPre Configuration ID: {response['_id']}"
         )
     else:
         print(

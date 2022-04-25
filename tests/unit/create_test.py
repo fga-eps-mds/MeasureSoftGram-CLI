@@ -4,10 +4,10 @@ from tests.test_helpers import read_json
 
 
 def test_pre_config_file_reader():
-    available_preconfig = read_json("tests/unit/data/measuresoftgramFormat.json")
+    available_pre_config = read_json("tests/unit/data/measuresoftgramCoreFormat.json")
 
-    create.preconfig_file_reader(
-        "tests/unit/data/measuresoftgramPreconfig.json", available_preconfig
+    create.pre_config_file_reader(
+        "tests/unit/data/measuresoftgramPreConfig.json", available_pre_config
     )
 
     assert {
@@ -57,171 +57,82 @@ def test_pre_config_file_reader():
 
 
 def test_valid_read_file_characteristics():
-    file_characteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 100.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 100.0},
-                            {"name": "test_builds", "weight": 100.0},
-                            {"name": "test_coverage", "weight": 100.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
-    characteristics = create.read_file_characteristics(file_characteristics)
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
+    characteristics = create.read_file_characteristics(file_pre_config)
 
     assert characteristics == {
-        "Reliability": {
-            "weight": 100.0,
-            "subcharacteristics": ["Testing_status"],
-            "weights": {"Testing_status": 100.0},
-        }
+        "reliability": {
+            "weight": 50.0,
+            "subcharacteristics": ["testing_status"],
+            "weights": {"testing_status": 100.0},
+        },
+        "maintainability": {
+            "weight": 50.0,
+            "subcharacteristics": ["modifiability"],
+            "weights": {"modifiability": 100.0},
+        },
     }
 
 
 def test_valid_validate_file_characteristics():
-    file_characteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 100.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 100.0},
-                            {"name": "test_builds", "weight": 100.0},
-                            {"name": "test_coverage", "weight": 100.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
-    characteristics = create.validate_file_characteristics(file_characteristics)
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
+    characteristics = create.validate_file_characteristics(file_pre_config)
 
     assert characteristics
 
 
 def test_invalid_validate_file_characteristics():
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    file_characteristics_without_weights = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 100.0},
-                            {"name": "test_builds", "weight": 100.0},
-                            {"name": "test_coverage", "weight": 100.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_characteristics_without_weights = file_pre_config
+    file_characteristics_without_weights["characteristics"][0].pop("weight")
 
     with pytest.raises(exceptions.InvalidCharacteristic):
         create.validate_file_characteristics(file_characteristics_without_weights)
 
-    file_characteristics_without_name = {
-        "characteristics": [
-            {
-                "weight": 50,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 100.0},
-                            {"name": "test_builds", "weight": 100.0},
-                            {"name": "test_coverage", "weight": 100.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_characteristics_without_name = file_pre_config
+    file_characteristics_without_name["characteristics"][0].pop("name")
 
     with pytest.raises(exceptions.InvalidCharacteristic):
         create.validate_file_characteristics(file_characteristics_without_name)
 
-    file_characteristics_without_subc = {
-        "characteristics": [
-            {"name": "Reliability", "weight": 50, "subcharacteristics": []}
-        ]
-    }
+    file_characteristics_without_subc = file_pre_config
+    file_characteristics_without_subc["characteristics"][0].pop("subcharacteristics")
 
     with pytest.raises(exceptions.InvalidCharacteristic):
         create.validate_file_characteristics(file_characteristics_without_subc)
 
 
 def test_valid_read_file_sub_characteristics():
-    file_subcharacteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 100.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 40.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_subcharacteristics = read_json("tests/unit/data/measuresoftgramPreConfig.json")
     subcharacteristics = create.read_file_sub_characteristics(file_subcharacteristics)
 
     assert subcharacteristics == {
-        "Testing_status": {
+        "testing_status": {
             "weights": {
-                "passed_tests": 40.0,
-                "test_builds": 30.0,
-                "test_coverage": 30.0,
+                "passed_tests": 33.33,
+                "test_builds": 33.33,
+                "test_coverage": 33.33,
             },
             "measures": ["passed_tests", "test_builds", "test_coverage"],
-        }
+        },
+        "modifiability": {
+            "weights": {
+                "non_complex_file_density": 50.0,
+                "commented_file_density": 30.0,
+                "duplication_absense": 20.0,
+            },
+            "measures": [
+                "non_complex_file_density",
+                "commented_file_density",
+                "duplication_absense",
+            ],
+        },
     }
 
 
 def test_valid_validate_file_sub_characteristics():
-    file_subcharacteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 40.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_subcharacteristics = read_json("tests/unit/data/measuresoftgramPreConfig.json")
     subcharacteristics = create.validate_file_sub_characteristics(
         file_subcharacteristics
     )
@@ -230,254 +141,108 @@ def test_valid_validate_file_sub_characteristics():
 
 
 def test_invalid_validate_file_sub_characteristics():
-    file_without_name_subcharacteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "weight": 30.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 40.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
+
+    file_without_name_subcharacteristics = file_pre_config
+    file_without_name_subcharacteristics["characteristics"][0]["subcharacteristics"][
+        0
+    ].pop("name")
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
         create.validate_file_sub_characteristics(file_without_name_subcharacteristics)
 
-    file_without_weight_subcharacteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "measures": [
-                            {"name": "passed_tests", "weight": 40.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_without_weight_subcharacteristics = file_pre_config
+    file_without_weight_subcharacteristics["characteristics"][0]["subcharacteristics"][
+        0
+    ].pop("weight")
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
         create.validate_file_sub_characteristics(file_without_weight_subcharacteristics)
 
-    file_without_measures_subcharacteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 30.0,
-                    }
-                ],
-            }
-        ]
-    }
+    file_without_measures_subcharacteristics = file_pre_config
+    file_without_measures_subcharacteristics["characteristics"][0][
+        "subcharacteristics"
+    ][0].pop("measures")
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
         create.validate_file_sub_characteristics(
             file_without_measures_subcharacteristics
         )
 
-    file_empty_measures_subcharacteristics = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {"name": "Testing_status", "weight": 30.0, "measures": []}
-                ],
-            }
-        ]
-    }
+    file_empty_measures_subcharacteristics = file_pre_config
+    file_empty_measures_subcharacteristics["characteristics"][0]["subcharacteristics"][
+        0
+    ]["measures"] = []
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
         create.validate_file_sub_characteristics(file_empty_measures_subcharacteristics)
 
 
 def test_valid_read_file_measures():
-    file_measures = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 100.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 100.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 40.0},
-                            {"name": "test_builds", "weight": 20.0},
-                            {"name": "test_coverage", "weight": 40.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    measures = create.read_file_measures(file_measures)
+    measures = create.read_file_measures(file_pre_config)
 
-    assert measures == ["passed_tests", "test_builds", "test_coverage"]
+    assert measures == [
+        "passed_tests",
+        "test_builds",
+        "test_coverage",
+        "non_complex_file_density",
+        "commented_file_density",
+        "duplication_absense",
+    ]
 
 
 def test_valid_validate_file_measures():
-    file_measures = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 30.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 40.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    measures = create.validate_file_measures(file_measures)
+    measures = create.validate_file_measures(file_pre_config)
 
     assert measures
 
 
 def test_invalid_validate_file_measures():
-    file_without_name_measures = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 30.0,
-                        "measures": [
-                            {"weight": 40.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
+
+    file_without_name_measures = file_pre_config
+    file_without_name_measures["characteristics"][0]["subcharacteristics"][0][
+        "measures"
+    ][0].pop("name")
 
     with pytest.raises(exceptions.InvalidMeasure):
         create.validate_file_measures(file_without_name_measures)
 
-    file_without_weigth_measures = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 30.0,
-                        "measures": [
-                            {
-                                "name": "passed_tests",
-                            },
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_without_weight_measures = file_pre_config
+    file_without_weight_measures["characteristics"][0]["subcharacteristics"][0][
+        "measures"
+    ][0].pop("weight")
 
     with pytest.raises(exceptions.InvalidMeasure):
-        create.validate_file_measures(file_without_weigth_measures)
+        create.validate_file_measures(file_without_weight_measures)
 
-    file_invalid_weight_measures = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 30.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 120.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_invalid_weight_measures = file_pre_config
+    file_invalid_weight_measures["characteristics"][0]["subcharacteristics"][0][
+        "measures"
+    ][0]["weight"] = 120
 
     with pytest.raises(exceptions.InvalidMeasure):
         create.validate_file_measures(file_invalid_weight_measures)
 
-    file_invalid_weight_sum_measures = {
-        "characteristics": [
-            {
-                "name": "Reliability",
-                "weight": 25.0,
-                "subcharacteristics": [
-                    {
-                        "name": "Testing_status",
-                        "weight": 30.0,
-                        "measures": [
-                            {"name": "passed_tests", "weight": 10.0},
-                            {"name": "test_builds", "weight": 30.0},
-                            {"name": "test_coverage", "weight": 30.0},
-                        ],
-                    }
-                ],
-            }
-        ]
-    }
+    file_invalid_weight_sum_measures = file_pre_config
+    file_invalid_weight_sum_measures["characteristics"][0]["subcharacteristics"][0][
+        "measures"
+    ][0]["weight"] = 10
 
     with pytest.raises(exceptions.InvalidMeasure):
         create.validate_file_measures(file_invalid_weight_sum_measures)
 
 
 def test_valid_validate_core_available():
+    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    available_pre_configs = read_json("tests/unit/data/measuresoftgramFormat.json")
-    file_characteristics = {
-        "reliability": {
-            "name": "Reliability",
-            "subcharacteristics": ["testing_status"],
-        },
-        "maintainability": {
-            "name": "Maintainability",
-            "subcharacteristics": ["modifiability"],
-        },
-    }
-    file_subcharacteristics = {
-        "testing_status": {
-            "name": "Testing Status",
-            "measures": ["passed_tests", "test_builds", "test_coverage"],
-            "characteristics": ["reliability"],
-        },
-    }
+    available_pre_configs = read_json("tests/unit/data/measuresoftgramCoreFormat.json")
+    file_characteristics = create.read_file_characteristics(file_pre_config)
+    file_subcharacteristics = create.read_file_sub_characteristics(file_pre_config)
 
     assert create.validate_core_available(
         available_pre_configs, file_characteristics, file_subcharacteristics
@@ -486,8 +251,8 @@ def test_valid_validate_core_available():
 
 def test_invalid_validate_core_available():
 
-    available_pre_configs = read_json("tests/unit/data/measuresoftgramFormat.json")
-    file_characteristics = {
+    available_pre_configs = read_json("tests/unit/data/measuresoftgramCoreFormat.json")
+    file_wrong_characteristics = {
         "usability": {
             "weight": 50,
             "subcharacteristics": ["testing_status"],
@@ -513,15 +278,15 @@ def test_invalid_validate_core_available():
     )
 
     assert list(available_pre_configs["characteristics"].keys()) != list(
-        file_characteristics.keys()
+        file_wrong_characteristics.keys()
     )
 
     with pytest.raises(exceptions.InvalidCharacteristic):
         create.validate_core_available(
-            available_pre_configs, file_characteristics, file_subcharacteristics
+            available_pre_configs, file_wrong_characteristics, file_subcharacteristics
         )
 
-    file_characteristics = {
+    file_characteristics_wrong_subcharacteristics = {
         "reliability": {
             "weight": 50,
             "subcharacteristics": ["modifiability"],
@@ -533,20 +298,12 @@ def test_invalid_validate_core_available():
             "weights": {"modifiability": 100.0},
         },
     }
-    file_subcharacteristics = {
-        "testing_status": {
-            "weights": {"passed_tests": 100.0},
-            "measures": ["passed_tests"],
-        },
-        "modifiability": {
-            "weights": {"non_complex_file_density": 100.0},
-            "measures": ["non_complex_file_density"],
-        },
-    }
 
     with pytest.raises(exceptions.InvalidSubcharacteristic):
         create.validate_core_available(
-            available_pre_configs, file_characteristics, file_subcharacteristics
+            available_pre_configs,
+            file_characteristics_wrong_subcharacteristics,
+            file_subcharacteristics,
         )
 
     file_characteristics = {
@@ -561,7 +318,7 @@ def test_invalid_validate_core_available():
             "weights": {"modifiability": 100.0},
         },
     }
-    file_subcharacteristics = {
+    file_subcharacteristics_wrong_measures = {
         "testing_status": {
             "weights": {"passed_tests": 100.0},
             "measures": ["non_complex_file_density"],
@@ -574,7 +331,9 @@ def test_invalid_validate_core_available():
 
     with pytest.raises(exceptions.InvalidMeasure):
         create.validate_core_available(
-            available_pre_configs, file_characteristics, file_subcharacteristics
+            available_pre_configs,
+            file_characteristics,
+            file_subcharacteristics_wrong_measures,
         )
 
 
@@ -587,6 +346,20 @@ def test_validate_weight_value():
     assert create.validate_weight_value(100)
     assert create.validate_weight_value(-30) is False
     assert create.validate_weight_value(120) is False
+
+
+def test_check_in_keys():
+    key_for_check = "name"
+    keys = ["weight", "subcharacteristics"]
+    exception = exceptions.InvalidCharacteristic
+    exception_description = "teste"
+
+    with pytest.raises(exceptions.InvalidCharacteristic):
+        create.check_in_keys(key_for_check, keys, exception, exception_description)
+
+    keys = ["name", "weight", "subcharacteristics"]
+
+    assert create.check_in_keys(key_for_check, keys, exception, exception_description)
 
 
 def test_round_of_sum_weights():
@@ -603,6 +376,11 @@ def test_validate_sum_of_weights():
     assert validate is True
 
     sum_weights = 99.99
+
+    validate = create.validate_sum_of_weights(sum_weights)
+    assert validate is True
+
+    sum_weights = 99
 
     validate = create.validate_sum_of_weights(sum_weights)
     assert validate is False

@@ -14,52 +14,30 @@ def parse_available():
             \n\n You can use these items to create a pre configuration"
     )
 
-    for characteristic in available_pre_configs["characteristics"]:
-        print(
-            "\n    {}:".format(
-                available_pre_configs["characteristics"][characteristic]["name"]
-            )
-        )
+    characteristics = available_pre_configs["characteristics"]
+    subcharacteristics = available_pre_configs["subcharacteristics"]
+    measures = available_pre_configs["measures"]
 
-        for subcharacteristic in available_pre_configs["subcharacteristics"]:
+    for characteristic in characteristics:
+        print_line = characteristics[characteristic]["name"]
+        print(f"\n    {print_line}:")
+
+        for subcharacteristic in subcharacteristics:
             if (
-                available_pre_configs["characteristics"][characteristic]["name"]
-                .lower()
-                .replace(" ", "_")
-                in available_pre_configs["subcharacteristics"][subcharacteristic][
-                    "characteristics"
-                ]
+                characteristics[characteristic]["name"].lower().replace(" ", "_")
+                in subcharacteristics[subcharacteristic]["characteristics"]
             ):
-                print(
-                    "        {}:".format(
-                        available_pre_configs["subcharacteristics"][subcharacteristic][
-                            "name"
-                        ]
-                    )
-                )
+                print_line = subcharacteristics[subcharacteristic]["name"]
+                print(f"        {print_line}:")
 
-                for measure in available_pre_configs["measures"]:
+                for measure in measures:
                     if (
-                        available_pre_configs["subcharacteristics"][subcharacteristic][
-                            "name"
-                        ]
+                        subcharacteristics[subcharacteristic]["name"]
                         .lower()
                         .replace(" ", "_")
-                        in available_pre_configs["measures"][measure][
-                            "subcharacteristics"
-                        ]
+                        in measures[measure]["subcharacteristics"]
                     ):
-                        print(
-                            "            {}:".format(
-                                available_pre_configs["measures"][measure]["name"]
-                            )
-                        )
-                        print(
-                            "                {}".format(
-                                ", ".join(
-                                    available_pre_configs["measures"][measure][
-                                        "metrics"
-                                    ]
-                                )
-                            )
-                        )
+                        print_line = measures[measure]["name"]
+                        print(f"            {print_line}:")
+                        print_line = ", ".join(measures[measure]["metrics"])
+                        print(f"                {print_line}")

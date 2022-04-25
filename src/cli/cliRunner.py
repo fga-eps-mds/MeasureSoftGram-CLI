@@ -6,7 +6,7 @@ import signal
 from pathlib import Path
 from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.exceptions import MeasureSoftGramCLIException
-from src.cli.create import validate_preconfig_post, preconfig_file_reader
+from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 
 BASE_URL = "http://localhost:5000/"
@@ -36,14 +36,19 @@ def parse_create(file_path):
         BASE_URL + "available-pre-configs", headers={"Accept": "application/json"}
     ).json()
 
-    preconfig = preconfig_file_reader(r"{}".format(file_path), available_pre_config)
+    try:
+        pre_config = pre_config_file_reader(
+            r"{}".format(file_path), available_pre_config
+        )
+    except MeasureSoftGramCLIException as error:
+        print("Error: ", error)
+        return
 
-    response = requests.post(BASE_URL + "/pre-configs", json=preconfig)
-    print(response.text)
+    response = requests.post(BASE_URL + "/pre-configs", json=pre_config)
 
-    saved_preconfig = json.loads(response.text)
+    saved_pre_config = json.loads(response.text)
 
-    validate_preconfig_post(response.status_code, saved_preconfig)
+    validate_pre_config_post(response.status_code, saved_pre_config)
 
 
 def parse_change_name(pre_config_id, new_name):
@@ -98,7 +103,7 @@ def setup():
         "path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
-        help="Path to the data directory",
+        help="Path to the JSON file",
     )
 
     change_name = subparsers.add_parser(
