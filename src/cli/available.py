@@ -20,7 +20,7 @@ def parse_available():
 
     for characteristic in characteristics:
         print_line = characteristics[characteristic]["name"]
-        print(f"\n    {print_line}:")
+        print(f"\n\t{print_line}:")
 
         for subcharacteristic in subcharacteristics:
             if (
@@ -28,7 +28,7 @@ def parse_available():
                 in subcharacteristics[subcharacteristic]["characteristics"]
             ):
                 print_line = subcharacteristics[subcharacteristic]["name"]
-                print(f"        {print_line}:")
+                print(f"\t\t{print_line}:")
 
                 for measure in measures:
                     if (
@@ -38,6 +38,6 @@ def parse_available():
                         in measures[measure]["subcharacteristics"]
                     ):
                         print_line = measures[measure]["name"]
-                        print(f"            {print_line}:")
+                        print(f"\t\t\t{print_line}:")
                         print_line = ", ".join(measures[measure]["metrics"])
-                        print(f"                {print_line}")
+                        print(f"\t\t\t\t{print_line}")
