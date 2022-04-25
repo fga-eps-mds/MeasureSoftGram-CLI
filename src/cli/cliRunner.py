@@ -4,8 +4,10 @@ import sys
 import requests
 import signal
 from pathlib import Path
-from src.cli.jsonReader import file_reader, validate_metrics_post
+from src.cli.show import parse_show
+from src.cli.list import parse_list
 from src.cli.exceptions import MeasureSoftGramCLIException
+from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 
@@ -106,6 +108,18 @@ def setup():
         help="Path to the JSON file",
     )
 
+    subparsers.add_parser("list", help="List all pre configurations")
+
+    parser_show = subparsers.add_parser(
+        "show", help="Show all information of a pre configuration"
+    )
+
+    parser_show.add_argument(
+        "pre_config_id",
+        type=str,
+        help="Pre config ID",
+    )
+
     change_name = subparsers.add_parser(
         "change-name", help="Change pre configuration name"
     )
@@ -134,6 +148,10 @@ def setup():
         parse_create(args.path)
     elif args.command == "available":
         parse_available()
+    elif args.command == "list":
+        parse_list()
+    elif args.command == "show":
+        parse_show(args.pre_config_id)
     elif args.command == "change-name":
         parse_change_name(args.pre_config_id, args.new_name)
 
