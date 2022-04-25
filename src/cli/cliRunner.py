@@ -9,11 +9,6 @@ from src.cli.list import parse_list
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.results import validade_analysis_response
-from src.cli.create import (
-    define_characteristic,
-    define_sublevel,
-    validate_preconfig_post,
-)
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 
