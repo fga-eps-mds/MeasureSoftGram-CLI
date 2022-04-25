@@ -21,15 +21,6 @@ RESULTS = {
 ERROR_MESSAGE = {"error": "Pre-Config is not a valid ID"}
 
 
-class TestResponseError:
-    def __init__(self, status_code, text):
-        self.status_code = status_code
-        self.text = text
-
-    def json():
-        return {}
-
-
 def test_truncate():
     assert truncate(1237.1283919, 2) == 1237.12
 
