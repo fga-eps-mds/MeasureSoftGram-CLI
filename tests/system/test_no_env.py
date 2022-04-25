@@ -14,7 +14,7 @@ def capture(command):
 
 
 def test_no_env():
-    out, err, returncode = capture(["measuresoftgram", "create"])
+    out, err, returncode = capture(["measuresoftgram", "create", "path"])
 
     assert returncode == 1
     # FIXME
