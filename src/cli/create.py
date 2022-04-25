@@ -4,31 +4,38 @@ from src.cli.jsonReader import check_file_extension, open_json_file
 
 def pre_config_file_reader(absolute_path, available_pre_configs):
 
-    core_format = available_pre_configs
-    check_file_extension(absolute_path)
+    try:
+        core_format = available_pre_configs
+        check_file_extension(absolute_path)
 
-    pre_config_json_file = open_json_file(absolute_path)
+        pre_config_json_file = open_json_file(absolute_path)
 
-    pre_config_file_name = pre_config_json_file["pre_config_name"]
+        pre_config_file_name = pre_config_json_file["pre_config_name"]
 
-    validate_file_characteristics(pre_config_json_file)
-    validate_file_sub_characteristics(pre_config_json_file)
-    validate_file_measures(pre_config_json_file)
+        validate_file_characteristics(pre_config_json_file)
+        validate_file_sub_characteristics(pre_config_json_file)
+        validate_file_measures(pre_config_json_file)
 
-    file_characteristics = read_file_characteristics(pre_config_json_file)
-    file_sub_characteristics = read_file_sub_characteristics(pre_config_json_file)
-    file_measures = read_file_measures(pre_config_json_file)
+        file_characteristics = read_file_characteristics(pre_config_json_file)
+        file_sub_characteristics = read_file_sub_characteristics(pre_config_json_file)
+        file_measures = read_file_measures(pre_config_json_file)
 
-    validate_core_available(core_format, file_characteristics, file_sub_characteristics)
+        validate_core_available(
+            core_format, file_characteristics, file_sub_characteristics
+        )
 
-    pre_config = {
-        "name": pre_config_file_name,
-        "characteristics": file_characteristics,
-        "subcharacteristics": file_sub_characteristics,
-        "measures": file_measures,
-    }
+        pre_config = {
+            "name": pre_config_file_name,
+            "characteristics": file_characteristics,
+            "subcharacteristics": file_sub_characteristics,
+            "measures": file_measures,
+        }
 
-    return pre_config
+        return pre_config
+    except KeyError as error:
+        raise exceptions.InvalidMeasuresoftgramFormat(
+            f"Invalid JSON format, key {error} does not exist"
+        )
 
 
 def read_file_characteristics(pre_config_json_file):
