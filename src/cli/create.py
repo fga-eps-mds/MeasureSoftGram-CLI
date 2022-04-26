@@ -10,7 +10,7 @@ def pre_config_file_reader(absolute_path, available_pre_configs):
 
         pre_config_json_file = open_json_file(absolute_path)
 
-        pre_config_file_name = pre_config_json_file["pre_config_name"]
+        pre_config_file_name = pre_config_json_file.get("pre_config_name", None)
 
         validate_file_characteristics(pre_config_json_file)
         validate_file_sub_characteristics(pre_config_json_file)
