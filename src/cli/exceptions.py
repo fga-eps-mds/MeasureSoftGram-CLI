@@ -28,20 +28,14 @@ class UnableToOpenFile(MeasureSoftGramCLIException):
     pass
 
 
-class InvalidCharacteristic(MeasureSoftGramCLIException):
-    """Raised when a invalid characteristic is provided to the MeasureSoftGram"""
+class UnableToReadFile(MeasureSoftGramCLIException):
+    """Raised when a file could not be readed"""
 
     pass
 
 
-class InvalidSubcharacteristic(MeasureSoftGramCLIException):
-    """Raised when a invalid subcharacteristic is provided to the MeasureSoftGram"""
-
-    pass
-
-
-class InvalidMeasure(MeasureSoftGramCLIException):
-    """Raised when a invalid measure is provided to the MeasureSoftGram"""
+class InvalidWeight(MeasureSoftGramCLIException):
+    """Raised when a invalid weight is provided to the MeasureSoftGram"""
 
     pass
 
