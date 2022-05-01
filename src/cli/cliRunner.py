@@ -3,6 +3,7 @@ import json
 import sys
 import requests
 import signal
+import os
 from pathlib import Path
 from src.cli.show import parse_show
 from src.cli.list import parse_list
@@ -34,11 +35,16 @@ def parse_import(file_path, id, language_extension):
         print("Error: ", error)
         return
 
+    file_name = os.path.basename(file_path)
+
     payload = {
         "pre_config_id": id,
+        "file_name": file_name,
         "components": components,
         "language_extension": language_extension,
     }
+
+    print(file_name)
 
     response = requests.post(BASE_URL + "import-metrics", json=payload)
 
