@@ -186,7 +186,4 @@ def main():
 
     signal.signal(signal.SIGINT, sigint_handler)
 
-    try:
-        setup()
-    except KeyboardInterrupt:
-        print("\nYou pressed Ctrl + C! No pre conf created.")
+    setup()
