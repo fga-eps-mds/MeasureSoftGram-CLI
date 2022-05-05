@@ -13,6 +13,28 @@ RESULTS = {
             "maintainability": 0.5,
             "reliability": 0.7142857142857143,
         },
+        "weighted_characteristics": {
+            "sqc": {
+                "maintainability": 0.5,
+                "reliability": 0.7142857142857143,
+            }
+        },
+        "weighted_subcharacteristics": {
+            "maintainability": {
+                "modifiability": 0.5,
+            },
+            "reliability": {
+                "testing_status": 0.7142857142857143,
+            },
+        },
+        "weighted_measures": {
+            "modifiability": {
+                "m1": 0.5,
+            },
+            "testing_status": {
+                "m1": 0.7142857142857143,
+            },
+        },
     }
 }
 
