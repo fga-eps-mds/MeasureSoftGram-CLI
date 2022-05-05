@@ -11,7 +11,7 @@ def capture(command):
     return out, err, proc.returncode
 
 
-def test_change_name():
+def test_change_name_return_code_invalid():
     out, _, returncode = capture(
         ["measuresoftgram", "change-name", "81357858", "new name"]
     )

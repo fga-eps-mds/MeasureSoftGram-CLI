@@ -11,7 +11,7 @@ def capture(command):
     return out, err, proc.returncode
 
 
-def test_show():
+def test_show_return_code_invalid():
     out, _, returncode = capture(["measuresoftgram", "show", "81357858"])
 
     assert returncode == 1

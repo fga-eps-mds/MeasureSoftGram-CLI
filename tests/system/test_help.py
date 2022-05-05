@@ -18,3 +18,4 @@ def test_show_help():
 
     out, err, returncode = capture(["measuresoftgram"])
     assert returncode == 0
+    assert "usage: measuresoftgram [-h]" in out.decode("utf-8")
