@@ -109,15 +109,14 @@ def setup():
         help="The source code language extension",
     )
 
-    subparsers.add_parser("create", help="Create a new model pre configuration")
+    parser_create = subparsers.add_parser(
+        "create",
+        help="Create a new model pre configuration from a JSON file",
+    )
+
     subparsers.add_parser(
         "available",
         help="Shows all characteristics, sub-characteristics and measures available in measuresoftgram",
-    )
-
-    parser_create = subparsers.add_parser(
-        "create",
-        help="Create pre config by JSON file",
     )
 
     parser_create.add_argument(
