@@ -82,24 +82,29 @@ def test_valid_validate_file_characteristics():
 
 
 def test_invalid_validate_file_characteristics():
-    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    file_characteristics_without_weights = file_pre_config
+    file_characteristics_without_weights = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_characteristics_without_weights["characteristics"][0].pop("weight")
 
-    with pytest.raises(exceptions.InvalidCharacteristic):
+    with pytest.raises(exceptions.InvalidWeight):
         create.validate_file_characteristics(file_characteristics_without_weights)
 
-    file_characteristics_without_name = file_pre_config
+    file_characteristics_without_name = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_characteristics_without_name["characteristics"][0].pop("name")
 
-    with pytest.raises(exceptions.InvalidCharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_file_characteristics(file_characteristics_without_name)
 
-    file_characteristics_without_subc = file_pre_config
+    file_characteristics_without_subc = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_characteristics_without_subc["characteristics"][0].pop("subcharacteristics")
 
-    with pytest.raises(exceptions.InvalidCharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_file_characteristics(file_characteristics_without_subc)
 
 
@@ -141,40 +146,47 @@ def test_valid_validate_file_sub_characteristics():
 
 
 def test_invalid_validate_file_sub_characteristics():
-    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    file_without_name_subcharacteristics = file_pre_config
+    file_without_name_subcharacteristics = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_without_name_subcharacteristics["characteristics"][0]["subcharacteristics"][
         0
     ].pop("name")
 
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_file_sub_characteristics(file_without_name_subcharacteristics)
 
-    file_without_weight_subcharacteristics = file_pre_config
+    file_without_weight_subcharacteristics = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_without_weight_subcharacteristics["characteristics"][0]["subcharacteristics"][
         0
     ].pop("weight")
 
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
+    with pytest.raises(exceptions.InvalidWeight):
         create.validate_file_sub_characteristics(file_without_weight_subcharacteristics)
 
-    file_without_measures_subcharacteristics = file_pre_config
+    file_without_measures_subcharacteristics = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_without_measures_subcharacteristics["characteristics"][0][
         "subcharacteristics"
     ][0].pop("measures")
 
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_file_sub_characteristics(
             file_without_measures_subcharacteristics
         )
 
-    file_empty_measures_subcharacteristics = file_pre_config
+    file_empty_measures_subcharacteristics = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_empty_measures_subcharacteristics["characteristics"][0]["subcharacteristics"][
         0
     ]["measures"] = []
 
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_file_sub_characteristics(file_empty_measures_subcharacteristics)
 
 
@@ -202,38 +214,45 @@ def test_valid_validate_file_measures():
 
 
 def test_invalid_validate_file_measures():
-    file_pre_config = read_json("tests/unit/data/measuresoftgramPreConfig.json")
 
-    file_without_name_measures = file_pre_config
+    file_without_name_measures = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_without_name_measures["characteristics"][0]["subcharacteristics"][0][
         "measures"
     ][0].pop("name")
 
-    with pytest.raises(exceptions.InvalidMeasure):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_file_measures(file_without_name_measures)
 
-    file_without_weight_measures = file_pre_config
+    file_without_weight_measures = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_without_weight_measures["characteristics"][0]["subcharacteristics"][0][
         "measures"
     ][0].pop("weight")
 
-    with pytest.raises(exceptions.InvalidMeasure):
+    with pytest.raises(exceptions.InvalidWeight):
         create.validate_file_measures(file_without_weight_measures)
 
-    file_invalid_weight_measures = file_pre_config
+    file_invalid_weight_measures = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_invalid_weight_measures["characteristics"][0]["subcharacteristics"][0][
         "measures"
     ][0]["weight"] = 120
 
-    with pytest.raises(exceptions.InvalidMeasure):
+    with pytest.raises(exceptions.InvalidWeight):
         create.validate_file_measures(file_invalid_weight_measures)
 
-    file_invalid_weight_sum_measures = file_pre_config
+    file_invalid_weight_sum_measures = read_json(
+        "tests/unit/data/measuresoftgramPreConfig.json"
+    )
     file_invalid_weight_sum_measures["characteristics"][0]["subcharacteristics"][0][
         "measures"
     ][0]["weight"] = 10
 
-    with pytest.raises(exceptions.InvalidMeasure):
+    with pytest.raises(exceptions.InvalidWeight):
         create.validate_file_measures(file_invalid_weight_sum_measures)
 
 
@@ -281,7 +300,7 @@ def test_invalid_validate_core_available():
         file_wrong_characteristics.keys()
     )
 
-    with pytest.raises(exceptions.InvalidCharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_core_available(
             available_pre_configs, file_wrong_characteristics, file_subcharacteristics
         )
@@ -299,7 +318,7 @@ def test_invalid_validate_core_available():
         },
     }
 
-    with pytest.raises(exceptions.InvalidSubcharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_core_available(
             available_pre_configs,
             file_characteristics_wrong_subcharacteristics,
@@ -329,7 +348,7 @@ def test_invalid_validate_core_available():
         },
     }
 
-    with pytest.raises(exceptions.InvalidMeasure):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.validate_core_available(
             available_pre_configs,
             file_characteristics,
@@ -351,15 +370,28 @@ def test_validate_weight_value():
 def test_check_in_keys():
     key_for_check = "name"
     keys = ["weight", "subcharacteristics"]
-    exception = exceptions.InvalidCharacteristic
+    exception = exceptions.UnableToReadFile
     exception_description = "teste"
 
-    with pytest.raises(exceptions.InvalidCharacteristic):
+    with pytest.raises(exceptions.UnableToReadFile):
         create.check_in_keys(key_for_check, keys, exception, exception_description)
 
     keys = ["name", "weight", "subcharacteristics"]
 
     assert create.check_in_keys(key_for_check, keys, exception, exception_description)
+
+
+def test_validate_weight_parameter():
+    weight = 120
+    exception = exceptions.InvalidWeight
+    exception_description = "teste"
+
+    with pytest.raises(exceptions.InvalidWeight):
+        create.validate_weight_parameter(weight, exception, exception_description)
+
+    weight = 90
+
+    assert create.validate_weight_parameter
 
 
 def test_round_of_sum_weights():
