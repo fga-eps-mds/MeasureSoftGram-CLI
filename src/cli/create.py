@@ -357,9 +357,8 @@ def validate_core_available(
             not in available_pre_configs["characteristics"][char]["subcharacteristics"]
         ]:
             raise exceptions.UnableToReadFile(
-                'The subcharacteristic "{}" is in a wrong characteristic or it is not in MeasureSoftgram database'.format(
-                    item
-                )
+                'The subcharacteristic "{}" is in a wrong characteristic'.format(item)
+                + "or it is not in MeasureSoftgram database"
             )
 
     for sub in file_subcharacteristics.keys():
