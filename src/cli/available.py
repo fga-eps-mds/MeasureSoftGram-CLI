@@ -19,25 +19,14 @@ def parse_available():
     measures = available_pre_configs["measures"]
 
     for characteristic in characteristics:
-        print_line = characteristics[characteristic]["name"]
-        print(f"\n\t{print_line}:")
-
+        print(f"\n\t{characteristics[characteristic]['name']}:")
         for subcharacteristic in subcharacteristics:
             if (
-                characteristics[characteristic]["name"].lower().replace(" ", "_")
+                characteristic
                 in subcharacteristics[subcharacteristic]["characteristics"]
             ):
-                print_line = subcharacteristics[subcharacteristic]["name"]
-                print(f"\t\t{print_line}:")
-
+                print(f"\t\t{subcharacteristics[subcharacteristic]['name']}:")
                 for measure in measures:
-                    if (
-                        subcharacteristics[subcharacteristic]["name"]
-                        .lower()
-                        .replace(" ", "_")
-                        in measures[measure]["subcharacteristics"]
-                    ):
-                        print_line = measures[measure]["name"]
-                        print(f"\t\t\t{print_line}:")
-                        print_line = ", ".join(measures[measure]["metrics"])
-                        print(f"\t\t\t\t{print_line}")
+                    if subcharacteristic in measures[measure]["subcharacteristics"]:
+                        print(f"\t\t\t{measures[measure]['name']}:")
+                        print(f"\t\t\t\t{', '.join(measures[measure]['metrics'])}")
