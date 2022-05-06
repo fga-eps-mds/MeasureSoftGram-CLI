@@ -199,7 +199,7 @@ def validate_file_sub_characteristics(pre_config_json_file):
                 "weight",
                 subcharacteristics,
                 exceptions.InvalidWeight,
-                "{} subcharacteristic does not have weight field defined.".format(
+                '"{}" subcharacteristic does not have weight field defined.'.format(
                     subcharacteristic["name"]
                 ),
             )
@@ -207,7 +207,7 @@ def validate_file_sub_characteristics(pre_config_json_file):
             validate_weight_parameter(
                 subcharacteristic["weight"],
                 exceptions.InvalidWeight,
-                "{} subcharacteristics does not have weight value inside parameters (0 to 100).".format(
+                '"{}" subcharacteristics does not have weight value inside parameters (0 to 100).'.format(
                     subcharacteristic["name"]
                 ),
             )
@@ -221,7 +221,7 @@ def validate_file_sub_characteristics(pre_config_json_file):
                 "measures",
                 subcharacteristics,
                 exceptions.UnableToReadFile,
-                "{} subcharacteristic does not have measures field defined.".format(
+                '"{}" subcharacteristic does not have measures field defined.'.format(
                     subcharacteristic["name"]
                 ),
             )
@@ -231,7 +231,7 @@ def validate_file_sub_characteristics(pre_config_json_file):
                 or len(subcharacteristic["measures"]) == 0
             ):
                 raise exceptions.UnableToReadFile(
-                    "{} subcharacteristic needs to have at least one measure defined.".format(
+                    '"{}" subcharacteristic needs to have at least one measure defined.'.format(
                         subcharacteristic["name"]
                     )
                 )
@@ -345,7 +345,7 @@ def validate_core_available(
 
     for item in [x for x in characteristics if x not in core_characteristics]:
         raise exceptions.UnableToReadFile(
-            "The characteristic {} is not in MeasureSoftGram data base".format(item)
+            'The characteristic "{}" is not in MeasureSoftGram database'.format(item)
         )
 
     for char in file_characteristics.keys():
@@ -357,7 +357,7 @@ def validate_core_available(
             not in available_pre_configs["characteristics"][char]["subcharacteristics"]
         ]:
             raise exceptions.UnableToReadFile(
-                "The sub_characteristic {} is on wrong characteristic or not in MeasureSoftgram data base".format(
+                'The subcharacteristic "{}" is in a wrong characteristic or it is not in MeasureSoftgram database'.format(
                     item
                 )
             )
@@ -370,7 +370,7 @@ def validate_core_available(
             if x not in available_pre_configs["subcharacteristics"][sub]["measures"]
         ]:
             raise exceptions.UnableToReadFile(
-                "The measure {} is on wrong sub_characteristic or not in MeasureSoftgram data base".format(
+                'The measure "{}" is in a wrong subcharacteristic or it is not in MeasureSoftgram database'.format(
                     item
                 )
             )
