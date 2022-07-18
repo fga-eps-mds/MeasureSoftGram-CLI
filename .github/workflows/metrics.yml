@@ -2,8 +2,7 @@ name: Export de métricas
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main, develop]
 
 jobs:
   release:
@@ -16,7 +15,7 @@ jobs:
       - name: Criar diretório
         run: mkdir analytics-raw-data
 
-      - name: Coletar métricas
+      - name: Coletar métricas no SonarCloud
         run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
 
       - name: Adiciona resultado das métricas
@@ -29,7 +28,7 @@ jobs:
         run: |
           git config --global user.email "${{secrets.USER_EMAIL}}"
           git config --global user.name "${{secrets.USER_NAME}}"
-          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC_REPOSITORY}}@github.com/fga-eps-mds/2022-1-MeasureSoftGram-Doc.git" doc_repo
+          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC_REPOSITORY}}@github.com/fga-eps-mds/2022-1-MeasureSoftGram-Doc" doc_repo
           mkdir -p doc_repo/analytics-raw-data
           cp -R analytics-raw-data/*.json doc_repo/analytics-raw-data
           cd doc_repo
@@ -37,9 +36,9 @@ jobs:
           git commit -m "Adds metric file from ${{ github.event.repository.name }} ${{ github.ref_name }}"
           git push
 
-      - name: Faz upload das metricas como asset da release
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: 'analytics-raw-data/*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: ${{ github.ref_name }}
+      # - name: Faz upload das metricas como asset da release
+      #   uses: AButler/upload-release-assets@v2.0
+      #   with:
+      #     files: 'analytics-raw-data/*'
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     release-tag: ${{ github.ref_name }}
