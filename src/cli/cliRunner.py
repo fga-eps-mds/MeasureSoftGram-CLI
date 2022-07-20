@@ -1,6 +1,5 @@
 import os
 import argparse
-from ast import arg
 import json
 import sys
 import requests
@@ -101,6 +100,7 @@ def parse_change_name(pre_config_id, new_name):
             f"There was an ERROR while changing your Pre Configuration name:  {response_data['error']}"
         )
 
+
 def parse_get_entity(
     entity_name,
     entity_id,
@@ -162,11 +162,6 @@ def parse_get_entity(
         print(json.dumps(data))
 
 
-
-
-
-
-
 def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
@@ -199,13 +194,12 @@ def setup():
         help="Gets the last record of a specific entity",
     )
 
-
     parser_get_entity.add_argument(
         "entity",
         type=str,
         help=(
-            "The entity to get. Valid values are: " +
-            ", ".join(AVAILABLE_ENTITIES)
+            "The entity to get. Valid values are: "
+            + ", ".join(AVAILABLE_ENTITIES)
         ),
     )
 
