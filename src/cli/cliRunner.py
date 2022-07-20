@@ -58,7 +58,7 @@ def parse_create(file_path):
         print("Error: ", error)
         return
 
-    response = requests.post(BASE_URL + "/pre-configs", json=pre_config)
+    response = requests.post(BASE_URL + "pre-configs", json=pre_config)
 
     saved_pre_config = json.loads(response.text)
 
