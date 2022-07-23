@@ -17,6 +17,7 @@ from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 
 BASE_URL = "http://localhost:5000/"
+MSG_SERVICE_HOST = "https://measuresoftgram-service.herokuapp.com/"
 
 AVAILABLE_ENTITIES = [
     "metrics",
@@ -48,8 +49,8 @@ def parse_analysis(id):
     validade_analysis_response(response.status_code, response.json())
 
 
-def parse_import(output_origin, dir_path, id, language_extension):
-    print(output_origin)
+def parse_import(output_origin, dir_path, id, language_extension, host_url):
+    print(output_origin, host_url)
     try:
         components = file_reader(r"{}".format(dir_path))
     except MeasureSoftGramCLIException as error:
@@ -62,7 +63,7 @@ def parse_import(output_origin, dir_path, id, language_extension):
         "language_extension": language_extension,
     }
 
-    response = requests.post(BASE_URL + "import-metrics", json=payload)
+    response = requests.post(host_url + "import-metrics", json=payload)
 
     validate_metrics_post(response.status_code, json.loads(response.text))
 
@@ -203,6 +204,14 @@ def setup():
         help="The source code language extension",
     )
 
+    parser_import.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default=MSG_SERVICE_HOST,
+        help="The host of the service",
+    )
+
     parser_get_entity = subparsers.add_parser(
         "get",
         help="Gets the last record of a specific entity",
@@ -319,7 +328,13 @@ def setup():
         return
 
     elif args.command == "import":
-        parse_import(args.output_origin, args.dir_path, args.id, args.language_extension)
+        parse_import(
+            args.output_origin,
+            args.dir_path,
+            args.id,
+            args.language_extension,
+            args.host
+        )
 
     elif args.command == "create":
         parse_create(args.path)
