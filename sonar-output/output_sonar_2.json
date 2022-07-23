@@ -1,0 +1,730 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 500,
+    "total": 17
+  },
+  "baseComponent": {
+    "id": "AX9FgyLHNIj_v_uQK41e",
+    "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI",
+    "name": "2021-2-MeasureSoftGram-CLI",
+    "qualifier": "TRK",
+    "measures": [
+      {
+        "metric": "duplicated_lines_density",
+        "value": "0.0",
+        "bestValue": "true"
+      },
+      {
+        "metric": "functions",
+        "value": "17"
+      },
+      {
+        "metric": "test_execution_time",
+        "value": "534"
+      },
+      {
+        "metric": "test_failures",
+        "value": "0",
+        "bestValue": "true"
+      },
+      {
+        "metric": "test_errors",
+        "value": "0",
+        "bestValue": "true"
+      },
+      {
+        "metric": "security_rating",
+        "value": "1.0",
+        "bestValue": "true"
+      },
+      {
+        "metric": "tests",
+        "value": "22"
+      },
+      {
+        "metric": "files",
+        "value": "5"
+      },
+      {
+        "metric": "complexity",
+        "value": "64"
+      },
+      {
+        "metric": "ncloc",
+        "value": "331"
+      },
+      {
+        "metric": "coverage",
+        "value": "54.9",
+        "bestValue": "false"
+      },
+      {
+        "metric": "comment_lines_density",
+        "value": "0.6",
+        "bestValue": "false"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "AX-gLz5MkGDeAMJwS_V_",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram/__init__.py",
+      "name": "__init__.py",
+      "qualifier": "FIL",
+      "path": "measuresoftgram/__init__.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "complexity",
+          "value": "0"
+        },
+        {
+          "metric": "functions",
+          "value": "0"
+        },
+        {
+          "metric": "ncloc",
+          "value": "0"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "files",
+          "value": "1"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX9GDsKlZuVL7NjXSAZ4",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/__init__.py",
+      "name": "__init__.py",
+      "qualifier": "UTS",
+      "path": "tests/__init__.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WD",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/integration/__init__.py",
+      "name": "__init__.py",
+      "qualifier": "UTS",
+      "path": "tests/integration/__init__.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WH",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/unit/__init__.py",
+      "name": "__init__.py",
+      "qualifier": "UTS",
+      "path": "tests/unit/__init__.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX9Fg6R0WRlRH47OejaP",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram/cli.py",
+      "name": "cli.py",
+      "qualifier": "FIL",
+      "path": "measuresoftgram/cli.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "complexity",
+          "value": "6"
+        },
+        {
+          "metric": "functions",
+          "value": "4"
+        },
+        {
+          "metric": "ncloc",
+          "value": "50"
+        },
+        {
+          "metric": "coverage",
+          "value": "57.1",
+          "bestValue": "false"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "comment_lines_density",
+          "value": "3.8",
+          "bestValue": "false"
+        },
+        {
+          "metric": "files",
+          "value": "1"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WA",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram/create.py",
+      "name": "create.py",
+      "qualifier": "FIL",
+      "path": "measuresoftgram/create.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "functions",
+          "value": "8"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "files",
+          "value": "1"
+        },
+        {
+          "metric": "complexity",
+          "value": "37"
+        },
+        {
+          "metric": "ncloc",
+          "value": "183"
+        },
+        {
+          "metric": "coverage",
+          "value": "47.3",
+          "bestValue": "false"
+        },
+        {
+          "metric": "comment_lines_density",
+          "value": "0.0",
+          "bestValue": "false"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WI",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/unit/create_test.py",
+      "name": "create_test.py",
+      "qualifier": "UTS",
+      "path": "tests/unit/create_test.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_execution_time",
+          "value": "12"
+        },
+        {
+          "metric": "tests",
+          "value": "8"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WE",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/integration",
+      "name": "integration",
+      "qualifier": "DIR",
+      "path": "tests/integration",
+      "measures": [
+        {
+          "metric": "test_execution_time",
+          "value": "509"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "tests",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_V-",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram/jsonReader.py",
+      "name": "jsonReader.py",
+      "qualifier": "FIL",
+      "path": "measuresoftgram/jsonReader.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "complexity",
+          "value": "20"
+        },
+        {
+          "metric": "functions",
+          "value": "5"
+        },
+        {
+          "metric": "ncloc",
+          "value": "67"
+        },
+        {
+          "metric": "coverage",
+          "value": "93.0",
+          "bestValue": "false"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "comment_lines_density",
+          "value": "0.0",
+          "bestValue": "false"
+        },
+        {
+          "metric": "files",
+          "value": "1"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX9Fg6R0WRlRH47OejaQ",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram",
+      "name": "measuresoftgram",
+      "qualifier": "DIR",
+      "path": "measuresoftgram",
+      "measures": [
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "functions",
+          "value": "17"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "files",
+          "value": "5"
+        },
+        {
+          "metric": "complexity",
+          "value": "64"
+        },
+        {
+          "metric": "ncloc",
+          "value": "331"
+        },
+        {
+          "metric": "coverage",
+          "value": "54.9",
+          "bestValue": "false"
+        },
+        {
+          "metric": "comment_lines_density",
+          "value": "0.6",
+          "bestValue": "false"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WB",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram/parser.py",
+      "name": "parser.py",
+      "qualifier": "FIL",
+      "path": "measuresoftgram/parser.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "complexity",
+          "value": "1"
+        },
+        {
+          "metric": "functions",
+          "value": "0"
+        },
+        {
+          "metric": "ncloc",
+          "value": "31"
+        },
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": "false"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "comment_lines_density",
+          "value": "0.0",
+          "bestValue": "false"
+        },
+        {
+          "metric": "files",
+          "value": "1"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WF",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/utils/sonar.json",
+      "name": "sonar.json",
+      "qualifier": "UTS",
+      "path": "tests/utils/sonar.json",
+      "language": "json",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WC",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/integration/test_help.py",
+      "name": "test_help.py",
+      "qualifier": "UTS",
+      "path": "tests/integration/test_help.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_execution_time",
+          "value": "509"
+        },
+        {
+          "metric": "tests",
+          "value": "1"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WJ",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/unit/test_jsonReader.py",
+      "name": "test_jsonReader.py",
+      "qualifier": "UTS",
+      "path": "tests/unit/test_jsonReader.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_execution_time",
+          "value": "13"
+        },
+        {
+          "metric": "tests",
+          "value": "13"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "duplicated_lines_density",
+          "value": "0.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        }
+      ]
+    },
+    {
+      "id": "AX9GDsKlZuVL7NjXSAZ5",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests",
+      "name": "tests",
+      "qualifier": "DIR",
+      "path": "tests",
+      "measures": [
+        {
+          "metric": "test_execution_time",
+          "value": "534"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "tests",
+          "value": "22"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WK",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/unit",
+      "name": "unit",
+      "qualifier": "DIR",
+      "path": "tests/unit",
+      "measures": [
+        {
+          "metric": "test_execution_time",
+          "value": "25"
+        },
+        {
+          "metric": "test_failures",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "test_errors",
+          "value": "0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        },
+        {
+          "metric": "tests",
+          "value": "21"
+        }
+      ]
+    },
+    {
+      "id": "AX-gLz5MkGDeAMJwS_WG",
+      "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/utils",
+      "name": "utils",
+      "qualifier": "DIR",
+      "path": "tests/utils",
+      "measures": [
+        {
+          "metric": "security_rating",
+          "value": "1.0",
+          "bestValue": "true"
+        }
+      ]
+    }
+  ]
+}
