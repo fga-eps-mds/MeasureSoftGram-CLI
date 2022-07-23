@@ -28,6 +28,8 @@ def print_import_files(files):
     for file in files:
         print(f'\t\t- {file}')
 
+    print('\n\tSending the file data:')
+
 
 def print_status_import_file(file, message):
     """
@@ -35,4 +37,4 @@ def print_status_import_file(file, message):
             OK: Data sent successfully
     """
     print(f'\t\t- {file}')
-    print(f'\t\t{message}')
+    print(f'\t\t{message}\n')
