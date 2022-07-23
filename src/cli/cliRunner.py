@@ -15,6 +15,7 @@ from src.cli.jsonReader import file_reader, validate_metrics_post
 from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
+from src.cli.utils import check_host_url
 
 BASE_URL = "http://localhost:5000/"
 MSG_SERVICE_HOST = "https://measuresoftgram-service.herokuapp.com/"
@@ -62,6 +63,8 @@ def parse_import(output_origin, dir_path, id, language_extension, host_url):
         "components": components,
         "language_extension": language_extension,
     }
+
+    host_url = check_host_url(host_url)
 
     response = requests.post(host_url + "import-metrics", json=payload)
 
@@ -122,8 +125,7 @@ def parse_get_entity(
         ))
         return
 
-    if not host_url.endswith("/"):
-        host_url += "/"
+    host_url = check_host_url(host_url)
 
     host_url += (
         'api/v1/'
