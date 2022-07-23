@@ -31,6 +31,10 @@ SUPPORTED_FORMATS = [
     "tabular",
 ]
 
+AVAILABLE_IMPORTS = [
+    "sonarqube"
+]
+
 
 def sigint_handler(*_):
     print("\n\nExiting MeasureSoftGram...")
@@ -44,9 +48,10 @@ def parse_analysis(id):
     validade_analysis_response(response.status_code, response.json())
 
 
-def parse_import(file_path, id, language_extension):
+def parse_import(output_origin, dir_path, id, language_extension):
+    print(output_origin)
     try:
-        components = file_reader(r"{}".format(file_path))
+        components = file_reader(r"{}".format(dir_path))
     except MeasureSoftGramCLIException as error:
         print("Error: ", error)
         return
@@ -168,13 +173,22 @@ def setup():
     )
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
-    parser_import = subparsers.add_parser("import", help="Import a metrics file")
+    parser_import = subparsers.add_parser("import", help="Import a folder with metrics")
 
     parser_import.add_argument(
-        "path",
+        "output_origin",
+        type=str,
+        help=(
+            "Import a metrics files from some origin. Valid values are: "
+            + ", ".join(AVAILABLE_IMPORTS)
+        ),
+    )
+
+    parser_import.add_argument(
+        "dir_path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
-        help="Path to the data directory",
+        help="Path to the directory",
     )
 
     parser_import.add_argument(
@@ -305,7 +319,7 @@ def setup():
         return
 
     elif args.command == "import":
-        parse_import(args.path, args.id, args.language_extension)
+        parse_import(args.output_origin, args.dir_path, args.id, args.language_extension)
 
     elif args.command == "create":
         parse_create(args.path)
