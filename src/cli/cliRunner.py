@@ -2,6 +2,7 @@ import os
 import argparse
 import json
 import sys
+from urllib.error import HTTPError
 import requests
 import signal
 from pathlib import Path
@@ -11,11 +12,11 @@ from tabulate import tabulate
 from src.cli.show import parse_show
 from src.cli.list import parse_list
 from src.cli.exceptions import MeasureSoftGramCLIException
-from src.cli.jsonReader import file_reader, validate_metrics_post
+from src.cli.jsonReader import file_reader, folder_reader, validate_metrics_post
 from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
-from src.cli.utils import check_host_url
+from src.cli.utils import check_host_url, print_import_files, print_status_import_file
 
 BASE_URL = "http://localhost:5000/"
 MSG_SERVICE_HOST = "https://measuresoftgram-service.herokuapp.com/"
@@ -51,24 +52,64 @@ def parse_analysis(id):
 
 
 def parse_import(output_origin, dir_path, id, language_extension, host_url):
-    print(output_origin, host_url)
     try:
-        components = file_reader(r"{}".format(dir_path))
+        components, files = folder_reader(r"{}".format(dir_path))
     except MeasureSoftGramCLIException as error:
         print("Error: ", error)
         return
 
     payload = {
         "pre_config_id": id,
-        "components": components,
+        "components": [],
         "language_extension": language_extension,
     }
 
     host_url = check_host_url(host_url)
 
-    response = requests.post(host_url + "import-metrics", json=payload)
+    host_url += (
+        'api/v1/'
+        # f'organizations/{organization_id}/'
+        # f'repository/{repository_id}/'
+        # f'{entity_name}/'
+    )
 
-    validate_metrics_post(response.status_code, json.loads(response.text))
+    print_import_files(files)
+
+    for idx, component in enumerate(components):
+        payload["components"] = component
+
+        for _ in range(3):
+            print('\n\tSending the file data:')
+            # print(f"\n[{files[idx]}] ---> Trying to save metrics from file...", end="")
+            try:
+                response = requests.post(
+                    (
+                        host_url
+                        + "organizations/1/repository/1/import/sonarqube-metrics/"
+                    ),
+                    json=payload
+                )
+
+                success, message = validate_metrics_post(
+                    response.status_code,
+                    json.loads(response.text),
+                    files[idx]
+                )
+
+                print_status_import_file(files[idx], message)
+                break
+            except (
+                ConnectionError,
+                HTTPError,
+                requests.Timeout,
+                json.decoder.JSONDecodeError
+            ) as error:
+                print_status_import_file(
+                    files[idx],
+                    "FAIL: Can't connect to host service."
+                )
+
+    print(f'\nAttempt to save all files in the directory finished!')
 
 
 def parse_create(file_path):
