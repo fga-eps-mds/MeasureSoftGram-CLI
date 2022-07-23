@@ -19,7 +19,6 @@ from src.cli.available import parse_available
 from src.cli.utils import check_host_url, print_import_files, print_status_import_file
 
 BASE_URL = "http://localhost:5000/"
-MSG_SERVICE_HOST = "https://measuresoftgram-service.herokuapp.com/"
 
 AVAILABLE_ENTITIES = [
     "metrics",
@@ -51,7 +50,15 @@ def parse_analysis(id):
     validade_analysis_response(response.status_code, response.json())
 
 
-def parse_import(output_origin, dir_path, id, language_extension, host_url):
+def parse_import(
+    output_origin,
+    dir_path,
+    id,
+    language_extension,
+    host_url,
+    organization_id,
+    repository_id
+):
     try:
         components, files = folder_reader(r"{}".format(dir_path))
     except MeasureSoftGramCLIException as error:
@@ -68,9 +75,9 @@ def parse_import(output_origin, dir_path, id, language_extension, host_url):
 
     host_url += (
         'api/v1/'
-        # f'organizations/{organization_id}/'
-        # f'repository/{repository_id}/'
-        # f'{entity_name}/'
+        f'organizations/{organization_id}/'
+        f'repository/{repository_id}/'
+        'import/sonarqube-metrics/'
     )
 
     print_import_files(files)
@@ -79,16 +86,8 @@ def parse_import(output_origin, dir_path, id, language_extension, host_url):
         payload["components"] = component
 
         for _ in range(3):
-            print('\n\tSending the file data:')
-            # print(f"\n[{files[idx]}] ---> Trying to save metrics from file...", end="")
             try:
-                response = requests.post(
-                    (
-                        host_url
-                        + "organizations/1/repository/1/import/sonarqube-metrics/"
-                    ),
-                    json=payload
-                )
+                response = requests.post(host_url, json=payload)
 
                 success, message = validate_metrics_post(
                     response.status_code,
@@ -251,8 +250,27 @@ def setup():
         "--host",
         type=str,
         nargs='?',
-        default=MSG_SERVICE_HOST,
+        default=os.getenv(
+            "MSG_SERVICE_HOST",
+            "https://measuresoftgram-service.herokuapp.com/"
+        ),
         help="The host of the service",
+    )
+
+    parser_import.add_argument(
+        "--organization_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+        help="The ID of the organization that the repository belongs to",
+    )
+
+    parser_import.add_argument(
+        "--repository_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_REPOSITORY_ID", "1"),
+        help="The ID of the repository",
     )
 
     parser_get_entity = subparsers.add_parser(
@@ -376,7 +394,9 @@ def setup():
             args.dir_path,
             args.id,
             args.language_extension,
-            args.host
+            args.host,
+            args.organization_id,
+            args.repository_id,
         )
 
     elif args.command == "create":
