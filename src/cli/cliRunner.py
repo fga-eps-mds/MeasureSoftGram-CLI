@@ -61,7 +61,7 @@ def parse_import(
 ):
     try:
         components, files = folder_reader(r"{}".format(dir_path))
-    except (MeasureSoftGramCLIException, FileNotFoundError) as error:
+    except (MeasureSoftGramCLIException, FileNotFoundError):
         print("Error: The folder was not found")
         return
 

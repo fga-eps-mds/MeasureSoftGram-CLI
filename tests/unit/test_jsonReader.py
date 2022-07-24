@@ -1,6 +1,6 @@
 import pytest
-from io import StringIO
 from src.cli import jsonReader, exceptions
+# from io import StringIO
 
 
 @pytest.mark.parametrize("file_name", ["sonar.txt", "sonar.xml", "sonar.jjson"])
