@@ -1,4 +1,5 @@
 import pytz
+from termcolor import colored
 from datetime import datetime
 
 
@@ -37,4 +38,8 @@ def print_status_import_file(file, message):
             OK: Data sent successfully
     """
     print(f'\t\t- {file}')
-    print(f'\t\t{message}\n')
+
+    if 'OK:' in message:
+        print(colored(f'\t\t{message}\n', 'green'))
+    else:
+        print(colored(f'\t\t{message}\n', 'red'))

@@ -28,19 +28,22 @@ def file_reader(absolute_path):
 
 
 def folder_reader(absolute_path):
-    os.chdir(absolute_path)
-    files_in_dir = os.listdir(absolute_path)
-    components = []
-    files = []
+    try:
+        os.chdir(absolute_path)
+        files_in_dir = os.listdir(absolute_path)
+        components = []
+        files = []
 
-    for file_path in files_in_dir:
-        try:
-            components.append(file_reader(file_path))
-            files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
-        except exceptions.MeasureSoftGramCLIException as error:
-            print("Warning: ", error, f"passing {file_path}...")
+        for file_path in files_in_dir:
+            try:
+                components.append(file_reader(file_path))
+                files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
+            except exceptions.MeasureSoftGramCLIException as error:
+                print("Warning: ", error, f"passing {file_path}...")
 
-    os.chdir('..')
+        os.chdir('..')
+    except FileNotFoundError:
+        raise FileNotFoundError
 
     return components, files
 
@@ -125,7 +128,7 @@ def check_metrics_values(json_data):
 
 def validate_metrics_post(response_status):
     if 200 <= response_status <= 299:
-        return 'Data sent successfully'
+        return 'OK: Data sent successfully'
 
     return \
         f'FAIL: The host service server returned a {response_status} error. Trying again'
