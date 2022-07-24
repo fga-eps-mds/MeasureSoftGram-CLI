@@ -12,7 +12,7 @@ from tabulate import tabulate
 from src.cli.show import parse_show
 from src.cli.list import parse_list
 from src.cli.exceptions import MeasureSoftGramCLIException
-from src.cli.jsonReader import file_reader, folder_reader, validate_metrics_post
+from src.cli.jsonReader import folder_reader, validate_metrics_post
 from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
@@ -89,11 +89,7 @@ def parse_import(
             try:
                 response = requests.post(host_url, json=payload)
 
-                success, message = validate_metrics_post(
-                    response.status_code,
-                    json.loads(response.text),
-                    files[idx]
-                )
+                message = validate_metrics_post(response.status_code)
 
                 print_status_import_file(files[idx], message)
                 break
@@ -102,13 +98,13 @@ def parse_import(
                 HTTPError,
                 requests.Timeout,
                 json.decoder.JSONDecodeError
-            ) as error:
+            ):
                 print_status_import_file(
                     files[idx],
                     "FAIL: Can't connect to host service."
                 )
 
-    print(f'\nAttempt to save all files in the directory finished!')
+    print('\nAttempt to save all files in the directory finished!')
 
 
 def parse_create(file_path):

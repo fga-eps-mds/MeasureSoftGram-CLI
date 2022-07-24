@@ -123,10 +123,9 @@ def check_metrics_values(json_data):
         )
 
 
-def validate_metrics_post(response_status, response, file):
+def validate_metrics_post(response_status):
     if 200 <= response_status <= 299:
-        return True, 'Data sent successfully'
+        return 'Data sent successfully'
 
     return \
-        False, \
         f'FAIL: The host service server returned a {response_status} error. Trying again'
