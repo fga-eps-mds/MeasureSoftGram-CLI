@@ -8,6 +8,7 @@ import signal
 from pathlib import Path
 
 from tabulate import tabulate
+import urllib3
 
 from src.cli.show import parse_show
 from src.cli.list import parse_list
@@ -59,6 +60,7 @@ def parse_import(
     organization_id,
     repository_id
 ):
+    print(f'--> Starting to parser import for {output_origin} output...\n')
     try:
         components, files = folder_reader(r"{}".format(dir_path))
     except (MeasureSoftGramCLIException, FileNotFoundError):
@@ -85,23 +87,26 @@ def parse_import(
     for idx, component in enumerate(components):
         payload["components"] = component
 
-        for _ in range(3):
+        for trying_idx in range(3):
             try:
                 response = requests.post(host_url, json=payload)
 
                 message = validate_metrics_post(response.status_code)
 
-                print_status_import_file(files[idx], message)
+                print_status_import_file(files[idx], message, trying_idx + 1)
                 break
             except (
+                requests.RequestException,
                 ConnectionError,
+                ConnectionRefusedError,
                 HTTPError,
                 requests.Timeout,
                 json.decoder.JSONDecodeError
             ):
                 print_status_import_file(
                     files[idx],
-                    "FAIL: Can't connect to host service."
+                    "FAIL: Can't connect to host service.",
+                    trying_idx + 1
                 )
 
     print('\nAttempt to save all files in the directory finished!')
