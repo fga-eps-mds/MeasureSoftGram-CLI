@@ -32,12 +32,12 @@ def print_import_files(files):
     print('\n\tSending the file data:')
 
 
-def print_status_import_file(file, message):
+def print_status_import_file(file, message, trying_idx):
     """
             - sonarmetrics/file1.json
             OK: Data sent successfully
     """
-    print(f'\t\t- {file}')
+    print(f'\t\t- [{trying_idx}] {file}')
 
     if 'OK:' in message:
         print(colored(f'\t\t{message}\n', 'green'))
