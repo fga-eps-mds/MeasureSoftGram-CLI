@@ -8,7 +8,6 @@ import signal
 from pathlib import Path
 
 from tabulate import tabulate
-import urllib3
 
 from src.cli.show import parse_show
 from src.cli.list import parse_list
@@ -98,9 +97,7 @@ def parse_import(
             except (
                 requests.RequestException,
                 ConnectionError,
-                ConnectionRefusedError,
                 HTTPError,
-                requests.Timeout,
                 json.decoder.JSONDecodeError
             ):
                 print_status_import_file(
