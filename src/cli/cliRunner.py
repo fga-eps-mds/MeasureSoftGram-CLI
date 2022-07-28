@@ -53,7 +53,6 @@ def parse_analysis(id):
 def parse_import(
     output_origin,
     dir_path,
-    id,
     language_extension,
     host_url,
     organization_id,
@@ -67,7 +66,6 @@ def parse_import(
         return
 
     payload = {
-        "pre_config_id": id,
         "components": [],
         "language_extension": language_extension,
     }
@@ -233,12 +231,6 @@ def setup():
     )
 
     parser_import.add_argument(
-        "id",
-        type=str,
-        help="Pre config ID",
-    )
-
-    parser_import.add_argument(
         "language_extension",
         type=str,
         help="The source code language extension",
@@ -390,7 +382,6 @@ def setup():
         parse_import(
             args.output_origin,
             args.dir_path,
-            args.id,
             args.language_extension,
             args.host,
             args.organization_id,
