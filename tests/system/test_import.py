@@ -13,7 +13,7 @@ def capture(command):
 
 def test_import_metrics_file_not_found_exception_handling():
     out, _, returncode = capture(
-        ["measuresoftgram", "import", "sonarqube", "sonar-output-fake", "123", "py"]
+        ["measuresoftgram", "import", "sonarqube", "sonar-output-fake", "py"]
     )
 
     assert returncode == 0
