@@ -13,8 +13,8 @@ def capture(command):
 
 def test_import_metrics_file_not_found_exception_handling():
     out, _, returncode = capture(
-        ["measuresoftgram", "import", "tests/system/data/sona.json", "123", "py"]
+        ["measuresoftgram", "import", "sonarqube", "sonar-output-fake", "py"]
     )
 
     assert returncode == 0
-    assert "Error:  The file was not found" in out.decode("utf-8")
+    assert "Error: The folder was not found" in out.decode("utf-8")

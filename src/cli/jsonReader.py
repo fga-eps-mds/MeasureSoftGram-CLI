@@ -1,6 +1,7 @@
 from src.cli import exceptions
 import json
 import math
+import os
 
 
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
@@ -24,6 +25,27 @@ def file_reader(absolute_path):
     check_metrics_values(json_data)
 
     return json_data["components"]
+
+
+def folder_reader(absolute_path):
+    try:
+        os.chdir(absolute_path)
+        files_in_dir = os.listdir(absolute_path)
+        components = []
+        files = []
+
+        for file_path in files_in_dir:
+            try:
+                components.append(file_reader(file_path))
+                files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
+            except exceptions.MeasureSoftGramCLIException as error:
+                print("Warning: ", error, f"passing {file_path}...")
+
+        os.chdir('..')
+    except FileNotFoundError:
+        raise FileNotFoundError
+
+    return components, files
 
 
 def open_json_file(absolute_path):
@@ -78,7 +100,7 @@ def check_sonar_format(json_data):
 
 def check_file_extension(file_name):
     if file_name.split(".")[-1] != "json":
-        raise exceptions.InvalidMetricsJsonFile("Only JSON files are accepted")
+        raise exceptions.InvalidMetricsJsonFile("Only JSON files are accepted.")
 
 
 def raise_invalid_metric(key, metric):
@@ -104,16 +126,9 @@ def check_metrics_values(json_data):
         )
 
 
-def validate_metrics_post(response_status, response):
+def validate_metrics_post(response_status):
     if 200 <= response_status <= 299:
-        print("\nThe imported metrics were saved for the pre-configuration")
-    else:
-        print("\nThere was an ERROR while saving your Metrics\n")
+        return 'OK: Data sent successfully'
 
-        if len(response) == 0:
-            return
-
-        for key, value in response.items():
-            field_name = "General" if key == "__all__" else key
-
-            print(f"\t{field_name} => {value}")
+    return \
+        f'FAIL: The host service server returned a {response_status} error. Trying again'

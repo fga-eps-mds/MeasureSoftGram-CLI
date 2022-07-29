@@ -2,6 +2,7 @@ import os
 import argparse
 import json
 import sys
+from urllib.error import HTTPError
 import requests
 import signal
 from pathlib import Path
@@ -11,10 +12,11 @@ from tabulate import tabulate
 from src.cli.show import parse_show
 from src.cli.list import parse_list
 from src.cli.exceptions import MeasureSoftGramCLIException
-from src.cli.jsonReader import file_reader, validate_metrics_post
+from src.cli.jsonReader import folder_reader, validate_metrics_post
 from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
+from src.cli.utils import check_host_url, print_import_files, print_status_import_file
 
 BASE_URL = "http://localhost:5000/"
 
@@ -31,6 +33,10 @@ SUPPORTED_FORMATS = [
     "tabular",
 ]
 
+AVAILABLE_IMPORTS = [
+    "sonarqube"
+]
+
 
 def sigint_handler(*_):
     print("\n\nExiting MeasureSoftGram...")
@@ -44,22 +50,61 @@ def parse_analysis(id):
     validade_analysis_response(response.status_code, response.json())
 
 
-def parse_import(file_path, id, language_extension):
+def parse_import(
+    output_origin,
+    dir_path,
+    language_extension,
+    host_url,
+    organization_id,
+    repository_id
+):
+    print(f'--> Starting to parser import for {output_origin} output...\n')
     try:
-        components = file_reader(r"{}".format(file_path))
-    except MeasureSoftGramCLIException as error:
-        print("Error: ", error)
+        components, files = folder_reader(r"{}".format(dir_path))
+    except (MeasureSoftGramCLIException, FileNotFoundError):
+        print("Error: The folder was not found")
         return
 
     payload = {
-        "pre_config_id": id,
-        "components": components,
+        "components": [],
         "language_extension": language_extension,
     }
 
-    response = requests.post(BASE_URL + "import-metrics", json=payload)
+    host_url = check_host_url(host_url)
 
-    validate_metrics_post(response.status_code, json.loads(response.text))
+    host_url += (
+        'api/v1/'
+        f'organizations/{organization_id}/'
+        f'repository/{repository_id}/'
+        'import/sonarqube-metrics/'
+    )
+
+    print_import_files(files)
+
+    for idx, component in enumerate(components):
+        payload["components"] = component
+
+        for trying_idx in range(3):
+            try:
+                response = requests.post(host_url, json=payload)
+
+                message = validate_metrics_post(response.status_code)
+
+                print_status_import_file(files[idx], message, trying_idx + 1)
+                break
+            except (
+                requests.RequestException,
+                ConnectionError,
+                HTTPError,
+                json.decoder.JSONDecodeError
+            ):
+                print_status_import_file(
+                    files[idx],
+                    "FAIL: Can't connect to host service.",
+                    trying_idx + 1
+                )
+
+    print('\nAttempt to save all files in the directory finished!')
 
 
 def parse_create(file_path):
@@ -116,8 +161,7 @@ def parse_get_entity(
         ))
         return
 
-    if not host_url.endswith("/"):
-        host_url += "/"
+    host_url = check_host_url(host_url)
 
     host_url += (
         'api/v1/'
@@ -168,25 +212,55 @@ def setup():
     )
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
-    parser_import = subparsers.add_parser("import", help="Import a metrics file")
+    parser_import = subparsers.add_parser("import", help="Import a folder with metrics")
 
     parser_import.add_argument(
-        "path",
-        type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent / "data",
-        help="Path to the data directory",
+        "output_origin",
+        type=str,
+        help=(
+            "Import a metrics files from some origin. Valid values are: "
+            + ", ".join(AVAILABLE_IMPORTS)
+        ),
     )
 
     parser_import.add_argument(
-        "id",
-        type=str,
-        help="Pre config ID",
+        "dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the directory",
     )
 
     parser_import.add_argument(
         "language_extension",
         type=str,
         help="The source code language extension",
+    )
+
+    parser_import.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default=os.getenv(
+            "MSG_SERVICE_HOST",
+            "https://measuresoftgram-service.herokuapp.com/"
+        ),
+        help="The host of the service",
+    )
+
+    parser_import.add_argument(
+        "--organization_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+        help="The ID of the organization that the repository belongs to",
+    )
+
+    parser_import.add_argument(
+        "--repository_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_REPOSITORY_ID", "1"),
+        help="The ID of the repository",
     )
 
     parser_get_entity = subparsers.add_parser(
@@ -305,7 +379,14 @@ def setup():
         return
 
     elif args.command == "import":
-        parse_import(args.path, args.id, args.language_extension)
+        parse_import(
+            args.output_origin,
+            args.dir_path,
+            args.language_extension,
+            args.host,
+            args.organization_id,
+            args.repository_id,
+        )
 
     elif args.command == "create":
         parse_create(args.path)

@@ -1,6 +1,6 @@
 import pytest
-from io import StringIO
 from src.cli import jsonReader, exceptions
+# from io import StringIO
 
 
 @pytest.mark.parametrize("file_name", ["sonar.txt", "sonar.xml", "sonar.jjson"])
@@ -12,7 +12,7 @@ def test_invalid_file_extension(file_name):
     with pytest.raises(exceptions.InvalidMetricsJsonFile) as error:
         jsonReader.check_file_extension(file_name)
 
-    assert str(error.value) == "Only JSON files are accepted"
+    assert str(error.value) == "Only JSON files are accepted."
 
 
 def test_file_reader_success():
@@ -164,48 +164,29 @@ class TestValidateMetricsPost:
     """
 
     @pytest.mark.parametrize("status_code", [200, 201, 204])
-    def test_post_success(self, status_code, mocker):
+    def test_post_success(self, status_code):
         """
         Test when a success status code is returned
         """
 
-        with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-            jsonReader.validate_metrics_post(status_code, {})
+        # with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        message = jsonReader.validate_metrics_post(status_code)
 
-            assert (
-                "The imported metrics were saved for the pre-configuration"
-                in fake_out.getvalue()
-            )
+        assert "OK: Data sent successfully" == message
 
-    @pytest.mark.parametrize(
-        "status_code, response, additional_msg",
-        [
-            (400, {}, ""),
-            (500, {}, ""),
-            (404, {"pre_config_id": "123 is not a valid ID"}, "is not a valid ID"),
-            (
-                422,
-                {
-                    "__all__": "The metrics in this file are not the expected in the pre config. Missing metrics: a, b"
-                },
-                "The metrics in this file are not the expected in the pre config. Missing metrics: ",
-            ),
-        ],
-    )
-    def test_post_failure(self, status_code, response, additional_msg, mocker):
+    @pytest.mark.parametrize("status_code", [400, 500, 404, 422])
+    def test_post_failure(self, status_code):
         """
         Test when an error is returned
         """
 
-        with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-            jsonReader.validate_metrics_post(status_code, response)
+        # with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        message = jsonReader.validate_metrics_post(status_code)
 
-            output = fake_out.getvalue()
-
-            assert "There was an ERROR while saving your Metrics" in output
-
-            if additional_msg:
-                assert additional_msg in output
+        assert (
+            f'FAIL: The host service server returned a {status_code} error. Trying again'
+            == message
+        )
 
 
 class TestCheckMetricsValues:

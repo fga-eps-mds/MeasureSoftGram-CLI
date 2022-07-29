@@ -10,6 +10,7 @@ setup(
         "requests",
         "pytz",
         "tabulate==0.8.10",
+        "termcolor==1.1.0"
     ],
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
