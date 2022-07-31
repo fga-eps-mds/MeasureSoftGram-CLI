@@ -171,11 +171,15 @@ def parse_get_entity(
         f'repository/{repository_id}/'
     )
 
-    host_url += "history/" if history else ''
+    host_url += "history/" if history == True else ''
     host_url += f"{entity_name}/"
     host_url += f"{entity_id}" if entity_id else ''
 
-    print(host_url)
+    # print(host_url)
+    print(entity_name,
+    entity_id,
+    host_url,
+    history)
 
     response = requests.get(host_url)
 
@@ -185,24 +189,47 @@ def parse_get_entity(
         )
         return
 
-    headers = ['Name', 'Value', 'Created at']
-
     if entity_id:
-        data = response.json()
-        extracted_data = [[
-            data['name'],
-            # data['latest']['value'],
-            # data['latest']['created_at'],
-        ]]
+        if history == True:
+            data = response.json().get("history")
+            headers = ['Metric Id', 'Id', 'Value', 'Created at']
+            extracted_data = []
+            for entity_data in data:
+                extracted_data.append([
+                    entity_data['metric_id'],
+                    entity_data['id'],
+                    entity_data['value'],
+                    entity_data['created_at'],
+                ])
+        else:
+            headers = ['Name', 'Value', 'Created at']
+            extracted_data = [[
+                data['name'],
+                data['latest']['value'],
+                data['latest']['created_at'],
+            ]]
     else:
-        data = response.json().get("results")
-        extracted_data = []
-        for entity_data in data:
-            extracted_data.append([
-                entity_data['name'],
-                # entity_data['latest']['value'],
-                # entity_data['latest']['created_at'],
-            ])
+        if history == True:
+            headers = ['Id', 'Name', 'Created at']
+            data = response.json().get("results")
+            extracted_data = []
+            extracted_data = []
+            for entity_data in data:
+                extracted_data.append([
+                    entity_data['id'],
+                    entity_data['name'],
+                    entity_data['history'],
+                ])
+        else:
+            headers = ['Name', 'Value', 'Created at']
+            data = response.json().get("results")
+            extracted_data = []
+            for entity_data in data:
+                extracted_data.append([
+                    entity_data['name'],
+                    entity_data['latest']['value'],
+                    entity_data['latest']['created_at'],
+                ])
 
     if output_format == 'tabular':
         print(tabulate(extracted_data, headers=headers))
@@ -292,9 +319,11 @@ def setup():
     )
 
     parser_get_entity.add_argument(
-        "history",
-        type=str,
-        nargs='?',
+        "--history",
+        action="store_true",
+        default=False,
+        # type=str,
+        # nargs='?',
         help="The history of the repository",
     )
 
