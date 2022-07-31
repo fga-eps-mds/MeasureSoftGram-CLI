@@ -213,13 +213,15 @@ def parse_get_entity(
             headers = ['Id', 'Name', 'Created at']
             data = response.json().get("results")
             extracted_data = []
-            extracted_data = []
             for entity_data in data:
-                extracted_data.append([
-                    entity_data['id'],
-                    entity_data['name'],
-                    entity_data['history'],
-                ])
+                for history_data in entity_data["history"]:
+                    extracted_data.append([
+                        history_data['metric_id'],
+                        history_data['id'],
+                        history_data['value'],
+                        history_data['created_at'],
+                    ])
+
         else:
             headers = ['Name', 'Value', 'Created at']
             data = response.json().get("results")
