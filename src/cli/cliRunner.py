@@ -3,6 +3,7 @@ import argparse
 import json
 import sys
 from urllib.error import HTTPError
+from tokenize import String
 import requests
 import signal
 from pathlib import Path
@@ -18,7 +19,7 @@ from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 from src.cli.utils import check_host_url, print_import_files, print_status_import_file
 
-BASE_URL = "http://localhost:5000/"
+BASE_URL = "http://172.20.0.2:5000/"
 
 AVAILABLE_ENTITIES = [
     "metrics",
@@ -153,6 +154,7 @@ def parse_get_entity(
     organization_id,
     repository_id,
     output_format,
+    history
 ):
     if output_format not in SUPPORTED_FORMATS:
         print((
@@ -167,11 +169,13 @@ def parse_get_entity(
         'api/v1/'
         f'organizations/{organization_id}/'
         f'repository/{repository_id}/'
-        f'{entity_name}/'
     )
 
-    if entity_id:
-        host_url += f"{entity_id}"
+    host_url += "history/" if history else ''
+    host_url += f"{entity_name}/"
+    host_url += f"{entity_id}" if entity_id else ''
+
+    print(host_url)
 
     response = requests.get(host_url)
 
@@ -187,8 +191,8 @@ def parse_get_entity(
         data = response.json()
         extracted_data = [[
             data['name'],
-            data['latest']['value'],
-            data['latest']['created_at'],
+            # data['latest']['value'],
+            # data['latest']['created_at'],
         ]]
     else:
         data = response.json().get("results")
@@ -196,8 +200,8 @@ def parse_get_entity(
         for entity_data in data:
             extracted_data.append([
                 entity_data['name'],
-                entity_data['latest']['value'],
-                entity_data['latest']['created_at'],
+                # entity_data['latest']['value'],
+                # entity_data['latest']['created_at'],
             ])
 
     if output_format == 'tabular':
@@ -285,6 +289,13 @@ def setup():
             "The ID of the entity to get. If not provided, a list with the "
             "last record of all available entities will be returned."
         ),
+    )
+
+    parser_get_entity.add_argument(
+        "history",
+        type=str,
+        nargs='?',
+        help="The history of the repository",
     )
 
     parser_get_entity.add_argument(
@@ -414,7 +425,9 @@ def setup():
             args.organization_id,
             args.repository_id,
             args.output_format,
+            args.history
         )
+
 
 
 def main():
