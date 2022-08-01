@@ -154,7 +154,7 @@ def parse_get_entity(
     organization_id,
     repository_id,
     output_format,
-    history
+    history,
 ):
     if output_format not in SUPPORTED_FORMATS:
         print((
@@ -171,7 +171,7 @@ def parse_get_entity(
         f'repository/{repository_id}/'
     )
 
-    host_url += "history/" if history == True else ''
+    host_url += "history/" if history else ''
     host_url += f"{entity_name}/"
     host_url += f"{entity_id}" if entity_id else ''
 
@@ -190,18 +190,19 @@ def parse_get_entity(
         return
 
     if entity_id:
-        if history == True:
+        if history:
             data = response.json().get("history")
-            headers = ['Metric Id', 'Id', 'Value', 'Created at']
+            headers = ['Id', 'History Id', 'Value', 'Created at']
             extracted_data = []
             for entity_data in data:
                 extracted_data.append([
-                    entity_data['metric_id'],
+                    entity_data['metric_id' if entity_name == 'metrics' else 'measure'],
                     entity_data['id'],
                     entity_data['value'],
                     entity_data['created_at'],
                 ])
         else:
+            data = response.json()
             headers = ['Name', 'Value', 'Created at']
             extracted_data = [[
                 data['name'],
@@ -209,14 +210,14 @@ def parse_get_entity(
                 data['latest']['created_at'],
             ]]
     else:
-        if history == True:
-            headers = ['Id', 'Name', 'Created at']
+        if history:
+            headers = ['Id', 'History Id', 'Name', 'Created at']
             data = response.json().get("results")
             extracted_data = []
             for entity_data in data:
                 for history_data in entity_data["history"]:
                     extracted_data.append([
-                        history_data['metric_id'],
+                        history_data['metric_id' if entity_name == 'metrics' else 'measure'],
                         history_data['id'],
                         history_data['value'],
                         history_data['created_at'],
@@ -324,8 +325,6 @@ def setup():
         "--history",
         action="store_true",
         default=False,
-        # type=str,
-        # nargs='?',
         help="The history of the repository",
     )
 
