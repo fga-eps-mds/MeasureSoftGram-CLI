@@ -41,4 +41,4 @@ jobs:
         with:
           files: 'analytics-raw-data/*'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: ${{ github.ref_name }}
+          # release-tag: ${{ github.ref_name }}
