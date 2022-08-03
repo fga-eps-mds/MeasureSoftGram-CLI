@@ -23,7 +23,7 @@ jobs:
           cache: pip
 
       - name: Install requirements
-        run: pip install -r src/requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Install tox
         run: pip install tox
@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: |
           coverage run -m pytest tests --junitxml=./junit.xml
-          coverage xml -o ./coverage.xml
+          coverage xml -o coverage.xml
 
       - name: fix code coverage paths
         if: always()
