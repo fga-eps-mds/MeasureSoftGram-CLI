@@ -10,7 +10,8 @@ name: Upload Python Package
 
 on:
   push:
-    branches: [main, develop]
+      tags:
+      - "v*"
 
 jobs:
   deploy:

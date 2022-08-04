@@ -15,25 +15,38 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
           cache: pip
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
       - name: Install tox
         run: pip install tox
+
       - name: Run tests
-        run: tox -- --cov=src --cov-report=xml --junitxml=junittest.xml
+        run: |
+          pip install coverage
+          pip install pytest
+          coverage run -m pytest tests --junitxml=./junit.xml
+          coverage xml -o coverage.xml
+
       - name: fix code coverage paths
         if: always()
         run: |
-          sed -i 's/\/home\/runner\/work\/2021-2-MeasureSoftGram-CLI\/2021-2-MeasureSoftGram-CLI\//\/github\/workspace\//g' coverage.xml
+          sed -i 's/\/home\/runner\/work\/2022-1-MeasureSoftGram-CLI\/2022-1-MeasureSoftGram-CLI\//\/github\/workspace\//g' coverage.xml
+
       - name: SonarCloud Scan
         if: always()
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v2
@@ -44,5 +57,5 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage.xml
           flags: unittests
-          name: 2021-2-MeasureSoftGram-CLI
+          name: 2022-1-MeasureSoftGram-CLI
           verbose: true
