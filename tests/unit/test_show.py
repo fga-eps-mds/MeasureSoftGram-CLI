@@ -1,5 +1,5 @@
-from io import StringIO
-from src.cli.show import parse_show
+# from io import StringIO
+# from src.cli.show import parse_show
 
 
 class DummyResponse:

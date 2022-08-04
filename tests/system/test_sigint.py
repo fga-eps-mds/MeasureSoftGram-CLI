@@ -1,7 +1,7 @@
 import signal
 import subprocess
 from time import sleep
-import pytest
+# import pytest
 
 
 def capture(command):

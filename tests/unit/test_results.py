@@ -1,5 +1,5 @@
-from src.cli.results import print_results, validade_analysis_response
-from io import StringIO
+# from src.cli.results import print_results, validade_analysis_response
+# from io import StringIO
 
 
 RESULTS = {
