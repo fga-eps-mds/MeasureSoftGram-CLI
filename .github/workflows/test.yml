@@ -25,11 +25,13 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
 
-      # - name: Install tox
-      #   run: pip install tox
+      - name: Install tox
+        run: pip install tox
 
       - name: Run tests
         run: |
+          pip install coverage
+          pip install pytest
           coverage run -m pytest tests --junitxml=./junit.xml
           coverage xml -o coverage.xml
 
