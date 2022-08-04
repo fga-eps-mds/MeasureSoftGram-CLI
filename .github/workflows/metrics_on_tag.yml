@@ -2,7 +2,8 @@ name: Export de métricas nas releases
 
 on:
   push:
-    branches: [main, develop]
+      tags:
+      - "v*"
 
 jobs:
   release:
