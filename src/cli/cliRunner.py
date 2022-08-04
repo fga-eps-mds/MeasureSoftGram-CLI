@@ -3,12 +3,12 @@ import argparse
 import json
 import sys
 from urllib.error import HTTPError
-from tokenize import String
 import requests
 import signal
 from pathlib import Path
 
 from tabulate import tabulate
+from src.cli.getEntity import get_entity
 
 from src.cli.show import parse_show
 from src.cli.list import parse_list
@@ -176,10 +176,7 @@ def parse_get_entity(
     host_url += f"{entity_id}" if entity_id else ''
 
     # print(host_url)
-    print(entity_name,
-    entity_id,
-    host_url,
-    history)
+    print(entity_name, entity_id, host_url, history)
 
     response = requests.get(host_url)
 
@@ -189,50 +186,12 @@ def parse_get_entity(
         )
         return
 
-    if entity_id:
-        if history:
-            data = response.json().get("history")
-            headers = ['Id', 'History Id', 'Value', 'Created at']
-            extracted_data = []
-            for entity_data in data:
-                extracted_data.append([
-                    entity_data['metric_id' if entity_name == 'metrics' else 'measure'],
-                    entity_data['id'],
-                    entity_data['value'],
-                    entity_data['created_at'],
-                ])
-        else:
-            data = response.json()
-            headers = ['Name', 'Value', 'Created at']
-            extracted_data = [[
-                data['name'],
-                data['latest']['value'],
-                data['latest']['created_at'],
-            ]]
-    else:
-        if history:
-            headers = ['Id', 'History Id', 'Name', 'Created at']
-            data = response.json().get("results")
-            extracted_data = []
-            for entity_data in data:
-                for history_data in entity_data["history"]:
-                    extracted_data.append([
-                        history_data['metric_id' if entity_name == 'metrics' else 'measure'],
-                        history_data['id'],
-                        history_data['value'],
-                        history_data['created_at'],
-                    ])
-
-        else:
-            headers = ['Name', 'Value', 'Created at']
-            data = response.json().get("results")
-            extracted_data = []
-            for entity_data in data:
-                extracted_data.append([
-                    entity_data['name'],
-                    entity_data['latest']['value'],
-                    entity_data['latest']['created_at'],
-                ])
+    extracted_data, headers, data = get_entity(
+        response,
+        entity_name,
+        entity_id,
+        history
+    )
 
     if output_format == 'tabular':
         print(tabulate(extracted_data, headers=headers))
@@ -457,7 +416,6 @@ def setup():
             args.output_format,
             args.history
         )
-
 
 
 def main():
