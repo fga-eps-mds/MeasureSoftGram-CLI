@@ -17,6 +17,8 @@
 [![Downloads](https://pepy.tech/badge/measuresoftgram/month)](https://pepy.tech/project/measuresoftgram)
 [![Downloads](https://pepy.tech/badge/measuresoftgram/week)](https://pepy.tech/project/measuresoftgram)
 
+[![PyPI](https://img.shields.io/pypi/v/measuresoftgram.svg)](https://pypi.python.org/pypi/measuresoftgram/)
+
 ## What is the MeasureSoftGram-CLI?
 The CLI is a command-line interface to the software.
 
