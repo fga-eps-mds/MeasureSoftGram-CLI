@@ -13,6 +13,9 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2022-1-MeasureSoftGram-CLI&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2022-1-MeasureSoftGram-CLI)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2022-1-MeasureSoftGram-CLI&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2022-1-MeasureSoftGram-CLI)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2022-1-MeasureSoftGram-CLI&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2022-1-MeasureSoftGram-CLI)
+[![Downloads](https://pepy.tech/badge/measuresoftgram)](https://pepy.tech/project/measuresoftgram)
+[![Downloads](https://pepy.tech/badge/measuresoftgram/month)](https://pepy.tech/project/measuresoftgram)
+[![Downloads](https://pepy.tech/badge/measuresoftgram/week)](https://pepy.tech/project/measuresoftgram)
 
 ## What is the MeasureSoftGram-CLI?
 The CLI is a command-line interface to the software.
