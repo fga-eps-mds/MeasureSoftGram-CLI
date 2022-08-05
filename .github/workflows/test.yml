@@ -15,6 +15,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -38,7 +40,7 @@ jobs:
       - name: fix code coverage paths
         if: always()
         run: |
-          sed -i 's/\/home\/runner\/work\/2022-1-MeasureSoftGram-CLI\/2022-1-MeasureSoftGram-CLI\//\/github\/workspace\//g' coverage.xml
+          sed -i 's/\/home\/runner\/work\/2022-1-MeasureSoftGram-CLI\/2022-1-MeasureSoftGram-CLI/\/github\/workspace\//g' coverage.xml
 
       - name: SonarCloud Scan
         if: always()
