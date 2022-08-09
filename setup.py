@@ -8,7 +8,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "inquirer==2.8.0",
-        "requests",
+        "requests==2.28.1",
         "pytz",
         "tabulate==0.8.10",
         "termcolor==1.1.0"
