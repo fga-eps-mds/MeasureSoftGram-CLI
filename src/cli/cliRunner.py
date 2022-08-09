@@ -18,25 +18,7 @@ from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 from src.cli.utils import check_host_url, print_import_files, print_status_import_file
-
-BASE_URL = "http://172.20.0.2:5000/"
-
-AVAILABLE_ENTITIES = [
-    "metrics",
-    "measures",
-    # "subcharacteristics",
-    # "characteristics",
-    # "sqc",
-]
-
-SUPPORTED_FORMATS = [
-    "json",
-    "tabular",
-]
-
-AVAILABLE_IMPORTS = [
-    "sonarqube"
-]
+from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, BASE_URL, SUPPORTED_FORMATS
 
 
 def sigint_handler(*_):
