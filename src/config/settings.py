@@ -1,7 +1,6 @@
 import os
 
-
-# SERVICE_URL = os.getenv("SERVICE_URL", "https://measuresoftgram-service.herokuapp.com/")
+SERVICE_URL = os.getenv("SERVICE_URL", "https://measuresoftgram-service.herokuapp.com/")
 
 BASE_URL = "http://172.20.0.2:5000/"
 

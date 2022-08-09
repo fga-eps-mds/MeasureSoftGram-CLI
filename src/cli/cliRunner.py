@@ -157,10 +157,13 @@ def parse_get_entity(
     host_url += f"{entity_name}/"
     host_url += f"{entity_id}" if entity_id else ''
 
-    # print(host_url)
-    print(entity_name, entity_id, host_url, history)
+    print(host_url)
+    # print(entity_name, entity_id, host_url, history)
 
     response = requests.get(host_url)
+    # response = ServiceClient.get_entity(host_url)
+    print(response)
+    print('\n##############################\n')
 
     if response.ok is False:
         print(
