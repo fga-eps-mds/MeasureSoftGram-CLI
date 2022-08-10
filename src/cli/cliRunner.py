@@ -18,6 +18,7 @@ from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 from src.cli.utils import check_host_url, print_import_files, print_status_import_file
+from src.clients.service_client import ServiceClient
 from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, BASE_URL, SUPPORTED_FORMATS
 
 
@@ -157,13 +158,7 @@ def parse_get_entity(
     host_url += f"{entity_name}/"
     host_url += f"{entity_id}" if entity_id else ''
 
-    print(host_url)
-    # print(entity_name, entity_id, host_url, history)
-
-    response = requests.get(host_url)
-    # response = ServiceClient.get_entity(host_url)
-    print(response)
-    print('\n##############################\n')
+    response = ServiceClient.get_entity(host_url)
 
     if response.ok is False:
         print(
