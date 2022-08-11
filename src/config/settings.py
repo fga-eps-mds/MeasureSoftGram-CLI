@@ -7,8 +7,8 @@ BASE_URL = "http://172.20.0.2:5000/"
 AVAILABLE_ENTITIES = [
     "metrics",
     "measures",
-    # "subcharacteristics",
-    # "characteristics",
+    "subcharacteristics",
+    "characteristics",
     # "sqc",
 ]
 
