@@ -9,7 +9,7 @@ class ServiceClient:
         retries = Retry(total=5, backoff_factor=5, status_forcelist=errors)
         session.mount("http://", HTTPAdapter(max_retries=retries))
         session.mount("https://", HTTPAdapter(max_retries=retries))
-    
+
     @staticmethod
     def make_get_request(url):
         with requests.Session() as session:
