@@ -8,6 +8,7 @@ import signal
 from pathlib import Path
 
 from tabulate import tabulate
+from src.cli.getEntity import get_entity
 
 from src.cli.show import parse_show
 from src.cli.list import parse_list
@@ -17,25 +18,8 @@ from src.cli.results import validade_analysis_response
 from src.cli.create import validate_pre_config_post, pre_config_file_reader
 from src.cli.available import parse_available
 from src.cli.utils import check_host_url, print_import_files, print_status_import_file
-
-BASE_URL = "http://localhost:5000/"
-
-AVAILABLE_ENTITIES = [
-    "metrics",
-    "measures",
-    # "subcharacteristics",
-    # "characteristics",
-    # "sqc",
-]
-
-SUPPORTED_FORMATS = [
-    "json",
-    "tabular",
-]
-
-AVAILABLE_IMPORTS = [
-    "sonarqube"
-]
+from src.clients.service_client import ServiceClient
+from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, BASE_URL, SUPPORTED_FORMATS
 
 
 def sigint_handler(*_):
@@ -153,6 +137,7 @@ def parse_get_entity(
     organization_id,
     repository_id,
     output_format,
+    history,
 ):
     if output_format not in SUPPORTED_FORMATS:
         print((
@@ -162,18 +147,15 @@ def parse_get_entity(
         return
 
     host_url = check_host_url(host_url)
-
     host_url += (
         'api/v1/'
         f'organizations/{organization_id}/'
         f'repository/{repository_id}/'
+        f'{"history/" if history else ""}'
         f'{entity_name}/'
+        f'{entity_id if entity_id else ""}'
     )
-
-    if entity_id:
-        host_url += f"{entity_id}"
-
-    response = requests.get(host_url)
+    response = ServiceClient.get_entity(host_url)
 
     if response.ok is False:
         print(
@@ -181,24 +163,12 @@ def parse_get_entity(
         )
         return
 
-    headers = ['Name', 'Value', 'Created at']
-
-    if entity_id:
-        data = response.json()
-        extracted_data = [[
-            data['name'],
-            data['latest']['value'],
-            data['latest']['created_at'],
-        ]]
-    else:
-        data = response.json().get("results")
-        extracted_data = []
-        for entity_data in data:
-            extracted_data.append([
-                entity_data['name'],
-                entity_data['latest']['value'],
-                entity_data['latest']['created_at'],
-            ])
+    extracted_data, headers, data = get_entity(
+        response,
+        entity_name,
+        entity_id,
+        history
+    )
 
     if output_format == 'tabular':
         print(tabulate(extracted_data, headers=headers))
@@ -285,6 +255,13 @@ def setup():
             "The ID of the entity to get. If not provided, a list with the "
             "last record of all available entities will be returned."
         ),
+    )
+
+    parser_get_entity.add_argument(
+        "--history",
+        action="store_true",
+        default=False,
+        help="The history of the repository",
     )
 
     parser_get_entity.add_argument(
@@ -414,6 +391,7 @@ def setup():
             args.organization_id,
             args.repository_id,
             args.output_format,
+            args.history
         )
 
 
