@@ -147,17 +147,14 @@ def parse_get_entity(
         return
 
     host_url = check_host_url(host_url)
-
     host_url += (
         'api/v1/'
         f'organizations/{organization_id}/'
         f'repository/{repository_id}/'
+        f'{"history/" if history else ""}'
+        f'{entity_name}/'
+        f'{entity_id if entity_id else ""}'
     )
-
-    host_url += "history/" if history else ''
-    host_url += f"{entity_name}/"
-    host_url += f"{entity_id}" if entity_id else ''
-
     response = ServiceClient.get_entity(host_url)
 
     if response.ok is False:
