@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from tabulate import tabulate
 from src.cli.commands.parse_get_entity.utils import get_entity

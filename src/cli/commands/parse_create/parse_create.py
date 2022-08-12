@@ -3,7 +3,7 @@ import requests
 
 from src.cli.exceptions.exceptions import MeasureSoftGramCLIException
 from src.cli.commands.parse_create.utils import (
-    validate_pre_config_post, 
+    validate_pre_config_post,
     pre_config_file_reader
 )
 from src.config.settings import BASE_URL
