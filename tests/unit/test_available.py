@@ -84,7 +84,7 @@ def test_parse_available(mocker):
 
     with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
         mocker.patch(
-            "requests.get", 
+            "requests.get",
             return_value=DummyResponse(200, mocked_available)
         )
         parse_available()
