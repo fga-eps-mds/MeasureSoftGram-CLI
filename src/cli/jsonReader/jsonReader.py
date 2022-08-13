@@ -1,4 +1,4 @@
-from src.cli import exceptions
+from src.cli.exceptions import exceptions
 import json
 import math
 import os

@@ -1,179 +1,17 @@
 import os
 import argparse
-import json
 import sys
-from urllib.error import HTTPError
-import requests
 import signal
 from pathlib import Path
 
-from tabulate import tabulate
-from src.cli.getEntity import get_entity
+from src.cli.commands import parse_import, parse_get_entity
 
-from src.cli.show import parse_show
-from src.cli.list import parse_list
-from src.cli.exceptions import MeasureSoftGramCLIException
-from src.cli.jsonReader import folder_reader, validate_metrics_post
-from src.cli.results import validade_analysis_response
-from src.cli.create import validate_pre_config_post, pre_config_file_reader
-from src.cli.available import parse_available
-from src.cli.utils import check_host_url, print_import_files, print_status_import_file
-from src.clients.service_client import ServiceClient
-from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, BASE_URL, SUPPORTED_FORMATS
+from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS
 
 
 def sigint_handler(*_):
     print("\n\nExiting MeasureSoftGram...")
     sys.exit(0)
-
-
-def parse_analysis(id):
-    data = {"pre_config_id": id}
-    response = requests.post(BASE_URL + "analysis", json=data)
-
-    validade_analysis_response(response.status_code, response.json())
-
-
-def parse_import(
-    output_origin,
-    dir_path,
-    language_extension,
-    host_url,
-    organization_id,
-    repository_id
-):
-    print(f'--> Starting to parser import for {output_origin} output...\n')
-    try:
-        components, files = folder_reader(r"{}".format(dir_path))
-    except (MeasureSoftGramCLIException, FileNotFoundError):
-        print("Error: The folder was not found")
-        return
-
-    payload = {
-        "components": [],
-        "language_extension": language_extension,
-    }
-
-    host_url = check_host_url(host_url)
-
-    host_url += (
-        'api/v1/'
-        f'organizations/{organization_id}/'
-        f'repository/{repository_id}/'
-        'import/sonarqube-metrics/'
-    )
-
-    print_import_files(files)
-
-    for idx, component in enumerate(components):
-        payload["components"] = component
-
-        for trying_idx in range(3):
-            try:
-                response = requests.post(host_url, json=payload)
-
-                message = validate_metrics_post(response.status_code)
-
-                print_status_import_file(files[idx], message, trying_idx + 1)
-                break
-            except (
-                requests.RequestException,
-                ConnectionError,
-                HTTPError,
-                json.decoder.JSONDecodeError
-            ):
-                print_status_import_file(
-                    files[idx],
-                    "FAIL: Can't connect to host service.",
-                    trying_idx + 1
-                )
-
-    print('\nAttempt to save all files in the directory finished!')
-
-
-def parse_create(file_path):
-    available_pre_config = requests.get(
-        BASE_URL + "available-pre-configs",
-        headers={"Accept": "application/json"}
-    ).json()
-
-    try:
-        pre_config = pre_config_file_reader(
-            r"{}".format(file_path),
-            available_pre_config,
-        )
-    except MeasureSoftGramCLIException as error:
-        print("Error: ", error)
-        return
-
-    response = requests.post(BASE_URL + "pre-configs", json=pre_config)
-
-    saved_pre_config = json.loads(response.text)
-
-    validate_pre_config_post(response.status_code, saved_pre_config)
-
-
-def parse_change_name(pre_config_id, new_name):
-    response = requests.patch(
-        BASE_URL + f"pre-configs/{pre_config_id}", json={"name": new_name}
-    )
-
-    response_data = response.json()
-
-    if 200 <= response.status_code <= 299:
-        print(
-            f'Your Pre Configuration name was succesfully changed to "{response_data["name"]}"'
-        )
-    else:
-        print(
-            f"There was an ERROR while changing your Pre Configuration name:  {response_data['error']}"
-        )
-
-
-def parse_get_entity(
-    entity_name,
-    entity_id,
-    host_url,
-    organization_id,
-    repository_id,
-    output_format,
-    history,
-):
-    if output_format not in SUPPORTED_FORMATS:
-        print((
-            "Output format not supported. "
-            f"Supported formats: {SUPPORTED_FORMATS}"
-        ))
-        return
-
-    host_url = check_host_url(host_url)
-    host_url += (
-        'api/v1/'
-        f'organizations/{organization_id}/'
-        f'repository/{repository_id}/'
-        f'{"history/" if history else ""}'
-        f'{entity_name}/'
-        f'{entity_id if entity_id else ""}'
-    )
-    response = ServiceClient.get_entity(host_url)
-
-    if response.ok is False:
-        print(
-            f"There was an error while getting the {entity_name} with id {entity_id}."
-        )
-        return
-
-    extracted_data, headers, data = get_entity(
-        response,
-        entity_name,
-        entity_id,
-        history
-    )
-
-    if output_format == 'tabular':
-        print(tabulate(extracted_data, headers=headers))
-    elif output_format == 'json':
-        print(json.dumps(data))
 
 
 def setup():
@@ -299,54 +137,54 @@ def setup():
         help="The ID of the repository",
     )
 
-    parser_create = subparsers.add_parser(
-        "create",
-        help="Create a new model pre configuration from a JSON file",
-    )
+    # parser_create = subparsers.add_parser(
+    #     "create",
+    #     help="Create a new model pre configuration from a JSON file",
+    # )
 
-    subparsers.add_parser(
-        "available",
-        help="Shows all characteristics, sub-characteristics and measures available in measuresoftgram",
-    )
+    # subparsers.add_parser(
+    #     "available",
+    #     help="Shows all characteristics, sub-characteristics and measures available in measuresoftgram",
+    # )
 
-    parser_create.add_argument(
-        "path",
-        type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent / "data",
-        help="Path to the JSON file",
-    )
+    # parser_create.add_argument(
+    #     "path",
+    #     type=lambda p: Path(p).absolute(),
+    #     default=Path(__file__).absolute().parent / "data",
+    #     help="Path to the JSON file",
+    # )
 
-    parser_analysis = subparsers.add_parser("analysis", help="Get analysis result")
-    parser_analysis.add_argument(
-        "id",
-    )
-    subparsers.add_parser("list", help="List all pre configurations")
+    # parser_analysis = subparsers.add_parser("analysis", help="Get analysis result")
+    # parser_analysis.add_argument(
+    #     "id",
+    # )
+    # subparsers.add_parser("list", help="List all pre configurations")
 
-    parser_show = subparsers.add_parser(
-        "show", help="Show all information of a pre configuration"
-    )
+    # parser_show = subparsers.add_parser(
+    #     "show", help="Show all information of a pre configuration"
+    # )
 
-    parser_show.add_argument(
-        "pre_config_id",
-        type=str,
-        help="Pre config ID",
-    )
+    # parser_show.add_argument(
+    #     "pre_config_id",
+    #     type=str,
+    #     help="Pre config ID",
+    # )
 
-    change_name = subparsers.add_parser(
-        "change-name", help="Change pre configuration name"
-    )
+    # change_name = subparsers.add_parser(
+    #     "change-name", help="Change pre configuration name"
+    # )
 
-    change_name.add_argument(
-        "pre_config_id",
-        type=str,
-        help="Pre config ID",
-    )
+    # change_name.add_argument(
+    #     "pre_config_id",
+    #     type=str,
+    #     help="Pre config ID",
+    # )
 
-    change_name.add_argument(
-        "new_name",
-        type=str,
-        help="New pre configuration name",
-    )
+    # change_name.add_argument(
+    #     "new_name",
+    #     type=str,
+    #     help="New pre configuration name",
+    # )
 
     args = parser.parse_args()
 
@@ -365,23 +203,23 @@ def setup():
             args.repository_id,
         )
 
-    elif args.command == "create":
-        parse_create(args.path)
+    # elif args.command == "create":
+    #     parse_create(args.path)
 
-    elif args.command == "analysis":
-        parse_analysis(args.id)
+    # elif args.command == "analysis":
+    #     parse_analysis(args.id)
 
-    elif args.command == "available":
-        parse_available()
+    # elif args.command == "available":
+    #     parse_available()
 
-    elif args.command == "list":
-        parse_list()
+    # elif args.command == "list":
+    #     parse_list()
 
-    elif args.command == "show":
-        parse_show(args.pre_config_id)
+    # elif args.command == "show":
+    #     parse_show(args.pre_config_id)
 
-    elif args.command == "change-name":
-        parse_change_name(args.pre_config_id, args.new_name)
+    # elif args.command == "change-name":
+    #     parse_change_name(args.pre_config_id, args.new_name)
 
     elif args.command == 'get':
         parse_get_entity(

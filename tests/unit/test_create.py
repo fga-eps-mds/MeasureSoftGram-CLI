@@ -1,5 +1,6 @@
 import pytest
-from src.cli import create, exceptions
+import src.cli.commands as create
+from src.cli.exceptions import exceptions
 from tests.test_helpers import read_json
 
 

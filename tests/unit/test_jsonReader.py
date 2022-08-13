@@ -1,5 +1,6 @@
 import pytest
-from src.cli import jsonReader, exceptions
+from src.cli import jsonReader
+from src.cli.exceptions import exceptions
 # from io import StringIO
 
 

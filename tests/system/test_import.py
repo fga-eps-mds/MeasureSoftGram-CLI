@@ -11,7 +11,7 @@ def capture(command):
     return out, err, proc.returncode
 
 
-def test_import_metrics_file_not_found_exception_handling():
+def test_import_metrics_folder_not_found_exception_handling():
     out, _, returncode = capture(
         ["measuresoftgram", "import", "sonarqube", "sonar-output-fake", "py"]
     )

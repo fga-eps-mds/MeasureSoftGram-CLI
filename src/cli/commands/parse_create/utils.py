@@ -1,4 +1,4 @@
-from src.cli import exceptions
+from src.cli.exceptions import exceptions
 from src.cli.jsonReader import check_file_extension, open_json_file
 
 
