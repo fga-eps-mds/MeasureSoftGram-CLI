@@ -5,7 +5,7 @@ from src.cli.commands.parse_get_entity.utils import get_entity
 
 from src.cli.utils import check_host_url
 from src.clients.service_client import ServiceClient
-from src.config.settings import SUPPORTED_FORMATS
+from src.config.settings import SUPPORTED_FORMATS, AVAILABLE_ENTITIES
 
 
 def parse_get_entity(
@@ -37,7 +37,7 @@ def parse_get_entity(
 
     if response.ok is False:
         print(
-            f"There was an error while getting the {entity_name} with id {entity_id}."
+            f"An error occurred while getting the {entity_name} with the ID {entity_id}. The parameter appears not to be valid. Use the valid parameters {AVAILABLE_ENTITIES}."
         )
         return
 
