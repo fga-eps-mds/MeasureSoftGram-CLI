@@ -80,6 +80,7 @@ def setup():
 
     parser_get_entity = subparsers.add_parser(
         "get",
+        help="Gets the last record of a specific entity",
     )
 
     parser_get_entity.add_argument(
