@@ -35,11 +35,11 @@ def parse_get_entity(
     )
     response = ServiceClient.get_entity(host_url)
 
-    if response.ok is False:
-        print(
-            f"An error occurred while getting the {entity_name} with the ID {entity_id}. The parameter appears not to be valid. Use the valid parameters {AVAILABLE_ENTITIES}."
-        )
-        return
+    # if response.ok is False:
+    #     print(
+    #         f"An error occurred while getting the {entity_name} with the ID {entity_id}. The parameter appears not to be valid. Use the valid parameters {AVAILABLE_ENTITIES}."
+    #     )
+    #     return
 
     extracted_data, headers, data = get_entity(
         response,
