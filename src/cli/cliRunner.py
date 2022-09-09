@@ -1,6 +1,5 @@
 import os
 import argparse
-import argcomplete
 import sys
 import signal
 from pathlib import Path
