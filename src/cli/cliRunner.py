@@ -18,13 +18,20 @@ def setup():
     parser = argparse.ArgumentParser(
         description="Command line interface for measuresoftgram"
     )
+
+    argparse.ArgumentTypeError('invalid value!!!')
+
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
-    parser_import = subparsers.add_parser("import", help="Import a folder with metrics")
+    parser_import = subparsers.add_parser(
+        "import",
+        help="Import a folder with metrics"
+    )
 
     parser_import.add_argument(
         "output_origin",
         type=str,
+        choices=(AVAILABLE_IMPORTS),
         help=(
             "Import a metrics files from some origin. Valid values are: "
             + ", ".join(AVAILABLE_IMPORTS)
@@ -79,6 +86,7 @@ def setup():
     parser_get_entity.add_argument(
         "entity",
         type=str,
+        choices=(AVAILABLE_ENTITIES),
         help=(
             "The entity to get. Valid values are: "
             + ", ".join(AVAILABLE_ENTITIES)

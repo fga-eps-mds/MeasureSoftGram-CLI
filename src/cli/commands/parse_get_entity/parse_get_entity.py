@@ -36,12 +36,6 @@ def parse_get_entity(
     )
     response = ServiceClient.get_entity(host_url)
 
-    if response.ok is False:
-        print(
-            f"There was an error while getting the {entity_name} with id {entity_id}."
-        )
-        return
-
     extracted_data, headers, data = get_entity(
         response,
         entity_name,
