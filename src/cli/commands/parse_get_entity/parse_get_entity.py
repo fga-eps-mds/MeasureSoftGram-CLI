@@ -27,8 +27,9 @@ def parse_get_entity(
     host_url = check_host_url(host_url)
     host_url += (
         'api/v1/'
-        f'organizations/{organization_id}/'
-        f'repository/{repository_id}/'
+        f'organizations/1/'
+        f'products/3/'
+        f'repositories/6/'
         f'{"history/" if history else ""}'
         f'{entity_name}/'
         f'{entity_id if entity_id else ""}'
