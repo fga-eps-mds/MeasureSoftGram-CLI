@@ -27,10 +27,10 @@ def parse_get_entity(
     host_url = check_host_url(host_url)
     host_url += (
         'api/v1/'
-        f'organizations/1/'
+        f'organizations/{organization_id}/'
         f'products/3/'
-        f'repositories/6/'
-        f'{"history/" if history else ""}'
+        f'repositories/{repository_id}/'
+        f'{"historical-values/" if history else "latest-values"}'
         f'{entity_name}/'
         f'{entity_id if entity_id else ""}'
     )
