@@ -1,5 +1,6 @@
 import os
 import argparse
+import argcomplete
 import sys
 import signal
 from pathlib import Path
@@ -133,7 +134,7 @@ def setup():
         "--repository_id",
         type=str,
         nargs='?',
-        default=os.getenv("MSG_REPOSITORY_ID", "1"),
+        default=os.getenv("MSG_REPOSITORY_ID", "6"),
         help="The ID of the repository",
     )
 
