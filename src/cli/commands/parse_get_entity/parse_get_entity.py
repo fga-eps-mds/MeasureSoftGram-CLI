@@ -30,7 +30,7 @@ def parse_get_entity(
         f'organizations/{organization_id}/'
         f'products/3/'
         f'repositories/{repository_id}/'
-        f'{"historical-values/" if history else "latest-values"}'
+        f'{"historical-values/" if history else "latest-values/"}'
         f'{entity_name}/'
         f'{entity_id if entity_id else ""}'
     )
