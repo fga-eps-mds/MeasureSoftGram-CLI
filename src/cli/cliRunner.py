@@ -145,6 +145,14 @@ def setup():
         help="The ID of the repository",
     )
 
+    parser_get_entity.add_argument(
+        "--product_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        help="The ID of the product",
+    )
+
     # parser_create = subparsers.add_parser(
     #     "create",
     #     help="Create a new model pre configuration from a JSON file",
@@ -209,6 +217,7 @@ def setup():
             args.host,
             args.organization_id,
             args.repository_id,
+            args.product_id,
         )
 
     # elif args.command == "create":
@@ -236,6 +245,7 @@ def setup():
             args.host,
             args.organization_id,
             args.repository_id,
+            args.product_id,
             args.output_format,
             args.history
         )
