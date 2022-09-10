@@ -14,6 +14,7 @@ def parse_get_entity(
     host_url,
     organization_id,
     repository_id,
+    product_id,
     output_format,
     history,
 ):
@@ -28,8 +29,9 @@ def parse_get_entity(
     host_url += (
         'api/v1/'
         f'organizations/{organization_id}/'
-        f'repository/{repository_id}/'
-        f'{"history/" if history else ""}'
+        f'products/{product_id}/'
+        f'repositories/{repository_id}/'
+        f'{"historical-values/" if history else "latest-values/"}'
         f'{entity_name}/'
         f'{entity_id if entity_id else ""}'
     )

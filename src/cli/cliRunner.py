@@ -78,6 +78,14 @@ def setup():
         help="The ID of the repository",
     )
 
+    parser_import.add_argument(
+        "--product_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        help="The ID of the product",
+    )
+
     parser_get_entity = subparsers.add_parser(
         "get",
         help="Gets the last record of a specific entity",
@@ -141,8 +149,16 @@ def setup():
         "--repository_id",
         type=str,
         nargs='?',
-        default=os.getenv("MSG_REPOSITORY_ID", "1"),
+        default=os.getenv("MSG_REPOSITORY_ID", "6"),
         help="The ID of the repository",
+    )
+
+    parser_get_entity.add_argument(
+        "--product_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        help="The ID of the product",
     )
 
     # parser_create = subparsers.add_parser(
@@ -209,6 +225,7 @@ def setup():
             args.host,
             args.organization_id,
             args.repository_id,
+            args.product_id,
         )
 
     # elif args.command == "create":
@@ -236,6 +253,7 @@ def setup():
             args.host,
             args.organization_id,
             args.repository_id,
+            args.product_id,
             args.output_format,
             args.history
         )
