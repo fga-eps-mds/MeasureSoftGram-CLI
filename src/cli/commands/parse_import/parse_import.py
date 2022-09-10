@@ -14,7 +14,8 @@ def parse_import(
     language_extension,
     host_url,
     organization_id,
-    repository_id
+    repository_id,
+    product_id,
 ):
     print(f'--> Starting to parser import for {output_origin} output...\n')
 

@@ -78,6 +78,14 @@ def setup():
         help="The ID of the repository",
     )
 
+    parser_import.add_argument(
+        "--product_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        help="The ID of the product",
+    )
+
     parser_get_entity = subparsers.add_parser(
         "get",
         help="Gets the last record of a specific entity",
