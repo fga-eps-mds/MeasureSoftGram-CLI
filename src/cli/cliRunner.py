@@ -170,10 +170,40 @@ def setup():
         "all",
         type=str,
         nargs='?',
-        default="tabular",
         help=(
             "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
         ),
+    )
+    parser_calculate_entity.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default="https://measuresoftgram-service.herokuapp.com/",
+        help="The host of the service",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--organization_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+        help="The ID of the organization that the repository belongs to",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--repository_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_REPOSITORY_ID", "6"),
+        help="The ID of the repository",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--product_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        help="The ID of the product",
     )
 
     # parser_create = subparsers.add_parser(
@@ -226,6 +256,7 @@ def setup():
     # )
 
     args = parser.parse_args()
+    print("ARGS ->>>> ", args)
 
     # if args is empty show help
     if not sys.argv[1:]:
@@ -275,12 +306,10 @@ def setup():
 
     elif args.command == 'calculate':
         parse_calculate_entity(
-            args.entity,
             args.host,
             args.organization_id,
             args.repository_id,
             args.product_id,
-            args.output_format,
         )
 
 
