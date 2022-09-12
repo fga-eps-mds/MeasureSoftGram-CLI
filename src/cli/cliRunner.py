@@ -4,7 +4,7 @@ import sys
 import signal
 from pathlib import Path
 
-from src.cli.commands import parse_import, parse_get_entity
+from src.cli.commands import parse_import, parse_get_entity, parse_calculate_entity
 
 from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS
 
@@ -271,6 +271,16 @@ def setup():
             args.product_id,
             args.output_format,
             args.history
+        )
+
+    elif args.command == 'calculate':
+        parse_calculate_entity(
+            args.entity,
+            args.host,
+            args.organization_id,
+            args.repository_id,
+            args.product_id,
+            args.output_format,
         )
 
 
