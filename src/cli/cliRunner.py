@@ -256,7 +256,6 @@ def setup():
     # )
 
     args = parser.parse_args()
-    print("ARGS ->>>> ", args)
 
     # if args is empty show help
     if not sys.argv[1:]:

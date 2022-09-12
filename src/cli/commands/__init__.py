@@ -8,7 +8,7 @@ from src.cli.commands.parse_get_entity.parse_get_entity import parse_get_entity
 from src.cli.commands.parse_available.parse_available import parse_available
 from src.cli.commands.parse_show.parse_show import parse_show
 from src.cli.commands.parse_list.parse_list import parse_list
-from src.cli.commands.parse_calculate_entity.parser_calculate_entity import parse_calculate_entity
+from src.cli.commands.parse_calculate_entity.parse_calculate_entity import parse_calculate_entity
 
 from src.cli.commands.parse_create.utils import (
     check_file_extension,
