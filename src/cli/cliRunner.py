@@ -161,6 +161,21 @@ def setup():
         help="The ID of the product",
     )
 
+    parser_calculate_entity = subparsers.add_parser(
+        "calculate",
+        help="Calculates all entities"
+    )
+
+    parser_calculate_entity.add_argument(
+        "all",
+        type=str,
+        nargs='?',
+        default="tabular",
+        help=(
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+        ),
+    )
+
     # parser_create = subparsers.add_parser(
     #     "create",
     #     help="Create a new model pre configuration from a JSON file",
