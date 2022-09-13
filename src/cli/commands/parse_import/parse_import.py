@@ -39,7 +39,7 @@ def parse_import(
         f'repositories/{repository_id}/'
         'collectors/sonarqube/'
     )
-    print(host_url)
+
     print_import_files(files)
 
     for idx, component in enumerate(components):
