@@ -1,7 +1,5 @@
+from email import header
 import json
-from urllib.error import HTTPError
-from wsgiref import headers
-import requests
 
 from tabulate import tabulate
 
@@ -28,23 +26,22 @@ def parse_calculate_entity(
         f'calculate/'
     )
 
-    data_measures = calculate_measures(host_url)
-    data_characteristics = calculate_characteristics(host_url)
-    data_subcharacteristics = calculate_subcharacteristics(host_url)
+    data_measures, headers = calculate_measures(host_url)
+    data_characteristics, headers = calculate_characteristics(host_url)
+    data_subcharacteristics, headers = calculate_subcharacteristics(host_url)
 
     if output_format == 'tabular':
         print('Calculated Measures: \n')
-        print(tabulate(data_measures, headers='keys'))
+        print(tabulate(data_measures, headers=headers))
         print('\n')
 
-        # print('Calculated Characteristics: \n')
-        # print(tabulate(data_characteristics, headers='keys'))
-        # print('\n')
+        print('Calculated Characteristics: \n')
+        print(tabulate(data_characteristics, headers=headers))
+        print('\n')
 
-        # print('Calculated Subcharacteristics: \n')
-        # print(tabulate(data_subcharacteristics, headers='keys'))
-        # print('\n')
+        print('Calculated Subcharacteristics: \n')
+        print(tabulate(data_subcharacteristics, headers=headers))
     elif output_format == 'json':
         print(json.dumps(data_measures))
-        # print(json.dumps(calculate_characteristics))
-        # print(json.dumps(calculate_subcharacteristics))
+        print(json.dumps(calculate_characteristics))
+        print(json.dumps(calculate_subcharacteristics))

@@ -1,3 +1,4 @@
+from email import header
 from src.clients.service_client import ServiceClient
 import json
 
@@ -16,10 +17,19 @@ def calculate_measures(host_url):
     }
 
     host_url += ('measures/')
-    print(host_url)
 
-    response = ServiceClient.calculate_entity(host_url, payload_measures)
-    return response.json()
+    data = ServiceClient.calculate_entity(host_url, payload_measures)
+    extracted_data = []
+    headers = ['Id', 'Name', 'Description', 'Value', 'Created at']
+    for temp_data in data.json():
+        extracted_data.append([
+            temp_data['id'],
+            temp_data['name'],
+            temp_data['description'],
+            temp_data['latest']['value'],
+            temp_data['latest']['created_at'],
+        ])
+    return extracted_data, headers
 
 
 def calculate_characteristics(host_url):
@@ -31,10 +41,19 @@ def calculate_characteristics(host_url):
     }
 
     host_url += ('characteristics/')
-    print(host_url)
 
-    response = ServiceClient.calculate_entity(host_url, payload_characteristics)
-    return response.json()
+    data = ServiceClient.calculate_entity(host_url, payload_characteristics)
+    extracted_data = []
+    headers = ['Id', 'Name', 'Description', 'Value', 'Created at']
+    for temp_data in data.json():
+        extracted_data.append([
+            temp_data['id'],
+            temp_data['name'],
+            temp_data['description'],
+            temp_data['latest']['value'],
+            temp_data['latest']['created_at'],
+        ])
+    return extracted_data, headers
 
 
 def calculate_subcharacteristics(host_url):
@@ -46,7 +65,16 @@ def calculate_subcharacteristics(host_url):
     }
 
     host_url += ('subcharacteristics/')
-    print(host_url)
 
-    response = ServiceClient.calculate_entity(host_url, payload_subcharacteristics)
-    return response.json()
+    data = ServiceClient.calculate_entity(host_url, payload_subcharacteristics)
+    extracted_data = []
+    headers = ['Id', 'Name', 'Description', 'Value', 'Created at']
+    for temp_data in data.json():
+        extracted_data.append([
+            temp_data['id'],
+            temp_data['name'],
+            temp_data['description'],
+            temp_data['latest']['value'],
+            temp_data['latest']['created_at'],
+        ])
+    return extracted_data, headers
