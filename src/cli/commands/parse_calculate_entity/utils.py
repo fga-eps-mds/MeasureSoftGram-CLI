@@ -52,9 +52,24 @@ def calculate_characteristics(host_url):
         HTTPError,
         json.decoder.JSONDecodeError
 
-    # payload_subcharacteristics = {
-    #     "subcharacteristics": [
-    #         {"key": "modifiability"},
-    #         {"key": "testing_status"}
-    #     ],
-    # }
+
+def calculate_subcharacteristics(host_url):
+    payload_subcharacteristics = {
+        "subcharacteristics": [
+            {"key": "modifiability"},
+            {"key": "testing_status"}
+        ],
+    }
+
+    host_url += ('subcharacteristics/')
+    print(host_url)
+
+    try:
+        response = ServiceClient.calculate_entity(host_url, payload_subcharacteristics)
+        return response.json()
+
+    except:
+        requests.RequestException,
+        # ConnectionError,
+        HTTPError,
+        json.decoder.JSONDecodeError
