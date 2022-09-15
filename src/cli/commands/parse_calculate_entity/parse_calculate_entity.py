@@ -1,5 +1,6 @@
 import json
 from urllib.error import HTTPError
+from wsgiref import headers
 import requests
 
 from tabulate import tabulate
@@ -26,6 +27,18 @@ def parse_calculate_entity(
         f'calculate/'
     )
 
-    res = calculate_subcharacteristics(host_url)
+    data_measures = calculate_measures(host_url)
+    data_characteristics = calculate_characteristics(host_url)
+    data_subcharacteristics = calculate_subcharacteristics(host_url)
 
-    print(res)
+    print('Calculate Measures: \n')
+    print(tabulate(data_measures, headers='keys'))
+    print('\n')
+
+    print('Calculate Characteristics: \n')
+    print(tabulate(data_characteristics, headers='keys'))
+    print('\n')
+
+    print('Calculate Subcharacteristics: \n')
+    print(tabulate(data_subcharacteristics, headers='keys'))
+    print('\n')
