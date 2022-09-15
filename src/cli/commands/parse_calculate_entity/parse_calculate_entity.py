@@ -6,6 +6,7 @@ from tabulate import tabulate
 
 from src.cli.utils import check_host_url
 from src.clients.service_client import ServiceClient
+from src.cli.commands.parse_calculate_entity.utils import calculate_measures
 
 
 def parse_calculate_entity(
@@ -15,13 +16,6 @@ def parse_calculate_entity(
     product_id,
 ):
 
-    payload = {
-        "characteristics": [
-            {"key": "reliability"},
-            {"key": "maintainability"}
-        ],
-    }
-
     host_url = check_host_url(host_url)
 
     host_url += (
@@ -30,18 +24,8 @@ def parse_calculate_entity(
         f'products/{product_id}/'
         f'repositories/{repository_id}/'
         f'calculate/'
-        f'characteristics/'
     )
 
-    print(host_url)
+    res = calculate_measures(host_url)
 
-    try:
-        response = ServiceClient.calculate_entity(host_url, payload)
-
-        print(response.json())
-
-    except:
-        requests.RequestException,
-        ConnectionError,
-        HTTPError,
-        json.decoder.JSONDecodeError
+    print(res)
