@@ -6,7 +6,7 @@ from tabulate import tabulate
 
 from src.cli.utils import check_host_url
 from src.clients.service_client import ServiceClient
-from src.cli.commands.parse_calculate_entity.utils import calculate_measures
+from src.cli.commands.parse_calculate_entity.utils import calculate_measures, calculate_characteristics
 
 
 def parse_calculate_entity(
@@ -26,6 +26,6 @@ def parse_calculate_entity(
         f'calculate/'
     )
 
-    res = calculate_measures(host_url)
+    res = calculate_characteristics(host_url)
 
     print(res)

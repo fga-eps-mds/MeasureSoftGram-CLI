@@ -22,7 +22,6 @@ def calculate_measures(host_url):
 
     try:
         response = ServiceClient.calculate_entity(host_url, payload_measures)
-        print(response.json())
         return response.json()
 
     except:
@@ -31,12 +30,27 @@ def calculate_measures(host_url):
         HTTPError,
         json.decoder.JSONDecodeError
 
-    # payload_characteristics = {
-    #     "characteristics": [
-    #         {"key": "reliability"},
-    #         {"key": "maintainability"}
-    #     ],
-    # }
+
+def calculate_characteristics(host_url):
+    payload_characteristics = {
+        "characteristics": [
+            {"key": "reliability"},
+            {"key": "maintainability"}
+        ],
+    }
+
+    host_url += ('characteristics/')
+    print(host_url)
+
+    try:
+        response = ServiceClient.calculate_entity(host_url, payload_characteristics)
+        return response.json()
+
+    except:
+        requests.RequestException,
+        # ConnectionError,
+        HTTPError,
+        json.decoder.JSONDecodeError
 
     # payload_subcharacteristics = {
     #     "subcharacteristics": [
