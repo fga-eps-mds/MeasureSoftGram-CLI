@@ -6,7 +6,7 @@ from pathlib import Path
 
 from src.cli.commands import parse_import, parse_get_entity, parse_calculate_entity
 
-from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS
+from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS, SERVICE_URL
 
 
 def sigint_handler(*_):
@@ -122,7 +122,7 @@ def setup():
         "--host",
         type=str,
         nargs='?',
-        default="https://measuresoftgram-service.herokuapp.com/",
+        default=SERVICE_URL,
         help="The host of the service",
     )
 
@@ -178,8 +178,8 @@ def setup():
         "--host",
         type=str,
         nargs='?',
-        default="https://measuresoftgram-service.herokuapp.com/",
-        help="The host of the service",
+        default=SERVICE_URL,
+        help="The service host",
     )
 
     parser_calculate_entity.add_argument(
@@ -187,7 +187,7 @@ def setup():
         type=str,
         nargs='?',
         default=os.getenv("MSG_ORGANIZATION_ID", "1"),
-        help="The ID of the organization that the repository belongs to",
+        help="The specific ID of the organization to which the repository belongs",
     )
 
     parser_calculate_entity.add_argument(
@@ -195,7 +195,7 @@ def setup():
         type=str,
         nargs='?',
         default=os.getenv("MSG_REPOSITORY_ID", "6"),
-        help="The ID of the repository",
+        help="The repository ID",
     )
 
     parser_calculate_entity.add_argument(
@@ -203,7 +203,7 @@ def setup():
         type=str,
         nargs='?',
         default=os.getenv("MSG_PRODUCT_ID", "3"),
-        help="The ID of the product",
+        help="The product ID",
     )
 
     # parser_create = subparsers.add_parser(
