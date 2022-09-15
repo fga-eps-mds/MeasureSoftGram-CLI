@@ -1,6 +1,5 @@
 from email import header
 from src.clients.service_client import ServiceClient
-import json
 
 
 def calculate_measures(host_url):
@@ -77,4 +76,17 @@ def calculate_subcharacteristics(host_url):
             temp_data['latest']['value'],
             temp_data['latest']['created_at'],
         ])
+    return extracted_data, headers
+
+
+def calculate_sqc(host_url):
+
+    payload_sqc = {}
+
+    host_url += ('sqc/')
+
+    data = ServiceClient.calculate_entity(host_url, payload_sqc)
+    extracted_data = [[data.json()['id'], data.json()['value'], data.json()['created_at']]]
+    headers = ['Id', 'Value', 'Created at']
+
     return extracted_data, headers
