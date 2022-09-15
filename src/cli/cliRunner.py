@@ -206,6 +206,16 @@ def setup():
         help="The product ID",
     )
 
+    parser_calculate_entity.add_argument(
+        "--output_format",
+        type=str,
+        nargs='?',
+        default="tabular",
+        help=(
+            "The format of the output values are: ".join(SUPPORTED_FORMATS)
+        ),
+    )
+
     # parser_create = subparsers.add_parser(
     #     "create",
     #     help="Create a new model pre configuration from a JSON file",
@@ -309,6 +319,7 @@ def setup():
             args.organization_id,
             args.repository_id,
             args.product_id,
+            args.output_format,
         )
 
 

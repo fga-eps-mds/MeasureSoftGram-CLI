@@ -15,6 +15,7 @@ def parse_calculate_entity(
     organization_id,
     repository_id,
     product_id,
+    output_format,
 ):
 
     host_url = check_host_url(host_url)
@@ -31,14 +32,19 @@ def parse_calculate_entity(
     data_characteristics = calculate_characteristics(host_url)
     data_subcharacteristics = calculate_subcharacteristics(host_url)
 
-    print('Calculate Measures: \n')
-    print(tabulate(data_measures, headers='keys'))
-    print('\n')
+    if output_format == 'tabular':
+        print('Calculated Measures: \n')
+        print(tabulate(data_measures, headers='keys'))
+        print('\n')
 
-    print('Calculate Characteristics: \n')
-    print(tabulate(data_characteristics, headers='keys'))
-    print('\n')
+        # print('Calculated Characteristics: \n')
+        # print(tabulate(data_characteristics, headers='keys'))
+        # print('\n')
 
-    print('Calculate Subcharacteristics: \n')
-    print(tabulate(data_subcharacteristics, headers='keys'))
-    print('\n')
+        # print('Calculated Subcharacteristics: \n')
+        # print(tabulate(data_subcharacteristics, headers='keys'))
+        # print('\n')
+    elif output_format == 'json':
+        print(json.dumps(data_measures))
+        # print(json.dumps(calculate_characteristics))
+        # print(json.dumps(calculate_subcharacteristics))

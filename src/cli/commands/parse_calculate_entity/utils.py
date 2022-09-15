@@ -1,5 +1,5 @@
 from src.clients.service_client import ServiceClient
-from urllib.error import HTTPError
+import json
 
 
 def calculate_measures(host_url):
