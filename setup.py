@@ -11,7 +11,8 @@ setup(
         "requests==2.28.1",
         "pytz",
         "tabulate==0.8.10",
-        "termcolor==1.1.0"
+        "termcolor==1.1.0",
+        "pandas~=1.4.4",
     ],
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
