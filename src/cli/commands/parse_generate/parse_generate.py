@@ -1,18 +1,28 @@
-import json
 import os
-import pandas as pd
-from src.clients.service_client import ServiceClient
-from typing import Union
+import itertools
+import threading
+import time
+import sys
+from generate_utils import GenerateUtils
+
+# Global vars
+done = False
+m_history = None
+sub_history = None
+c_history = None
+s_history = None
 
 
 def parse_generate():
     fmt = "CSV"
     host_url = os.getenv("SERVICE_URL", "https://measuresoftgram-service.herokuapp.com/")
 
+    print("\n--------------------***--------------------***--------------------")
     print(f"Generating {fmt} output file for repository")
 
-    organization_id = _get_org_id()
-    product_id = _get_prd_id()
+    organization_id = GenerateUtils.get_org_id()
+    product_id = GenerateUtils.get_prd_id()
+    product_name = GenerateUtils.get_prd_name()
 
     host_url += (
         'api/v1/'
@@ -21,11 +31,11 @@ def parse_generate():
         'repositories/'
     )
 
-    output_df = _create_df()
+    output_df = GenerateUtils.create_df()
 
     try:
         print("Calling MeasureSoftGram Service instance")
-        body = _call_service(host_url)
+        body = GenerateUtils.call_service(host_url)
 
         if body is None:
             raise Exception
@@ -33,17 +43,29 @@ def parse_generate():
         for repository_data in body['results']:
             repository_name = repository_data['name']
 
+            globals()['done'] = False
+            print("\n--------------------***--------------------***--------------------")
             print(f"Retrieving data from {repository_name}")
 
-            measure_history = _call_service(repository_data['historical_values']['measures'])
-            subcharacteristics_history = _call_service(repository_data['historical_values']['subcharacteristics'])
-            characteristics_history = _call_service(repository_data['historical_values']['characteristics'])
-            sqc_history = _call_service(repository_data['historical_values']['sqc'])
+            # Run service calls in a thread
+            threading.Thread(target=call_for_histories, args=(repository_data['historical_values']['measures'],
+                                                              repository_data['historical_values'][
+                                                                  'subcharacteristics'],
+                                                              repository_data['historical_values']['characteristics'],
+                                                              repository_data['historical_values']['sqc'])).start()
+
+            # Display for the user a loading screen
+            display_loading()
+
+            measure_history = globals()['m_history']
+            subcharacteristics_history = globals()['sub_history']
+            characteristics_history = globals()['c_history']
+            sqc_history = globals()['s_history']
 
             number_of_lines = min(sqc_history['count'],
-                                  min_history_count(measure_history),
-                                  min_history_count(characteristics_history),
-                                  min_history_count(subcharacteristics_history))
+                                  GenerateUtils.min_history_count(measure_history),
+                                  GenerateUtils.min_history_count(characteristics_history),
+                                  GenerateUtils.min_history_count(subcharacteristics_history))
 
             for position in range(number_of_lines):
                 # Create new line dictionary
@@ -54,127 +76,55 @@ def parse_generate():
                 new_line['repository'] = repository_name
 
                 # Add measure line to dict
-                measure_line = _get_measure_line(measure_history['results'], position)
+                measure_line = GenerateUtils.get_measure_line(measure_history['results'], position)
                 new_line.update(measure_line)
 
                 # Add subcharacteristic line to dict
+                sub_line = GenerateUtils.get_entity_line(subcharacteristics_history['results'], position)
+                new_line.update(sub_line)
 
-                # adiciona todas as primeiras linhas de cada caracteristica
-                # adiciona a primeira linha da sqc
-                print("aaaa")
-                # adiciona linha inteira no dataframe
+                # Add characteristic line to dict
+                char_line = GenerateUtils.get_entity_line(characteristics_history['results'], position)
+                new_line.update(char_line)
 
-            print("a")
+                # Add sqc to dict
+                new_line['sqc'] = sqc_history['results'][position]['value']
+
+                # Add whole line to dataframe
+                output_df = GenerateUtils.add_line_to_df(output_df, new_line)
+
+        # Generate output file
+        print()
+        print("\n--------------------***--------------------***--------------------")
+        print(f"Generating the output file for {product_name} product")
+
+        output_name = f"{product_name}.{fmt.lower()}"
+
+        if fmt.upper() == "CSV":
+            output_df.to_csv(output_name, index=False)
+
+        print(f"{output_name} generated successfully!")
 
     except Exception:
-        print("nothing at all")
+        print()
+        print("It looks like something went wrong during the file generating operation.")
+        print()
 
 
-def min_history_count(entity):
-    counts = []
-    for item in entity['results']:
-        counts.append(len(item['history']))
-    return min(counts)
-
-def _get_measure_line(measure_list, position):
-    def get_em(name):  # TODO: Mapear certo as medidas
-        em_dict = {
-            'team_throughput': 'em1',
-            'passed_tests': 'em2',
-            'commented_file_density': 'em3',
-            'non_complex_file_density': 'em4',
-            'test_builds': 'em5',
-            'duplication_absense': 'em6',
-            'test_coverage': 'em7',
-        }
-
-        if name in em_dict.keys():
-            return em_dict[name]
-        else:
-            return "None"
-
-    length = len(measure_list)
-    line_dict = dict()
-
-    for i in range(length):
-        line_dict[get_em(measure_list[i]['key'])] = measure_list[i]['history'][position]['value']
-
-    return line_dict
+def call_for_histories(measure_url, sub_url, char_url, sqc_url):
+    glob = globals()
+    glob['m_history'] = GenerateUtils.call_service(measure_url)
+    glob['sub_history'] = GenerateUtils.call_service(sub_url)
+    glob['c_history'] = GenerateUtils.call_service(char_url)
+    glob['s_history'] = GenerateUtils.call_service(sqc_url)
+    glob['done'] = True
 
 
-def _get_org_id() -> str:
-    return '1'
-
-
-def _get_prd_id() -> str:
-    return '3'
-
-
-def _call_service(host_url: str) -> Union[dict, None]:
-    try:
-        res = ServiceClient.make_get_request(host_url)
-        if res.status_code != 200:
-            raise Exception
-        body = json.loads(res.content)
-        return body
-    except Exception:
-        return None
-
-
-def _create_df():
-    columns = [
-        'datetime',
-        'repository',
-        'em1',
-        'em2',
-        'em3',
-        'em4',
-        'em5',
-        'em6',
-        'em7',
-        'modifiability',
-        'maturity',
-        'functional_completeness',
-        'maintainability',
-        'reliability',
-        'functional_suitability',
-        'sqc'
-    ]
-    output = pd.DataFrame(columns=columns)
-    return output
-
-
-def _add_line_to_df(df: pd.DataFrame, line: dict):
-    if not verify_dict(line):
-        return df
-    new_line = pd.DataFrame(line, index=[0])
-    new_df = pd.concat([df, new_line], ignore_index=True, axis=0)
-    return new_df
-
-
-def verify_dict(dic: dict):
-    valid_columns = [
-        'datetime',
-        'repository',
-        'em1',
-        'em2',
-        'em3',
-        'em4',
-        'em5',
-        'em6',
-        'em7',
-        'modifiability',
-        'maturity',
-        'functional_completeness',
-        'maintainability',
-        'reliability',
-        'functional_suitability',
-    ]
-    for key in dic.keys():
-        if key not in valid_columns:
-            return False
-    return True
-
-
-if __name__ == '__main__':
-    parse_generate()
+def display_loading():
+    for c in itertools.cycle(['|', '/', '-', '\\']):
+        if done:
+            break
+        sys.stdout.write('\rLoading ' + c)
+        sys.stdout.flush()
+        time.sleep(0.5)
+    sys.stdout.write('\rDone!       \n')
