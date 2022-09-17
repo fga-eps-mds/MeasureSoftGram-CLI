@@ -5,6 +5,7 @@ entities_keys = {
     'subcharacteristics': 'subcharacteristic_id',
 }
 
+
 def get_entity(response, entity_name, entity_id, history):
     if entity_id:
         extracted_data, headers, data = \
