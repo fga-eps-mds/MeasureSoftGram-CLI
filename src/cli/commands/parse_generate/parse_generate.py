@@ -14,7 +14,19 @@ c_history = None
 s_history = None
 
 
-def parse_generate(fmt: str, host: str):
+def parse_generate(fmt: str, host: str) -> int:  # noqa: C901
+    try:
+        if not GenerateUtils.verify_available_format(fmt):
+            raise Exception
+
+    except Exception:
+        print()
+        print(colored("\tERROR", "red"))
+        print("\tNot supported format.")
+        print("\tExiting...")
+        print()
+        return 1
+
     try:
         f = open(".measuresoftgram")
 
@@ -29,7 +41,7 @@ def parse_generate(fmt: str, host: str):
         print("\tCould not get .measuresoftgram file from current directory.")
         print("\tExiting...")
         print()
-        return
+        return 1
 
     host_url = host
 
@@ -121,12 +133,14 @@ def parse_generate(fmt: str, host: str):
 
         print(colored(f"\t{output_name} generated successfully!", "green"))
         print("\n")
+        return 0
 
     except Exception:
         print()
         print(colored("\tERROR", "red"))
         print("\tIt looks like something went wrong during the file generating operation.")
         print()
+        return 1
 
 
 def call_for_histories(measure_url, sub_url, char_url, sqc_url):

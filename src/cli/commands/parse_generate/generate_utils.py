@@ -2,9 +2,14 @@ import pandas as pd
 import json
 from typing import Union
 from src.clients.service_client import ServiceClient
+from src.config.settings import AVAILABLE_GEN_FORMATS
 
 
 class GenerateUtils:
+    @staticmethod
+    def verify_available_format(fmt: str) -> bool:
+        return fmt.lower() in AVAILABLE_GEN_FORMATS
+
     @staticmethod
     def call_service(host_url: str) -> Union[dict, None]:
         try:
