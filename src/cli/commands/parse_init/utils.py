@@ -1,8 +1,10 @@
+import json
 from os.path import exists
 
 import validators
 
 from src.cli.exceptions import exceptions
+from src.clients.service_client import ServiceClient
 
 INIT_FILE_NAME = ".measuresoftgram.json"
 
@@ -50,3 +52,44 @@ def check_file_data(json_file):
             raise exceptions.InvalidMeasuresoftgramFormat(
                 f"Invalid url format for repository: {repository}"
             )
+
+
+def create_org_prod_n_repos(host_url, json_file):
+    organization_url = host_url + "api/v1/organizations/"
+    organization_name = json_file["organization_name"]
+    organization_id = create_entity(organization_url, organization_name, "organization")
+
+    product_url = organization_url + f"{organization_id}/products/"
+    product_name = json_file["product_name"]
+    product_id = create_entity(product_url, product_name, "product")
+
+    repositories = []
+    repository_url = product_url + f"{product_id}/repositories/"
+    for repository in json_file["repositories"]:
+        repository_name = repository.split("/")[-1]
+        repository_id = create_entity(repository_url, repository_name, "repository")
+        repositories.append({repository_name: repository_id})
+
+    return {
+        "organization": {
+            "name": organization_name,
+            "id": organization_id,
+        },
+        "product": {
+            "name": product_name,
+            "id": product_id,
+        },
+        "repositories": repositories,
+    }
+
+
+def create_entity(url, name, entity):
+    payload = dict(name=name)
+    response = ServiceClient.make_post_request(url, payload)
+
+    if response.status_code == 201:
+        return json.loads(response.text)["id"]
+    else:
+        raise exceptions.MeasureSoftGramCLIException(
+            f"Unable to create an {entity}. Check the connection to the Service host."
+        )
