@@ -1,23 +1,11 @@
+import pandas as pd
 import json
-
 from typing import Union
 from src.clients.service_client import ServiceClient
-import pandas as pd
+
 
 
 class GenerateUtils:
-    @staticmethod
-    def get_org_id() -> str:
-        return '1'  # TODO: Remove this hardcoded snippet
-
-    @staticmethod
-    def get_prd_id() -> str:
-        return '3'  # TODO: Remove this hardcoded snippet
-
-    @staticmethod
-    def get_prd_name() -> str:
-        return 'MeasureSoftGram'  # TODO: Remove this hardcoded snippet
-
     @staticmethod
     def call_service(host_url: str) -> Union[dict, None]:
         try:
@@ -61,17 +49,17 @@ class GenerateUtils:
 
     @staticmethod
     def get_measure_line(measure_list, position):
-        def get_em(name):  # TODO: Mapear certo as medidas
-            em_dict = {
-                'team_throughput': 'em1',
-                'passed_tests': 'em2',
-                'commented_file_density': 'em3',
-                'non_complex_file_density': 'em4',
-                'test_builds': 'em5',
-                'duplication_absense': 'em6',
-                'test_coverage': 'em7',
-            }
+        em_dict = {
+            'non_complex_file_density': 'em1',
+            'commented_file_density': 'em2',
+            'duplication_absense': 'em3',
+            'passed_tests': 'em4',
+            'test_builds': 'em5',
+            'test_coverage': 'em6',
+            'team_throughput': 'em7',
+        }
 
+        def get_em(name):
             if name in em_dict.keys():
                 return em_dict[name]
             else:

@@ -2,7 +2,9 @@ import itertools
 import threading
 import time
 import sys
+import json
 from src.cli.commands.parse_generate.generate_utils import GenerateUtils
+from termcolor import colored
 
 # Global vars
 done = False
@@ -13,16 +15,31 @@ s_history = None
 
 
 def parse_generate(fmt: str, host: str):
+    try:
+        f = open(".measuresoftgram")
+
+        config_file = json.load(f)
+
+        if len(config_file.keys()) == 0:
+            raise Exception
+
+    except Exception:
+        print()
+        print(colored("\tERROR", "red"))
+        print("\tCould not get .measuresoftgram file from current directory.")
+        print("\tExiting...")
+        print()
+        return
+
     host_url = host
-    print(host_url)
 
     print("\n--------------------***--------------------***--------------------")
-    print(f"Generating {fmt.upper()} output file")
+    print(f"\tGenerating {fmt.upper()} output file")
     print()
 
-    organization_id = GenerateUtils.get_org_id()
-    product_id = GenerateUtils.get_prd_id()
-    product_name = GenerateUtils.get_prd_name()
+    organization_id = config_file['organization']['id']
+    product_id = config_file['product']['id']
+    product_name = config_file['product']['name']
 
     host_url += (
         'api/v1/'
@@ -34,7 +51,7 @@ def parse_generate(fmt: str, host: str):
     output_df = GenerateUtils.create_df()
 
     try:
-        print("Calling MeasureSoftGram Service instance")
+        print("\tCalling MeasureSoftGram Service instance")
         body = GenerateUtils.call_service(host_url)
 
         if body is None:
@@ -45,7 +62,7 @@ def parse_generate(fmt: str, host: str):
 
             globals()['done'] = False
             print("\n--------------------***--------------------***--------------------")
-            print(f"Retrieving data from {repository_name}")
+            print(f"\tRetrieving data from {repository_name}")
 
             # Run service calls in a thread
             threading.Thread(target=call_for_histories, args=(repository_data['historical_values']['measures'],
@@ -95,19 +112,20 @@ def parse_generate(fmt: str, host: str):
 
         # Generate output file
         print("\n--------------------***--------------------***--------------------")
-        print(f"Generating the output file for {product_name} product")
+        print(f"\tGenerating the output file for {product_name} product")
 
         output_name = f"{product_name}.{fmt.lower()}"
 
         if fmt.upper() == "CSV":
             output_df.to_csv(output_name, index=False)
 
-        print(f"{output_name} generated successfully!")
+        print(colored(f"\t{output_name} generated successfully!", "green"))
         print("\n")
 
     except Exception:
         print()
-        print("It looks like something went wrong during the file generating operation.")
+        print(colored("\tERROR", "red"))
+        print("\tIt looks like something went wrong during the file generating operation.")
         print()
 
 
@@ -124,7 +142,7 @@ def display_loading():
     for c in itertools.cycle(['|', '/', '-', '\\']):
         if done:
             break
-        sys.stdout.write('\rLoading ' + c)
+        sys.stdout.write(colored('\r\tLoading ' + c, "yellow"))
         sys.stdout.flush()
         time.sleep(0.5)
-    sys.stdout.write('\rDone!       \n')
+    sys.stdout.write(colored('\r\tDone!       \n', "green"))
