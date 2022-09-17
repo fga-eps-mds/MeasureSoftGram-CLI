@@ -26,7 +26,7 @@ def setup():
 
     parser_init = subparsers.add_parser(
         "init",
-        help="Create a init file `.measuresoftgram.json` with your default organization, product and repositories"
+        help="Create a init file `.measuresoftgram` with your default organization, product and repositories"
     )
 
     parser_init.add_argument(
