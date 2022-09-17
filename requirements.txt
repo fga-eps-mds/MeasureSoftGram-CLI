@@ -1,2 +1,9 @@
 ###### Install local application in development mode. This will grab install_requires from setup.py.
 -e .
+requests~=2.28.1
+pandas~=1.4.4
+typing~=3.7.4.3
+tabulate~=0.8.10
+pytz~=2022.2.1
+termcolor~=1.1.0
+setuptools~=60.2.0
