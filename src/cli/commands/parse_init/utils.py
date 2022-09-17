@@ -91,6 +91,11 @@ def create_entity(url, name, entity):
 
     if response.status_code == 201:
         return json.loads(response.text)["id"]
+    elif response.status_code == 400:
+        raise exceptions.MeasureSoftGramCLIException(
+            f"An {entity} with the provided name already exists. "
+            f"Use a new one or change the '.measuresoftgram' file manually."
+        )
     else:
         raise exceptions.MeasureSoftGramCLIException(
             f"Unable to create an {entity}. Check the connection to the Service host."
