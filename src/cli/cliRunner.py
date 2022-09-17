@@ -36,10 +36,7 @@ def setup():
         "output_origin",
         type=str,
         choices=(AVAILABLE_IMPORTS),
-        help=(
-                "Import a metrics files from some origin. Valid values are: "
-                + ", ".join(AVAILABLE_IMPORTS)
-        ),
+        help=("Import a metrics files from some origin. Valid values are: " + ", ".join(AVAILABLE_IMPORTS)),
     )
 
     parser_import.add_argument(
@@ -59,10 +56,7 @@ def setup():
         "--host",
         type=str,
         nargs='?',
-        default=os.getenv(
-            "MSG_SERVICE_HOST",
-            "https://measuresoftgram-service.herokuapp.com/"
-        ),
+        default=os.getenv("MSG_SERVICE_HOST", "https://measuresoftgram-service.herokuapp.com/"),
         help="The host of the service",
     )
 
@@ -102,10 +96,7 @@ def setup():
         "entity",
         type=str,
         choices=(AVAILABLE_ENTITIES),
-        help=(
-                "The entity to get. Valid values are: "
-                + ", ".join(AVAILABLE_ENTITIES)
-        ),
+        help=("The entity to get. Valid values are: " + ", ".join(AVAILABLE_ENTITIES)),
     )
 
     parser_get_entity.add_argument(
@@ -113,9 +104,8 @@ def setup():
         type=int,
         nargs='?',
         help=(
-            "The ID of the entity to get. If not provided, a list with the "
-            "last record of all available entities will be returned."
-        ),
+            "The ID of the entity to get. If not provided, a list with the last record of all available entities will "
+            "be returned."),
     )
 
     parser_get_entity.add_argument(
@@ -181,8 +171,8 @@ def setup():
         type=str,
         choices=AVAILABLE_GEN_FORMATS,
         help=(
-                "The possible formats to generate an output file. Valid values are: "
-                + ", ".join(AVAILABLE_GEN_FORMATS)
+            "The possible formats to generate an output file. Valid values are: "
+            + ", ".join(AVAILABLE_GEN_FORMATS)
         ),
     )
 

@@ -4,7 +4,6 @@ from typing import Union
 from src.clients.service_client import ServiceClient
 
 
-
 class GenerateUtils:
     @staticmethod
     def call_service(host_url: str) -> Union[dict, None]:
