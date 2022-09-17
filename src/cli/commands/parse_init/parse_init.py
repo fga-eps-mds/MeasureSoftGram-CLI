@@ -1,5 +1,7 @@
 import json
 
+from termcolor import colored
+
 from src.cli.jsonReader import check_file_extension, open_json_file
 from src.cli.commands.parse_init.utils import (
     check_if_init_file_already_exists,
@@ -22,8 +24,11 @@ def parse_init(file_path, host_url):
         validate_user_file(user_config_file)
 
         init_data = create_org_prod_n_repos(host_url, user_config_file)
-        with open('.measuresoftgram.json', 'w') as f:
-            f.write(json.dumps(init_data, indent=4))
+
+        with open('.measuresoftgram', 'w') as file:
+            file.write(json.dumps(init_data, indent=4))
+
+        print(colored("Init file created with success ...", "green"))
     except MeasureSoftGramCLIException as error:
-        print("Error:", error)
-        return
+        print(colored(f"Error: {error}", "red"))
+        return 1

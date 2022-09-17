@@ -6,12 +6,14 @@ import validators
 from src.cli.exceptions import exceptions
 from src.clients.service_client import ServiceClient
 
-INIT_FILE_NAME = ".measuresoftgram.json"
+INIT_FILE_NAME = ".measuresoftgram"
 
 
 def check_if_init_file_already_exists():
     if exists(INIT_FILE_NAME):
-        raise exceptions.InitFileAlreadyExists("Init file already exists. Check the file '.measuresoftgram.json'")
+        raise exceptions.InitFileAlreadyExists(
+            "Init file already exists. Check the file '.measuresoftgram'"
+        )
 
 
 def validate_user_file(config_json_file):
