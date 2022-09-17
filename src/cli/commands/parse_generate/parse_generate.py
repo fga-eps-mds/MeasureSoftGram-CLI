@@ -1,9 +1,8 @@
-import os
 import itertools
 import threading
 import time
 import sys
-from generate_utils import GenerateUtils
+from src.cli.commands.parse_generate.generate_utils import GenerateUtils
 
 # Global vars
 done = False
@@ -13,12 +12,13 @@ c_history = None
 s_history = None
 
 
-def parse_generate():
-    fmt = "CSV"
-    host_url = os.getenv("SERVICE_URL", "https://measuresoftgram-service.herokuapp.com/")
+def parse_generate(fmt: str, host: str):
+    host_url = host
+    print(host_url)
 
     print("\n--------------------***--------------------***--------------------")
-    print(f"Generating {fmt} output file for repository")
+    print(f"Generating {fmt.upper()} output file")
+    print()
 
     organization_id = GenerateUtils.get_org_id()
     product_id = GenerateUtils.get_prd_id()
@@ -94,7 +94,6 @@ def parse_generate():
                 output_df = GenerateUtils.add_line_to_df(output_df, new_line)
 
         # Generate output file
-        print()
         print("\n--------------------***--------------------***--------------------")
         print(f"Generating the output file for {product_name} product")
 
@@ -104,6 +103,7 @@ def parse_generate():
             output_df.to_csv(output_name, index=False)
 
         print(f"{output_name} generated successfully!")
+        print("\n")
 
     except Exception:
         print()
