@@ -37,9 +37,9 @@ def print_status_import_file(file, message, trying_idx):
             - sonarmetrics/file1.json
             OK: Data sent successfully
     """
-    print(f'\t\t- [{trying_idx}] {file}')
+    print(f'\t\t- [attempt n° {trying_idx}] {file}')
 
     if 'OK:' in message:
-        print(colored(f'\t\t{message}\n', 'green'))
+        print(colored(f'\t\t\t{message}\n', 'green'))
     else:
-        print(colored(f'\t\t{message}\n', 'red'))
+        print(colored(f'\t\t\t{message}\n', 'red'))

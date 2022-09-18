@@ -39,12 +39,13 @@ def folder_reader(absolute_path):
                 components.append(file_reader(file_path))
                 files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
             except exceptions.MeasureSoftGramCLIException as error:
-                print("Warning: ", error, f"passing {file_path}...")
-
+                print(f"Warning in {file_path} file.", "Error:", error)
         os.chdir('..')
+
     except FileNotFoundError:
         raise FileNotFoundError
 
+    files.sort()
     return components, files
 
 
@@ -94,7 +95,7 @@ def check_sonar_format(json_data):
 
     if len(json_data["components"]) == 0:
         raise exceptions.InvalidMetricsJsonFile(
-            "Invalid Sonar JSON components value. It must have at least one component"
+            "File with valid schema but no metrics data."
         )
 
 
@@ -128,7 +129,7 @@ def check_metrics_values(json_data):
 
 def validate_metrics_post(response_status):
     if 200 <= response_status <= 299:
-        return 'OK: Data sent successfully'
+        return 'OK: Metrics uploaded successfully'
 
     return \
         f'FAIL: The host service server returned a {response_status} error. Trying again'

@@ -173,7 +173,7 @@ class TestValidateMetricsPost:
         # with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
         message = jsonReader.validate_metrics_post(status_code)
 
-        assert "OK: Data sent successfully" == message
+        assert "OK: Metrics uploaded successfully" == message
 
     @pytest.mark.parametrize("status_code", [400, 500, 404, 422])
     def test_post_failure(self, status_code):
@@ -327,7 +327,7 @@ class TestCheckSonarFormat:
                 },
                 "components": {},
             },
-            "Invalid Sonar JSON components value. It must have at least one component",
+            "File with valid schema but no metrics data.",
         ),
     ]
 
@@ -336,7 +336,6 @@ class TestCheckSonarFormat:
         """
         Test invalid Sonar JSON data
         """
-
         with pytest.raises(exceptions.InvalidMetricsJsonFile) as error:
             jsonReader.check_sonar_format(json_data)
 

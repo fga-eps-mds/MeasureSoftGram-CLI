@@ -16,10 +16,7 @@ def parse_create(file_path):
     ).json()
 
     try:
-        pre_config = pre_config_file_reader(
-            r"{}".format(file_path),
-            available_pre_config,
-        )
+        pre_config = pre_config_file_reader(file_path, available_pre_config)
     except MeasureSoftGramCLIException as error:
         print("Error: ", error)
         return
