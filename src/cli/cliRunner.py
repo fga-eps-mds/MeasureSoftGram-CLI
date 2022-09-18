@@ -8,7 +8,13 @@ from src.cli.commands import parse_import, parse_get_entity, parse_init
 from src.cli.commands.parse_generate.parse_generate import parse_generate
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 
-from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS, AVAILABLE_GEN_FORMATS, SERVICE_URL
+from src.config.settings import (
+    AVAILABLE_ENTITIES,
+    AVAILABLE_IMPORTS,
+    SUPPORTED_FORMATS,
+    AVAILABLE_GEN_FORMATS,
+    SERVICE_URL
+)
 
 
 def sigint_handler(*_):
