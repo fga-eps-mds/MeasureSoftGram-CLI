@@ -77,3 +77,5 @@ class ServiceClient:
             else:
                 print('--> OK')
 
+    def calculate_entity(url, payload):
+        return ServiceClient.make_post_request(url, payload)
