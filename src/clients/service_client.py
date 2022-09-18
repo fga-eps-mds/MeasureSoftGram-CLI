@@ -31,7 +31,7 @@ class ServiceClient:
         return ServiceClient.make_post_request(url, payload)
 
     @staticmethod
-    def calculate_all_entities(repo_url):
+    def calculate_all_entities(repo_url, created_at=None):
         entities = {
             'measures': {
                 'measures': [
@@ -41,19 +41,19 @@ class ServiceClient:
                     {'key': 'non_complex_file_density'},
                     {'key': 'commented_file_density'},
                     {'key': 'duplication_absense'},
-                ]
+                ],
             },
             'subcharacteristics': {
                 'subcharacteristics': [
                     {'key': 'modifiability'},
                     {'key': 'testing_status'}
-                ]
+                ],
             },
             'characteristics': {
                 'characteristics': [
                     {'key': 'reliability'},
                     {'key': 'maintainability'}
-                ]
+                ],
             },
             'sqc': {},
         }
@@ -63,5 +63,9 @@ class ServiceClient:
         for entity in entities:
             endpoint = url + f'{entity}/'
             data = entities[entity]
+
+            if created_at:
+                data['created_at'] = created_at
+
             ServiceClient.make_post_request(endpoint, data)
             print(f'\t\t\t--> Calculating {entity}...')
