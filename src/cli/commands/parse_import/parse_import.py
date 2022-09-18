@@ -35,8 +35,9 @@ def parse_import(
     host_url += (
         'api/v1/'
         f'organizations/{organization_id}/'
-        f'repository/{repository_id}/'
-        'import/sonarqube-metrics/'
+        f'products/{product_id}/'
+        f'repositories/{repository_id}/'
+        'collectors/sonarqube/'
     )
 
     print_import_files(files)

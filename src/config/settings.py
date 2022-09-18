@@ -20,3 +20,7 @@ SUPPORTED_FORMATS = [
 AVAILABLE_IMPORTS = [
     "sonarqube"
 ]
+
+AVAILABLE_GEN_FORMATS = [
+    "csv"
+]

@@ -4,10 +4,11 @@ import sys
 import signal
 from pathlib import Path
 
-from src.cli.commands import parse_import, parse_get_entity
+from src.cli.commands import parse_import, parse_get_entity, parse_init
+from src.cli.commands.parse_generate.parse_generate import parse_generate
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 
-from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS, SERVICE_URL
+from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS, AVAILABLE_GEN_FORMATS, SERVICE_URL
 
 
 def sigint_handler(*_):
@@ -24,6 +25,31 @@ def setup():
 
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
+    parser_init = subparsers.add_parser(
+        "init",
+        help="Create a init file `.measuresoftgram` with your default organization, product and repositories"
+    )
+
+    parser_init.add_argument(
+        "file_path",
+        type=lambda p: Path(p).absolute(),
+        help="Path to your configured JSON file with the organization, product and repositories names",
+    )
+
+    parser_init.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default=os.getenv(
+            "MSG_SERVICE_HOST",
+            "https://measuresoftgram-service.herokuapp.com/"
+        ),
+        help="The host of the service",
+    )
+
+    #
+    # IMPORT PARSER CODE
+    #
     parser_import = subparsers.add_parser(
         "import",
         help="Import a folder with metrics"
@@ -33,10 +59,7 @@ def setup():
         "output_origin",
         type=str,
         choices=(AVAILABLE_IMPORTS),
-        help=(
-            "Import a metrics files from some origin. Valid values are: "
-            + ", ".join(AVAILABLE_IMPORTS)
-        ),
+        help=("Import a metrics files from some origin. Valid values are: " + ", ".join(AVAILABLE_IMPORTS)),
     )
 
     parser_import.add_argument(
@@ -56,10 +79,7 @@ def setup():
         "--host",
         type=str,
         nargs='?',
-        default=os.getenv(
-            "MSG_SERVICE_HOST",
-            "https://measuresoftgram-service.herokuapp.com/"
-        ),
+        default=os.getenv("MSG_SERVICE_HOST", "https://measuresoftgram-service.herokuapp.com/"),
         help="The host of the service",
     )
 
@@ -75,7 +95,7 @@ def setup():
         "--repository_id",
         type=str,
         nargs='?',
-        default=os.getenv("MSG_REPOSITORY_ID", "1"),
+        default=os.getenv("MSG_REPOSITORY_ID", "6"),
         help="The ID of the repository",
     )
 
@@ -87,6 +107,9 @@ def setup():
         help="The ID of the product",
     )
 
+    #
+    # GET PARSER CODE
+    #
     parser_get_entity = subparsers.add_parser(
         "get",
         help="Gets the last record of a specific entity",
@@ -96,10 +119,7 @@ def setup():
         "entity",
         type=str,
         choices=(AVAILABLE_ENTITIES),
-        help=(
-            "The entity to get. Valid values are: "
-            + ", ".join(AVAILABLE_ENTITIES)
-        ),
+        help=("The entity to get. Valid values are: " + ", ".join(AVAILABLE_ENTITIES)),
     )
 
     parser_get_entity.add_argument(
@@ -107,9 +127,8 @@ def setup():
         type=int,
         nargs='?',
         help=(
-            "The ID of the entity to get. If not provided, a list with the "
-            "last record of all available entities will be returned."
-        ),
+            "The ID of the entity to get. If not provided, a list with the last record of all available entities will "
+            "be returned."),
     )
 
     parser_get_entity.add_argument(
@@ -133,8 +152,8 @@ def setup():
         nargs='?',
         default="tabular",
         help=(
-            "The format of the output. "
-            "Valid values are: " + ", ".join(SUPPORTED_FORMATS)
+                "The format of the output. "
+                "Valid values are: " + ", ".join(SUPPORTED_FORMATS)
         ),
     )
 
@@ -160,6 +179,32 @@ def setup():
         nargs='?',
         default=os.getenv("MSG_PRODUCT_ID", "3"),
         help="The ID of the product",
+    )
+
+    #
+    # GENERATE PARSER CODE
+    #
+    parser_generate = subparsers.add_parser(
+        "generate",
+        help="Generate an output file, according to the specified type, for the historical values for a given product",
+    )
+
+    parser_generate.add_argument(
+        "format",
+        type=str,
+        choices=AVAILABLE_GEN_FORMATS,
+        help=(
+            "The possible formats to generate an output file. Valid values are: "
+            + ", ".join(AVAILABLE_GEN_FORMATS)
+        ),
+    )
+
+    parser_generate.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default="https://measuresoftgram-service.herokuapp.com/",
+        help="The host of the service",
     )
 
     parser_calculate_entity = subparsers.add_parser(
@@ -284,6 +329,12 @@ def setup():
             args.product_id,
         )
 
+    elif args.command == "init":
+        parse_init(
+            args.file_path,
+            args.host,
+        )
+
     # elif args.command == "create":
     #     parse_create(args.path)
 
@@ -312,6 +363,12 @@ def setup():
             args.product_id,
             args.output_format,
             args.history
+        )
+
+    elif args.command == 'generate':
+        parse_generate(
+            args.format,
+            args.host
         )
 
     elif args.command == 'calculate':
