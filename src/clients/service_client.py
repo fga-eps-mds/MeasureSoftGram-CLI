@@ -7,8 +7,8 @@ class ServiceClient:
     def configure_session(session):
         errors = [500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511]
         retries = Retry(total=5, backoff_factor=5, status_forcelist=errors)
-        # session.mount("http://", HTTPAdapter(max_retries=retries))
-        session.mount("https://", HTTPAdapter(max_retries=retries))
+        # session.mount('http://', HTTPAdapter(max_retries=retries))
+        session.mount('https://', HTTPAdapter(max_retries=retries))
 
     @staticmethod
     def make_get_request(url):
@@ -29,3 +29,39 @@ class ServiceClient:
     @staticmethod
     def import_file(url, payload):
         return ServiceClient.make_post_request(url, payload)
+
+    @staticmethod
+    def calculate_all_entities(repo_url):
+        entities = {
+            'measures': {
+                'measures': [
+                    {'key': 'passed_tests'},
+                    {'key': 'test_builds'},
+                    {'key': 'test_coverage'},
+                    {'key': 'non_complex_file_density'},
+                    {'key': 'commented_file_density'},
+                    {'key': 'duplication_absense'},
+                ]
+            },
+            'subcharacteristics': {
+                'subcharacteristics': [
+                    {'key': 'modifiability'},
+                    {'key': 'testing_status'}
+                ]
+            },
+            'characteristics': {
+                'characteristics': [
+                    {'key': 'reliability'},
+                    {'key': 'maintainability'}
+                ]
+            },
+            'sqc': {},
+        }
+
+        url = repo_url + 'calculate/'
+
+        for entity in entities:
+            endpoint = url + f'{entity}/'
+            data = entities[entity]
+            ServiceClient.make_post_request(endpoint, data)
+            print(f'\t\t\t--> Calculating {entity}...')
