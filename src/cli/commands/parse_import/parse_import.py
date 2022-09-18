@@ -19,9 +19,10 @@ def match_repository_url(filename: str, repos_urls: Dict[str, str]) -> str:
             return repo_url
 
     raise exceptions.RepositoryUrlNotFound((
-        f'Repository url not found. Could not find the repository url'
+        'Repository url not found. Could not find the repository url'
         'where this file should be imported.'
     ))
+
 
 def get_created_at_from_filename(filename: str) -> str:
     """
@@ -88,7 +89,7 @@ def parse_import(
                 ConnectionError,
                 HTTPError,
                 json.decoder.JSONDecodeError
-            ) as exc:
+            ):
                 print_status_import_file(
                     files[idx],
                     "FAIL: Can't connect to host service.",

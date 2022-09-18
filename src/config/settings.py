@@ -128,12 +128,10 @@ def get_repositories():
     repositories = []
 
     for repository in data["repositories"]:
-        for k,v in repository.items():
-            repositories.append((k,v))
+        for k, v in repository.items():
+            repositories.append((k, v))
 
     return repositories
-
-
 
 
 def get_product_url(host_url):
@@ -159,7 +157,6 @@ def get_repositories_urls_mapped_by_name(host_url):
 
     path = f'{host_url}/api/v1/organizations/{organization_id}'
     path += f'/products/{product_id}/repositories'
-
 
     repositories = get_repositories()
     organization_name = get_organization()["name"]
