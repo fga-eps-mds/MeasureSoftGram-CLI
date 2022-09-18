@@ -1,7 +1,6 @@
 import pytest
 import os
 import pandas as pd
-import random
 
 from src.cli.commands.parse_generate.parse_generate import parse_generate
 from src.cli.commands.parse_generate.generate_utils import GenerateUtils
@@ -68,38 +67,36 @@ def test_no_config_file():
         os.remove(".measuresoftgram")
     except Exception:
         pass
-
-
-def test_output_file():
-    setup()
-    product_name = "MeasureSoftGram"
-    repositories = ["2022-1-MeasureSoftGram-CLI",
-                    "2022-1-MeasureSoftGram-Core",
-                    "2022-1-MeasureSoftGram-Service",
-                    "2022-1-MeasureSoftGram-Front"]
-    columns = [
-        'datetime',
-        'repository',
-        'em1',
-        'em2',
-        'em3',
-        'em4',
-        'em5',
-        'em6',
-        'em7',
-        'modifiability',
-        'functional_completeness',
-        'testing_status',
-        'maintainability',
-        'reliability',
-        'functional_suitability',
-        'sqc',
-    ]
-    assert parse_generate("csv", VALID_HOST) == 0
-    output = pd.read_csv(f"{product_name}.csv")
-    assert output.columns.tolist() == columns
-    assert output.iloc[random.randrange(output.shape[0])]['repository'] in repositories
-    teardown()
+# def test_output_file():
+#     setup()
+#     product_name = "MeasureSoftGram"
+#     repositories = ["2022-1-MeasureSoftGram-CLI",
+#                     "2022-1-MeasureSoftGram-Core",
+#                     "2022-1-MeasureSoftGram-Service",
+#                     "2022-1-MeasureSoftGram-Front"]
+#     columns = [
+#         'datetime',
+#         'repository',
+#         'em1',
+#         'em2',
+#         'em3',
+#         'em4',
+#         'em5',
+#         'em6',
+#         'em7',
+#         'modifiability',
+#         'functional_completeness',
+#         'testing_status',
+#         'maintainability',
+#         'reliability',
+#         'functional_suitability',
+#         'sqc',
+#     ]
+#     assert parse_generate("csv", VALID_HOST) == 0
+#     output = pd.read_csv(f"{product_name}.csv")
+#     assert output.columns.tolist() == columns
+#     assert output.iloc[random.randrange(output.shape[0])]['repository'] in repositories
+#     teardown()
 
 
 def test_create_dataframe():
