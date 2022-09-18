@@ -1,5 +1,6 @@
 import re
 import json
+from time import sleep
 from typing import Dict
 from urllib.error import HTTPError
 import requests
@@ -26,7 +27,9 @@ def get_created_at_from_filename(filename: str) -> str:
     """
     filename: str = fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json
     """
-    return re.search(r'\d{2}-\d{2}-\d{4}', filename)[0]
+    date_str = re.search(r'\d{2}-\d{2}-\d{4}', filename)[0]
+    month, day, year = date_str.split('-')
+    return f'{year}-{month}-{day}'
 
 
 def parse_import(
@@ -55,9 +58,13 @@ def parse_import(
     repos_urls = get_repositories_urls_mapped_by_name(host_url)
 
     for idx, (filename, component) in enumerate(zip(files, components)):
+        if idx > 1:
+            sleep(1)
+
         payload["components"] = component
 
         repo_url = match_repository_url(filename, repos_urls)
+        print(f'\t--> Importing {filename} to {repo_url}...')
         created_at = get_created_at_from_filename(filename)
 
         for trying_idx in range(3):

@@ -43,7 +43,10 @@ def setup():
             "MSG_SERVICE_HOST",
             "https://measuresoftgram-service.herokuapp.com/"
         ),
-        help="The host of the service",
+        help=(
+            "The host of the service. "
+            "Default: https://measuresoftgram-service.herokuapp.com/"
+        ),
     )
 
     #
