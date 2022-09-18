@@ -67,5 +67,13 @@ class ServiceClient:
             if created_at:
                 data['created_at'] = created_at
 
-            ServiceClient.make_post_request(endpoint, data)
-            print(f'\t\t\t--> Calculating {entity}...')
+            print(f'\t\t\t--> Calculating {entity}...', end=' ')
+
+            response = ServiceClient.make_post_request(endpoint, data)
+
+            if response.status_code != 201:
+                print(f'--> FAIL: {response.text}')
+
+            else:
+                print('--> OK')
+
