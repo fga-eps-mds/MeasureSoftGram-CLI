@@ -1,11 +1,32 @@
+import re
 import json
+from typing import Dict
 from urllib.error import HTTPError
 import requests
 
-from src.cli.exceptions.exceptions import MeasureSoftGramCLIException
+from src.config.settings import get_repositories_urls_mapped_by_name
+
+from src.cli.exceptions import exceptions
 from src.cli.jsonReader import folder_reader, validate_metrics_post
 from src.cli.utils import check_host_url, print_import_files, print_status_import_file
 from src.clients.service_client import ServiceClient
+
+
+def match_repository_url(filename: str, repos_urls: Dict[str, str]) -> str:
+    for repo_name, repo_url in repos_urls.items():
+        if repo_name in filename:
+            return repo_url
+
+    raise exceptions.RepositoryUrlNotFound((
+        f'Repository url not found. Could not find the repository url'
+        'where this file should be imported.'
+    ))
+
+def get_created_at_from_filename(filename: str) -> str:
+    """
+    filename: str = fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json
+    """
+    return re.search(r'\d{2}-\d{2}-\d{4}', filename)[0]
 
 
 def parse_import(
@@ -13,15 +34,12 @@ def parse_import(
     dir_path,
     language_extension,
     host_url,
-    organization_id,
-    repository_id,
-    product_id,
 ):
     print(f'--> Starting to parser import for {output_origin} output...\n')
 
     try:
-        components, files = folder_reader(r"{}".format(dir_path))
-    except (MeasureSoftGramCLIException, FileNotFoundError):
+        components, files = folder_reader(f"{dir_path}")
+    except (exceptions.MeasureSoftGramCLIException, FileNotFoundError):
         print("Error: The folder was not found")
         return
 
@@ -32,33 +50,38 @@ def parse_import(
 
     host_url = check_host_url(host_url)
 
-    host_url += (
-        'api/v1/'
-        f'organizations/{organization_id}/'
-        f'products/{product_id}/'
-        f'repositories/{repository_id}/'
-        'collectors/sonarqube/'
-    )
-
     print_import_files(files)
 
-    for idx, component in enumerate(components):
+    repos_urls = get_repositories_urls_mapped_by_name(host_url)
+
+    for idx, (filename, component) in enumerate(zip(files, components)):
         payload["components"] = component
+
+        repo_url = match_repository_url(filename, repos_urls)
+        created_at = get_created_at_from_filename(filename)
 
         for trying_idx in range(3):
             try:
-                response = ServiceClient.import_file(host_url, payload)
-
+                response = ServiceClient.import_file(
+                    repo_url + 'collectors/sonarqube/',
+                    payload,
+                )
                 message = validate_metrics_post(response.status_code)
-
                 print_status_import_file(files[idx], message, trying_idx + 1)
+
+                ServiceClient.calculate_all_entities(
+                    repo_url,
+                    created_at=created_at,
+                )
+
                 break
+
             except (
                 requests.RequestException,
                 ConnectionError,
                 HTTPError,
                 json.decoder.JSONDecodeError
-            ):
+            ) as exc:
                 print_status_import_file(
                     files[idx],
                     "FAIL: Can't connect to host service.",
@@ -66,3 +89,16 @@ def parse_import(
                 )
 
     print('\nAttempt to save all files in the directory finished!')
+
+
+if __name__ == '__main__':
+    parse_import(
+        output_origin='sonarqube',
+        dir_path='/home/durval/measure-softgram/docs/analytics-raw-data',
+        language_extension='py',
+        # host_url='https://measuresoftgram-service.herokuapp.com/',
+        host_url='http://localhost:8181/',
+        # organization_id='9',
+        # repository_id='7',
+        # product_id='12',
+    )
