@@ -58,7 +58,7 @@ def test_init_create_file(mocker):
         parse_init("tests/unit/data/init.json", DUMMY_HOST)
 
         assert EXPECTED_INIT_DATA == read_json(".measuresoftgram")
-        assert "'.measuresoftgram' init file created with success ..." in fake_out.getvalue()
+        assert "'.measuresoftgram' init file created with success" in fake_out.getvalue()
         assert os.path.exists(".measuresoftgram")
 
 
