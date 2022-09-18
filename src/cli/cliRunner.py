@@ -4,7 +4,7 @@ import sys
 import signal
 from pathlib import Path
 
-from src.cli.commands import parse_import, parse_get_entity
+from src.cli.commands import parse_import, parse_get_entity, parse_init
 from src.cli.commands.parse_generate.parse_generate import parse_generate
 
 from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS, AVAILABLE_GEN_FORMATS
@@ -23,6 +23,28 @@ def setup():
     argparse.ArgumentTypeError('invalid value!!!')
 
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
+
+    parser_init = subparsers.add_parser(
+        "init",
+        help="Create a init file `.measuresoftgram` with your default organization, product and repositories"
+    )
+
+    parser_init.add_argument(
+        "file_path",
+        type=lambda p: Path(p).absolute(),
+        help="Path to your configured JSON file with the organization, product and repositories names",
+    )
+
+    parser_init.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default=os.getenv(
+            "MSG_SERVICE_HOST",
+            "https://measuresoftgram-service.herokuapp.com/"
+        ),
+        help="The host of the service",
+    )
 
     #
     # IMPORT PARSER CODE
@@ -249,6 +271,12 @@ def setup():
             args.organization_id,
             args.repository_id,
             args.product_id,
+        )
+
+    elif args.command == "init":
+        parse_init(
+            args.file_path,
+            args.host,
         )
 
     # elif args.command == "create":

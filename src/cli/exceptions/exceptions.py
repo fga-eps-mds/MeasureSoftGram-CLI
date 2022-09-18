@@ -34,6 +34,12 @@ class UnableToReadFile(MeasureSoftGramCLIException):
     pass
 
 
+class InitFileAlreadyExists(MeasureSoftGramCLIException):
+    """Raised when the init file already exists"""
+
+    pass
+
+
 class InvalidWeight(MeasureSoftGramCLIException):
     """Raised when a invalid weight is provided to the MeasureSoftGram"""
 
