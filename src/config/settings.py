@@ -1,6 +1,5 @@
 import os
 import json
-from typing import Dict, List
 
 from src.cli.exceptions import exceptions
 
@@ -32,14 +31,16 @@ AVAILABLE_GEN_FORMATS = [
 
 
 def config_file_json():
-    if os.path.exists(".measuresoftgram") is False:
+    filepath = os.path.join(os.getcwd(), ".measuresoftgram")
+
+    if os.path.exists(filepath) is False:
         raise exceptions.ConfigFileNotFound((
             ".measuresoftgram file not found. "
             f"The directory where the search was performed was: {os.getcwd()}. "
             "Please, run the command 'measuresoftgram init' to create the file."
         ))
 
-    with open(".measuresoftgram", "r") as file:
+    with open(filepath, "r") as file:
         try:
             return json.load(file)
 
@@ -109,7 +110,7 @@ def get_product_id():
     return data["product"]["id"]
 
 
-def get_repositories() -> List[Dict[str, int]]:
+def get_repositories():
     data = config_file_json()
 
     if "repositories" not in data:
@@ -124,20 +125,15 @@ def get_repositories() -> List[Dict[str, int]]:
             "Please, run the command 'measuresoftgram init' to create the file."
         ))
 
+    repositories = []
+
     for repository in data["repositories"]:
-        if "id" not in repository:
-            raise exceptions.ConfigFileQueryFailed((
-                "The repository id key was not found in the .measuresoftgram file. "
-                "Please, run the command 'measuresoftgram init' to create the file."
-            ))
+        for k,v in repository.items():
+            repositories.append((k,v))
 
-        if "name" not in repository:
-            raise exceptions.ConfigFileQueryFailed((
-                "The repository name key was not found in the .measuresoftgram file. "
-                "Please, run the command 'measuresoftgram init' to create the file."
-            ))
+    return repositories
 
-    return data["repositories"]
+
 
 
 def get_product_url(host_url):
@@ -149,7 +145,7 @@ def get_product_url(host_url):
     )
 
 
-def get_repositories_urls_mapped_by_name(host_url) -> Dict[str, str]:
+def get_repositories_urls_mapped_by_name(host_url):
     """
     Retorna um dicionário com o mapeamento da substring presente no nome do
     arquivo com a url do repositório que os dados deste arquivo deverão
