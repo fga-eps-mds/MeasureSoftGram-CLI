@@ -2,6 +2,7 @@ import json
 from os.path import exists
 
 import validators
+from termcolor import colored
 
 from src.cli.exceptions import exceptions
 from src.clients.service_client import ServiceClient
@@ -90,7 +91,9 @@ def create_entity(url, name, entity):
     response = ServiceClient.make_post_request(url, payload)
 
     if response.status_code == 201:
-        return json.loads(response.text)["id"]
+        entity_id = json.loads(response.text)["id"]
+        print(colored(f"\tCreated {entity} with name {name} and id {entity_id} ...", "blue"))
+        return entity_id
     elif response.status_code == 400:
         raise exceptions.MeasureSoftGramCLIException(
             f"An {entity} with the provided name already exists. "

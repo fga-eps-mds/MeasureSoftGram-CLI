@@ -28,7 +28,7 @@ def parse_init(file_path, host_url):
         with open('.measuresoftgram', 'w') as file:
             file.write(json.dumps(init_data, indent=4))
 
-        print(colored("'.measuresoftgram' init file created with success ...", "green"))
+        print(colored("'.measuresoftgram' init file created with success", "green"))
     except MeasureSoftGramCLIException as error:
         print(colored(f"Error: {error}", "red"))
         return 1
