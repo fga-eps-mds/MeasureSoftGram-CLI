@@ -29,3 +29,7 @@ class ServiceClient:
     @staticmethod
     def import_file(url, payload):
         return ServiceClient.make_post_request(url, payload)
+
+    @staticmethod
+    def calculate_entity(url, payload):
+        return ServiceClient.make_post_request(url, payload)

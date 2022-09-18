@@ -6,8 +6,15 @@ from pathlib import Path
 
 from src.cli.commands import parse_import, parse_get_entity, parse_init
 from src.cli.commands.parse_generate.parse_generate import parse_generate
+from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 
-from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_IMPORTS, SUPPORTED_FORMATS, AVAILABLE_GEN_FORMATS
+from src.config.settings import (
+    AVAILABLE_ENTITIES,
+    AVAILABLE_IMPORTS,
+    SUPPORTED_FORMATS,
+    AVAILABLE_GEN_FORMATS,
+    SERVICE_URL
+)
 
 
 def sigint_handler(*_):
@@ -141,7 +148,7 @@ def setup():
         "--host",
         type=str,
         nargs='?',
-        default="https://measuresoftgram-service.herokuapp.com/",
+        default=SERVICE_URL,
         help="The host of the service",
     )
 
@@ -204,6 +211,61 @@ def setup():
         nargs='?',
         default="https://measuresoftgram-service.herokuapp.com/",
         help="The host of the service",
+    )
+
+    parser_calculate_entity = subparsers.add_parser(
+        "calculate",
+        help="Calculates all entities"
+    )
+
+    parser_calculate_entity.add_argument(
+        "all",
+        type=str,
+        nargs='?',
+        help=(
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+        ),
+    )
+    parser_calculate_entity.add_argument(
+        "--host",
+        type=str,
+        nargs='?',
+        default=SERVICE_URL,
+        help="The service host",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--organization_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+        help="The specific ID of the organization to which the repository belongs",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--repository_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_REPOSITORY_ID", "6"),
+        help="The repository ID",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--product_id",
+        type=str,
+        nargs='?',
+        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        help="The product ID",
+    )
+
+    parser_calculate_entity.add_argument(
+        "--output_format",
+        type=str,
+        nargs='?',
+        default="tabular",
+        help=(
+            "The format of the output values are: ".join(SUPPORTED_FORMATS)
+        ),
     )
 
     # parser_create = subparsers.add_parser(
@@ -313,6 +375,15 @@ def setup():
         parse_generate(
             args.format,
             args.host
+        )
+
+    elif args.command == 'calculate':
+        parse_calculate(
+            args.host,
+            args.organization_id,
+            args.repository_id,
+            args.product_id,
+            args.output_format,
         )
 
 
