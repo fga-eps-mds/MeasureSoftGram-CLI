@@ -50,3 +50,11 @@ class InvalidMeasuresoftgramFormat(MeasureSoftGramCLIException):
     """Raised when a invalid format file is provided to the MeasureSoftGram"""
 
     pass
+
+
+class RepositoryUrlNotFound(MeasureSoftGramCLIException):
+    """
+    Excessão lançada quando não é possível encontrar uma URL que contenha a
+    substring do nome do arquivo
+    """
+    pass
