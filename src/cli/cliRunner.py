@@ -82,29 +82,29 @@ def setup():
         help="The host of the service",
     )
 
-    parser_import.add_argument(
-        "--organization_id",
-        type=str,
-        nargs='?',
-        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
-        help="The ID of the organization that the repository belongs to",
-    )
+    # parser_import.add_argument(
+    #     "--organization_id",
+    #     type=str,
+    #     nargs='?',
+    #     default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+    #     help="The ID of the organization that the repository belongs to",
+    # )
 
-    parser_import.add_argument(
-        "--repository_id",
-        type=str,
-        nargs='?',
-        default=os.getenv("MSG_REPOSITORY_ID", "6"),
-        help="The ID of the repository",
-    )
+    # parser_import.add_argument(
+    #     "--repository_id",
+    #     type=str,
+    #     nargs='?',
+    #     default=os.getenv("MSG_REPOSITORY_ID", "6"),
+    #     help="The ID of the repository",
+    # )
 
-    parser_import.add_argument(
-        "--product_id",
-        type=str,
-        nargs='?',
-        default=os.getenv("MSG_PRODUCT_ID", "3"),
-        help="The ID of the product",
-    )
+    # parser_import.add_argument(
+    #     "--product_id",
+    #     type=str,
+    #     nargs='?',
+    #     default=os.getenv("MSG_PRODUCT_ID", "3"),
+    #     help="The ID of the product",
+    # )
 
     #
     # GET PARSER CODE
@@ -268,9 +268,9 @@ def setup():
             args.dir_path,
             args.language_extension,
             args.host,
-            args.organization_id,
-            args.repository_id,
-            args.product_id,
+            # args.organization_id,
+            # args.repository_id,
+            # args.product_id,
         )
 
     elif args.command == "init":
