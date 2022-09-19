@@ -1,3 +1,5 @@
+import sys
+from termcolor import colored
 from collections import defaultdict
 import os
 import re
@@ -54,7 +56,18 @@ def get_created_at_from_filename(filename: str) -> str:
     """
     filename: str = fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json
     """
-    date_str = re.search(r'\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}', filename)[0]
+    result = re.search(r'\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}', filename)
+
+    if not result:
+        message = (
+            "Could not extract creation date from file. Was the file name "
+            "to contain a date in the format dd-mm-yyyy-hh-mm"
+        )
+        print(colored(message, 'red'))
+        print(colored(f"filename: {filename}", 'red'))
+        sys.exit(1)
+
+    date_str = result[0]
     month, day, year, hour, minutes = date_str.split('-')
 
     return dt.datetime.strptime(
