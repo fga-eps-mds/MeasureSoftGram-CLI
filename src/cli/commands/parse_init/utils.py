@@ -1,3 +1,4 @@
+import contextlib
 import json
 from os.path import exists
 
@@ -94,7 +95,19 @@ def create_entity(url, name, entity):
         entity_id = json.loads(response.text)["id"]
         print(colored(f"\tCreated {entity} with name {name} and id {entity_id} ...", "blue"))
         return entity_id
+
     elif response.status_code == 400:
+        print(colored(f"\t{entity} with name {name} already exists ...", "blue"))
+
+        with contextlib.suppress(Exception):
+            response = ServiceClient.make_get_request(url)
+            data = response.json()
+
+            for entity_d in data['results']:
+                if entity_d['name'] == name:
+                    print(colored(f"\t{entity} with name {name} returned id {entity_d['id']} ...", "blue"))
+                    return entity_d['id']
+
         raise exceptions.MeasureSoftGramCLIException(
             f"An {entity} with the provided name already exists. "
             f"Use a new one or change the '.measuresoftgram' file manually."

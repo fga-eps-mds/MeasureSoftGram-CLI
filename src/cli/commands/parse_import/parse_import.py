@@ -24,7 +24,7 @@ def match_repository_url(filename: str, repos_urls: Dict[str, str]) -> str:
             return repo_url
 
     raise exceptions.RepositoryUrlNotFound((
-        'Repository url not found. Could not find the repository url'
+        'Repository url not found. Could not find the repository url '
         'where this file should be imported.'
     ))
 
