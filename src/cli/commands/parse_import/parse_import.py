@@ -16,6 +16,7 @@ from src.clients.service_client import ServiceClient
 
 def match_repository_url(filename: str, repos_urls: Dict[str, str]) -> str:
     filename = filename.lower()
+    filename = filename.replace('_', '-')
 
     for repo_name, repo_url in repos_urls.items():
         repo_name = repo_name.lower()
@@ -33,12 +34,12 @@ def get_created_at_from_filename(filename: str) -> str:
     """
     filename: str = fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json
     """
-    date_str = re.search(r'\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}', filename)[0]
-    month, day, year, hour, minutes, seconds = date_str.split('-')
+    date_str = re.search(r'\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}', filename)[0]
+    month, day, year, hour, minutes = date_str.split('-')
 
     return dt.datetime.strptime(
-        f'{year}-{month}-{day} {hour}:{minutes}:{seconds}',
-        '%Y-%m-%d %H:%M:%S',
+        f'{year}-{month}-{day} {hour}:{minutes}',
+        '%Y-%m-%d %H:%M',
     ).isoformat()
 
 

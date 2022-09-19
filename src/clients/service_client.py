@@ -1,4 +1,5 @@
 import requests
+import os
 from requests.adapters import HTTPAdapter, Retry
 
 
@@ -28,7 +29,18 @@ class ServiceClient:
 
     @staticmethod
     def import_file(url, payload):
-        return ServiceClient.make_post_request(url, payload)
+        if os.getenv('DEBUG'):
+            print()
+            print(f'POST {url}')
+            print()
+
+        response = ServiceClient.make_post_request(url, payload)
+
+        if os.getenv('DEBUG'):
+            print(f'RESPONSE: {response}')
+            print()
+
+        return response
 
     @staticmethod
     def calculate_all_entities(repo_url, created_at=None):
@@ -66,6 +78,9 @@ class ServiceClient:
 
             if created_at:
                 data['created_at'] = created_at
+
+            if os.getenv('DEBUG'):
+                print("endpoint:", endpoint)
 
             print(f'\t\t\t--> Calculating {entity}...', end=' ')
 
