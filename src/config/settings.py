@@ -1,5 +1,7 @@
 import os
 import json
+import sys
+from termcolor import colored
 
 from src.cli.exceptions import exceptions
 
@@ -34,11 +36,13 @@ def config_file_json():
     filepath = os.path.join(os.getcwd(), ".measuresoftgram")
 
     if os.path.exists(filepath) is False:
-        raise exceptions.ConfigFileNotFound((
-            ".measuresoftgram file not found. "
+        error_msg = ((
+            "\n.measuresoftgram file not found. "
             f"The directory where the search was performed was: {os.getcwd()}. "
-            "Please, run the command 'measuresoftgram init' to create the file."
+            "Please, run the command 'measuresoftgram init repositories.json' to create the file."
         ))
+        print(colored(f'\t\t\t{error_msg}\n', 'green'))
+        sys.exit(0)
 
     with open(filepath, "r") as file:
         try:
