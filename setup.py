@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="measuresoftgram",
     long_description="CLI da ferramenta MeasureSoftGram",
-    version="3.4.4",
+    version="3.4.5",
     extras_require={"dev": ["pytest", "pytest-cov", "setuptools", "wheel"]},
     packages=find_packages(),
     install_requires=[

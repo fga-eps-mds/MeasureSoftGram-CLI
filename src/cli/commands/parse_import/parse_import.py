@@ -1,3 +1,5 @@
+from collections import defaultdict
+import os
 import re
 import datetime as dt
 import json
@@ -15,14 +17,32 @@ from src.clients.service_client import ServiceClient
 
 
 def match_repository_url(filename: str, repos_urls: Dict[str, str]) -> str:
-    filename = filename.lower()
-    filename = filename.replace('_', '-')
+    repos_urls = {k.lower(): v for k, v in repos_urls.items()}
+
+    filename = filename.lower().replace('_', '-')
+
+    counts = defaultdict(lambda: 0)
 
     for repo_name, repo_url in repos_urls.items():
         repo_name = repo_name.lower()
 
-        if repo_name in filename:
-            return repo_url
+        if os.getenv("DEBUG"):
+            print(f'Comparing {repo_name} with {filename}:', repo_name in filename)
+
+        words = repo_name.split('-')
+
+        for word in words:
+            if word in filename:
+                counts[repo_name] += 1
+
+    best_match, best_count = '', -1
+
+    for repo_name, count in counts.items():
+        if count > best_count:
+            best_match, best_count = repo_name, count
+
+    if best_match:
+        return repos_urls[best_match]
 
     raise exceptions.RepositoryUrlNotFound((
         'Repository url not found. Could not find the repository url '
