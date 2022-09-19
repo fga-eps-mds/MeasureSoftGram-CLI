@@ -37,8 +37,8 @@ def config_file_json():
 
     if os.path.exists(filepath) is False:
         error_msg = ((
-            "\n.measuresoftgram file not found. "
-            f"The directory where the search was performed was: {os.getcwd()}. "
+            "\n.measuresoftgram file not found.\n"
+            f"The directory where the search was performed was: `{os.getcwd()}/`.\n"
             "Please, run the command 'measuresoftgram init repositories.json' to create the file."
         ))
         print(colored(f'\t\t\t{error_msg}\n', 'red'))
