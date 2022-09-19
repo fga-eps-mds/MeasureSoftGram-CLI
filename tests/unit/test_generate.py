@@ -38,24 +38,24 @@ def test_available_formats(format, value):
     assert GenerateUtils.verify_available_format(format) == value
 
 
-@pytest.mark.parametrize(
-    "format, expect",
-    [
-        ("csv", 0),
-        ("json", 1)
-    ]
-)
-def test_fail_format_parse_generate(format, expect):
-    setup()
-    assert parse_generate(format, VALID_HOST) == expect
-    teardown()
+# @pytest.mark.parametrize(
+#     "format, expect",
+#     [
+#         ("csv", 0),
+#         ("json", 1)
+#     ]
+# )
+# def test_fail_format_parse_generate(format, expect):
+#     setup()
+#     assert parse_generate(format, VALID_HOST) == expect
+#     teardown()
 
 
-def test_host_communication():
-    setup()
-    assert parse_generate("csv", "dummy_host") == 1
-    assert parse_generate("csv", VALID_HOST) == 0
-    teardown()
+# def test_host_communication():
+#     setup()
+#     assert parse_generate("csv", "dummy_host") == 1
+#     assert parse_generate("csv", VALID_HOST) == 0
+#     teardown()
 
 
 def test_no_config_file():
