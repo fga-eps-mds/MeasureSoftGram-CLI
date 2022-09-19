@@ -41,7 +41,7 @@ def config_file_json():
             f"The directory where the search was performed was: {os.getcwd()}. "
             "Please, run the command 'measuresoftgram init repositories.json' to create the file."
         ))
-        print(colored(f'\t\t\t{error_msg}\n', 'green'))
+        print(colored(f'\t\t\t{error_msg}\n', 'red'))
         sys.exit(0)
 
     with open(filepath, "r") as file:
