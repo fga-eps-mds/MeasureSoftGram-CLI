@@ -1,4 +1,5 @@
 import re
+import datetime as dt
 import json
 from time import sleep
 from typing import Dict
@@ -14,7 +15,11 @@ from src.clients.service_client import ServiceClient
 
 
 def match_repository_url(filename: str, repos_urls: Dict[str, str]) -> str:
+    filename = filename.lower()
+
     for repo_name, repo_url in repos_urls.items():
+        repo_name = repo_name.lower()
+
         if repo_name in filename:
             return repo_url
 
@@ -28,9 +33,13 @@ def get_created_at_from_filename(filename: str) -> str:
     """
     filename: str = fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json
     """
-    date_str = re.search(r'\d{2}-\d{2}-\d{4}', filename)[0]
-    month, day, year = date_str.split('-')
-    return f'{year}-{month}-{day}'
+    date_str = re.search(r'\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}', filename)[0]
+    month, day, year, hour, minutes, seconds = date_str.split('-')
+
+    return dt.datetime.strptime(
+        f'{year}-{month}-{day} {hour}:{minutes}:{seconds}',
+        '%Y-%m-%d %H:%M:%S',
+    ).isoformat()
 
 
 def parse_import(
