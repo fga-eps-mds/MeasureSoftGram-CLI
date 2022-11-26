@@ -8,7 +8,7 @@ from src.cli.exceptions import exceptions
 
 SERVICE_URL = os.getenv("SERVICE_URL", "https://measuresoftgram-service.herokuapp.com/")
 
-BASE_URL = "http://172.20.0.2:5000/"
+BASE_URL = os.getenv("BASE_URL", "http://172.20.0.2:5000/")
 
 AVAILABLE_ENTITIES = [
     "metrics",
