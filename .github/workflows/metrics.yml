@@ -3,12 +3,14 @@ name: Export de métricas
 on:
   push:
     branches: [main, develop]
+    tags:
+      - "v*"
 
 jobs:
   release:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -18,20 +20,21 @@ jobs:
       - name: Coletar métricas no SonarCloud
         run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
 
-      - name: Adiciona resultado das métricas
-        uses: actions/upload-artifact@v3
-        with:
-          name: metrics_results
-          path: ./analytics-raw-data/*
-
       - name: Envia métricas para repo de Doc
         run: |
           git config --global user.email "${{secrets.USER_EMAIL}}"
           git config --global user.name "${{secrets.USER_NAME}}"
-          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC_REPOSITORY}}@github.com/fga-eps-mds/2022-1-MeasureSoftGram-Doc" doc_repo
-          mkdir -p doc_repo/analytics-raw-data
-          cp -R analytics-raw-data/*.json doc_repo/analytics-raw-data
-          cd doc_repo
-          git add .
-          git commit -m "Adds metric file from ${{ github.event.repository.name }} ${{ github.ref_name }}"
+          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC}}@github.com/fga-eps-mds/2022-2-MeasureSoftGram-Doc" doc
+          mkdir -p doc/analytics-raw-data
+          cp -R analytics-raw-data/*.json doc/analytics-raw-data
+          git add doc/
+          git commit -m "Adicionando métricas do repositório ${{ github.event.repository.name }} ${{ github.ref_name }}"
           git push
+
+      - name: Envia métricas como assets da release
+        if: startsWith(github.ref, 'refs/tags')
+        uses: AButler/upload-release-assets@v2
+        with:
+          files: 'analytics-raw-data/*'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ github.ref_name }}
