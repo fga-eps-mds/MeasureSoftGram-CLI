@@ -27,8 +27,6 @@ def setup():
         description="Command line interface for measuresoftgram"
     )
 
-    argparse.ArgumentTypeError('invalid value!!!')
-
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
     parser_init = subparsers.add_parser(
