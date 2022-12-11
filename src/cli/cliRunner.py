@@ -4,6 +4,8 @@ import signal
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 from src.cli.commands import parse_get_entity, parse_import, parse_init
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
@@ -21,7 +23,8 @@ def setup():
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
     parser_init = subparsers.add_parser(
-        "init", help="Create a init file `.measuresoftgram` with your default organization, product and repositories"
+        "init",
+        help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
     )
 
     parser_init.add_argument(
@@ -360,6 +363,7 @@ def setup():
 def main():
     """Entry point for the application script"""
 
+    load_dotenv()
     signal.signal(signal.SIGINT, sigint_handler)
 
     setup()
