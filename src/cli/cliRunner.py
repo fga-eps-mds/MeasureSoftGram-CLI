@@ -1,20 +1,13 @@
-import os
 import argparse
-import sys
+import os
 import signal
+import sys
 from pathlib import Path
 
-from src.cli.commands import parse_import, parse_get_entity, parse_init
-from src.cli.commands.parse_generate.parse_generate import parse_generate
+from src.cli.commands import parse_get_entity, parse_import, parse_init
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
-
-from src.config.settings import (
-    AVAILABLE_ENTITIES,
-    AVAILABLE_IMPORTS,
-    SUPPORTED_FORMATS,
-    AVAILABLE_GEN_FORMATS,
-    SERVICE_URL
-)
+from src.cli.commands.parse_generate.parse_generate import parse_generate
+from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_GEN_FORMATS, AVAILABLE_IMPORTS, SUPPORTED_FORMATS
 
 
 def sigint_handler(*_):
@@ -23,15 +16,12 @@ def sigint_handler(*_):
 
 
 def setup():
-    parser = argparse.ArgumentParser(
-        description="Command line interface for measuresoftgram"
-    )
+    parser = argparse.ArgumentParser(description="Command line interface for measuresoftgram")
 
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
     parser_init = subparsers.add_parser(
-        "init",
-        help="Create a init file `.measuresoftgram` with your default organization, product and repositories"
+        "init", help="Create a init file `.measuresoftgram` with your default organization, product and repositories"
     )
 
     parser_init.add_argument(
@@ -43,15 +33,9 @@ def setup():
     parser_init.add_argument(
         "--host",
         type=str,
-        nargs='?',
-        default=os.getenv(
-            "MSG_SERVICE_HOST",
-            "https://measuresoftgram-service.herokuapp.com/"
-        ),
-        help=(
-            "The host of the service. "
-            "Default: https://measuresoftgram-service.herokuapp.com/"
-        ),
+        nargs="?",
+        default=os.getenv("MSG_SERVICE_HOST"),
+        help=("The host of the service."),
     )
 
     #
@@ -59,7 +43,7 @@ def setup():
     #
     parser_import = subparsers.add_parser(
         "import",
-        help="Import a folder with metrics"
+        help="Import a folder with metrics",
     )
 
     parser_import.add_argument(
@@ -85,8 +69,8 @@ def setup():
     parser_import.add_argument(
         "--host",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_SERVICE_HOST", "https://measuresoftgram-service.herokuapp.com/"),
+        nargs="?",
+        default=os.getenv("MSG_SERVICE_HOST"),
         help="The host of the service",
     )
 
@@ -132,10 +116,11 @@ def setup():
     parser_get_entity.add_argument(
         "entity_id",
         type=int,
-        nargs='?',
+        nargs="?",
         help=(
             "The ID of the entity to get. If not provided, a list with the last record of all available entities will "
-            "be returned."),
+            "be returned."
+        ),
     )
 
     parser_get_entity.add_argument(
@@ -148,43 +133,40 @@ def setup():
     parser_get_entity.add_argument(
         "--host",
         type=str,
-        nargs='?',
-        default=SERVICE_URL,
+        nargs="?",
+        default=os.getenv("MSG_SERVICE_HOST"),
         help="The host of the service",
     )
 
     parser_get_entity.add_argument(
         "--output_format",
         type=str,
-        nargs='?',
+        nargs="?",
         default="tabular",
-        help=(
-                "The format of the output. "
-                "Valid values are: " + ", ".join(SUPPORTED_FORMATS)
-        ),
+        help=("The format of the output. " + "Valid values are: " + ", ".join(SUPPORTED_FORMATS)),
     )
 
     parser_get_entity.add_argument(
         "--organization_id",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+        nargs="?",
+        default=os.getenv("MSG_ORGANIZATION_ID"),
         help="The ID of the organization that the repository belongs to",
     )
 
     parser_get_entity.add_argument(
         "--repository_id",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_REPOSITORY_ID", "6"),
+        nargs="?",
+        default=os.getenv("MSG_REPOSITORY_ID"),
         help="The ID of the repository",
     )
 
     parser_get_entity.add_argument(
         "--product_id",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        nargs="?",
+        default=os.getenv("MSG_PRODUCT_ID"),
         help="The ID of the product",
     )
 
@@ -200,73 +182,63 @@ def setup():
         "format",
         type=str,
         choices=AVAILABLE_GEN_FORMATS,
-        help=(
-            "The possible formats to generate an output file. Valid values are: "
-            + ", ".join(AVAILABLE_GEN_FORMATS)
-        ),
+        help=("The possible formats to generate an output file. Valid values are: " + ", ".join(AVAILABLE_GEN_FORMATS)),
     )
 
     parser_generate.add_argument(
         "--host",
         type=str,
-        nargs='?',
-        default="https://measuresoftgram-service.herokuapp.com/",
+        nargs="?",
+        default=os.getenv("MSG_SERVICE_HOST"),
         help="The host of the service",
     )
 
-    parser_calculate_entity = subparsers.add_parser(
-        "calculate",
-        help="Calculates all entities"
-    )
+    parser_calculate_entity = subparsers.add_parser("calculate", help="Calculates all entities")
 
     parser_calculate_entity.add_argument(
         "all",
         type=str,
-        nargs='?',
-        help=(
-            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
-        ),
+        nargs="?",
+        help=("Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"),
     )
     parser_calculate_entity.add_argument(
         "--host",
         type=str,
-        nargs='?',
-        default=SERVICE_URL,
+        nargs="?",
+        default=os.getenv("MSG_SERVICE_HOST"),
         help="The service host",
     )
 
     parser_calculate_entity.add_argument(
         "--organization_id",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_ORGANIZATION_ID", "1"),
+        nargs="?",
+        default=os.getenv("MSG_ORGANIZATION_ID"),
         help="The specific ID of the organization to which the repository belongs",
     )
 
     parser_calculate_entity.add_argument(
         "--repository_id",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_REPOSITORY_ID", "6"),
+        nargs="?",
+        default=os.getenv("MSG_REPOSITORY_ID"),
         help="The repository ID",
     )
 
     parser_calculate_entity.add_argument(
         "--product_id",
         type=str,
-        nargs='?',
-        default=os.getenv("MSG_PRODUCT_ID", "3"),
+        nargs="?",
+        default=os.getenv("MSG_PRODUCT_ID"),
         help="The product ID",
     )
 
     parser_calculate_entity.add_argument(
         "--output_format",
         type=str,
-        nargs='?',
+        nargs="?",
         default="tabular",
-        help=(
-            "The format of the output values are: ".join(SUPPORTED_FORMATS)
-        ),
+        help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
     )
 
     # parser_create = subparsers.add_parser(
@@ -360,7 +332,7 @@ def setup():
     # elif args.command == "change-name":
     #     parse_change_name(args.pre_config_id, args.new_name)
 
-    elif args.command == 'get':
+    elif args.command == "get":
         parse_get_entity(
             args.entity,
             args.entity_id,
@@ -369,16 +341,13 @@ def setup():
             args.repository_id,
             args.product_id,
             args.output_format,
-            args.history
+            args.history,
         )
 
-    elif args.command == 'generate':
-        parse_generate(
-            args.format,
-            args.host
-        )
+    elif args.command == "generate":
+        parse_generate(args.format, args.host)
 
-    elif args.command == 'calculate':
+    elif args.command == "calculate":
         parse_calculate(
             args.host,
             args.organization_id,

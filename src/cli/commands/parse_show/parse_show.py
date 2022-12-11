@@ -1,12 +1,15 @@
+import os
+
 import requests
+
 from src.cli.utils import pretty_date_str
 
-BASE_URL = "http://localhost:5000/"
+BASE_URL = os.getenv("BASE_URL")
 
 
 def parse_show(id):
     response = requests.get(
-        BASE_URL + f"/pre-configs/{id}",
+        f"{BASE_URL}/pre-configs/{id}",
         headers={"Accept": "application/json"},
     )
 
@@ -17,9 +20,7 @@ def parse_show(id):
         print(f"ID: {response_data['_id']}")
         print(f"Created at: {pretty_date_str(response_data['created_at'])}")
 
-        print(
-            "\nSelected levels. Ordered as characteristics -> subcharacteristics -> measures\n"
-        )
+        print("\nSelected levels. Ordered as characteristics -> subcharacteristics -> measures\n")
 
         for key, char_data in response_data["characteristics"].items():
             print(f"{key} (weigth: {char_data['weight']})")
