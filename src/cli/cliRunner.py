@@ -19,7 +19,6 @@ def sigint_handler(*_):
 
 def setup():
     parser = argparse.ArgumentParser(description="Command line interface for measuresoftgram")
-
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
     parser_init = subparsers.add_parser(
@@ -41,9 +40,8 @@ def setup():
         help=("The host of the service."),
     )
 
-    #
-    # IMPORT PARSER CODE
-    #
+    # =============================< IMPORT PARSER CODE >=============================
+
     parser_import = subparsers.add_parser(
         "import",
         help="Import a folder with metrics",
@@ -77,33 +75,6 @@ def setup():
         help="The host of the service",
     )
 
-    # parser_import.add_argument(
-    #     "--organization_id",
-    #     type=str,
-    #     nargs='?',
-    #     default=os.getenv("MSG_ORGANIZATION_ID", "1"),
-    #     help="The ID of the organization that the repository belongs to",
-    # )
-
-    # parser_import.add_argument(
-    #     "--repository_id",
-    #     type=str,
-    #     nargs='?',
-    #     default=os.getenv("MSG_REPOSITORY_ID", "6"),
-    #     help="The ID of the repository",
-    # )
-
-    # parser_import.add_argument(
-    #     "--product_id",
-    #     type=str,
-    #     nargs='?',
-    #     default=os.getenv("MSG_PRODUCT_ID", "3"),
-    #     help="The ID of the product",
-    # )
-
-    #
-    # GET PARSER CODE
-    #
     parser_get_entity = subparsers.add_parser(
         "get",
         help="Gets the last record of a specific entity",
@@ -173,9 +144,8 @@ def setup():
         help="The ID of the product",
     )
 
-    #
-    # GENERATE PARSER CODE
-    #
+    # =============================< GENERATE PARSER CODE >=============================
+
     parser_generate = subparsers.add_parser(
         "generate",
         help="Generate an output file, according to the specified type, for the historical values for a given product",
@@ -244,54 +214,7 @@ def setup():
         help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
     )
 
-    # parser_create = subparsers.add_parser(
-    #     "create",
-    #     help="Create a new model pre configuration from a JSON file",
-    # )
-
-    # subparsers.add_parser(
-    #     "available",
-    #     help="Shows all characteristics, sub-characteristics and measures available in measuresoftgram",
-    # )
-
-    # parser_create.add_argument(
-    #     "path",
-    #     type=lambda p: Path(p).absolute(),
-    #     default=Path(__file__).absolute().parent / "data",
-    #     help="Path to the JSON file",
-    # )
-
-    # parser_analysis = subparsers.add_parser("analysis", help="Get analysis result")
-    # parser_analysis.add_argument(
-    #     "id",
-    # )
-    # subparsers.add_parser("list", help="List all pre configurations")
-
-    # parser_show = subparsers.add_parser(
-    #     "show", help="Show all information of a pre configuration"
-    # )
-
-    # parser_show.add_argument(
-    #     "pre_config_id",
-    #     type=str,
-    #     help="Pre config ID",
-    # )
-
-    # change_name = subparsers.add_parser(
-    #     "change-name", help="Change pre configuration name"
-    # )
-
-    # change_name.add_argument(
-    #     "pre_config_id",
-    #     type=str,
-    #     help="Pre config ID",
-    # )
-
-    # change_name.add_argument(
-    #     "new_name",
-    #     type=str,
-    #     help="New pre configuration name",
-    # )
+    # =============================< Arguments parsing methods >=============================
 
     args = parser.parse_args()
 
@@ -306,9 +229,6 @@ def setup():
             args.dir_path,
             args.language_extension,
             args.host,
-            # args.organization_id,
-            # args.repository_id,
-            # args.product_id,
         )
 
     elif args.command == "init":
@@ -316,24 +236,6 @@ def setup():
             args.file_path,
             args.host,
         )
-
-    # elif args.command == "create":
-    #     parse_create(args.path)
-
-    # elif args.command == "analysis":
-    #     parse_analysis(args.id)
-
-    # elif args.command == "available":
-    #     parse_available()
-
-    # elif args.command == "list":
-    #     parse_list()
-
-    # elif args.command == "show":
-    #     parse_show(args.pre_config_id)
-
-    # elif args.command == "change-name":
-    #     parse_change_name(args.pre_config_id, args.new_name)
 
     elif args.command == "get":
         parse_get_entity(
