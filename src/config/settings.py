@@ -46,7 +46,11 @@ def config_file_json():
 
     with open(filepath, "r") as file:
         try:
-            return json.load(file)
+            data = json.load(file)
+            if type(data) is str:
+                data = json.loads(data)
+
+            return data
 
         except json.decoder.JSONDecodeError:
             raise exceptions.ConfigFileFormatInvalid((
@@ -56,6 +60,9 @@ def config_file_json():
 
 def get_organization():
     data = config_file_json()
+
+    # if type(data) is str:
+    #     data = json.loads(data)
 
     if "organization" not in data:
         raise exceptions.ConfigFileQueryFailed((
