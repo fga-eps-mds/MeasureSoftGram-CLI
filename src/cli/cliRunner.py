@@ -9,7 +9,12 @@ from dotenv import load_dotenv
 from src.cli.commands import parse_get_entity, parse_import, parse_init
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
-from src.config.settings import AVAILABLE_ENTITIES, AVAILABLE_GEN_FORMATS, AVAILABLE_IMPORTS, SUPPORTED_FORMATS
+from src.config.settings import (
+    AVAILABLE_ENTITIES,
+    AVAILABLE_GEN_FORMATS,
+    AVAILABLE_IMPORTS,
+    SUPPORTED_FORMATS,
+)
 
 
 def sigint_handler(*_):
@@ -18,7 +23,9 @@ def sigint_handler(*_):
 
 
 def setup():
-    parser = argparse.ArgumentParser(description="Command line interface for measuresoftgram")
+    parser = argparse.ArgumentParser(
+        description="Command line interface for measuresoftgram"
+    )
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
     parser_init = subparsers.add_parser(
@@ -51,7 +58,10 @@ def setup():
         "output_origin",
         type=str,
         choices=(AVAILABLE_IMPORTS),
-        help=("Import a metrics files from some origin. Valid values are: " + ", ".join(AVAILABLE_IMPORTS)),
+        help=(
+            "Import a metrics files from some origin. Valid values are: "
+            + ", ".join(AVAILABLE_IMPORTS)
+        ),
     )
 
     parser_import.add_argument(
@@ -117,7 +127,11 @@ def setup():
         type=str,
         nargs="?",
         default="tabular",
-        help=("The format of the output. " + "Valid values are: " + ", ".join(SUPPORTED_FORMATS)),
+        help=(
+            "The format of the output. "
+            + "Valid values are: "
+            + ", ".join(SUPPORTED_FORMATS)
+        ),
     )
 
     parser_get_entity.add_argument(
@@ -155,7 +169,10 @@ def setup():
         "format",
         type=str,
         choices=AVAILABLE_GEN_FORMATS,
-        help=("The possible formats to generate an output file. Valid values are: " + ", ".join(AVAILABLE_GEN_FORMATS)),
+        help=(
+            "The possible formats to generate an output file. Valid values are: "
+            + ", ".join(AVAILABLE_GEN_FORMATS)
+        ),
     )
 
     parser_generate.add_argument(
@@ -166,13 +183,17 @@ def setup():
         help="The host of the service",
     )
 
-    parser_calculate_entity = subparsers.add_parser("calculate", help="Calculates all entities")
+    parser_calculate_entity = subparsers.add_parser(
+        "calculate", help="Calculates all entities"
+    )
 
     parser_calculate_entity.add_argument(
         "all",
         type=str,
         nargs="?",
-        help=("Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"),
+        help=(
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+        ),
     )
     parser_calculate_entity.add_argument(
         "--host",

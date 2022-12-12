@@ -23,7 +23,10 @@ def parse_available():
     for characteristic in characteristics:
         print(f"\n\t{characteristics[characteristic]['name']}:")
         for subcharacteristic in subcharacteristics:
-            if characteristic in subcharacteristics[subcharacteristic]["characteristics"]:
+            if (
+                characteristic
+                in subcharacteristics[subcharacteristic]["characteristics"]
+            ):
                 print(f"\t\t{subcharacteristics[subcharacteristic]['name']}:")
                 for measure in measures:
                     if subcharacteristic in measures[measure]["subcharacteristics"]:

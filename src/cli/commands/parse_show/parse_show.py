@@ -20,7 +20,9 @@ def parse_show(id):
         print(f"ID: {response_data['_id']}")
         print(f"Created at: {pretty_date_str(response_data['created_at'])}")
 
-        print("\nSelected levels. Ordered as characteristics -> subcharacteristics -> measures\n")
+        print(
+            "\nSelected levels. Ordered as characteristics -> subcharacteristics -> measures\n"
+        )
 
         for key, char_data in response_data["characteristics"].items():
             print(f"{key} (weigth: {char_data['weight']})")

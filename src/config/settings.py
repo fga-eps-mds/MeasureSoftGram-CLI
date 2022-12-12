@@ -41,7 +41,9 @@ def config_file_json():
             return json.load(file)
 
         except json.decoder.JSONDecodeError:
-            raise exceptions.ConfigFileFormatInvalid(("The .measuresoftgram file is not a valid json file. "))
+            raise exceptions.ConfigFileFormatInvalid(
+                ("The .measuresoftgram file is not a valid json file. ")
+            )
 
 
 def get_organization():
@@ -145,7 +147,9 @@ def get_repositories():
 def get_product_url(host_url):
     organization_id = get_organization_id()
     product_id = get_product_id()
-    return f"{host_url}/api/v1/organizations/{organization_id}/" f"products/{product_id}/"
+    return (
+        f"{host_url}/api/v1/organizations/{organization_id}/" f"products/{product_id}/"
+    )
 
 
 def get_repositories_urls_mapped_by_name(host_url):

@@ -3,7 +3,10 @@ import os
 
 import requests
 
-from src.cli.commands.parse_create.utils import pre_config_file_reader, validate_pre_config_post
+from src.cli.commands.parse_create.utils import (
+    pre_config_file_reader,
+    validate_pre_config_post,
+)
 from src.cli.exceptions.exceptions import MeasureSoftGramCLIException
 
 BASE_URL = os.getenv("BASE_URL")

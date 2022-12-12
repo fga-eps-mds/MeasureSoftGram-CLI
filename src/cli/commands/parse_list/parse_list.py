@@ -20,7 +20,9 @@ def parse_list():
         return
 
     print(
-        "{:<30} {:<35} {:<30} {:<10}".format("ID", "Name", "Created at", "Metrics file"),
+        "{:<30} {:<35} {:<30} {:<10}".format(
+            "ID", "Name", "Created at", "Metrics file"
+        ),
     )
 
     for pre_config in pre_configs:
@@ -28,5 +30,7 @@ def parse_list():
         pre_config_name = pre_config["name"] if pre_config["name"] else "-"
 
         print(
-            "{:<30} {:<35} {:<30} {:<10}".format(pre_config["_id"], pre_config_name, created_at, "-"),
+            "{:<30} {:<35} {:<30} {:<10}".format(
+                pre_config["_id"], pre_config_name, created_at, "-"
+            ),
         )

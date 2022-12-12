@@ -9,5 +9,5 @@ from src.cli.jsonReader.jsonReader import (
     raise_invalid_metric,
     validate_metrics_post,
     REQUIRED_SONAR_JSON_KEYS,
-    REQUIRED_SONAR_BASE_COMPONENT_KEYS
+    REQUIRED_SONAR_BASE_COMPONENT_KEYS,
 )
