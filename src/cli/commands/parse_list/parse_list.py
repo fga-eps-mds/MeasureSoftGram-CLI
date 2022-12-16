@@ -1,12 +1,15 @@
+import os
+
 import requests
+
 from src.cli.utils import pretty_date_str
 
-BASE_URL = "http://localhost:5000/"
+BASE_URL = os.getenv("BASE_URL")
 
 
 def parse_list():
     response = requests.get(
-        BASE_URL + "/pre-configs",
+        f"{BASE_URL}/pre-configs",
         headers={"Accept": "application/json"},
     )
 
@@ -17,7 +20,9 @@ def parse_list():
         return
 
     print(
-        "{:<30} {:<35} {:<30} {:<10}".format("ID", "Name", "Created at", "Metrics file")
+        "{:<30} {:<35} {:<30} {:<10}".format(
+            "ID", "Name", "Created at", "Metrics file"
+        ),
     )
 
     for pre_config in pre_configs:
@@ -27,5 +32,5 @@ def parse_list():
         print(
             "{:<30} {:<35} {:<30} {:<10}".format(
                 pre_config["_id"], pre_config_name, created_at, "-"
-            )
+            ),
         )

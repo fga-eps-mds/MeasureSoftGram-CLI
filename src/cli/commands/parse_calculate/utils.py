@@ -13,25 +13,27 @@ def calculate_measures(host_url):
             {"key": "non_complex_file_density"},
             {"key": "commented_file_density"},
             {"key": "duplication_absense"},
-            {"key": "team_throughput"}
+            {"key": "team_throughput"},
         ],
     }
 
-    host_url += ('measures/')
+    host_url += "measures/"
 
-    print(colored('\tCalculating Measures...', "blue"))
+    print(colored("\tCalculating Measures...", "blue"))
     data = ServiceClient.calculate_entity(host_url, payload_measures)
     if data.status_code == 201:
         extracted_data = []
-        headers = ['Id', 'Name', 'Description', 'Value', 'Created at']
+        headers = ["Id", "Name", "Description", "Value", "Created at"]
         for temp_data in data.json():
-            extracted_data.append([
-                temp_data['id'],
-                temp_data['name'],
-                temp_data['description'],
-                temp_data['latest']['value'],
-                temp_data['latest']['created_at'],
-            ])
+            extracted_data.append(
+                [
+                    temp_data["id"],
+                    temp_data["name"],
+                    temp_data["description"],
+                    temp_data["latest"]["value"],
+                    temp_data["latest"]["created_at"],
+                ]
+            )
         return extracted_data, headers
     else:
         raise MeasureSoftGramCLIException(
@@ -41,27 +43,26 @@ def calculate_measures(host_url):
 
 def calculate_characteristics(host_url):
     payload_characteristics = {
-        "characteristics": [
-            {"key": "reliability"},
-            {"key": "maintainability"}
-        ],
+        "characteristics": [{"key": "reliability"}, {"key": "maintainability"}],
     }
 
-    host_url += ('characteristics/')
+    host_url += "characteristics/"
 
-    print(colored('\tCalculating Characteristics...', "blue"))
+    print(colored("\tCalculating Characteristics...", "blue"))
     data = ServiceClient.calculate_entity(host_url, payload_characteristics)
     if data.status_code == 201:
         extracted_data = []
-        headers = ['Id', 'Name', 'Description', 'Value', 'Created at']
+        headers = ["Id", "Name", "Description", "Value", "Created at"]
         for temp_data in data.json():
-            extracted_data.append([
-                temp_data['id'],
-                temp_data['name'],
-                temp_data['description'],
-                temp_data['latest']['value'],
-                temp_data['latest']['created_at'],
-            ])
+            extracted_data.append(
+                [
+                    temp_data["id"],
+                    temp_data["name"],
+                    temp_data["description"],
+                    temp_data["latest"]["value"],
+                    temp_data["latest"]["created_at"],
+                ]
+            )
         return extracted_data, headers
     else:
         raise MeasureSoftGramCLIException(
@@ -71,27 +72,26 @@ def calculate_characteristics(host_url):
 
 def calculate_subcharacteristics(host_url):
     payload_subcharacteristics = {
-        "subcharacteristics": [
-            {"key": "modifiability"},
-            {"key": "testing_status"}
-        ],
+        "subcharacteristics": [{"key": "modifiability"}, {"key": "testing_status"}],
     }
 
-    host_url += ('subcharacteristics/')
+    host_url += "subcharacteristics/"
 
-    print(colored('\tCalculating Subcharacteristics...', "blue"))
+    print(colored("\tCalculating Subcharacteristics...", "blue"))
     data = ServiceClient.calculate_entity(host_url, payload_subcharacteristics)
     if data.status_code == 201:
         extracted_data = []
-        headers = ['Id', 'Name', 'Description', 'Value', 'Created at']
+        headers = ["Id", "Name", "Description", "Value", "Created at"]
         for temp_data in data.json():
-            extracted_data.append([
-                temp_data['id'],
-                temp_data['name'],
-                temp_data['description'],
-                temp_data['latest']['value'],
-                temp_data['latest']['created_at'],
-            ])
+            extracted_data.append(
+                [
+                    temp_data["id"],
+                    temp_data["name"],
+                    temp_data["description"],
+                    temp_data["latest"]["value"],
+                    temp_data["latest"]["created_at"],
+                ]
+            )
         return extracted_data, headers
     else:
         raise MeasureSoftGramCLIException(
@@ -103,13 +103,15 @@ def calculate_sqc(host_url):
 
     payload_sqc = {}
 
-    host_url += ('sqc/')
+    host_url += "sqc/"
 
-    print(colored('\tCalculating SQC...', "blue"))
+    print(colored("\tCalculating SQC...", "blue"))
     data = ServiceClient.calculate_entity(host_url, payload_sqc)
     if data.status_code == 201:
-        extracted_data = [[data.json()['id'], data.json()['value'], data.json()['created_at']]]
-        headers = ['Id', 'Value', 'Created at']
+        extracted_data = [
+            [data.json()["id"], data.json()["value"], data.json()["created_at"]]
+        ]
+        headers = ["Id", "Value", "Created at"]
 
         return extracted_data, headers
     else:

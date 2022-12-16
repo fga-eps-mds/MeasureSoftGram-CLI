@@ -1,12 +1,15 @@
+import os
+
 import requests
+
 from src.cli.utils import pretty_date_str
 
-BASE_URL = "http://localhost:5000/"
+BASE_URL = os.getenv("BASE_URL")
 
 
 def parse_show(id):
     response = requests.get(
-        BASE_URL + f"/pre-configs/{id}",
+        f"{BASE_URL}/pre-configs/{id}",
         headers={"Accept": "application/json"},
     )
 

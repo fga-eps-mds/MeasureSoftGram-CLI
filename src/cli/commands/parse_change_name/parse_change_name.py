@@ -1,11 +1,13 @@
+import os
+
 import requests
 
-from src.config.settings import BASE_URL
+BASE_URL = os.getenv("BASE_URL")
 
 
 def parse_change_name(pre_config_id, new_name):
     response = requests.patch(
-        BASE_URL + f"pre-configs/{pre_config_id}", json={"name": new_name}
+        f"{BASE_URL}pre-configs/{pre_config_id}", json={"name": new_name}
     )
 
     response_data = response.json()

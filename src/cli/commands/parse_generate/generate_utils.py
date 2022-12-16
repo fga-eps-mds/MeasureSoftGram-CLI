@@ -24,22 +24,22 @@ class GenerateUtils:
     @staticmethod
     def create_df():
         columns = [
-            'datetime',
-            'repository',
-            'em1',
-            'em2',
-            'em3',
-            'em4',
-            'em5',
-            'em6',
-            'em7',
-            'modifiability',
-            'functional_completeness',
-            'testing_status',
-            'maintainability',
-            'reliability',
-            'functional_suitability',
-            'sqc',
+            "datetime",
+            "repository",
+            "em1",
+            "em2",
+            "em3",
+            "em4",
+            "em5",
+            "em6",
+            "em7",
+            "modifiability",
+            "functional_completeness",
+            "testing_status",
+            "maintainability",
+            "reliability",
+            "functional_suitability",
+            "sqc",
         ]
         output = pd.DataFrame(columns=columns)
         return output
@@ -47,20 +47,20 @@ class GenerateUtils:
     @staticmethod
     def min_history_count(entity):
         counts = []
-        for item in entity['results']:
-            counts.append(len(item['history']))
+        for item in entity["results"]:
+            counts.append(len(item["history"]))
         return min(counts)
 
     @staticmethod
     def get_measure_line(measure_list, position):
         em_dict = {
-            'non_complex_file_density': 'em1',
-            'commented_file_density': 'em2',
-            'duplication_absense': 'em3',
-            'passed_tests': 'em4',
-            'test_builds': 'em5',
-            'test_coverage': 'em6',
-            'team_throughput': 'em7',
+            "non_complex_file_density": "em1",
+            "commented_file_density": "em2",
+            "duplication_absense": "em3",
+            "passed_tests": "em4",
+            "test_builds": "em5",
+            "test_coverage": "em6",
+            "team_throughput": "em7",
         }
 
         def get_em(name):
@@ -73,7 +73,9 @@ class GenerateUtils:
         line_dict = dict()
 
         for i in range(length):
-            line_dict[get_em(measure_list[i]['key'])] = measure_list[i]['history'][position]['value']
+            line_dict[get_em(measure_list[i]["key"])] = measure_list[i]["history"][
+                position
+            ]["value"]
 
         return line_dict
 
@@ -83,7 +85,9 @@ class GenerateUtils:
         line_dict = dict()
 
         for i in range(length):
-            line_dict[entity_list[i]['key']] = entity_list[i]['history'][position]['value']
+            line_dict[entity_list[i]["key"]] = entity_list[i]["history"][position][
+                "value"
+            ]
 
         return line_dict
 

@@ -7,3 +7,4 @@ tabulate~=0.8.10
 pytz~=2022.2.1
 termcolor~=1.1.0
 setuptools~=60.2.0
+python-dotenv

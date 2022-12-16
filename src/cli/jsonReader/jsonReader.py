@@ -40,7 +40,7 @@ def folder_reader(absolute_path):
                 files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
             except exceptions.MeasureSoftGramCLIException as error:
                 print(f"Warning in {file_path} file.", "Error:", error)
-        os.chdir('..')
+        os.chdir("..")
 
     except FileNotFoundError:
         raise FileNotFoundError
@@ -129,7 +129,6 @@ def check_metrics_values(json_data):
 
 def validate_metrics_post(response_status):
     if 200 <= response_status <= 299:
-        return 'OK: Metrics uploaded successfully'
+        return "OK: Metrics uploaded successfully"
 
-    return \
-        f'FAIL: The host service server returned a {response_status} error. Trying again'
+    return f"FAIL: The host service server returned a {response_status} error. Trying again"

@@ -1,11 +1,13 @@
+import os
+
 import requests
 
-BASE_URL = "http://localhost:5000/"
+BASE_URL = os.getenv("BASE_URL")
 
 
 def parse_available():
     available_pre_configs = requests.get(
-        BASE_URL + "available-pre-configs", headers={"Accept": "application/json"}
+        f"{BASE_URL}available-pre-configs", headers={"Accept": "application/json"}
     ).json()
 
     print(
