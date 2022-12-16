@@ -73,8 +73,8 @@ def test_parse_analysis(mocker):
 
 
 def test_to_zero_one_decimal():
-    assert results.to_zero_one_decimal(0.0) == None
-    assert results.to_zero_one_decimal(1) == None
+    assert results.to_zero_one_decimal(0.0) is None
+    assert results.to_zero_one_decimal(1) is None
     assert results.to_zero_one_decimal(2) == 0.02
 
 

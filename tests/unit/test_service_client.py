@@ -1,12 +1,12 @@
 import requests
 import json
-import os
 from io import StringIO
 from src.clients.service_client import ServiceClient
 
 
 DUMMY_HOST = "http://dummy_host.com/"
 URL = 'http://api/v1/organizations/4/products/5/repositories/10/historical-values/metrics/1'
+
 
 class DummyResponse:
     def __init__(self, status_code, res_data):
@@ -37,7 +37,7 @@ def test_make_post_request(mocker):
         "src.clients.service_client.ServiceClient.make_post_request",
         return_value=DummyResponse(201, {"id": 1})
     )
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+    with mocker.patch("sys.stdout", new=StringIO()):
         response = ServiceClient.make_post_request(DUMMY_HOST, "tests/unit/data/init.json")
 
         assert response.status_code == 201
@@ -55,7 +55,7 @@ def test_make_post_request(mocker):
 
 # def test_import_file():
 #     response = ServiceClient.import_file(URL, {})
-#     assert response.url == URL 
+#     assert response.url == URL
 
 
 def test_calculate_all_entities_sucess(mocker):
@@ -92,4 +92,3 @@ def test_calculate_all_entities_fail(mocker):
 
         for line in expected_lines:
             assert line in fake_out.getvalue()
-

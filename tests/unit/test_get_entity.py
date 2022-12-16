@@ -1,8 +1,3 @@
-from io import StringIO
-import pytest
-import json  
-
-from src.cli.commands.parse_get_entity.utils import get_entity
 from src.cli.commands.parse_get_entity.parse_get_entity import parse_get_entity
 
 DUMMY_HOST = "http://dummy_host.com/"
@@ -16,6 +11,7 @@ output_format_supported = "json"
 output_format_not_supported = "xml"
 history = "historical-values"
 
+
 class DummyResponse:
     def __init__(self, status_code, res_data):
         self.status_code = status_code
@@ -23,6 +19,7 @@ class DummyResponse:
 
     def json(self):
         return self.res_data
+
 
 def test_parse_get_entity_false():
 
@@ -35,7 +32,8 @@ def test_parse_get_entity_false():
         product_id,
         output_format_not_supported,
         history,
-    ) == None
+    ) is None
+
 
 '''
 def test_parse_get_entity_succes(mocker):
@@ -60,4 +58,3 @@ def test_parse_get_entity_succes(mocker):
     for line in expected_lines:
         assert line in fake_out.getvalue()
 '''
-
