@@ -6,7 +6,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from src.cli.commands import parse_get_entity, parse_import, parse_init, parser_extract
+from src.cli.commands import parse_get_entity, parse_import, parse_init, parse_extract
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
 
