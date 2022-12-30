@@ -4,6 +4,7 @@ import sys
 from termcolor import colored
 from src.cli.exceptions import MeasureSoftGramCLIException
 
+logger = logging.getLogger("msgram")
 
 def command_init(args):
     try:
@@ -11,6 +12,9 @@ def command_init(args):
         host_url = args["host"]
 
     except Exception as e:
-        print(f"KeyError: args['{e}'] - non-existent parameters")
-        print("Exiting with error ...")
+        logger.warning(f"KeyError: args['{e}'] - non-existent parameters")
+        logger.error("Exiting with error ...")
         sys.exit(1)
+    
+    logger.info(f"file_path: {file_path}")
+    logger.info(f"host_url: {host_url}")

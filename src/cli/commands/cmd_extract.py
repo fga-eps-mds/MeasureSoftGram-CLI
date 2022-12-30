@@ -1,6 +1,7 @@
 import re
 import sys
 import json
+import logging
 
 import datetime as dt
 
@@ -12,6 +13,8 @@ from src.cli.utils import print_import_files
 
 # from src.cli.parsers.sonarqube import Sonarqube
 from core.parsers.sonarqube import Sonarqube
+
+logger = logging.getLogger("msgram")
 
 
 def get_infos_from_name(filename: str) -> str:
@@ -46,11 +49,16 @@ def command_extract(args):
         language_extension = args["language_extension"]
 
     except Exception as e:
-        print(f"KeyError: args['{e}'] - non-existent parameters")
-        sys.exit(1)  
+        logger.warning(f"KeyError: args['{e}'] - non-existent parameters")
+        logger.error("Exiting with error ...")
+        exit(1) 
 
-    print(f"--> Starting to parser extract for {output_origin} output...\n")
+    logger.info(f"--> Starting to parser extract for {output_origin} output...\n")
 
+    logger.debug(f"output_origin: {output_origin}")
+    logger.debug(f"dir_path: {dir_path}")
+    logger.debug(f"language_extension: {language_extension}")
+    
     try:
         components, files = folder_reader(f"{dir_path}")
     except (exceptions.MeasureSoftGramCLIException, FileNotFoundError):

@@ -2,6 +2,7 @@ import logging
 import sys
 from src.cli.exceptions import MeasureSoftGramCLIException
 
+logger = logging.getLogger("msgram")
 
 def command_import(args):
     try:
@@ -11,7 +12,11 @@ def command_import(args):
         host = args["host"]
 
     except Exception as e:
-        print(f"KeyError: args['{e}'] - non-existent parameters")
-        print("Exiting with error ...")
+        logger.warning(f"KeyError: args['{e}'] - non-existent parameters")
+        logger.error("Exiting with error ...")
         sys.exit(1)
 
+    logger.debug(f"output_origin: {output_origin}")
+    logger.debug(f"dir_path: {dir_path}")
+    logger.debug(f"language_extension: {language_extension}")
+    logger.debug(f"host: {host}")
