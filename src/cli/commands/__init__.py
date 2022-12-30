@@ -8,6 +8,9 @@ from src.cli.commands.parse_show.parse_show import parse_show
 from src.cli.commands.parse_list.parse_list import parse_list
 from src.cli.commands.parse_init.parse_init import parse_init
 from src.cli.commands.parse_extract.parse_extract import parse_extract
+from src.cli.commands.cmd_init import command_init
+from src.cli.commands.cmd_import import command_import
+from src.cli.commands.cmd_extract import command_extract
 
 from src.cli.commands.parse_create.utils import (
     check_file_extension,
