@@ -15,8 +15,8 @@ LOG_LEVELS = {
 LOG_FORMATS = {
     "RICH": "%(module)-12s: [line: %(lineno)-3s] %(message)s",
     "DEBUG": "%(levelname)-8s %(module)-12s %(funcName) -15s : %(lineno)-3s %(message)s",
-    "INFO": "%(levelname)-10s: %(message)s",
-    "WARNING": "%(levelname)-10s: %(module)-8s:%(lineno)-3s %(message)s",
+    "INFO": "%(levelname)-8s: %(message)s",
+    "WARNING": "%(levelname)-8s: %(module)-8s:%(lineno)-3s %(message)s",
     "ERROR": "%(asctime)s: %(levelname)-8s: %(funcName)s :%(lineno)d %(message)s",
     "CRITICAL": "%(asctime)-15s %(levelname)-8s %(filename)-15s %(module)-8s:%(lineno)-3s %(message)s",
 }
@@ -55,10 +55,10 @@ def basic_config(console_level_name, file_level_name, file_mode):
     rich_handler.setFormatter(logging.Formatter(LOG_FORMATS["RICH"], datefmt))
 
     logger = logging.getLogger("msgram")
-    # logger.addHandler(console_handler)
-    logger.addHandler(rich_handler)
+    logger.addHandler(console_handler)
+    # logger.addHandler(rich_handler)
     logger.addHandler(file_handler)
-    logger.setLevel(LOG_LEVELS[file_level_name])
+    logger.setLevel(LOG_LEVELS[console_level_name])
 
     logger_console = logging.getLogger("console")
     logger_console.addHandler(console_handler)
