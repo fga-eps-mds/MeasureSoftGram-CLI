@@ -1,4 +1,5 @@
 import re
+import os
 import sys
 import json
 import logging
@@ -7,12 +8,13 @@ import datetime as dt
 
 from termcolor import colored
 
+from pathlib import Path
+
 from src.cli.jsonReader import folder_reader
 from src.cli.exceptions import exceptions
 from src.cli.utils import print_import_files
 
-# from src.cli.parsers.sonarqube import Sonarqube
-from core.parsers.sonarqube import Sonarqube
+from parsers.sonarqube import Sonarqube
 
 logger = logging.getLogger("msgram")
 
@@ -45,6 +47,7 @@ def get_infos_from_name(filename: str) -> str:
 def command_extract(args):
     try:
         output_origin = args["output_origin"]
+        config_dir_path = args["config_dir_path"]
         dir_path = args["dir_path"]
         language_extension = args["language_extension"]
 
@@ -52,6 +55,11 @@ def command_extract(args):
         logger.warning(f"KeyError: args['{e}'] - non-existent parameters")
         logger.error("Exiting with error ...")
         exit(1) 
+
+    if not os.path.isdir(config_dir_path):
+        logger.warning(f"FileNotFoundError: config directory \"{config_dir_path}\" does not exists")
+        logger.error("Exiting with error ...")
+        sys.exit(1)
 
     logger.info(f"--> Starting to parser extract for {output_origin} output...\n")
 
@@ -62,20 +70,20 @@ def command_extract(args):
     try:
         components, files = folder_reader(f"{dir_path}")
     except (exceptions.MeasureSoftGramCLIException, FileNotFoundError):
-        print("Error: The folder was not found")
-        return
+        logging.error("Error: The folder was not found")
+        sys.exit(1)
 
     print_import_files(files)
 
     parser = Sonarqube() if output_origin == 'sonarqube' else None
     for filename, component in zip(files, components):
-        print(f"--> Extracting {output_origin} metrics from {filename}...")
+        logger.info(f"--> Extracting {output_origin} metrics from {filename}...")
         name, created_at = get_infos_from_name(filename)
 
         result = parser.extract_supported_metrics(component)
 
-        print(f"\n--> Saving results from in {name}...")
-        with open(name, 'w') as f:
+        logger.info(f"\n--> Saving results from in {name}...")
+        with open(f"{config_dir_path}/{name}", 'w') as f:
             f.write(json.dumps(result, indent=4))
 
-    print("\nAttempt to extract metrics from all files in the directory finished!")
+    logger.info("\nAttempt to extract metrics from all files in the directory finished!")
