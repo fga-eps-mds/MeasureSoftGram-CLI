@@ -1,7 +1,9 @@
 import os
 from dotenv import load_dotenv
 import logging
+
 from src.cli.parsers import create_parser
+
 from src.config.setup_log import config_logger
 
 

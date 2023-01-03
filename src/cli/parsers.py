@@ -1,7 +1,7 @@
 import argparse
 import os
-from pathlib import Path
 
+from pathlib import Path
 
 from src.cli.commands import command_import, command_init, command_extract
 from src.config.settings import AVAILABLE_IMPORTS
@@ -27,17 +27,10 @@ def create_parser():
     )
 
     parser_init.add_argument(
-        "--file_path",
+        "--dir_path",
         type=lambda p: Path(p).absolute(),
-        help="Path to your configured JSON file with the organization, product and repositories names",
-    )
-
-    parser_init.add_argument(
-        "--host",
-        type=str,
-        nargs="?",
-        default=os.getenv("MSG_SERVICE_HOST"),
-        help=("The host of the service."),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the directory",
     )
     parser_init.set_defaults(func=command_init)  # function command init
 
@@ -52,6 +45,13 @@ def create_parser():
             "Import a metrics files from some origin. Valid values are: "
             + ", ".join(AVAILABLE_IMPORTS)
         ),
+    )
+
+    parser_extract.add_argument(
+        "--config_dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the directory",
     )
 
     parser_extract.add_argument(
