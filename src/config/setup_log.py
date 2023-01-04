@@ -31,11 +31,11 @@ file_name = "src/logs/debug.log"
 
 def config_logger(log_mod):
     if log_mod == "quiet":
-        basic_config("INFO", "WARNING", "a")
+        basic_config("INFO", "WARNING", "w")
     elif log_mod == "verbose":
         basic_config("DEBUG", "DEBUG", "w")
     else:
-        basic_config("WARNING", "ERROR", "a")
+        basic_config("WARNING", "ERROR", "w")
 
 # =================================================================================================
 
@@ -46,9 +46,9 @@ def basic_config(console_level_name, file_level_name, file_mode):
     console_handler.setFormatter(console_formatter)
     # console_handler.setLevel(LOG_LEVELS[console_level_name])
 
-    file_handler = logging.FileHandler(file_name, file_mode)
-    file_formatter = logging.Formatter(LOG_FORMATS[file_level_name])
-    file_handler.setFormatter(file_formatter)
+    #file_handler = logging.FileHandler(file_name, file_mode)
+    # file_formatter = logging.Formatter(LOG_FORMATS[file_level_name])
+    # file_handler.setFormatter(file_formatter)
     # file_handler.setLevel(LOG_LEVELS[file_level_name])
 
     rich_handler = RichHandler(level=logging.DEBUG, rich_tracebacks=True)
@@ -57,7 +57,7 @@ def basic_config(console_level_name, file_level_name, file_mode):
     logger = logging.getLogger("msgram")
     logger.addHandler(console_handler)
     # logger.addHandler(rich_handler)
-    logger.addHandler(file_handler)
+    # logger.addHandler(file_handler)
     logger.setLevel(LOG_LEVELS[console_level_name])
 
     logger_console = logging.getLogger("console")
@@ -65,7 +65,8 @@ def basic_config(console_level_name, file_level_name, file_mode):
     logger_console.setLevel(LOG_LEVELS[console_level_name])
 
     logger_file = logging.getLogger("file")
-    logger_file.addHandler(file_handler)
+    # logger_file.addHandler(file_handler)
+    logger_file.addHandler(console_handler)
     logger_file.setLevel(LOG_LEVELS[file_level_name])
 
 

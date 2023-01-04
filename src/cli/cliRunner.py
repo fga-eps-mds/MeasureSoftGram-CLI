@@ -6,7 +6,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from src.cli.commands import parse_get_entity, parse_import, parse_init, parse_extract
+from src.cli.commands import command_init, command_extract, parse_get_entity, parse_import, parse_init
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
 
@@ -29,6 +29,19 @@ def setup():
     )
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
+    # =====================================< COMMAND init >=====================================
+    parser_initialize = subparsers.add_parser(
+        "init",
+        help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
+    )
+
+    parser_initialize.add_argument(
+        "--dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the directory",
+    )
+    
     parser_init = subparsers.add_parser(
         "init",
         help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
@@ -54,7 +67,7 @@ def setup():
     )
 
     parser_extract.add_argument(
-        "output_origin",
+        "--output_origin",
         type=str,
         choices=(AVAILABLE_IMPORTS),
         help=(
@@ -64,14 +77,21 @@ def setup():
     )
 
     parser_extract.add_argument(
-        "dir_path",
+        "--config_dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the directory",
+    )
+
+    parser_extract.add_argument(
+        "--dir_path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
         help="Path to the directory",
     )
 
     parser_extract.add_argument(
-        "language_extension",
+        "--language_extension",
         type=str,
         help="The source code language extension",
     )
@@ -273,9 +293,13 @@ def setup():
         parser.print_help()
         return
 
+    elif args.command == "initialize":
+        command_init(args.dir_path)
+
     elif args.command == "extract":
-        parse_extract(
+        command_extract(
             args.output_origin,
+            args.config_dir_path,
             args.dir_path,
             args.language_extension,
         )
