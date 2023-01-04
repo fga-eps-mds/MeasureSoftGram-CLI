@@ -8,8 +8,6 @@ import datetime as dt
 
 from termcolor import colored
 
-from pathlib import Path
-
 from src.cli.jsonReader import folder_reader
 from src.cli.exceptions import exceptions
 from src.cli.utils import print_import_files
@@ -24,7 +22,6 @@ def get_infos_from_name(filename: str) -> str:
     filename: str = fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json
     """
     file_date = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", filename)
-    file_name = filename[:file_date.regs[0][0] - 1].split('/')[1]
 
     if not file_date:
         message = (
@@ -34,6 +31,8 @@ def get_infos_from_name(filename: str) -> str:
         print(colored(message, "red"))
         print(colored(f"filename: {filename}", "red"))
         sys.exit(1)
+
+    file_name = filename[:file_date.regs[0][0] - 1].split('/')[1]
 
     date_str = file_date[0]
     month, day, year, hour, minutes = date_str.split("-")
@@ -52,13 +51,11 @@ def command_extract(args):
         language_extension = args["language_extension"]
 
     except Exception as e:
-        logger.warning(f"KeyError: args['{e}'] - non-existent parameters")
-        logger.error("Exiting with error ...")
-        exit(1) 
+        logger.error(f"KeyError: args['{e}'] - non-existent parameters")
+        exit(1)
 
     if not os.path.isdir(config_dir_path):
-        logger.warning(f"FileNotFoundError: config directory \"{config_dir_path}\" does not exists")
-        logger.error("Exiting with error ...")
+        logger.error(f"FileNotFoundError: config directory \"{config_dir_path}\" does not exists")
         sys.exit(1)
 
     logger.info(f"--> Starting to parser extract for {output_origin} output...\n")
@@ -66,11 +63,11 @@ def command_extract(args):
     logger.debug(f"output_origin: {output_origin}")
     logger.debug(f"dir_path: {dir_path}")
     logger.debug(f"language_extension: {language_extension}")
-    
+
     try:
         components, files = folder_reader(f"{dir_path}")
     except (exceptions.MeasureSoftGramCLIException, FileNotFoundError):
-        logging.error("Error: The folder was not found")
+        logger.error("Error: The folder was not found")
         sys.exit(1)
 
     print_import_files(files)

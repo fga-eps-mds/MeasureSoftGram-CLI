@@ -1,8 +1,8 @@
 import logging
 import sys
-from src.cli.exceptions import MeasureSoftGramCLIException
 
 logger = logging.getLogger("msgram")
+
 
 def command_import(args):
     try:

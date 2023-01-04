@@ -41,7 +41,7 @@ def setup():
         default=Path(__file__).absolute().parent.parent.parent / ".msgram",
         help="Path to the directory",
     )
-    
+
     parser_init = subparsers.add_parser(
         "init",
         help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
@@ -67,7 +67,7 @@ def setup():
     )
 
     parser_extract.add_argument(
-        "--output_origin",
+        "output_origin",
         type=str,
         choices=(AVAILABLE_IMPORTS),
         help=(
@@ -77,21 +77,21 @@ def setup():
     )
 
     parser_extract.add_argument(
-        "--config_dir_path",
+        "config_dir_path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent.parent.parent / ".msgram",
         help="Path to the directory",
     )
 
     parser_extract.add_argument(
-        "--dir_path",
+        "dir_path",
         type=lambda p: Path(p).absolute(),
         default=Path(__file__).absolute().parent / "data",
         help="Path to the directory",
     )
 
     parser_extract.add_argument(
-        "--language_extension",
+        "language_extension",
         type=str,
         help="The source code language extension",
     )
@@ -294,15 +294,10 @@ def setup():
         return
 
     elif args.command == "initialize":
-        command_init(args.dir_path)
+        command_init(vars(args))
 
     elif args.command == "extract":
-        command_extract(
-            args.output_origin,
-            args.config_dir_path,
-            args.dir_path,
-            args.language_extension,
-        )
+        command_extract(vars(args))
 
     elif args.command == "import":
         parse_import(

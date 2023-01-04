@@ -3,9 +3,6 @@ import sys
 import os
 import json
 
-from termcolor import colored
-
-from src.cli.exceptions import MeasureSoftGramCLIException
 from staticfiles import DEFAULT_PRE_CONFIG
 
 logger = logging.getLogger("msgram")

@@ -6,7 +6,6 @@ from src.cli.parsers import create_parser
 
 from src.config.setup_log import config_logger
 
-
 logger = logging.getLogger("msgram")
 
 
@@ -50,4 +49,3 @@ def main():
     logger.info("Starting MSGram CLI app")
     run_cli()
     logger.info("Done MSGram CLI app")
-

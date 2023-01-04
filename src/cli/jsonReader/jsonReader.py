@@ -106,7 +106,7 @@ def check_sonar_format(json_data):
 
 def check_existent_files(file_reader):
     if len(file_reader) == 0:
-        raise exceptions.MeasureSoftGramCLIException(f"No files found inside folder.")
+        raise exceptions.MeasureSoftGramCLIException("No files found inside folder.")
 
 
 def check_file_extension(file_name):

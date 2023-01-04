@@ -39,6 +39,7 @@ def config_logger(log_mod):
 
 # =================================================================================================
 
+
 def basic_config(console_level_name, file_level_name, file_mode):
 
     console_handler = logging.StreamHandler(sys.stdout)
@@ -46,7 +47,7 @@ def basic_config(console_level_name, file_level_name, file_mode):
     console_handler.setFormatter(console_formatter)
     # console_handler.setLevel(LOG_LEVELS[console_level_name])
 
-    #file_handler = logging.FileHandler(file_name, file_mode)
+    # file_handler = logging.FileHandler(file_name, file_mode)
     # file_formatter = logging.Formatter(LOG_FORMATS[file_level_name])
     # file_handler.setFormatter(file_formatter)
     # file_handler.setLevel(LOG_LEVELS[file_level_name])
