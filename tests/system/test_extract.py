@@ -12,6 +12,7 @@ def capture(command):
     out, err = proc.communicate()
     return out, err, proc.returncode
 
+
 def test_extract_metrics_folder_not_found_exception_handling():
     config_dirpath = tempfile.mkdtemp()
     _, err, returncode = capture(
@@ -21,6 +22,7 @@ def test_extract_metrics_folder_not_found_exception_handling():
     assert returncode == 1
     assert "Error: The folder was not found" in err.decode("utf-8")
     shutil.rmtree(config_dirpath)
+
 
 def test_extract_metrics_config_folder_not_found_exception_handling():
     _, err, returncode = capture(

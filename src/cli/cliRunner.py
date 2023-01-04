@@ -31,7 +31,7 @@ def setup():
 
     # =====================================< COMMAND init >=====================================
     parser_initialize = subparsers.add_parser(
-        "init",
+        "initialize",
         help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
     )
 
