@@ -1,6 +1,10 @@
 import pytz
+import logging
+
 from termcolor import colored
 from datetime import datetime
+
+logger = logging.getLogger("msgram")
 
 
 def pretty_date_str(date_str, format="%m/%d/%Y %H:%M:%S", timezone="Brazil/East"):
@@ -24,12 +28,12 @@ def print_import_files(files):
 
     Sending the file data:
     """
-    print("\n\tImporting files:")
+    logger.info("\n\tImporting files:")
 
     for file in files:
-        print(f"\t\t- {file}")
+        logger.info(f"\t\t- {file}")
 
-    print("\n\tSending the file data:")
+    logger.info("\n\tSending the file data:")
 
 
 def print_status_import_file(file, message, trying_idx):

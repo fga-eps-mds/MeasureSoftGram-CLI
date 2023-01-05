@@ -6,9 +6,10 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from src.cli.commands import parse_get_entity, parse_import, parse_init
+from src.cli.commands import command_init, command_extract, parse_get_entity, parse_import, parse_init
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
+
 from src.config.settings import (
     AVAILABLE_ENTITIES,
     AVAILABLE_GEN_FORMATS,
@@ -28,6 +29,19 @@ def setup():
     )
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
+    # =====================================< COMMAND init >=====================================
+    parser_initialize = subparsers.add_parser(
+        "initialize",
+        help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
+    )
+
+    parser_initialize.add_argument(
+        "--dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the directory",
+    )
+
     parser_init = subparsers.add_parser(
         "init",
         help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
@@ -45,6 +59,41 @@ def setup():
         nargs="?",
         default=os.getenv("MSG_SERVICE_HOST"),
         help=("The host of the service."),
+    )
+
+    parser_extract = subparsers.add_parser(
+        "extract",
+        help="Extract supported metrics"
+    )
+
+    parser_extract.add_argument(
+        "output_origin",
+        type=str,
+        choices=(AVAILABLE_IMPORTS),
+        help=(
+            "Import a metrics files from some origin. Valid values are: "
+            + ", ".join(AVAILABLE_IMPORTS)
+        ),
+    )
+
+    parser_extract.add_argument(
+        "config_dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the directory",
+    )
+
+    parser_extract.add_argument(
+        "dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the directory",
+    )
+
+    parser_extract.add_argument(
+        "language_extension",
+        type=str,
+        help="The source code language extension",
     )
 
     # =============================< IMPORT PARSER CODE >=============================
@@ -243,6 +292,12 @@ def setup():
     if not sys.argv[1:]:
         parser.print_help()
         return
+
+    elif args.command == "initialize":
+        command_init(vars(args))
+
+    elif args.command == "extract":
+        command_extract(vars(args))
 
     elif args.command == "import":
         parse_import(

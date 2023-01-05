@@ -1,7 +1,12 @@
-from src.cli.exceptions import exceptions
 import json
+
 import math
+
 import os
+
+import sys
+
+from src.cli.exceptions import exceptions
 
 
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
@@ -34,16 +39,16 @@ def folder_reader(absolute_path):
         components = []
         files = []
 
-        for file_path in files_in_dir:
-            try:
-                components.append(file_reader(file_path))
-                files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
-            except exceptions.MeasureSoftGramCLIException as error:
-                print(f"Warning in {file_path} file.", "Error:", error)
-        os.chdir("..")
+        check_existent_files(files_in_dir)
 
-    except FileNotFoundError:
-        raise FileNotFoundError
+        for file_path in files_in_dir:
+            components.append(file_reader(file_path))
+            files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
+
+        os.chdir("..")
+    except exceptions.MeasureSoftGramCLIException as error:
+        print(f"Error reading {absolute_path}:", error)
+        sys.exit(1)
 
     files.sort()
     return components, files
@@ -97,6 +102,11 @@ def check_sonar_format(json_data):
         raise exceptions.InvalidMetricsJsonFile(
             "File with valid schema but no metrics data."
         )
+
+
+def check_existent_files(file_reader):
+    if len(file_reader) == 0:
+        raise exceptions.MeasureSoftGramCLIException("No files found inside folder.")
 
 
 def check_file_extension(file_name):

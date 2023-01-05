@@ -8,3 +8,6 @@ pytz~=2022.2.1
 termcolor~=1.1.0
 setuptools~=60.2.0
 python-dotenv
+rich
+msgram-core==0.1.0
+validators==0.20.0
