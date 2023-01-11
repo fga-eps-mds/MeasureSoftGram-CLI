@@ -6,7 +6,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from src.cli.commands import command_init, command_extract, parse_get_entity, parse_import, parse_init
+from src.cli.commands import command_init, command_extract, parse_get_entity, parse_import, parse_init, command_calculate
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
 
@@ -284,6 +284,35 @@ def setup():
         help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
     )
 
+    # =====================================< COMMAND calculate >=====================================
+    parser_calculate = subparsers.add_parser(
+        "calc", help="Calculates all entities",
+    )
+
+    parser_calculate.add_argument(
+        "all",
+        type=str,
+        nargs="?",
+        help=(
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+        ),
+    )
+
+    parser_calculate.add_argument(
+        "--file_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the extracted file",
+    )
+
+    parser_calculate.add_argument(
+        "--output_format",
+        type=str,
+        nargs="?",
+        default="tabular",
+        help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
+    )
+
     # =============================< Arguments parsing methods >=============================
 
     args = parser.parse_args()
@@ -336,6 +365,9 @@ def setup():
             args.product_id,
             args.output_format,
         )
+
+    elif args.command == "calc":
+        command_calculate(vars(args))
 
 
 def main():

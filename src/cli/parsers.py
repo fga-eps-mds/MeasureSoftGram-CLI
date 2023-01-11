@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 from src.cli.commands import command_import, command_init, command_extract
-from src.config.settings import AVAILABLE_IMPORTS
+from src.config.settings import AVAILABLE_IMPORTS, SUPPORTED_FORMATS
 
 
 def create_parser():
@@ -105,5 +105,34 @@ def create_parser():
         help="The host of the service",
     )
     parser_import.set_defaults(func=command_import)  # function command import
+
+    # =====================================< COMMAND calculate >=====================================
+    parser_calculate = subparsers.add_parser(
+        "calculate", help="Calculates all entities",
+    )
+
+    parser_calculate.add_argument(
+        "all",
+        type=str,
+        nargs="?",
+        help=(
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+        ),
+    )
+
+    parser_calculate.add_argument(
+        "--file_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent / "data",
+        help="Path to the extracted file",
+    )
+
+    parser_calculate.add_argument(
+        "--output_format",
+        type=str,
+        nargs="?",
+        default="tabular",
+        help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
+    )
 
     return parser
