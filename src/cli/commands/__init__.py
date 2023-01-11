@@ -10,6 +10,7 @@ from src.cli.commands.parse_init.parse_init import parse_init
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_import import command_import
 from src.cli.commands.cmd_extract import command_extract
+from src.cli.commands.cmd_calculate import command_calculate
 
 from src.cli.commands.parse_create.utils import (
     check_file_extension,
