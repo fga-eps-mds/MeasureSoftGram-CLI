@@ -4,13 +4,6 @@ from tabulate import tabulate
 from termcolor import colored
 import logging
 
-from src.cli.utils import check_host_url
-from src.cli.commands.parse_calculate.utils import (
-    # calculate_measures,
-    calculate_characteristics,
-    calculate_subcharacteristics,
-    calculate_sqc,
-)
 from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.resources.measure import calculate_measures
 
@@ -56,7 +49,7 @@ def command_calculate(args):
 
             # print(colored("\nCalculated SQC: \n", "green"))
             # print(json.dumps(data_sqc))
-    
+
     except MeasureSoftGramCLIException as error:
         print(colored(f"Error: {error}", "red"))
         return 1

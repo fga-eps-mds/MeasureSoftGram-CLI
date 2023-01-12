@@ -4,8 +4,6 @@ import sys
 import json
 import logging
 
-import datetime as dt
-
 from termcolor import colored
 
 from src.cli.jsonReader import folder_reader
@@ -35,12 +33,7 @@ def get_infos_from_name(filename: str) -> str:
     file_name = filename[:file_date.regs[0][0] - 1].split('/')[1]
 
     date_str = file_date[0]
-    month, day, year, hour, minutes = date_str.split("-")
-
-    return f'{file_name}-extracted.msgram', dt.datetime.strptime(
-        f"{year}-{month}-{day} {hour}:{minutes}",
-        "%Y-%m-%d %H:%M",
-    ).isoformat()
+    return f'{file_name}-{date_str}-extracted.msgram'
 
 
 def command_extract(args):
@@ -75,7 +68,7 @@ def command_extract(args):
     parser = Sonarqube() if output_origin == 'sonarqube' else None
     for filename, component in zip(files, components):
         logger.info(f"--> Extracting {output_origin} metrics from {filename}...")
-        name, created_at = get_infos_from_name(filename)
+        name = get_infos_from_name(filename)
 
         result = parser.extract_supported_metrics(component)
 

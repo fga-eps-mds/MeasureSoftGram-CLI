@@ -29,7 +29,9 @@ def file_reader(absolute_path):
 
     check_metrics_values(json_data)
 
-    return json_data["components"]
+    components = json_data["components"]
+    components.append(json_data["baseComponent"])
+    return components
 
 
 def folder_reader(absolute_path):

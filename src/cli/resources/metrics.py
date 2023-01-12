@@ -23,7 +23,7 @@ def get_metric_value(extracted):
             # se não, salvo somente a última.
             if metric_name in listed_values and qualifier == 'FIL':
                 response_data.setdefault(metric_name, []).append(metric_value)
-            elif metric_name not in listed_values:
+            elif metric_name not in listed_values and qualifier == 'TRK':
                 response_data[metric_name] = metric_value
 
     return response_data
