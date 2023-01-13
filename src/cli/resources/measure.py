@@ -1,13 +1,25 @@
 import logging
 
-from src.cli.jsonReader import open_json_file
-
-from src.cli.resources.metrics import get_metric_value
-
 from staticfiles import SONARQUBE_SUPPORTED_MEASURES
 from resources import calculate_measures as core_calculate
 
+from src.cli.jsonReader import open_json_file
+from src.cli.resources.metrics import get_metric_value
+
 logger = logging.getLogger("msgram")
+
+
+def get_measure_value(measures, subchar):
+    measures_calculated = []
+    for measure in subchar:
+        measure_key = measure["key"]
+        measures_calculated.append({
+            "key": measure_key,
+            "value": {m['key']: m['value'] for m in measures}[measure_key],
+            "weight": measure['weight'],
+        })
+
+    return measures_calculated
 
 
 def calculate_measures(file_path):

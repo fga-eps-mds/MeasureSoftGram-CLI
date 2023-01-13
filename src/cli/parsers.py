@@ -141,5 +141,4 @@ def create_parser():
         help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
     )
 
-
     return parser
