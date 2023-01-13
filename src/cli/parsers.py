@@ -123,8 +123,14 @@ def create_parser():
     parser_calculate.add_argument(
         "--file_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent / "data",
         help="Path to the extracted file",
+    )
+
+    parser_calculate.add_argument(
+        "--config_dir_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        help="Path to the config directory",
     )
 
     parser_calculate.add_argument(
@@ -134,5 +140,6 @@ def create_parser():
         default="tabular",
         help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
     )
+
 
     return parser
