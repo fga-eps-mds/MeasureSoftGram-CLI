@@ -25,7 +25,7 @@ def command_calculate(args):
 
     try:
         data_measures, headers_measures = calculate_measures(file_path)
-        data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(config, data_measures)
+        data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(config, data_measures['measures'])
         # data_characteristics, headers_characteristics = calculate_characteristics(host_url)
         # data_sqc, headers_sqc = calculate_sqc(host_url)
 

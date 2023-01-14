@@ -12,9 +12,8 @@ def calculate_subcharacteristics(config, measures):
     for subchar in subchars:
         calculate_infos.append({
             'key': subchar[0]['key'],
-            'measures': get_measure_value(measures['measures'], subchar[0]['measures'])
+            'measures': get_measure_value(measures, subchar[0]['measures'])
         })
 
     headers = ["Id", "Name", "Description", "Value", "Created at"]
-    print(calculate_infos)
     return core_calculate({'subcharacteristics': calculate_infos}), headers

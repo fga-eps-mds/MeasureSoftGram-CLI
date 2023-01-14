@@ -74,13 +74,23 @@ def setup():
     )
 
     parser_extract.add_argument(
-        "output_origin",
+        "-o",
+        "--output_origin",
+        required=True,
         type=str,
         choices=(AVAILABLE_IMPORTS),
         help=(
             "Import a metrics files from some origin. Valid values are: "
             + ", ".join(AVAILABLE_IMPORTS)
         ),
+    )
+
+    parser_extract.add_argument(
+        "-dp",
+        "--data_path",
+        required=True,
+        type=lambda p: Path(p).absolute(),
+        help="Path to analysis data directory",
     )
     
     parser_extract.add_argument(
@@ -89,14 +99,6 @@ def setup():
         type=lambda p: Path(p).absolute(),
         default=DEFAULT_CONFIG_PATH,
         help="Path to default config directory",
-    )
-
-    parser_extract.add_argument(
-        "-dp",
-        "--data_path",
-        type=lambda p: Path(p).absolute(),
-        default=DEFAULT_RAW_DATA_PATH,
-        help="Path to alalytics-raw-data directory",
     )
 
     parser_extract.add_argument(
