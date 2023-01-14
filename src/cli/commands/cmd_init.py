@@ -63,7 +63,7 @@ def command_init(args):
     console.line(2)
     print(
         Panel(
-            f"> [#008080]Run msgram extract -o sonarqube -dp data_path[/], to extract suported metrics!",
+            "> [#008080]Run msgram extract -o sonarqube -dp data_path[/], to extract suported metrics!",
             title="Next steps",
             title_align="center",
             style="#4F4F4F",

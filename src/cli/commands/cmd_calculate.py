@@ -25,8 +25,12 @@ def command_calculate(args):
 
     try:
         data_measures, headers_measures = calculate_measures(file_path)
-        data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(config, data_measures['measures'])
-        data_characteristics, headers_characteristics = calculate_characteristics(config, data_subcharacteristics['subcharacteristics'])
+        data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(
+            config, data_measures['measures']
+        )
+        data_characteristics, headers_characteristics = calculate_characteristics(
+            config, data_subcharacteristics['subcharacteristics']
+        )
         # data_sqc, headers_sqc = calculate_sqc(host_url)
 
         if output_format == "tabular":
@@ -36,7 +40,6 @@ def command_calculate(args):
             print(colored("\nCalculated Subcharacteristics: \n", "green"))
             print(tabulate(data_subcharacteristics, headers=headers_subcharacteristics))
 
-            
             print(colored("\nCalculated Characteristics: \n", "green"))
             print(tabulate(data_characteristics, headers=headers_characteristics))
 
@@ -50,7 +53,6 @@ def command_calculate(args):
             print(colored("\nCalculated Subcharacteristics: \n", "green"))
             print(json.dumps(data_subcharacteristics))
 
-            
             print(colored("\nCalculated Characteristics: \n", "green"))
             print(json.dumps(data_characteristics))
 

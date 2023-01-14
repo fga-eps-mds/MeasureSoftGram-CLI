@@ -2,6 +2,7 @@ from src.cli.resources.measure import get_measure_value
 
 from resources import calculate_subcharacteristics as core_calculate
 
+
 def get_subcharacteristic_value(subchars, char):
     subchar_calculated = []
     for subchar in char:
@@ -14,6 +15,7 @@ def get_subcharacteristic_value(subchars, char):
         })
 
     return subchar_calculated
+
 
 def calculate_subcharacteristics(config, measures):
     subchars = [sc['subcharacteristics'] for sc in config['characteristics']]

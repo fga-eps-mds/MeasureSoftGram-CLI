@@ -20,7 +20,6 @@ from src.config.settings import (
     AVAILABLE_IMPORTS,
     SUPPORTED_FORMATS,
     DEFAULT_CONFIG_PATH,
-    DEFAULT_RAW_DATA_PATH,
 )
 
 
@@ -92,7 +91,7 @@ def setup():
         type=lambda p: Path(p).absolute(),
         help="Path to analysis data directory",
     )
-    
+
     parser_extract.add_argument(
         "-cp",
         "--config_path",

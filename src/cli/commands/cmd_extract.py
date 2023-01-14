@@ -10,7 +10,6 @@ from termcolor import colored
 
 from src.cli.jsonReader import folder_reader
 from src.cli.exceptions import exceptions
-from src.cli.utils import print_import_files
 
 from parsers.sonarqube import Sonarqube
 
