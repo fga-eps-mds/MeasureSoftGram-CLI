@@ -3,6 +3,8 @@ import os
 import sys
 import json
 import logging
+from rich import print
+from rich.console import Console
 
 from termcolor import colored
 
@@ -13,6 +15,7 @@ from src.cli.utils import print_import_files
 from parsers.sonarqube import Sonarqube
 
 logger = logging.getLogger("msgram")
+console = Console()
 
 
 def get_infos_from_name(filename: str) -> str:
@@ -30,42 +33,48 @@ def get_infos_from_name(filename: str) -> str:
         print(colored(f"filename: {filename}", "red"))
         sys.exit(1)
 
-    file_name = filename[:file_date.regs[0][0] - 1].split('/')[1]
+    file_name = filename[: file_date.regs[0][0] - 1].split("/")[1]
 
     date_str = file_date[0]
-    return f'{file_name}-{date_str}-extracted.msgram'
+    return f"{file_name}-{date_str}-extracted.msgram"
 
 
 def command_extract(args):
     try:
         output_origin = args["output_origin"]
-        config_dir_path = args["config_dir_path"]
-        dir_path = args["dir_path"]
+        config_path = args["config_path"]
+        data_path = args["data_path"]
         language_extension = args["language_extension"]
 
     except Exception as e:
         logger.error(f"KeyError: args['{e}'] - non-existent parameters")
         exit(1)
 
-    if not os.path.isdir(config_dir_path):
-        logger.error(f"FileNotFoundError: config directory \"{config_dir_path}\" does not exists")
+    console.clear()
+    console.rule(title="MSGram", style="#4682B4")
+    print("[#708090]Init to set config file[/]:")
+    console.line(1)
+
+    if not os.path.isdir(config_path):
+        console.line(1)
+        print(f"FileNotFoundError: config directory[bold red]'{config_path}'[/]does not exists")
+        logger.error(f'FileNotFoundError: config directory "{config_path}" does not exists')
         sys.exit(1)
 
     logger.info(f"--> Starting to parser extract for {output_origin} output...\n")
+    print(f"--> [#008080]Starting to parser extract for [#006400]'{output_origin}'[/] output...[/]")
 
     logger.debug(f"output_origin: {output_origin}")
-    logger.debug(f"dir_path: {dir_path}")
+    logger.debug(f"data_path: {data_path}")
     logger.debug(f"language_extension: {language_extension}")
 
     try:
-        components, files = folder_reader(f"{dir_path}")
+        components, files = folder_reader(f"{data_path}")
     except (exceptions.MeasureSoftGramCLIException, FileNotFoundError):
         logger.error("Error: The folder was not found")
         sys.exit(1)
 
-    print_import_files(files)
-
-    parser = Sonarqube() if output_origin == 'sonarqube' else None
+    parser = Sonarqube() if output_origin == "sonarqube" else None
     for filename, component in zip(files, components):
         logger.info(f"--> Extracting {output_origin} metrics from {filename}...")
         name = get_infos_from_name(filename)
@@ -73,7 +82,7 @@ def command_extract(args):
         result = parser.extract_supported_metrics(component)
 
         logger.info(f"\n--> Saving results from in {name}...")
-        with open(f"{config_dir_path}/{name}", 'w') as f:
+        with open(f"{config_path}/{name}", "w") as f:
             f.write(json.dumps(result, indent=4))
 
     logger.info("\nAttempt to extract metrics from all files in the directory finished!")

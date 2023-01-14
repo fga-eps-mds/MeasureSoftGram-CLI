@@ -3,6 +3,7 @@ import os
 import signal
 import sys
 from pathlib import Path
+from src.config.setup_log import config_logger
 
 from dotenv import load_dotenv
 
@@ -18,6 +19,8 @@ from src.config.settings import (
     AVAILABLE_GEN_FORMATS,
     AVAILABLE_IMPORTS,
     SUPPORTED_FORMATS,
+    DEFAULT_CONFIG_PATH,
+    DEFAULT_RAW_DATA_PATH,
 )
 
 
@@ -39,10 +42,11 @@ def setup():
     )
 
     parser_initialize.add_argument(
-        "--dir_path",
+        "-cp",
+        "--config_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
-        help="Path to the directory",
+        default=DEFAULT_CONFIG_PATH,
+        help="Path to default config directory",
     )
 
     parser_init = subparsers.add_parser(
@@ -78,25 +82,29 @@ def setup():
             + ", ".join(AVAILABLE_IMPORTS)
         ),
     )
-
+    
     parser_extract.add_argument(
-        "config_dir_path",
+        "-cp",
+        "--config_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
-        help="Path to the directory",
+        default=DEFAULT_CONFIG_PATH,
+        help="Path to default config directory",
     )
 
     parser_extract.add_argument(
-        "dir_path",
+        "-dp",
+        "--data_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent / "data",
-        help="Path to the directory",
+        default=DEFAULT_RAW_DATA_PATH,
+        help="Path to alalytics-raw-data directory",
     )
 
     parser_extract.add_argument(
-        "language_extension",
+        "-le",
+        "--language_extension",
         type=str,
         help="The source code language extension",
+        default="py",
     )
 
     # =============================< IMPORT PARSER CODE >=============================
@@ -384,5 +392,8 @@ def main():
 
     load_dotenv()
     signal.signal(signal.SIGINT, sigint_handler)
+
+    log_mod = os.getenv("LOG")
+    config_logger(log_mod)
 
     setup()

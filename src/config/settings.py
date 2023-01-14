@@ -1,10 +1,16 @@
 import json
 import os
 import sys
+from pathlib import Path
 
 from termcolor import colored
 
 from src.cli.exceptions import exceptions
+
+FILE_CONFIG = "msgram.json"
+DEFAULT_CONFIG_PATH = Path.cwd() / ".msgram"
+DEFAULT_RAW_DATA_PATH = Path.cwd() / "analytics-raw-data"
+DEFAULT_CONFIG_FILE_PATH = DEFAULT_CONFIG_PATH / FILE_CONFIG
 
 AVAILABLE_ENTITIES = [
     "metrics",
