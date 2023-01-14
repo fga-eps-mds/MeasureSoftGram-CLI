@@ -9,6 +9,8 @@ from src.cli.exceptions import MeasureSoftGramCLIException
 from src.cli.resources.measure import calculate_measures
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.resources.characteristic import calculate_characteristics
+from src.cli.resources.sqc import calculate_sqc
+
 logger = logging.getLogger("msgram")
 
 
@@ -31,7 +33,7 @@ def command_calculate(args):
         data_characteristics, headers_characteristics = calculate_characteristics(
             config, data_subcharacteristics['subcharacteristics']
         )
-        # data_sqc, headers_sqc = calculate_sqc(host_url)
+        data_sqc, headers_sqc = calculate_sqc(config, data_characteristics['characteristics'])
 
         if output_format == "tabular":
             print(colored("\nCalculated Measures: \n", "green"))
@@ -43,8 +45,8 @@ def command_calculate(args):
             print(colored("\nCalculated Characteristics: \n", "green"))
             print(tabulate(data_characteristics, headers=headers_characteristics))
 
-            # print(colored("\nCalculated SQC: \n", "green"))
-            # print(tabulate(data_sqc, headers=headers_sqc))
+            print(colored("\nCalculated SQC: \n", "green"))
+            print(tabulate(data_sqc, headers=headers_sqc))
 
         elif output_format == "json":
             print(colored("\nCalculated Measures: \n", "green"))
@@ -56,8 +58,8 @@ def command_calculate(args):
             print(colored("\nCalculated Characteristics: \n", "green"))
             print(json.dumps(data_characteristics))
 
-            # print(colored("\nCalculated SQC: \n", "green"))
-            # print(json.dumps(data_sqc))
+            print(colored("\nCalculated SQC: \n", "green"))
+            print(json.dumps(data_sqc))
 
     except MeasureSoftGramCLIException as error:
         print(colored(f"Error: {error}", "red"))
