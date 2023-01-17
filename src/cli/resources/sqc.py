@@ -10,5 +10,5 @@ def calculate_sqc(config, characteristics):
         'characteristics': get_characteristic_value(characteristics, sqc['characteristics'])
     }
 
-    headers = ["Id", "Name", "Description", "Value", "Created at"]
+    headers = ["Id", "Value", "Created at"]
     return core_calculate({'sqc': calculate_infos}), headers

@@ -7,6 +7,9 @@ def get_metric_value(extracted):
         'coverage', 'complexity', 'functions',
         'comment_lines_density', 'duplicated_lines_density'
     ]
+
+    # Métricas que o parâmetro é extraido do UTS
+    uts_values = ['test_execution_time', 'tests'] 
     response_data = {}
 
     # Para todos os arquivos extraidos
@@ -23,7 +26,9 @@ def get_metric_value(extracted):
             # se não, salvo somente a última.
             if metric_name in listed_values and qualifier == 'FIL':
                 response_data.setdefault(metric_name, []).append(metric_value)
-            elif metric_name not in listed_values and qualifier == 'TRK':
+            elif metric_name in uts_values and qualifier == 'UTS':
+                response_data.setdefault(metric_name, []).append(metric_value)
+            elif metric_name not in (listed_values + uts_values) and qualifier == 'TRK':
                 response_data[metric_name] = metric_value
 
     return response_data
