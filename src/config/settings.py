@@ -11,6 +11,8 @@ FILE_CONFIG = "msgram.json"
 DEFAULT_CONFIG_PATH = Path.cwd() / ".msgram"
 DEFAULT_RAW_DATA_PATH = Path.cwd() / "analytics-raw-data"
 DEFAULT_CONFIG_FILE_PATH = DEFAULT_CONFIG_PATH / FILE_CONFIG
+JSON_DEFAULT_FILE_PATH = DEFAULT_CONFIG_PATH / "calc_msgram.json"
+CSV_DEFAULT_FILE_PATH = DEFAULT_CONFIG_PATH / "calc_msgram.csv"
 
 AVAILABLE_ENTITIES = [
     "metrics",
@@ -160,9 +162,7 @@ def get_repositories():
 def get_product_url(host_url):
     organization_id = get_organization_id()
     product_id = get_product_id()
-    return (
-        f"{host_url}/api/v1/organizations/{organization_id}/" f"products/{product_id}/"
-    )
+    return f"{host_url}/api/v1/organizations/{organization_id}/" f"products/{product_id}/"
 
 
 def get_repositories_urls_mapped_by_name(host_url):
