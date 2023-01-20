@@ -3,24 +3,27 @@ import os
 import signal
 import sys
 from pathlib import Path
-from src.config.setup_log import config_logger
 
 from dotenv import load_dotenv
 
 from src.cli.commands import (
-    command_init, command_extract, parse_get_entity,
-    parse_import, parse_init, command_calculate
+    command_calculate,
+    command_extract,
+    command_init,
+    parse_get_entity,
+    parse_import,
+    parse_init,
 )
 from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
 from src.cli.commands.parse_generate.parse_generate import parse_generate
-
 from src.config.settings import (
     AVAILABLE_ENTITIES,
     AVAILABLE_GEN_FORMATS,
     AVAILABLE_IMPORTS,
-    SUPPORTED_FORMATS,
     DEFAULT_CONFIG_PATH,
+    SUPPORTED_FORMATS,
 )
+from src.config.setup_log import config_logger
 
 
 def sigint_handler(*_):
@@ -29,9 +32,7 @@ def sigint_handler(*_):
 
 
 def setup():
-    parser = argparse.ArgumentParser(
-        description="Command line interface for measuresoftgram"
-    )
+    parser = argparse.ArgumentParser(description="Command line interface for measuresoftgram")
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
 
     # =====================================< COMMAND init >=====================================
@@ -69,7 +70,7 @@ def setup():
 
     parser_extract = subparsers.add_parser(
         "extract",
-        help="Extract supported metrics"
+        help="Extract supported metrics",
     )
 
     parser_extract.add_argument(
@@ -188,11 +189,7 @@ def setup():
         type=str,
         nargs="?",
         default="tabular",
-        help=(
-            "The format of the output. "
-            + "Valid values are: "
-            + ", ".join(SUPPORTED_FORMATS)
-        ),
+        help=("The format of the output. " + "Valid values are: " + ", ".join(SUPPORTED_FORMATS)),
     )
 
     parser_get_entity.add_argument(
@@ -245,7 +242,8 @@ def setup():
     )
 
     parser_calculate_entity = subparsers.add_parser(
-        "calculate", help="Calculates all entities"
+        "calculate",
+        help="Calculates all entities",
     )
 
     parser_calculate_entity.add_argument(
@@ -298,7 +296,8 @@ def setup():
 
     # =====================================< COMMAND calculate >=====================================
     parser_calculate = subparsers.add_parser(
-        "calc", help="Calculates all entities",
+        "calc",
+        help="Calculates all entities",
     )
 
     parser_calculate.add_argument(
@@ -311,24 +310,27 @@ def setup():
     )
 
     parser_calculate.add_argument(
-        "--file_path",
+        "-ep",
+        "--extracted_path",
         type=lambda p: Path(p).absolute(),
-        help="Path to the extracted file",
+        help="Path to the extracted directory",
     )
 
     parser_calculate.add_argument(
-        "--config_dir_path",
+        "-cp",
+        "--config_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        default=DEFAULT_CONFIG_PATH,
         help="Path to the config directory",
     )
 
     parser_calculate.add_argument(
+        "-o",
         "--output_format",
         type=str,
-        nargs="?",
-        default="tabular",
-        help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
+        choices=AVAILABLE_GEN_FORMATS,
+        default="csv",
+        help=("The format of the output (export) values are: ".join(SUPPORTED_FORMATS)),
     )
 
     # =============================< Arguments parsing methods >=============================

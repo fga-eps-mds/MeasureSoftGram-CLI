@@ -50,7 +50,9 @@ def command_calculate(args):
             data_calculated.append(result)
     else:
         data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
-        output_format = Prompt.ask("[black]Display as:", choices=["tabular", "tree", "raw"])
+        print_info(f"\n[#A9A9A9]All calculations performed[/] successfully!")
+
+        output_format = Prompt.ask("\n\n[black]Display as:", choices=["tabular", "tree", "raw"])
 
     print_info(f"\n[#A9A9A9]All calculations performed[/] successfully!")
     print_rule()
@@ -67,15 +69,16 @@ def command_calculate(args):
     elif output_format == "csv":
         print_info("Exporting CSV...")
         export_csv(data_calculated)
-        print_info("[blue] Success:[/] exported as CSV")
 
     elif output_format == "json":
         print_info("Exporting JSON...")
         export_json(data_calculated)
-        print_info("[blue] Success:[/] exported as JSON")
 
-    else:
-        print("--")
+    print_panel(
+        title="Done",
+        menssage="> See our docs for more information: \n"
+        " https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-CLI",
+    )
 
 
 def calculate_all(json_data, file_name, config):
@@ -117,10 +120,7 @@ def show_tabulate(data_calculated):
 
 
 def get_obj_by_element(object_list: list, element_key: str, element_to_find):
-    for obj in object_list:
-        if obj[element_key] == element_to_find:
-            return obj
-    return {}
+    return next((obj for obj in object_list if obj[element_key] == element_to_find), {})
 
 
 def show_tree(data_calculated):
@@ -129,7 +129,7 @@ def show_tree(data_calculated):
     subcharacteristics = data_calculated["subcharacteristics"]
     measures = data_calculated["measures"]
 
-    print("")
+    print("Overview - tree:\n\n")
     sqc_tree = Tree(f"[green]{sqc['key']}: {sqc['value']}")
 
     for char_c, char in zip(pre_config["characteristics"], characteristics):
@@ -153,6 +153,7 @@ def export_json(data_calculated: list, file_path: Path = JSON_DEFAULT_FILE_PATH)
             write_file,
             indent=4,
         )
+    print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as JSON")
 
 
 def export_csv(data_calculated: list, file_path: Path = CSV_DEFAULT_FILE_PATH):
@@ -173,3 +174,5 @@ def export_csv(data_calculated: list, file_path: Path = CSV_DEFAULT_FILE_PATH):
 
         writer.writerow(csv_header[0])
         writer.writerows(csv_rows)
+
+    print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as CSV")

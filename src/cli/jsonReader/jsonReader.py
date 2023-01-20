@@ -1,7 +1,5 @@
 import json
 import math
-import os
-import sys
 from pathlib import Path
 
 import rich.progress
@@ -47,8 +45,8 @@ def folder_reader(dir_path, pattern):
             yield file_reader(path_file), path_file.name, num_files_error
             num_files_error = 0
         except exceptions.MeasureSoftGramCLIException as e:
-            print(f"[red]Error: {path_file.name}:")
-            print(f"[red]{e}\n")
+            print(f"[green]Reading:[/] [black]{path_file.name}[/]")
+            print(f"[red]Error  : {e}\n")
             num_files_error += 1
 
 
@@ -75,12 +73,7 @@ def open_json_file(path_file: Path, disable=False):
 
 
 def get_missing_keys_str(attrs, required_attrs):
-    missing_keys = []
-
-    for req_key in required_attrs:
-        if req_key not in attrs:
-            missing_keys.append(req_key)
-
+    missing_keys = [req_key for req_key in required_attrs if req_key not in attrs]
     return ", ".join(missing_keys)
 
 
@@ -127,7 +120,7 @@ def check_file_extension(file_name):
 
 def raise_invalid_metric(key, metric):
     raise exceptions.InvalidMetricException(
-        'Invalid metric value in "{}" component for the "{}" metric'.format(key, metric)
+        f'Invalid metric value in "{key}" component for the "{metric}" metric'
     )
 
 
@@ -142,10 +135,10 @@ def check_metrics_values(json_data):
                         raise_invalid_metric(component["key"], measure["metric"])
                 except (ValueError, TypeError):
                     raise_invalid_metric(component["key"], measure["metric"])
-    except KeyError:
+    except KeyError as e:
         raise exceptions.InvalidMetricsJsonFile(
             "Failed to validate Sonar JSON metrics. Please check if the file is a valid Sonar JSON"
-        )
+        ) from e
 
 
 def validate_metrics_post(response_status):

@@ -90,16 +90,16 @@ def print_rule(title: str = "", text: str = "", style: str = "#4682B4"):
     console.line()
 
 
-def print_panel(menssage: str):
+def print_panel(menssage: str, title: str = "Next steps"):
     console.line(2)
     print(
         Panel(
             menssage,
-            title="Next steps",
+            title=title,
             title_align="center",
             style="#4F4F4F",
             border_style="#A9A9A9",
-            padding=(0, 2),
+            padding=(1, 2),
             width=140,
         ),
     )

@@ -29,7 +29,7 @@ SUPPORTED_FORMATS = [
 
 AVAILABLE_IMPORTS = ["sonarqube"]
 
-AVAILABLE_GEN_FORMATS = ["csv"]
+AVAILABLE_GEN_FORMATS = ["csv", "json"]
 
 
 def config_file_json():

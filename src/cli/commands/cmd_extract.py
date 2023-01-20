@@ -3,13 +3,12 @@ import logging
 import os
 import re
 import sys
-from time import perf_counter, sleep
+from time import perf_counter
 
 from parsers.sonarqube import Sonarqube
 from rich import print
 from rich.console import Console
 
-from src.cli.exceptions import exceptions
 from src.cli.jsonReader import folder_reader
 from src.cli.utils import make_progress_bar, print_info, print_panel, print_rule, print_warn
 
@@ -80,8 +79,8 @@ def command_extract(args):
             name = get_infos_from_name(filename)
             result = parser.extract_supported_metrics(component)
 
-            print(f"[dark_blue]Reading:[/] [black]{filename}[/]")
-            print(f"[dark_blue]Save   :[/] [black]{name}[/]\n")
+            print(f"[dark_green]Reading:[/] [black]{filename}[/]")
+            print(f"[dark_green]Save   :[/] [black]{name}[/]\n")
 
             with open(f"{config_path}/{name}", "w") as f:
                 f.write(json.dumps(result, indent=4))
@@ -90,8 +89,8 @@ def command_extract(args):
 
         time_extract = perf_counter() - time_init
         print_info(
-            f"""\n\nMetrics successfully extracted [[blue]{valid_files}/{len(files)} files - {time_extract:0.2f} seconds[/]]!"""
+            f"""\n\nMetrics successfully extracted [[blue bold]{valid_files}/{len(files)} files - {time_extract:0.2f} seconds[/]]!"""
         )
     print_panel(
-        "> Run [#008080]msgram calc all -ep 'extracted_path' -cp [config_path] -o 'output_origin'"
+        "> Run [#008080]msgram calc all -ep 'extracted_path' -cp 'config_path' -o 'output_origin'"
     )
