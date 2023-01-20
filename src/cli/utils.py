@@ -34,10 +34,10 @@ def print_error(text: str):
     console.print(text, style="red")
 
 
-def print_table(the_dict: dict, table_name: str | None, field: str, col_value: str):
+def print_table(the_dict: dict, table_name: str = "", field: str = "", value: str = "Value"):
 
     table = Table(
-        title=f"{table_name or ''}",
+        title=table_name,
         title_style="bold",
         row_styles=["none", "dim"],
         border_style="bright_yellow",
@@ -79,7 +79,7 @@ def make_progress_bar() -> Progress:
     return progress_bar
 
 
-def print_rule(title: str | None, text: str | None, style: str = "#4682B4"):
+def print_rule(title: str = "", text: str = "", style: str = "#4682B4"):
     if title:
         console.rule(f"{title}", style=style)
     else:

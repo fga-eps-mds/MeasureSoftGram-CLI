@@ -31,6 +31,12 @@ def file_reader(path_file):
     return components
 
 
+# todo: unir read_mult_files e folder_reader
+def read_mult_files(directory: Path, pattern: str):
+    for path_file in directory.glob(f"*.{pattern}"):
+        yield open_json_file(path_file), path_file.name
+
+
 def folder_reader(dir_path, pattern):
     num_files_error = 0
     if not list(dir_path.glob(f"*.{pattern}")):

@@ -1,66 +1,100 @@
+import csv
 import json
-
-from tabulate import tabulate
-from termcolor import colored
 import logging
+import re
+from pathlib import Path
 
-from src.cli.jsonReader import open_json_file
-from src.cli.exceptions import MeasureSoftGramCLIException
-from src.cli.resources.measure import calculate_measures
-from src.cli.resources.subcharacteristic import calculate_subcharacteristics
+from rich import print
+from rich.console import Console
+from rich.prompt import Confirm, Prompt
+from rich.tree import Tree
+from staticfiles import DEFAULT_PRE_CONFIG as pre_config
+
+from src.cli.jsonReader import open_json_file, read_mult_files
 from src.cli.resources.characteristic import calculate_characteristics
+from src.cli.resources.measure import calculate_measures
 from src.cli.resources.sqc import calculate_sqc
+from src.cli.resources.subcharacteristic import calculate_subcharacteristics
+from src.cli.utils import print_info, print_panel, print_rule, print_table, print_warn
 
 logger = logging.getLogger("msgram")
+FILE_CONFIG = "msgram.json"
 
 
 def command_calculate(args):
+    print(args)
     try:
-        output_format = args["output_format"]
-        config_dir_path = args["config_dir_path"]
-        file_path = args["file_path"]
+        output_format: str = args["output_format"]
+        config_path: Path = args["config_path"]
+        extracted_path: Path = args["extracted_path"]
     except Exception as e:
         logger.error(f"KeyError: args['{e}'] - non-existent parameters")
+        print.warn(f"KeyError: args['{e}'] - non-existent parameters")
         exit(1)
 
-    config = open_json_file(f"{config_dir_path}/msgram.json")
+    console = Console()
+    console.clear()
+    print_rule("Calculate")
+    print_info("> [blue] Reading config file:[/]")
 
-    try:
-        data_measures, headers_measures = calculate_measures(file_path)
-        data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(
-            config, data_measures['measures']
-        )
-        data_characteristics, headers_characteristics = calculate_characteristics(
-            config, data_subcharacteristics['subcharacteristics']
-        )
-        data_sqc, headers_sqc = calculate_sqc(config, data_characteristics['characteristics'])
+    config = open_json_file(config_path / FILE_CONFIG)
 
-        if output_format == "tabular":
-            print(colored("\nCalculated Measures: \n", "green"))
-            print(tabulate(data_measures, headers=headers_measures))
+    print_info("\n> [blue] Reading extracted files:[/]")
 
-            print(colored("\nCalculated Subcharacteristics: \n", "green"))
-            print(tabulate(data_subcharacteristics, headers=headers_subcharacteristics))
+    isfile = extracted_path.is_file()
+    data_calculated = []
 
-            print(colored("\nCalculated Characteristics: \n", "green"))
-            print(tabulate(data_characteristics, headers=headers_characteristics))
+    if not isfile:
+        for file, file_name in read_mult_files(extracted_path, "msgram"):
+            result = calculate_all(file, file_name, config)
+            data_calculated.append(result)
+    else:
+        data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+        output_format = Prompt.ask("[black]Display as:", choices=["tabular", "tree", "json"])
 
-            print(colored("\nCalculated SQC: \n", "green"))
-            print(tabulate(data_sqc, headers=headers_sqc))
+    print_info(f"\n[#A9A9A9]All calculations performed[/] successfully!")
+    print_rule()
 
-        elif output_format == "json":
-            print(colored("\nCalculated Measures: \n", "green"))
-            print(json.dumps(data_measures))
+    if output_format == "tabular":
+        show_tabulate(data_calculated)
 
-            print(colored("\nCalculated Subcharacteristics: \n", "green"))
-            print(json.dumps(data_subcharacteristics))
+    elif output_format == "json":
+        show_json(data_calculated)
 
-            print(colored("\nCalculated Characteristics: \n", "green"))
-            print(json.dumps(data_characteristics))
+    elif output_format == "tree":
+        show_tree(data_calculated)
 
-            print(colored("\nCalculated SQC: \n", "green"))
-            print(json.dumps(data_sqc))
+    elif output_format == "csv":
+        show_tree(data_calculated)
 
-    except MeasureSoftGramCLIException as error:
-        print(colored(f"Error: {error}", "red"))
-        return 1
+    elif output_format == "json":
+        show_tree(data_calculated)
+
+    else:
+        print("--")
+
+
+def calculate_all(json_data, file_name, config):
+    data_measures, headers_measures = calculate_measures(json_data)
+
+    data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(
+        config, data_measures["measures"]
+    )
+
+    data_characteristics, headers_characteristics = calculate_characteristics(
+        config, data_subcharacteristics["subcharacteristics"]
+    )
+
+    data_sqc, headers_sqc = calculate_sqc(config, data_characteristics["characteristics"])
+
+    version = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)[0]
+    repository = file_name.split(version)[0][:-1]
+
+    return {
+        "measures": data_measures["measures"],
+        "subcharacteristics": data_subcharacteristics["subcharacteristics"],
+        "characteristics": data_characteristics["characteristics"],
+        "sqc": data_sqc["sqc"],
+        "repository": [{"key": "repositoy", "value": repository}],
+        "version": [{"key": "version", "value": version}],
+    }
