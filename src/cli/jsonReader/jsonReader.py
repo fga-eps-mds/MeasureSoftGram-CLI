@@ -1,13 +1,12 @@
 import json
-
 import math
-
 import os
-
 import sys
+from pathlib import Path
+
+import rich.progress
 
 from src.cli.exceptions import exceptions
-
 
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
 
@@ -20,13 +19,10 @@ REQUIRED_SONAR_BASE_COMPONENT_KEYS = [
 ]
 
 
-def file_reader(absolute_path):
-    check_file_extension(absolute_path)
-
-    json_data = open_json_file(absolute_path)
+def file_reader(path_file):
+    json_data = open_json_file_progress_bar(path_file)
 
     check_sonar_format(json_data)
-
     check_metrics_values(json_data)
 
     components = json_data["components"]
@@ -34,40 +30,38 @@ def file_reader(absolute_path):
     return components
 
 
-def folder_reader(absolute_path):
+def folder_reader(dir_path, pattern):
+
+    if not list(dir_path.glob(f"*.{pattern}")):
+        raise exceptions.MeasureSoftGramCLIException(f"No files .{pattern} found inside folder.")
+
+    for path_file in dir_path.glob(f"*.{pattern}"):
+        try:
+            yield file_reader(path_file), path_file.name
+        except exceptions.MeasureSoftGramCLIException as error:
+            print(f"Error reading {dir_path}:", error)
+
+
+def open_json_file_progress_bar(path_file: Path, disable=False):
     try:
-        os.chdir(absolute_path)
-        files_in_dir = os.listdir(absolute_path)
-        components = []
-        files = []
-
-        check_existent_files(files_in_dir)
-
-        for file_path in files_in_dir:
-            components.append(file_reader(file_path))
-            files.append(f'{absolute_path.split("/")[-1]}/{file_path}')
-
-        os.chdir("..")
-    except exceptions.MeasureSoftGramCLIException as error:
-        print(f"Error reading {absolute_path}:", error)
-        sys.exit(1)
-
-    files.sort()
-    return components, files
-
-
-def open_json_file(absolute_path):
-    try:
-        with open(absolute_path, "r") as file:
+        with rich.progress.open(
+            path_file,
+            "rb",
+            description=path_file.name,
+            disable=disable,
+            style="bar.back",
+            complete_style="bar.complete",
+            finished_style="bar.finished",
+            pulse_style="bar.pulse",
+        ) as file:
             return json.load(file)
+
     except FileNotFoundError:
         raise exceptions.FileNotFound("The file was not found")
     except OSError as error:
         raise exceptions.UnableToOpenFile(f"Failed to open the file. {error}")
     except json.JSONDecodeError as error:
-        raise exceptions.InvalidMetricsJsonFile(
-            f"Failed to decode the JSON file. {error}"
-        )
+        raise exceptions.InvalidMetricsJsonFile(f"Failed to decode the JSON file. {error}")
 
 
 def get_missing_keys_str(attrs, required_attrs):
@@ -91,9 +85,7 @@ def check_sonar_format(json_data):
 
     base_component = json_data["baseComponent"]
     base_component_attrs = list(base_component.keys())
-    missing_keys = get_missing_keys_str(
-        base_component_attrs, REQUIRED_SONAR_BASE_COMPONENT_KEYS
-    )
+    missing_keys = get_missing_keys_str(base_component_attrs, REQUIRED_SONAR_BASE_COMPONENT_KEYS)
 
     if len(missing_keys) > 0:
         raise exceptions.InvalidMetricsJsonFile(
@@ -101,9 +93,7 @@ def check_sonar_format(json_data):
         )
 
     if len(json_data["components"]) == 0:
-        raise exceptions.InvalidMetricsJsonFile(
-            "File with valid schema but no metrics data."
-        )
+        raise exceptions.InvalidMetricsJsonFile("File with valid schema but no metrics data.")
 
 
 def check_existent_files(file_reader):
