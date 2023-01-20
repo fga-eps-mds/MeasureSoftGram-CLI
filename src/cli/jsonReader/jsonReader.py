@@ -9,7 +9,7 @@ import rich.progress
 from src.cli.exceptions import exceptions
 
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
-
+REQUIRED_TRK_MEASURES = ["test_failures", "test_errors", "files", "ncloc"]
 REQUIRED_SONAR_BASE_COMPONENT_KEYS = [
     "id",
     "key",
@@ -90,6 +90,15 @@ def check_sonar_format(json_data):
     if len(missing_keys) > 0:
         raise exceptions.InvalidMetricsJsonFile(
             f"Invalid Sonar baseComponent keys. Missing keys are: {missing_keys}"
+        )
+
+    base_component_measures = base_component["measures"]
+    base_component_measures_attrs = [bc["metric"] for bc in base_component_measures]
+    missing_keys = get_missing_keys_str(base_component_measures_attrs, REQUIRED_TRK_MEASURES)
+
+    if len(missing_keys) > 0:
+        raise exceptions.InvalidMetricsJsonFile(
+            f"Invalid Sonar baseComponent TRK measures. Missing keys are: {missing_keys}"
         )
 
     if len(json_data["components"]) == 0:
