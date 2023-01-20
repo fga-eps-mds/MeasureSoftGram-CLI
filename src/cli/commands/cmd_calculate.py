@@ -6,7 +6,7 @@ from pathlib import Path
 
 from rich import print
 from rich.console import Console
-from rich.prompt import Confirm, Prompt
+from rich.prompt import Prompt
 from rich.tree import Tree
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
@@ -15,7 +15,7 @@ from src.cli.resources.characteristic import calculate_characteristics
 from src.cli.resources.measure import calculate_measures
 from src.cli.resources.sqc import calculate_sqc
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
-from src.cli.utils import print_info, print_panel, print_rule, print_table, print_warn
+from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
 from src.config.settings import CSV_DEFAULT_FILE_PATH, FILE_CONFIG, JSON_DEFAULT_FILE_PATH
 
 logger = logging.getLogger("msgram")
@@ -29,7 +29,7 @@ def command_calculate(args):
         extracted_path: Path = args["extracted_path"]
     except Exception as e:
         logger.error(f"KeyError: args['{e}'] - non-existent parameters")
-        print.warn(f"KeyError: args['{e}'] - non-existent parameters")
+        print_error(f"KeyError: args['{e}'] - non-existent parameters")
         exit(1)
 
     console = Console()
@@ -59,7 +59,7 @@ def command_calculate(args):
         show_tabulate(data_calculated)
 
     elif output_format == "raw":
-        show_json(data_calculated)
+        print(data_calculated)
 
     elif output_format == "tree":
         show_tree(data_calculated)
@@ -95,13 +95,55 @@ def calculate_all(json_data, file_name, config):
     repository = file_name.split(version)[0][:-1]
 
     return {
+        "repository": [{"key": "repositoy", "value": repository}],
+        "version": [{"key": "version", "value": version}],
         "measures": data_measures["measures"],
         "subcharacteristics": data_subcharacteristics["subcharacteristics"],
         "characteristics": data_characteristics["characteristics"],
         "sqc": data_sqc["sqc"],
-        "repository": [{"key": "repositoy", "value": repository}],
-        "version": [{"key": "version", "value": version}],
     }
+
+
+def show_tabulate(data_calculated):
+    sqc = data_calculated["sqc"][0]
+    characteristics = {c["key"]: c["value"] for c in data_calculated["characteristics"]}
+    subcharacteristics = {sc["key"]: sc["value"] for sc in data_calculated["subcharacteristics"]}
+    measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
+
+    print_table(measures, "measures", "metric", "value")
+    print_table(subcharacteristics, "subcharacteristics", "subcharacteristics", "value")
+    print_table(characteristics, "characteristics", "characteristics", "value")
+    print_table(sqc, "sqc", "sqc", "value")
+
+
+def get_obj_by_element(object_list: list, element_key: str, element_to_find):
+    for obj in object_list:
+        if obj[element_key] == element_to_find:
+            return obj
+    return {}
+
+
+def show_tree(data_calculated):
+    sqc = data_calculated["sqc"][0]
+    characteristics = data_calculated["characteristics"]
+    subcharacteristics = data_calculated["subcharacteristics"]
+    measures = data_calculated["measures"]
+
+    print("")
+    sqc_tree = Tree(f"[green]{sqc['key']}: {sqc['value']}")
+
+    for char_c, char in zip(pre_config["characteristics"], characteristics):
+        char_tree = sqc_tree.add(f"[red]{char['key']}: {char['value']}")
+
+        for subchar_c in char_c["subcharacteristics"]:
+            subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
+            sub_char_tree = char_tree.add(f"[blue]{subchar['key']} {subchar['value']}")
+
+            for measure_c in subchar_c["measures"]:
+                measure = get_obj_by_element(measures, "key", measure_c["key"])
+                sub_char_tree.add(f"[yellow]{measure['key']} {measure['value']}")
+
+    print(sqc_tree)
 
 
 def export_json(data_calculated: list, file_path: Path = JSON_DEFAULT_FILE_PATH):
