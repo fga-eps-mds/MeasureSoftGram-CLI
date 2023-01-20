@@ -1,20 +1,19 @@
-import re
-import os
-import sys
 import json
 import logging
+import os
+import re
+import sys
+from time import perf_counter, sleep
+
+from parsers.sonarqube import Sonarqube
 from rich import print
 from rich.console import Console
 
-from termcolor import colored
-
-from src.cli.jsonReader import folder_reader
 from src.cli.exceptions import exceptions
-
-from parsers.sonarqube import Sonarqube
+from src.cli.jsonReader import folder_reader
+from src.cli.utils import make_progress_bar, print_info, print_panel, print_rule, print_warn
 
 logger = logging.getLogger("msgram")
-console = Console()
 
 
 def get_infos_from_name(filename: str) -> str:
@@ -28,17 +27,17 @@ def get_infos_from_name(filename: str) -> str:
             "Could not extract creation date from file. Was the file name "
             "to contain a date in the format dd-mm-yyyy-hh-mm"
         )
-        print(colored(message, "red"))
-        print(colored(f"filename: {filename}", "red"))
+        print_warn(message)
+        print_warn(f"filename: {filename}")
         sys.exit(1)
 
-    file_name = filename[: file_date.regs[0][0] - 1].split("/")[1]
+    file_name = filename.split(".")[0]
 
-    date_str = file_date[0]
-    return f"{file_name}-{date_str}-extracted.msgram"
+    return f"{file_name}-extracted.msgram"
 
 
 def command_extract(args):
+    time_init = perf_counter()
     try:
         output_origin = args["output_origin"]
         config_path = args["config_path"]
@@ -47,41 +46,52 @@ def command_extract(args):
 
     except Exception as e:
         logger.error(f"KeyError: args['{e}'] - non-existent parameters")
+        print_warn(f"KeyError: args['{e}'] - non-existent parameters")
         exit(1)
 
+    console = Console()
     console.clear()
-    console.rule(title="MSGram", style="#4682B4")
-    print("[#708090]Init to set config file[/]:")
-    console.line(1)
+    print_rule("Extract metrics")
 
     if not os.path.isdir(config_path):
-        console.line(1)
-        print(f"FileNotFoundError: config directory[bold red]'{config_path}'[/]does not exists")
         logger.error(f'FileNotFoundError: config directory "{config_path}" does not exists')
+        print_warn(f"FileNotFoundError: config directory[blue]'{config_path}'[/]does not exists")
         sys.exit(1)
-
-    logger.info(f"--> Starting to parser extract for {output_origin} output...\n")
-    print(f"--> [#008080]Starting to parser extract for [#006400]'{output_origin}'[/] output...[/]")
 
     logger.debug(f"output_origin: {output_origin}")
     logger.debug(f"data_path: {data_path}")
     logger.debug(f"language_extension: {language_extension}")
 
-    try:
-        components, files = folder_reader(f"{data_path}")
-    except (exceptions.MeasureSoftGramCLIException, FileNotFoundError):
-        logger.error("Error: The folder was not found")
-        sys.exit(1)
-
+    files = list(data_path.glob("*.json"))
+    valid_files = len(files)
     parser = Sonarqube() if output_origin == "sonarqube" else None
-    for filename, component in zip(files, components):
-        logger.info(f"--> Extracting {output_origin} metrics from {filename}...")
-        name = get_infos_from_name(filename)
 
-        result = parser.extract_supported_metrics(component)
+    print_info(f"\n> Extract and save metrics [[blue ]{output_origin}[/]]:")
+    with make_progress_bar() as progress_bar:
 
-        logger.info(f"\n--> Saving results from in {name}...")
-        with open(f"{config_path}/{name}", "w") as f:
-            f.write(json.dumps(result, indent=4))
+        task_request = progress_bar.add_task("[#A9A9A9]Extracting files: ", total=len(files))
+        progress_bar.advance(task_request)
 
-    logger.info("\nAttempt to extract metrics from all files in the directory finished!")
+        for component, filename, files_error in folder_reader(data_path, "json"):
+            if files_error:
+                progress_bar.update(task_request, advance=files_error)
+                valid_files = valid_files - files_error
+
+            name = get_infos_from_name(filename)
+            result = parser.extract_supported_metrics(component)
+
+            print(f"[dark_blue]Reading:[/] [black]{filename}[/]")
+            print(f"[dark_blue]Save   :[/] [black]{name}[/]\n")
+
+            with open(f"{config_path}/{name}", "w") as f:
+                f.write(json.dumps(result, indent=4))
+
+            progress_bar.advance(task_request)
+
+        time_extract = perf_counter() - time_init
+        print_info(
+            f"""\n\nMetrics successfully extracted [[blue]{valid_files}/{len(files)} files - {time_extract:0.2f} seconds[/]]!"""
+        )
+    print_panel(
+        "> Run [#008080]msgram calc all -ep 'extracted_path' -cp [config_path] -o 'output_origin'"
+    )

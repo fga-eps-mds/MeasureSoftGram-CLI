@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import rich.progress
+from rich import print
 
 from src.cli.exceptions import exceptions
 
@@ -20,7 +21,7 @@ REQUIRED_SONAR_BASE_COMPONENT_KEYS = [
 
 
 def file_reader(path_file):
-    json_data = open_json_file(path_file)
+    json_data = open_json_file(path_file, True)
 
     check_sonar_format(json_data)
     check_metrics_values(json_data)
@@ -31,15 +32,18 @@ def file_reader(path_file):
 
 
 def folder_reader(dir_path, pattern):
-
+    num_files_error = 0
     if not list(dir_path.glob(f"*.{pattern}")):
         raise exceptions.MeasureSoftGramCLIException(f"No files .{pattern} found inside folder.")
 
     for path_file in dir_path.glob(f"*.{pattern}"):
         try:
-            yield file_reader(path_file), path_file.name
-        except exceptions.MeasureSoftGramCLIException as error:
-            print(f"Error reading {dir_path}:", error)
+            yield file_reader(path_file), path_file.name, num_files_error
+            num_files_error = 0
+        except exceptions.MeasureSoftGramCLIException as e:
+            print(f"[red]Error: {path_file.name}:")
+            print(f"[red]{e}\n")
+            num_files_error += 1
 
 
 def open_json_file(path_file: Path, disable=False):
