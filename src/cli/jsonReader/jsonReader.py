@@ -20,7 +20,7 @@ REQUIRED_SONAR_BASE_COMPONENT_KEYS = [
 
 
 def file_reader(path_file):
-    json_data = open_json_file_progress_bar(path_file)
+    json_data = open_json_file(path_file)
 
     check_sonar_format(json_data)
     check_metrics_values(json_data)
@@ -42,7 +42,7 @@ def folder_reader(dir_path, pattern):
             print(f"Error reading {dir_path}:", error)
 
 
-def open_json_file_progress_bar(path_file: Path, disable=False):
+def open_json_file(path_file: Path, disable=False):
     try:
         with rich.progress.open(
             path_file,
