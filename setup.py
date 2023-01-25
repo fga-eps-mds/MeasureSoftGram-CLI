@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="msgram",
     long_description="CLI da ferramenta MeasureSoftGram",
-    version="0.1.0",
+    version="0.2.0",
     extras_require={"dev": ["pytest", "pytest-cov", "setuptools", "wheel"]},
     packages=find_packages(),
     install_requires=[
@@ -16,11 +16,11 @@ setup(
         "setuptools~=60.2.0",
         "python-dotenv",
         "rich",
-        "msgram-core==0.1.0",
+        "msgram-core==1.0.0",
         "validators==0.20.0",
     ],
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
-    entry_points={"console_scripts": ["msgram=src.cli.cliRunner:main"]},
+    entry_points={"console_scripts": ["msgram=src.cli.cli:main"]},
 )

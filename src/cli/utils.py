@@ -103,19 +103,3 @@ def print_panel(menssage: str, title: str = "Next steps"):
             width=140,
         ),
     )
-
-
-# ======================================================================================
-# Todo: Apagar na refatoração.
-
-
-def check_host_url(host_url):
-    return host_url if host_url.endswith("/") else host_url + "/"
-
-
-def print_import_files(files):
-    pass
-
-
-def print_status_import_file(file, message, trying_idx):
-    pass

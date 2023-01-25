@@ -1,10 +1,12 @@
 import argparse
-import os
 
 from pathlib import Path
 
-from src.cli.commands import command_import, command_init, command_extract
-from src.config.settings import AVAILABLE_IMPORTS, SUPPORTED_FORMATS
+from src.cli.commands import command_init, command_extract, command_calculate
+from src.config.settings import (
+    AVAILABLE_IMPORTS, SUPPORTED_FORMATS,
+    DEFAULT_CONFIG_PATH, AVAILABLE_GEN_FORMATS
+)
 
 
 def create_parser():
@@ -27,10 +29,11 @@ def create_parser():
     )
 
     parser_init.add_argument(
-        "--dir_path",
+        "-cp",
+        "--config_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
-        help="Path to the directory",
+        default=DEFAULT_CONFIG_PATH,
+        help="Path to default config directory",
     )
     parser_init.set_defaults(func=command_init)  # function command init
 
@@ -38,7 +41,9 @@ def create_parser():
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
 
     parser_extract.add_argument(
+        "-o",
         "--output_origin",
+        required=True,
         type=str,
         choices=(AVAILABLE_IMPORTS),
         help=(
@@ -48,63 +53,29 @@ def create_parser():
     )
 
     parser_extract.add_argument(
-        "--config_dir_path",
+        "-dp",
+        "--data_path",
+        required=True,
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
-        help="Path to the directory",
+        help="Path to analysis data directory",
     )
 
     parser_extract.add_argument(
-        "--dir_path",
+        "-cp",
+        "--config_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent / "data",
-        help="Path to the directory",
+        default=DEFAULT_CONFIG_PATH,
+        help="Path to default config directory",
     )
 
     parser_extract.add_argument(
+        "-le",
         "--language_extension",
         type=str,
         help="The source code language extension",
+        default="py",
     )
     parser_extract.set_defaults(func=command_extract)  # function command extract
-
-    # =====================================< COMMAND import >=====================================
-    parser_import = subparsers.add_parser(
-        "import",
-        help="Import a folder with metrics",
-    )
-
-    parser_import.add_argument(
-        "--output_origin",
-        type=str,
-        choices=(AVAILABLE_IMPORTS),
-        help=(
-            "Import a metrics files from some origin. Valid values are: "
-            + ", ".join(AVAILABLE_IMPORTS)
-        ),
-    )
-
-    parser_import.add_argument(
-        "--dir_path",
-        type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent / "data",
-        help="Path to the directory",
-    )
-
-    parser_import.add_argument(
-        "--language_extension",
-        type=str,
-        help="The source code language extension",
-    )
-
-    parser_import.add_argument(
-        "--host",
-        type=str,
-        nargs="?",
-        default=os.getenv("MSG_SERVICE_HOST"),
-        help="The host of the service",
-    )
-    parser_import.set_defaults(func=command_import)  # function command import
 
     # =====================================< COMMAND calculate >=====================================
     parser_calculate = subparsers.add_parser(
@@ -121,24 +92,28 @@ def create_parser():
     )
 
     parser_calculate.add_argument(
-        "--file_path",
+        "-ep",
+        "--extracted_path",
         type=lambda p: Path(p).absolute(),
-        help="Path to the extracted file",
+        help="Path to the extracted directory",
     )
 
     parser_calculate.add_argument(
-        "--config_dir_path",
+        "-cp",
+        "--config_path",
         type=lambda p: Path(p).absolute(),
-        default=Path(__file__).absolute().parent.parent.parent / ".msgram",
+        default=DEFAULT_CONFIG_PATH,
         help="Path to the config directory",
     )
 
     parser_calculate.add_argument(
+        "-o",
         "--output_format",
         type=str,
-        nargs="?",
-        default="tabular",
-        help=("The format of the output values are: ".join(SUPPORTED_FORMATS)),
+        choices=AVAILABLE_GEN_FORMATS,
+        default="csv",
+        help=("The format of the output (export) values are: ".join(SUPPORTED_FORMATS)),
     )
+    parser_calculate.set_defaults(func=command_calculate)  # function command calculate
 
     return parser

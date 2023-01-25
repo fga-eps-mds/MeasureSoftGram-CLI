@@ -66,8 +66,6 @@ def open_json_file(path_file: Path, disable=False):
 
     except FileNotFoundError:
         raise exceptions.FileNotFound("The file was not found")
-    except OSError as error:
-        raise exceptions.UnableToOpenFile(f"Failed to open the file. {error}")
     except json.JSONDecodeError as error:
         raise exceptions.InvalidMetricsJsonFile(f"Failed to decode the JSON file. {error}")
 

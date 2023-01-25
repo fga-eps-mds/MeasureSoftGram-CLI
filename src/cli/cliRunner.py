@@ -10,12 +10,7 @@ from src.cli.commands import (
     command_calculate,
     command_extract,
     command_init,
-    parse_get_entity,
-    parse_import,
-    parse_init,
 )
-from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
-from src.cli.commands.parse_generate.parse_generate import parse_generate
 from src.config.settings import (
     AVAILABLE_ENTITIES,
     AVAILABLE_GEN_FORMATS,

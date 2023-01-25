@@ -82,17 +82,17 @@ def command_calculate(args):
 
 
 def calculate_all(json_data, file_name, config):
-    data_measures, headers_measures = calculate_measures(json_data)
+    data_measures, _ = calculate_measures(json_data)
 
-    data_subcharacteristics, headers_subcharacteristics = calculate_subcharacteristics(
+    data_subcharacteristics, _ = calculate_subcharacteristics(
         config, data_measures["measures"]
     )
 
-    data_characteristics, headers_characteristics = calculate_characteristics(
+    data_characteristics, _ = calculate_characteristics(
         config, data_subcharacteristics["subcharacteristics"]
     )
 
-    data_sqc, headers_sqc = calculate_sqc(config, data_characteristics["characteristics"])
+    data_sqc, _ = calculate_sqc(config, data_characteristics["characteristics"])
 
     version = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)[0]
     repository = file_name.split(version)[0][:-1]
