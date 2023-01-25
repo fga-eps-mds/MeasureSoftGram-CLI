@@ -20,12 +20,10 @@ def teardown():
 
 
 def test_get_file_infos():
-    filename = "metrics/fga-eps-mds-2022-1-MeasureSoftGram-Service-09-11-2022-16-11-42-develop.json"
+    file_path = "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
 
-    name, created_at = get_infos_from_name(filename)
-    assert name == "fga-eps-mds-2022-1-MeasureSoftGram-Service-extracted.msgram"
-    assert created_at == "2022-09-11T16:11:00"
-
+    file_name = get_infos_from_name(file_path)
+    assert "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop-extracted.msgram" in file_name
 
 def test_not_get_file_infos_wrong_name():
     filename = "metrics/wrong-name.json"
