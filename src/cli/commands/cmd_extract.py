@@ -44,8 +44,8 @@ def command_extract(args):
         language_extension = args["language_extension"]
 
     except Exception as e:
-        logger.error(f"KeyError: args['{e}'] - non-existent parameters")
-        print_warn(f"KeyError: args['{e}'] - non-existent parameters")
+        logger.error(f"KeyError: args[{e}] - non-existent parameters")
+        print_warn(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
     console = Console()
