@@ -1,6 +1,10 @@
+import sys
 import pytest
+import tempfile
+import shutil
 
 from pathlib import Path
+from io import StringIO
 
 from src.cli import jsonReader
 from src.cli.exceptions import exceptions
@@ -250,3 +254,56 @@ class TestCheckSonarFormat:
             jsonReader.check_sonar_format(json_data)
 
         assert error_msg in str(error.value)
+
+
+def test_read_multiple_files():
+    dirpath = tempfile.mkdtemp()
+    shutil.copy(
+        "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    )
+
+    file_names = [file_name for _, file_name in jsonReader.read_mult_files(Path(dirpath), 'json')]
+    assert len(file_names) == 1
+    assert file_names[0] == "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+
+    shutil.rmtree(dirpath)
+
+
+def test_validate_empty_folder_pattern():
+    dirpath = tempfile.mkdtemp()
+    shutil.copy(
+        "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    )
+
+    with pytest.raises(exceptions.MeasureSoftGramCLIException) as error:
+        list(jsonReader.folder_reader(Path(dirpath), 'empty'))
+
+    assert str(error.value) == "No files .empty found inside folder."
+
+    shutil.rmtree(dirpath)
+
+
+def test_num_file_error():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    dirpath = tempfile.mkdtemp()
+    shutil.copy(
+        "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    )
+
+    shutil.copy(
+        "tests/unit/data/invalid_json.json",
+        f"{dirpath}/invalid_json.json"
+    )
+
+    _, file_path, num_errors = list(jsonReader.folder_reader(Path(dirpath), 'json'))[0]
+    sys.stdout = sys.__stdout__
+
+    assert num_errors == 1
+    assert f"Error  :" in captured_output.getvalue()
+
+    shutil.rmtree(dirpath)

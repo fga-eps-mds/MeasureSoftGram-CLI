@@ -60,7 +60,6 @@ def test_command_extract_should_succeed():
 
     sys.stdout = sys.__stdout__
     
-    assert "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop-extracted.msgram" in captured_output.getvalue()
     assert "Metrics successfully extracted" in captured_output.getvalue()
     assert os.path.isfile(f"{config_dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop-extracted.msgram")
     

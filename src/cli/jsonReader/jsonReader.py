@@ -29,7 +29,6 @@ def file_reader(path_file):
     return components
 
 
-# todo: unir read_mult_files e folder_reader
 def read_mult_files(directory: Path, pattern: str):
     for path_file in directory.glob(f"*.{pattern}"):
         yield open_json_file(path_file), path_file.name
@@ -104,11 +103,6 @@ def check_sonar_format(json_data):
 
     if len(json_data["components"]) == 0:
         raise exceptions.InvalidMetricsJsonFile("File with valid schema but no metrics data.")
-
-
-def check_existent_files(file_reader):
-    if len(file_reader) == 0:
-        raise exceptions.MeasureSoftGramCLIException("No files found inside folder.")
 
 
 def check_file_extension(file_name):
