@@ -3,7 +3,6 @@ import logging
 from resources import calculate_measures as core_calculate
 from staticfiles import SONARQUBE_SUPPORTED_MEASURES
 
-from src.cli.jsonReader import open_json_file
 from src.cli.resources.metrics import get_metric_value
 
 logger = logging.getLogger("msgram")

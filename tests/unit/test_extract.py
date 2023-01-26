@@ -24,6 +24,7 @@ def test_get_file_infos():
     file_name = get_infos_from_name(file_path)
     assert "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop-extracted.msgram" in file_name
 
+
 def test_not_get_file_infos_wrong_name():
     filename = "metrics/wrong-name.json"
 
@@ -31,6 +32,7 @@ def test_not_get_file_infos_wrong_name():
         _ = get_infos_from_name(filename)
 
     assert e.value.code == 1
+
 
 def test_command_extract_should_succeed():
     config_dirpath = tempfile.mkdtemp()
@@ -59,10 +61,13 @@ def test_command_extract_should_succeed():
     command_extract(args)
 
     sys.stdout = sys.__stdout__
-    
+
     assert "Metrics successfully extracted" in captured_output.getvalue()
-    assert os.path.isfile(f"{config_dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop-extracted.msgram")
-    
+    assert os.path.isfile(
+        f"{config_dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-"
+        "CLI-01-11-2023-21-59-03-develop-extracted.msgram"
+    )
+
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)
 
@@ -83,6 +88,7 @@ def test_extract_invalid_args(extract_arg):
 
     sys.stdout = sys.__stdout__
     assert f"KeyError: args['{extract_arg}'] - non-existent parameters" in captured_output.getvalue()
+
 
 def test_command_extract_config_path_is_not_a_dir():
     captured_output = StringIO()

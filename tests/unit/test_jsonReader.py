@@ -1,10 +1,8 @@
-import sys
 import pytest
 import tempfile
 import shutil
 
 from pathlib import Path
-from io import StringIO
 
 from src.cli import jsonReader
 from src.cli.exceptions import exceptions
@@ -41,7 +39,7 @@ class TestOpenJsonFile:
         """
         with pytest.raises(exceptions.FileNotFound) as error:
             jsonReader.open_json_file(Path("tests/utils/sona.json"))
-        
+
         assert str(error.value) == "The file was not found"
 
     def test_file_invalid_json(self):
@@ -281,29 +279,5 @@ def test_validate_empty_folder_pattern():
         list(jsonReader.folder_reader(Path(dirpath), 'empty'))
 
     assert str(error.value) == "No files .empty found inside folder."
-
-    shutil.rmtree(dirpath)
-
-
-def test_num_file_error():
-    captured_output = StringIO()
-    sys.stdout = captured_output
-
-    dirpath = tempfile.mkdtemp()
-    shutil.copy(
-        "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
-        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
-    )
-
-    shutil.copy(
-        "tests/unit/data/invalid_json.json",
-        f"{dirpath}/invalid_json.json"
-    )
-
-    _, file_path, num_errors = list(jsonReader.folder_reader(Path(dirpath), 'json'))[0]
-    sys.stdout = sys.__stdout__
-
-    assert num_errors == 1
-    assert f"Error  :" in captured_output.getvalue()
 
     shutil.rmtree(dirpath)

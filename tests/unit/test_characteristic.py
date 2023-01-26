@@ -12,7 +12,7 @@ def test_calculate_characteristics():
     ]
 
     infos, headers = calculate_characteristics(config, subcharacteristics)
-    
+
     assert headers == ["Id", "Name", "Description", "Value", "Created at"]
     assert infos == {'characteristics': [
         {'key': 'reliability', 'value': 0.8633460569923477},

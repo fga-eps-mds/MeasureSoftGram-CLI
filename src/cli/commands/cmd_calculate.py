@@ -50,11 +50,11 @@ def command_calculate(args):
             data_calculated.append(result)
     else:
         data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
-        print_info(f"\n[#A9A9A9]All calculations performed[/] successfully!")
+        print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
 
         output_format = Prompt.ask("\n\n[black]Display as:", choices=["tabular", "tree", "raw"])
 
-    print_info(f"\n[#A9A9A9]All calculations performed[/] successfully!")
+    print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
     print_rule()
 
     if output_format == "tabular":

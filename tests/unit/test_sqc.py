@@ -12,6 +12,6 @@ def test_calculate_sqc():
     ]
 
     infos, headers = calculate_sqc(config, characteristics)
-    
+
     assert headers == ["Id", "Value", "Created at"]
     assert infos == {'sqc': [{'key': 'sqc', 'value': 0.7643799276297641}]}

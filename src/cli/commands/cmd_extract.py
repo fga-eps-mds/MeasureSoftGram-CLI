@@ -89,7 +89,8 @@ def command_extract(args):
 
         time_extract = perf_counter() - time_init
         print_info(
-            f"""\n\nMetrics successfully extracted [[blue bold]{valid_files}/{len(files)} files - {time_extract:0.2f} seconds[/]]!"""
+            f"\n\nMetrics successfully extracted [[blue bold]{valid_files}/{len(files)} "
+            f"files - {time_extract:0.2f} seconds[/]]!"
         )
     print_panel(
         "> Run [#008080]msgram calc all -ep 'extracted_path' -cp 'config_path' -o 'output_origin'"

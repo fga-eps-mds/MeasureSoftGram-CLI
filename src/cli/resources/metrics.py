@@ -9,7 +9,7 @@ def get_metric_value(extracted):
     ]
 
     # Métricas que o parâmetro é extraido do UTS
-    uts_values = ['test_execution_time', 'tests'] 
+    uts_values = ['test_execution_time', 'tests']
     response_data = {}
 
     # Para todos os arquivos extraidos

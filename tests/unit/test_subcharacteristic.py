@@ -16,7 +16,7 @@ def test_calculate_subcharacteristics():
     ]
 
     infos, headers = calculate_subcharacteristics(config, measures)
-    
+
     assert headers == ["Id", "Name", "Description", "Value", "Created at"]
     assert infos == {'subcharacteristics': [
         {'key': 'testing_status', 'value': 0.8633460569923477},
