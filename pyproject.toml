@@ -43,3 +43,6 @@ strict = true
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "setuptools", "wheel"]
+
+[tool.setuptools.packages]
+find = {}
