@@ -1,190 +1,110 @@
-import json
+import os
+import sys
+import copy
+import pytest
+import tempfile
+import shutil
+
 from io import StringIO
+from pathlib import Path
+from unittest.mock import patch
 
-from tabulate import tabulate
+from src.cli.commands.cmd_calculate import command_calculate, calculate_all
+from src.cli.jsonReader import open_json_file
 
-from src.cli.commands.parse_calculate.utils import (
-    calculate_measures,
-    calculate_characteristics,
-    calculate_subcharacteristics,
-    calculate_sqc
+CALCULATE_ARGS = {
+    "output_format": "csv",
+    "config_path": Path(""),
+    "extracted_path": Path(""),
+}
+
+
+@pytest.mark.parametrize(
+    "calculate_arg",
+    ['output_format', 'config_path', 'extracted_path']
 )
-from src.cli.commands.parse_calculate.parse_calculate import parse_calculate
+def test_calculate_invalid_args(calculate_arg):
+    captured_output = StringIO()
+    sys.stdout = captured_output
 
-DUMMY_HOST = "http://dummy_host.com/"
-EXPECTED_HEADERS = ['Id', 'Name', 'Description', 'Value', 'Created at']
-EXPECTED_HEADERS_SQC = ['Id', 'Value', 'Created at']
-EXPECTED_DATA_MEASURES = [
-    [5, 'Commented File Density', None, 0.04575803981623277, '2022-09-18T13:54:58.598413-03:00']
-]
-EXPECTED_DATA_CHARACTERISTICS = [
-    [2, 'Maintainability', None, 0.6954297796580421, '2022-09-18T14:23:46.526590-03:00']
-]
-EXPECTED_DATA_SUBCHARACTERISTICS = [
-    [1, 'Modifiability', None, 0.6954297796580421, '2022-09-18T14:32:16.524653-03:00']
-]
-EXPECTED_DATA_SQC = [
-    [1093, 0.6388928513249956, '2022-09-18T14:33:50.135692-03:00']
-]
+    args = copy.deepcopy(CALCULATE_ARGS)
+    del args[calculate_arg]
+
+    with pytest.raises(SystemExit):
+        command_calculate(args)
+
+    sys.stdout = sys.__stdout__
+    assert f"KeyError: args['{calculate_arg}'] - non-existent parameters" in captured_output.getvalue()
 
 
-class DummyResponse:
-    def __init__(self, status_code, res_data):
-        self.status_code = status_code
-        self.res_data = res_data
-
-    def json(self):
-        return self.res_data
-
-
-def test_calculate_all_tabular_format(mocker):
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_measures",
-        return_value=(EXPECTED_DATA_MEASURES, EXPECTED_HEADERS)
-    )
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_characteristics",
-        return_value=(EXPECTED_DATA_CHARACTERISTICS, EXPECTED_HEADERS)
-    )
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_subcharacteristics",
-        return_value=(EXPECTED_DATA_SUBCHARACTERISTICS, EXPECTED_HEADERS)
-    )
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_sqc",
-        return_value=(EXPECTED_DATA_SQC, EXPECTED_HEADERS_SQC)
-    )
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-        parse_calculate(DUMMY_HOST, 1, 1, 1, "tabular")
-
-        assert "Calculated Measures:" in fake_out.getvalue()
-        assert tabulate(EXPECTED_DATA_MEASURES, EXPECTED_HEADERS) in fake_out.getvalue()
-
-        assert "Calculated Characteristics:" in fake_out.getvalue()
-        assert tabulate(EXPECTED_DATA_CHARACTERISTICS, EXPECTED_HEADERS) in fake_out.getvalue()
-
-        assert "Calculated Subcharacteristics:" in fake_out.getvalue()
-        assert tabulate(EXPECTED_DATA_SUBCHARACTERISTICS, EXPECTED_HEADERS) in fake_out.getvalue()
-
-        assert "Calculated SQC:" in fake_out.getvalue()
-        assert tabulate(EXPECTED_DATA_SQC, EXPECTED_HEADERS_SQC) in fake_out.getvalue()
-
-
-def test_calculate_all_json_format(mocker):
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_measures",
-        return_value=(EXPECTED_DATA_MEASURES, EXPECTED_HEADERS)
-    )
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_characteristics",
-        return_value=(EXPECTED_DATA_CHARACTERISTICS, EXPECTED_HEADERS)
-    )
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_subcharacteristics",
-        return_value=(EXPECTED_DATA_SUBCHARACTERISTICS, EXPECTED_HEADERS)
-    )
-    mocker.patch(
-        "src.cli.commands.parse_calculate.parse_calculate.calculate_sqc",
-        return_value=(EXPECTED_DATA_SQC, EXPECTED_HEADERS_SQC)
-    )
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-        parse_calculate(DUMMY_HOST, 1, 1, 1, "json")
-
-        assert json.dumps(EXPECTED_DATA_MEASURES) in fake_out.getvalue()
-        assert json.dumps(EXPECTED_DATA_CHARACTERISTICS) in fake_out.getvalue()
-        assert json.dumps(EXPECTED_DATA_SUBCHARACTERISTICS) in fake_out.getvalue()
-        assert json.dumps(EXPECTED_DATA_SQC) in fake_out.getvalue()
-
-
-def test_calculate_measures_success(mocker):
-    res_data = [
-        {
-            "id": 5,
-            "key": "commented_file_density",
-            "name": "Commented File Density",
-            "description": None,
-            "latest": {
-                "id": 9147,
-                "measure_id": 5,
-                "value": 0.04575803981623277,
-                "created_at": "2022-09-18T13:54:58.598413-03:00"
-            }
-        }
+@pytest.mark.parametrize(
+    "output_format,mult_file",
+    [
+        ("tabular", False), ("tree", False), ("raw", False),
+        ("csv", True), ("json", True)
     ]
-    mocker.patch(
-        "src.clients.service_client.ServiceClient.calculate_entity",
-        return_value=DummyResponse(201, res_data)
+)
+def test_calculate_file(output_format, mult_file):
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
+
+    shutil.copy(
+        "tests/unit/data/msgram.json",
+        f"{config_dirpath}/msgram.json"
     )
-    extracted_data, headers = calculate_measures(DUMMY_HOST)
 
-    assert EXPECTED_HEADERS == headers
-    assert EXPECTED_DATA_MEASURES == extracted_data
-
-
-def test_calculate_characteristics_success(mocker):
-    res_data = [
-        {
-            "id": 2,
-            "key": "maintainability",
-            "name": "Maintainability",
-            "description": None,
-            "latest": {
-                "id": 3361,
-                "characteristic_id": 2,
-                "value": 0.6954297796580421,
-                "created_at": "2022-09-18T14:23:46.526590-03:00"
-            }
-        }
-    ]
-
-    mocker.patch(
-        "src.clients.service_client.ServiceClient.calculate_entity",
-        return_value=DummyResponse(201, res_data)
+    extracted_file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/{extracted_file_name}"
     )
-    extracted_data, headers = calculate_characteristics(DUMMY_HOST)
 
-    assert EXPECTED_HEADERS == headers
-    assert EXPECTED_DATA_CHARACTERISTICS == extracted_data
-
-
-def test_calculate_subcharacteristics_success(mocker):
-    res_data = [
-        {
-            "id": 1,
-            "key": "modifiability",
-            "name": "Modifiability",
-            "description": None,
-            "latest": {
-                "id": 3351,
-                "subcharacteristic_id": 1,
-                "value": 0.6954297796580421,
-                "created_at": "2022-09-18T14:32:16.524653-03:00"
-            }
-        }
-    ]
-
-    mocker.patch(
-        "src.clients.service_client.ServiceClient.calculate_entity",
-        return_value=DummyResponse(201, res_data)
-    )
-    extracted_data, headers = calculate_subcharacteristics(DUMMY_HOST)
-
-    assert EXPECTED_HEADERS == headers
-    assert EXPECTED_DATA_SUBCHARACTERISTICS == extracted_data
-
-
-def test_calculate_sqc_success(mocker):
-    res_data = {
-        "id": 1093,
-        "value": 0.6388928513249956,
-        "created_at": "2022-09-18T14:33:50.135692-03:00"
+    args = {
+        "output_format": output_format,
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(
+            extract_dirpath + (f"/{extracted_file_name}" if not mult_file else "")
+        ),
     }
 
-    mocker.patch(
-        "src.clients.service_client.ServiceClient.calculate_entity",
-        return_value=DummyResponse(201, res_data)
-    )
-    extracted_data, headers = calculate_sqc(DUMMY_HOST)
+    if not mult_file:
+        calculate_patch = patch('builtins.input', return_value=output_format)
+        calculate_patch.start()
 
-    assert EXPECTED_HEADERS_SQC == headers
-    assert EXPECTED_DATA_SQC == extracted_data
+    command_calculate(args)
+
+    assert len(os.listdir(config_dirpath)) == 2 if mult_file else 1
+    assert len(os.listdir(extract_dirpath)) == 1
+
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
+
+
+def test_calculate_all_dict():
+    file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
+    json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
+    config = open_json_file(Path('tests/unit/data/msgram.json'))
+
+    calculated = calculate_all(json_data, file_name, config)
+
+    assert calculated == {
+        'repository': [{'key': 'repository', 'value': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI'}],
+        'version': [{'key': 'version', 'value': '01-05-2023-21-40'}],
+        'measures': [
+            {'key': 'passed_tests', 'value': 1.0},
+            {'key': 'test_builds', 'value': 0.9999969696180555},
+            {'key': 'test_coverage', 'value': 0.5153846153846154},
+            {'key': 'non_complex_file_density', 'value': 0.4829268292682926},
+            {'key': 'commented_file_density', 'value': 0.029230769230769227},
+            {'key': 'duplication_absense', 'value': 1.0}
+        ],
+        'subcharacteristics': [
+            {'key': 'testing_status', 'value': 0.8633460569923477},
+            {'key': 'modifiability', 'value': 0.650528195701257}
+        ],
+        'characteristics': [
+            {'key': 'reliability', 'value': 0.8633460569923477},
+            {'key': 'maintainability', 'value': 0.650528195701257}
+        ],
+        'sqc': [{'key': 'sqc', 'value': 0.7643799276297641}]
+    }

@@ -1,29 +1,56 @@
+import json
 import logging
 import sys
-import os
-import json
+from pathlib import Path
 
+from rich.console import Console
+from rich.prompt import Confirm
 from staticfiles import DEFAULT_PRE_CONFIG
+
+from src.cli.utils import print_error, print_info, print_panel, print_rule
+from src.config.settings import FILE_CONFIG
 
 logger = logging.getLogger("msgram")
 
 
 def command_init(args):
     try:
-        dir_path = args["dir_path"]
+        config_path: Path = args["config_path"]
 
     except Exception as e:
-        logger.error(f"KeyError: args['{e}'] - non-existent parameters")
+        logger.error(f"KeyError: args[{e}] - non-existent parameters")
+        print_error(f"KeyError: args[{e}] - non-existent parameters")
         sys.exit(1)
 
-    logger.info(dir_path)
+    logger.debug(config_path)
+    file_path = config_path / FILE_CONFIG
 
-    if os.path.isdir(dir_path):
-        logger.error(f"DirExistsError: directory \"{dir_path}\" already exists")
-        sys.exit(1)
+    console = Console()
+    console.clear()
+    print_rule("MSGram", "[#708090]Init to set config file[/]:")
 
-    os.mkdir(dir_path)
-    with open(f"{dir_path}/msgram.json", "w") as f:
-        f.write(json.dumps(DEFAULT_PRE_CONFIG, indent=4))
+    if not config_path.exists():
+        print_info(f"Created dir: {config_path}")
+        config_path.mkdir()
 
-    logger.info(f"The file {dir_path}/msgram.json was created successfully.")
+    replace = True
+
+    if file_path.exists():
+        print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
+        replace = Confirm.ask(f"> Do you want to replace [bold blue]'{FILE_CONFIG}'[/]?")
+
+    if replace:
+        try:
+            with file_path.open("w") as f:
+                f.write(json.dumps(DEFAULT_PRE_CONFIG, indent=4))
+        except OSError:
+            console.line(2)
+            print_error("Error opening or writing to file")
+        print_info(f"The file config: '{config_path.name}/msgram.json' was created successfully.")
+
+    else:
+        print_info(f"The file config: '{config_path.name}/msgram.json' not changed...")
+
+    print_panel(
+        "> [#008080]Run msgram extract -o sonarqube -dp data_path[/], to extract suported metrics!"
+    )
