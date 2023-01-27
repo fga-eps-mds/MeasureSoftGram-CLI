@@ -73,7 +73,7 @@ def test_calculate_file(output_format, mult_file):
 
     command_calculate(args)
 
-    assert len(os.listdir(config_dirpath)) == 1
+    assert len(os.listdir(config_dirpath)) == 2 if mult_file else 1
     assert len(os.listdir(extract_dirpath)) == 1
 
     shutil.rmtree(config_dirpath)

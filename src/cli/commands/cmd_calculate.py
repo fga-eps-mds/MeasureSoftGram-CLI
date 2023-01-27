@@ -16,7 +16,7 @@ from src.cli.resources.measure import calculate_measures
 from src.cli.resources.sqc import calculate_sqc
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
-from src.config.settings import CSV_DEFAULT_FILE_PATH, FILE_CONFIG, JSON_DEFAULT_FILE_PATH
+from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 
 logger = logging.getLogger("msgram")
 
@@ -67,11 +67,11 @@ def command_calculate(args):
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
-        export_csv(data_calculated)
+        export_csv(data_calculated, config_path)
 
     elif output_format == "json":
         print_info("Exporting JSON...")
-        export_json(data_calculated)
+        export_json(data_calculated, config_path)
 
     print_panel(
         title="Done",
@@ -145,7 +145,8 @@ def show_tree(data_calculated):
     print(sqc_tree)
 
 
-def export_json(data_calculated: list, file_path: Path = JSON_DEFAULT_FILE_PATH):
+def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
+    file_path = file_path.joinpath("calc_msgram.json")
     with open(file_path, "w", encoding="utf-8") as write_file:
         json.dump(
             data_calculated,
@@ -155,7 +156,8 @@ def export_json(data_calculated: list, file_path: Path = JSON_DEFAULT_FILE_PATH)
     print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as JSON")
 
 
-def export_csv(data_calculated: list, file_path: Path = CSV_DEFAULT_FILE_PATH):
+def export_csv(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
+    file_path = file_path.joinpath("calc_msgram.csv")
     with open(file_path, "w", newline="") as csv_file:
         writer = csv.writer(csv_file)
         csv_header = []
@@ -175,4 +177,3 @@ def export_csv(data_calculated: list, file_path: Path = CSV_DEFAULT_FILE_PATH):
         writer.writerows(csv_rows)
 
     print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as CSV")
-    
