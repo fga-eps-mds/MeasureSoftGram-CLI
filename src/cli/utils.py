@@ -34,7 +34,7 @@ def print_error(text: str):
     console.print(text, style="red")
 
 
-def print_table(the_dict: dict, table_name: str = "", field: str = "", value: str = "Value"):
+def print_table(the_dict: dict, table_name: str = "", field: str = ""):
 
     table = Table(
         title=table_name,
@@ -54,7 +54,7 @@ def print_table(the_dict: dict, table_name: str = "", field: str = "", value: st
     )
 
     table.add_column(
-        field,
+        "values",
         no_wrap=True,
         header_style="bold red",
         footer_style="bright_red",

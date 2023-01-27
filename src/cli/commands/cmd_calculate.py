@@ -22,14 +22,13 @@ logger = logging.getLogger("msgram")
 
 
 def command_calculate(args):
-    print(args)
     try:
         output_format: str = args["output_format"]
         config_path: Path = args["config_path"]
         extracted_path: Path = args["extracted_path"]
     except Exception as e:
-        logger.error(f"KeyError: args['{e}'] - non-existent parameters")
-        print_error(f"KeyError: args['{e}'] - non-existent parameters")
+        logger.error(f"KeyError: args[{e}] - non-existent parameters")
+        print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
     console = Console()
@@ -98,7 +97,7 @@ def calculate_all(json_data, file_name, config):
     repository = file_name.split(version)[0][:-1]
 
     return {
-        "repository": [{"key": "repositoy", "value": repository}],
+        "repository": [{"key": "repository", "value": repository}],
         "version": [{"key": "version", "value": version}],
         "measures": data_measures["measures"],
         "subcharacteristics": data_subcharacteristics["subcharacteristics"],
@@ -113,10 +112,10 @@ def show_tabulate(data_calculated):
     subcharacteristics = {sc["key"]: sc["value"] for sc in data_calculated["subcharacteristics"]}
     measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
 
-    print_table(measures, "measures", "metric", "value")
-    print_table(subcharacteristics, "subcharacteristics", "subcharacteristics", "value")
-    print_table(characteristics, "characteristics", "characteristics", "value")
-    print_table(sqc, "sqc", "sqc", "value")
+    print_table(measures, "measures", "measures")
+    print_table(subcharacteristics, "subcharacteristics", "subcharacteristics")
+    print_table(characteristics, "characteristics", "characteristics")
+    print_table(sqc, "sqc", "sqc")
 
 
 def get_obj_by_element(object_list: list, element_key: str, element_to_find):
@@ -176,3 +175,4 @@ def export_csv(data_calculated: list, file_path: Path = CSV_DEFAULT_FILE_PATH):
         writer.writerows(csv_rows)
 
     print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as CSV")
+    
