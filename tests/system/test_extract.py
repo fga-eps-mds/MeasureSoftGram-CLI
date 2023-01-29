@@ -24,7 +24,7 @@ def capture(command):
 def test_extract_metrics_folder_not_found_exception_handling():
     config_dirpath = tempfile.mkdtemp()
     _, err, returncode = capture(
-        ["msgram", "extract", "-o", "sonarqube", "-cp", config_dirpath, "-dp", "sonar-output-fake"]
+        ["msgram", "extract", "-o", "sonarqube", "-ep", config_dirpath, "-dp", "sonar-output-fake"]
     )
 
     assert returncode == 1
@@ -35,8 +35,8 @@ def test_extract_metrics_folder_not_found_exception_handling():
 
 def test_extract_metrics_config_folder_not_found_exception_handling():
     msg, _, returncode = capture(
-        ["msgram", "extract", "-o", "sonarqube", "-cp", "config-fake", "-dp", "sonar-output-fake"]
+        ["msgram", "extract", "-o", "sonarqube", "-ep", "config-fake", "-dp", "sonar-output-fake"]
     )
 
     assert returncode == 1
-    assert "FileNotFoundError: config directory" in msg.decode("utf-8")
+    assert "FileNotFoundError: extracted directory" in msg.decode("utf-8")

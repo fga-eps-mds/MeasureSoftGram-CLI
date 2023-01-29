@@ -12,7 +12,7 @@ from src.cli.commands.cmd_extract import get_infos_from_name, command_extract
 
 EXTRACT_ARGS = {
     "output_origin": "sonarqube",
-    "config_path": Path(""),
+    "extracted_path": Path(""),
     "data_path": Path(""),
     "language_extension": "py"
 }
@@ -50,7 +50,7 @@ def test_command_extract_should_succeed():
 
     args = {
         "output_origin": "sonarqube",
-        "config_path": Path(config_dirpath),
+        "extracted_path": Path(config_dirpath),
         "data_path": Path(extract_dirpath),
         "language_extension": "py"
     }
@@ -74,7 +74,7 @@ def test_command_extract_should_succeed():
 
 @pytest.mark.parametrize(
     "extract_arg",
-    ['output_origin', 'config_path', 'data_path', 'language_extension']
+    ['output_origin', 'extracted_path', 'data_path', 'language_extension']
 )
 def test_extract_invalid_args(extract_arg):
     captured_output = StringIO()
@@ -90,15 +90,15 @@ def test_extract_invalid_args(extract_arg):
     assert f"KeyError: args['{extract_arg}'] - non-existent parameters" in captured_output.getvalue()
 
 
-def test_command_extract_config_path_is_not_a_dir():
+def test_command_extract_extracted_path_is_not_a_dir():
     captured_output = StringIO()
     sys.stdout = captured_output
 
     args = copy.deepcopy(EXTRACT_ARGS)
-    args['config_path'] = Path('inexistent')
+    args['extracted_path'] = Path('inexistent')
 
     with pytest.raises(SystemExit):
         command_extract(args)
 
     sys.stdout = sys.__stdout__
-    assert 'FileNotFoundError: config directory' in captured_output.getvalue()
+    assert 'FileNotFoundError: extracted directory' in captured_output.getvalue()

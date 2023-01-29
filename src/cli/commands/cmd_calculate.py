@@ -66,27 +66,9 @@ def command_calculate(args):
     if success:
         print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
 
-    if output_format == "tabular":
-        show_tabulate(data_calculated)
-
-    elif output_format == "raw":
-        print(data_calculated)
-
-    elif output_format == "tree":
-        show_tree(data_calculated)
-
-    elif len(data_calculated) == 0:
-        print_info(f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!")
-
-    elif output_format == "csv":
-        print_info("Exporting CSV...")
-        export_csv(data_calculated, config_path)
-
-    elif output_format == "json":
-        print_info("Exporting JSON...")
-        export_json(data_calculated, config_path)
-
+    show_results(output_format, data_calculated, config_path)
     print_rule()
+
     print_panel(
         title="Done",
         menssage="> See our docs for more information: \n"
@@ -118,6 +100,28 @@ def calculate_all(json_data, file_name, config):
         "characteristics": data_characteristics["characteristics"],
         "sqc": data_sqc["sqc"],
     }
+
+
+def show_results(output_format, data_calculated, config_path):
+    if output_format == "tabular":
+        show_tabulate(data_calculated)
+
+    elif output_format == "raw":
+        print(data_calculated)
+
+    elif output_format == "tree":
+        show_tree(data_calculated)
+
+    elif len(data_calculated) == 0:
+        print_info(f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!")
+
+    elif output_format == "csv":
+        print_info("Exporting CSV...")
+        export_csv(data_calculated, config_path)
+
+    elif output_format == "json":
+        print_info("Exporting JSON...")
+        export_json(data_calculated, config_path)
 
 
 def show_tabulate(data_calculated):

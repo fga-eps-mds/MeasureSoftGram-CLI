@@ -1,7 +1,5 @@
 import logging
-from datetime import datetime
 
-import pytz
 from rich import box, print
 from rich.console import Console
 from rich.panel import Panel
@@ -10,13 +8,6 @@ from rich.table import Table
 
 logger = logging.getLogger("msgram")
 console = Console(highlight=False, soft_wrap=False, width=140)
-
-
-def pretty_date_str(date: str, format="%m/%d/%Y %H:%M:%S", timezone="Brazil/East"):
-    date_time = datetime.fromisoformat(date)
-    date_time = date_time.astimezone(pytz.timezone(timezone))
-
-    return date_time.strftime(format)
 
 
 def print_info(text: str):
