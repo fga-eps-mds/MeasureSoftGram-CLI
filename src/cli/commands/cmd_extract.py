@@ -39,7 +39,7 @@ def command_extract(args):
     time_init = perf_counter()
     try:
         output_origin = args["output_origin"]
-        config_path = args["config_path"]
+        extracted_path = args["extracted_path"]
         data_path = args["data_path"]
         language_extension = args["language_extension"]
 
@@ -52,9 +52,9 @@ def command_extract(args):
     console.clear()
     print_rule("Extract metrics")
 
-    if not os.path.isdir(config_path):
-        logger.error(f'FileNotFoundError: config directory "{config_path}" does not exists')
-        print_warn(f"FileNotFoundError: config directory[blue]'{config_path}'[/]does not exists")
+    if not os.path.isdir(extracted_path):
+        logger.error(f'FileNotFoundError: extracted directory "{extracted_path}" does not exists')
+        print_warn(f"FileNotFoundError: extracted directory[blue]'{extracted_path}'[/]does not exists")
         sys.exit(1)
 
     logger.debug(f"output_origin: {output_origin}")
@@ -82,7 +82,7 @@ def command_extract(args):
             print(f"[dark_green]Reading:[/] [black]{filename}[/]")
             print(f"[dark_green]Save   :[/] [black]{name}[/]\n")
 
-            with open(f"{config_path}/{name}", "w") as f:
+            with open(f"{extracted_path}/{name}", "w") as f:
                 f.write(json.dumps(result, indent=4))
 
             progress_bar.advance(task_request)
@@ -93,5 +93,5 @@ def command_extract(args):
             f"files - {time_extract:0.2f} seconds[/]]!"
         )
     print_panel(
-        "> Run [#008080]msgram calc all -ep 'extracted_path' -cp 'config_path' -o 'output_origin'"
+        "> Run [#008080]msgram calculate all -ep 'extracted_path' -cp 'extracted_path' -o 'output_origin'"
     )
