@@ -40,7 +40,7 @@ def command_calculate(args):
     try:
         config = open_json_file(config_path / FILE_CONFIG)
     except exceptions.MeasureSoftGramCLIException as e:
-        print(f"[red]Error reading config file in {config_path}: {e}\n")
+        print(f"[red]Error reading msgram.json config file in {config_path}: {e}\n")
         print_rule()
         exit(1)
 

@@ -39,4 +39,4 @@ def test_extract_metrics_config_folder_not_found_exception_handling():
     )
 
     assert returncode == 1
-    assert "FileNotFoundError: extracted directory" in msg.decode("utf-8")
+    assert "FileNotFoundError: extract directory" in msg.decode("utf-8")

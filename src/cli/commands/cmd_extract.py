@@ -53,8 +53,8 @@ def command_extract(args):
     print_rule("Extract metrics")
 
     if not os.path.isdir(extracted_path):
-        logger.error(f'FileNotFoundError: extracted directory "{extracted_path}" does not exists')
-        print_warn(f"FileNotFoundError: extracted directory[blue]'{extracted_path}'[/]does not exists")
+        logger.error(f'FileNotFoundError: extract directory "{extracted_path}" does not exists')
+        print_warn(f"FileNotFoundError: extract directory[blue]'{extracted_path}'[/]does not exists")
         sys.exit(1)
 
     logger.debug(f"output_origin: {output_origin}")

@@ -101,4 +101,4 @@ def test_command_extract_extracted_path_is_not_a_dir():
         command_extract(args)
 
     sys.stdout = sys.__stdout__
-    assert 'FileNotFoundError: extracted directory' in captured_output.getvalue()
+    assert 'FileNotFoundError: extract directory' in captured_output.getvalue()

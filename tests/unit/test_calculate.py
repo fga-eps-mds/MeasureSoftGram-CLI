@@ -131,7 +131,7 @@ def test_calculate_invalid_config_file():
         command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert f"Error reading config file in {config_dirpath}" in captured_output.getvalue()
+    assert f"Error reading msgram.json config file in {config_dirpath}" in captured_output.getvalue()
 
     shutil.rmtree(config_dirpath)
 
