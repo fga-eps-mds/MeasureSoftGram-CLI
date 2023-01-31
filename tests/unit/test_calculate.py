@@ -108,3 +108,90 @@ def test_calculate_all_dict():
         ],
         'sqc': [{'key': 'sqc', 'value': 0.7643799276297641}]
     }
+
+
+def test_calculate_invalid_config_file():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    config_dirpath = tempfile.mkdtemp()
+
+    shutil.copy(
+        "tests/unit/data/invalid_json.json",
+        f"{config_dirpath}/msgram.json"
+    )
+
+    args = {
+        "output_format": 'csv',
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path("."),
+    }
+
+    with pytest.raises(SystemExit):
+        command_calculate(args)
+
+    sys.stdout = sys.__stdout__
+    assert f"Error reading msgram.json config file in {config_dirpath}" in captured_output.getvalue()
+
+    shutil.rmtree(config_dirpath)
+
+
+def test_calculate_invalid_extracted_file():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
+
+    shutil.copy(
+        "tests/unit/data/msgram.json",
+        f"{config_dirpath}/msgram.json"
+    )
+
+    extracted_file_name = "invalid_json.json"
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/{extracted_file_name}"
+    )
+
+    args = {
+        "output_format": "csv",
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(
+            extract_dirpath + f"/{extracted_file_name}"),
+    }
+
+    command_calculate(args)
+
+    sys.stdout = sys.__stdout__
+    assert f"Error calculating {extract_dirpath}/{extracted_file_name}" in captured_output.getvalue()
+    assert "All calculations performed" not in captured_output.getvalue()
+
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
+
+
+def test_calculate_warn_zero_calculated_files():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    config_dirpath = tempfile.mkdtemp()
+
+    shutil.copy(
+        "tests/unit/data/msgram.json",
+        f"{config_dirpath}/msgram.json"
+    )
+
+    args = {
+        "output_format": "csv",
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path("."),
+    }
+
+    command_calculate(args)
+
+    sys.stdout = sys.__stdout__
+    assert "WARNING: No extracted file readed so no csv was generated!" in captured_output.getvalue()
+    assert "All calculations performed" not in captured_output.getvalue()
+
+    shutil.rmtree(config_dirpath)

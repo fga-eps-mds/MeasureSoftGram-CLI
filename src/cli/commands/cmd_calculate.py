@@ -16,6 +16,7 @@ from src.cli.resources.measure import calculate_measures
 from src.cli.resources.sqc import calculate_sqc
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
+from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 
 logger = logging.getLogger("msgram")
@@ -36,47 +37,42 @@ def command_calculate(args):
     print_rule("Calculate")
     print_info("> [blue] Reading config file:[/]")
 
-    config = open_json_file(config_path / FILE_CONFIG)
+    try:
+        config = open_json_file(config_path / FILE_CONFIG)
+    except exceptions.MeasureSoftGramCLIException as e:
+        print(f"[red]Error reading msgram.json config file in {config_path}: {e}\n")
+        print_rule()
+        exit(1)
 
     print_info("\n> [blue] Reading extracted files:[/]")
 
     isfile = extracted_path.is_file()
     data_calculated = []
+    success = False
 
     if not isfile:
         for file, file_name in read_mult_files(extracted_path, "msgram"):
             result = calculate_all(file, file_name, config)
             data_calculated.append(result)
+            success = True
     else:
-        data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+        try:
+            data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+            success = True
+            output_format = Prompt.ask("\n\n[black]Display as:", choices=["tabular", "tree", "raw"])
+        except exceptions.MeasureSoftGramCLIException as e:
+            print(f"[red]Error calculating {extracted_path}: {e}\n")
+
+    if success:
         print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
 
-        output_format = Prompt.ask("\n\n[black]Display as:", choices=["tabular", "tree", "raw"])
-
-    print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
+    show_results(output_format, data_calculated, config_path)
     print_rule()
-
-    if output_format == "tabular":
-        show_tabulate(data_calculated)
-
-    elif output_format == "raw":
-        print(data_calculated)
-
-    elif output_format == "tree":
-        show_tree(data_calculated)
-
-    elif output_format == "csv":
-        print_info("Exporting CSV...")
-        export_csv(data_calculated, config_path)
-
-    elif output_format == "json":
-        print_info("Exporting JSON...")
-        export_json(data_calculated, config_path)
 
     print_panel(
         title="Done",
         menssage="> See our docs for more information: \n"
-        " https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-CLI",
+        " https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-CLI",
     )
 
 
@@ -104,6 +100,28 @@ def calculate_all(json_data, file_name, config):
         "characteristics": data_characteristics["characteristics"],
         "sqc": data_sqc["sqc"],
     }
+
+
+def show_results(output_format, data_calculated, config_path):
+    if output_format == "tabular":
+        show_tabulate(data_calculated)
+
+    elif output_format == "raw":
+        print(data_calculated)
+
+    elif output_format == "tree":
+        show_tree(data_calculated)
+
+    elif len(data_calculated) == 0:
+        print_info(f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!")
+
+    elif output_format == "csv":
+        print_info("Exporting CSV...")
+        export_csv(data_calculated, config_path)
+
+    elif output_format == "json":
+        print_info("Exporting JSON...")
+        export_json(data_calculated, config_path)
 
 
 def show_tabulate(data_calculated):

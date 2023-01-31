@@ -44,3 +44,5 @@ analytics-raw-data/
 .msgram/
 .env
 **/*.log
+
+setup.py

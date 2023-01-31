@@ -31,7 +31,10 @@ def file_reader(path_file):
 
 def read_mult_files(directory: Path, pattern: str):
     for path_file in directory.glob(f"*.{pattern}"):
-        yield open_json_file(path_file), path_file.name
+        try:
+            yield open_json_file(path_file), path_file.name
+        except exceptions.MeasureSoftGramCLIException:
+            print(f"[red]Error calculating {path_file.name}: Failed to decode the JSON file.\n")
 
 
 def folder_reader(dir_path, pattern):
@@ -65,6 +68,8 @@ def open_json_file(path_file: Path, disable=False):
 
     except FileNotFoundError:
         raise exceptions.FileNotFound("The file was not found")
+    except IsADirectoryError:
+        raise exceptions.UnableToOpenFile(f"File {path_file.name} is a directory")
     except json.JSONDecodeError as error:
         raise exceptions.InvalidMetricsJsonFile(f"Failed to decode the JSON file. {error}")
 
