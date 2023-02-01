@@ -13,14 +13,6 @@ def capture(command):
     return out, err, proc.returncode
 
 
-# def command_extract_should_succeed():
-#     config_dirpath = tempfile.mkdtemp()
-#     breakpoint()
-#     _, err, returncode = capture(
-#         ["msgram", "extract", "-o", "sonarqube", "-cp", config_dirpath, "-dp", "sonar-output-fake"]
-#     )
-
-
 def test_extract_metrics_folder_not_found_exception_handling():
     config_dirpath = tempfile.mkdtemp()
     _, err, returncode = capture(
