@@ -39,3 +39,10 @@ junit.xml
 
 # analytics-raw-data
 analytics-raw-data/
+
+.measuresoftgram
+.msgram/
+.env
+**/*.log
+
+setup.py

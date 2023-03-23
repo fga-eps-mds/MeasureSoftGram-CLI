@@ -1,0 +1,10 @@
+{
+    "organization_name": "fga-eps-mds",
+    "product_name": "MeasureSoftGram",
+    "repositories": [
+        "https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-CLI",
+        "https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-Service",
+        "https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-Front",
+        "https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-Core"
+    ]
+}

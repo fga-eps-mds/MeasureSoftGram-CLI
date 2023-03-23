@@ -1,6 +1,12 @@
 import pytest
-from io import StringIO
-from src.cli import jsonReader, exceptions
+import tempfile
+import shutil
+
+from pathlib import Path
+
+from src.cli import jsonReader
+from src.cli.exceptions import exceptions
+from tests.unit.data.file_reader_response import EXPECTED_SONAR_JSON_COMPONENTS
 
 
 @pytest.mark.parametrize("file_name", ["sonar.txt", "sonar.xml", "sonar.jjson"])
@@ -12,123 +18,14 @@ def test_invalid_file_extension(file_name):
     with pytest.raises(exceptions.InvalidMetricsJsonFile) as error:
         jsonReader.check_file_extension(file_name)
 
-    assert str(error.value) == "Only JSON files are accepted"
+    assert str(error.value) == "Only JSON files are accepted."
 
 
 def test_file_reader_success():
     """
     Test file_reader function success case
     """
-    EXPECTED_SONAR_JSON_COMPONENTS = [
-        {
-            "id": "AX9GDsKlZuVL7NjXSAZ4",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/__init__.py",
-            "name": "__init__.py",
-            "qualifier": "UTS",
-            "path": "tests/__init__.py",
-            "language": "py",
-            "measures": [
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-            ],
-        },
-        {
-            "id": "AX9Fg6R0WRlRH47OejaP",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram/cli.py",
-            "name": "cli.py",
-            "qualifier": "FIL",
-            "path": "measuresoftgram/cli.py",
-            "language": "py",
-            "measures": [
-                {"metric": "complexity", "value": "2"},
-                {"metric": "functions", "value": "2"},
-                {"metric": "ncloc", "value": "4"},
-                {"metric": "coverage", "value": "100.0", "bestValue": True},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {
-                    "metric": "comment_lines_density",
-                    "value": "20.0",
-                    "bestValue": False,
-                },
-                {"metric": "files", "value": "1"},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-            ],
-        },
-        {
-            "id": "AX9GDsKlZuVL7NjXSAZ3",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests/hello_world_test.py",
-            "name": "hello_world_test.py",
-            "qualifier": "UTS",
-            "path": "tests/hello_world_test.py",
-            "language": "py",
-            "measures": [
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "test_execution_time", "value": "2"},
-                {"metric": "tests", "value": "2"},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-            ],
-        },
-        {
-            "id": "AX9Fg6R0WRlRH47OejaQ",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:measuresoftgram",
-            "name": "measuresoftgram",
-            "qualifier": "DIR",
-            "path": "measuresoftgram",
-            "measures": [
-                {
-                    "metric": "duplicated_lines_density",
-                    "value": "0.0",
-                    "bestValue": True,
-                },
-                {"metric": "functions", "value": "2"},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "files", "value": "1"},
-                {"metric": "complexity", "value": "2"},
-                {"metric": "ncloc", "value": "4"},
-                {"metric": "coverage", "value": "100.0", "bestValue": True},
-                {
-                    "metric": "comment_lines_density",
-                    "value": "20.0",
-                    "bestValue": False,
-                },
-            ],
-        },
-        {
-            "id": "AX9GDsKlZuVL7NjXSAZ5",
-            "key": "fga-eps-mds_2021-2-MeasureSoftGram-CLI:tests",
-            "name": "tests",
-            "qualifier": "DIR",
-            "path": "tests",
-            "measures": [
-                {"metric": "test_execution_time", "value": "2"},
-                {"metric": "test_failures", "value": "0", "bestValue": True},
-                {"metric": "test_errors", "value": "0", "bestValue": True},
-                {"metric": "security_rating", "value": "1.0", "bestValue": True},
-                {"metric": "tests", "value": "2"},
-            ],
-        },
-    ]
-
-    components = jsonReader.file_reader("tests/unit/data/sonar.json")
-
+    components = jsonReader.file_reader(Path("tests/unit/data/sonar.json"))
     assert components == EXPECTED_SONAR_JSON_COMPONENTS
 
 
@@ -136,14 +33,12 @@ class TestOpenJsonFile:
     """
     Tests open_json_file function
     """
-
     def test_file_not_found(self):
         """
         Test when the file does not exists
         """
-
         with pytest.raises(exceptions.FileNotFound) as error:
-            jsonReader.open_json_file("tests/utils/sona.json")
+            jsonReader.open_json_file(Path("tests/utils/sona.json"))
 
         assert str(error.value) == "The file was not found"
 
@@ -151,9 +46,8 @@ class TestOpenJsonFile:
         """
         Test when the file is an invalid JSON
         """
-
         with pytest.raises(exceptions.InvalidMetricsJsonFile) as error:
-            jsonReader.open_json_file("tests/unit/data/invalid_json.json")
+            jsonReader.open_json_file(Path("tests/unit/data/invalid_json.json"))
 
         assert "Failed to decode the JSON file." in str(error.value)
 
@@ -164,48 +58,29 @@ class TestValidateMetricsPost:
     """
 
     @pytest.mark.parametrize("status_code", [200, 201, 204])
-    def test_post_success(self, status_code, mocker):
+    def test_post_success(self, status_code):
         """
         Test when a success status code is returned
         """
 
-        with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-            jsonReader.validate_metrics_post(status_code, {})
+        # with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        message = jsonReader.validate_metrics_post(status_code)
 
-            assert (
-                "The imported metrics were saved for the pre-configuration"
-                in fake_out.getvalue()
-            )
+        assert "OK: Metrics uploaded successfully" == message
 
-    @pytest.mark.parametrize(
-        "status_code, response, additional_msg",
-        [
-            (400, {}, ""),
-            (500, {}, ""),
-            (404, {"pre_config_id": "123 is not a valid ID"}, "is not a valid ID"),
-            (
-                422,
-                {
-                    "__all__": "The metrics in this file are not the expected in the pre config. Missing metrics: a, b"
-                },
-                "The metrics in this file are not the expected in the pre config. Missing metrics: ",
-            ),
-        ],
-    )
-    def test_post_failure(self, status_code, response, additional_msg, mocker):
+    @pytest.mark.parametrize("status_code", [400, 500, 404, 422])
+    def test_post_failure(self, status_code):
         """
         Test when an error is returned
         """
 
-        with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-            jsonReader.validate_metrics_post(status_code, response)
+        # with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
+        message = jsonReader.validate_metrics_post(status_code)
 
-            output = fake_out.getvalue()
-
-            assert "There was an ERROR while saving your Metrics" in output
-
-            if additional_msg:
-                assert additional_msg in output
+        assert (
+            f'FAIL: The host service server returned a {status_code} error. Trying again'
+            == message
+        )
 
 
 class TestCheckMetricsValues:
@@ -345,7 +220,26 @@ class TestCheckSonarFormat:
                 },
                 "components": {},
             },
-            "Invalid Sonar JSON components value. It must have at least one component",
+            "Invalid Sonar baseComponent TRK measures. Missing keys are: test_failures, test_errors, files, ncloc",
+        ),
+        (
+            {
+                "paging": {},
+                "baseComponent": {
+                    "id": "",
+                    "key": "",
+                    "name": "",
+                    "qualifier": "",
+                    "measures": [
+                        {"metric": "test_failures"},
+                        {"metric": "test_errors"},
+                        {"metric": "files"},
+                        {"metric": "ncloc"}
+                    ],
+                },
+                "components": {},
+            },
+            "File with valid schema but no metrics data.",
         ),
     ]
 
@@ -354,8 +248,36 @@ class TestCheckSonarFormat:
         """
         Test invalid Sonar JSON data
         """
-
         with pytest.raises(exceptions.InvalidMetricsJsonFile) as error:
             jsonReader.check_sonar_format(json_data)
 
         assert error_msg in str(error.value)
+
+
+def test_read_multiple_files():
+    dirpath = tempfile.mkdtemp()
+    shutil.copy(
+        "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    )
+
+    file_names = [file_name for _, file_name in jsonReader.read_mult_files(Path(dirpath), 'json')]
+    assert len(file_names) == 1
+    assert file_names[0] == "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+
+    shutil.rmtree(dirpath)
+
+
+def test_validate_empty_folder_pattern():
+    dirpath = tempfile.mkdtemp()
+    shutil.copy(
+        "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    )
+
+    with pytest.raises(exceptions.MeasureSoftGramCLIException) as error:
+        list(jsonReader.folder_reader(Path(dirpath), 'empty'))
+
+    assert str(error.value) == "No files .empty found inside folder."
+
+    shutil.rmtree(dirpath)
