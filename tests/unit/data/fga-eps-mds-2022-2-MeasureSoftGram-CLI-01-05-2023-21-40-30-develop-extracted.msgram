@@ -1,0 +1,2524 @@
+{
+    "tests/__init__.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/__init__.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/__init__.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/integration/__init__.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "coverage",
+                "value": 0.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_available/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_change_name/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_analysis/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_calculate/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_generate/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_create/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_show/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_import/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_init/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_get_entity/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_list/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/jsonReader/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "coverage",
+                "value": 0.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/exceptions/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "coverage",
+                "value": 0.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/clients/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/config/__init__.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 69.0
+            },
+            {
+                "metric": "complexity",
+                "value": 203.0
+            },
+            {
+                "metric": "coverage",
+                "value": 61.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 3.2
+            }
+        ]
+    },
+    "src/clients": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 7.0
+            },
+            {
+                "metric": "complexity",
+                "value": 13.0
+            },
+            {
+                "metric": "coverage",
+                "value": 64.7
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 1.4
+            }
+        ]
+    },
+    "src/cli/cliRunner.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 4.0
+            },
+            {
+                "metric": "functions",
+                "value": 3.0
+            },
+            {
+                "metric": "coverage",
+                "value": 0.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 2.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 53.0
+            },
+            {
+                "metric": "complexity",
+                "value": 171.0
+            },
+            {
+                "metric": "coverage",
+                "value": 63.2
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 1.6
+            }
+        ]
+    },
+    "src/config": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 7.0
+            },
+            {
+                "metric": "complexity",
+                "value": 19.0
+            },
+            {
+                "metric": "coverage",
+                "value": 86.6
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 14.8
+            }
+        ]
+    },
+    "tests/unit/data": {
+        "qualifier": "DIR",
+        "measures": []
+    },
+    "src/cli/exceptions": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "coverage",
+                "value": 96.3
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 31.4
+            }
+        ]
+    },
+    "src/cli/exceptions/exceptions.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 0.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 38.1
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_generate/generate_utils.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 14.0
+            },
+            {
+                "metric": "functions",
+                "value": 8.0
+            },
+            {
+                "metric": "coverage",
+                "value": 50.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/data/init.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/integration": {
+        "qualifier": "DIR",
+        "measures": []
+    },
+    "tests/unit/data/invalid_json.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/jsonReader": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 9.0
+            },
+            {
+                "metric": "complexity",
+                "value": 21.0
+            },
+            {
+                "metric": "coverage",
+                "value": 77.2
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/jsonReader/jsonReader.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 21.0
+            },
+            {
+                "metric": "functions",
+                "value": 9.0
+            },
+            {
+                "metric": "coverage",
+                "value": 78.2
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/data/measuresoftgramCoreFormat.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/data/measuresoftgramPreConfig.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_analysis": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 4.0
+            },
+            {
+                "metric": "complexity",
+                "value": 14.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_analysis/parse_analysis.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 1.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_available": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "complexity",
+                "value": 6.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_available/parse_available.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 6.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_calculate": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 5.0
+            },
+            {
+                "metric": "complexity",
+                "value": 13.0
+            },
+            {
+                "metric": "coverage",
+                "value": 91.7
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_calculate/parse_calculate.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 2.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 91.4
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_change_name": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "complexity",
+                "value": 2.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_change_name/parse_change_name.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 2.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_create": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 15.0
+            },
+            {
+                "metric": "complexity",
+                "value": 52.0
+            },
+            {
+                "metric": "coverage",
+                "value": 89.4
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_create/parse_create.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 1.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 43.8
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_generate": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 11.0
+            },
+            {
+                "metric": "complexity",
+                "value": 25.0
+            },
+            {
+                "metric": "coverage",
+                "value": 17.7
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 5.3
+            }
+        ]
+    },
+    "src/cli/commands/parse_generate/parse_generate.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 11.0
+            },
+            {
+                "metric": "functions",
+                "value": 3.0
+            },
+            {
+                "metric": "coverage",
+                "value": 0.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 8.5
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_get_entity": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 4.0
+            },
+            {
+                "metric": "complexity",
+                "value": 15.0
+            },
+            {
+                "metric": "coverage",
+                "value": 29.2
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_get_entity/parse_get_entity.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 5.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 55.6
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_import": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 3.0
+            },
+            {
+                "metric": "complexity",
+                "value": 15.0
+            },
+            {
+                "metric": "coverage",
+                "value": 26.7
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 5.9
+            }
+        ]
+    },
+    "src/cli/commands/parse_import/parse_import.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 15.0
+            },
+            {
+                "metric": "functions",
+                "value": 3.0
+            },
+            {
+                "metric": "coverage",
+                "value": 26.7
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 5.9
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_init": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 7.0
+            },
+            {
+                "metric": "complexity",
+                "value": 20.0
+            },
+            {
+                "metric": "coverage",
+                "value": 86.9
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_init/parse_init.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 1.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_list": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "complexity",
+                "value": 4.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_list/parse_list.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 4.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_show": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "complexity",
+                "value": 5.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_show/parse_show.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 5.0
+            },
+            {
+                "metric": "functions",
+                "value": 1.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/repo-init": {
+        "qualifier": "DIR",
+        "measures": []
+    },
+    "tests/repo-init/repositories_measure-soft-gram.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/repo-init/repositories_visualeasy.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_analysis/results.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 13.0
+            },
+            {
+                "metric": "functions",
+                "value": 3.0
+            },
+            {
+                "metric": "coverage",
+                "value": 100.0
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/clients/service_client.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 13.0
+            },
+            {
+                "metric": "functions",
+                "value": 7.0
+            },
+            {
+                "metric": "coverage",
+                "value": 64.7
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 1.4
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/config/settings.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 19.0
+            },
+            {
+                "metric": "functions",
+                "value": 7.0
+            },
+            {
+                "metric": "coverage",
+                "value": 86.6
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 14.8
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/data/sonar.json": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 83.0
+            },
+            {
+                "metric": "complexity",
+                "value": 235.0
+            },
+            {
+                "metric": "coverage",
+                "value": 62.9
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 4.0
+            }
+        ]
+    },
+    "tests/system": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 1416.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "tests",
+                "value": 2.0
+            }
+        ]
+    },
+    "tests/system/test_analysis.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_analysis.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 6.0
+            },
+            {
+                "metric": "tests",
+                "value": 3.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_available.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_available.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 2.0
+            },
+            {
+                "metric": "tests",
+                "value": 1.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_calculate.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 19.0
+            },
+            {
+                "metric": "tests",
+                "value": 6.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_change_name.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_change_name.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 6.0
+            },
+            {
+                "metric": "tests",
+                "value": 3.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_create.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 17.0
+            },
+            {
+                "metric": "tests",
+                "value": 17.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_generate.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 9.0
+            },
+            {
+                "metric": "tests",
+                "value": 7.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_get_entity.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 1.0
+            },
+            {
+                "metric": "tests",
+                "value": 1.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_help.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 947.0
+            },
+            {
+                "metric": "tests",
+                "value": 1.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/test_helpers.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_import.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 469.0
+            },
+            {
+                "metric": "tests",
+                "value": 1.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_init.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 5.0
+            },
+            {
+                "metric": "tests",
+                "value": 3.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_jsonReader.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 23.0
+            },
+            {
+                "metric": "tests",
+                "value": 23.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_list.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_list.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 23.0
+            },
+            {
+                "metric": "tests",
+                "value": 2.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_no_env.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_results.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 3.0
+            },
+            {
+                "metric": "tests",
+                "value": 3.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_service_client.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 7.0
+            },
+            {
+                "metric": "tests",
+                "value": 4.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_settings.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 47.0
+            },
+            {
+                "metric": "tests",
+                "value": 7.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_show.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/unit/test_show.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 5.0
+            },
+            {
+                "metric": "tests",
+                "value": 2.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests/system/test_sigint.py": {
+        "qualifier": "UTS",
+        "measures": [
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "tests": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 1589.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "tests",
+                "value": 84.0
+            }
+        ]
+    },
+    "tests/unit": {
+        "qualifier": "DIR",
+        "measures": [
+            {
+                "metric": "test_execution_time",
+                "value": 173.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "tests",
+                "value": 82.0
+            }
+        ]
+    },
+    "src/cli/utils.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 7.0
+            },
+            {
+                "metric": "functions",
+                "value": 4.0
+            },
+            {
+                "metric": "coverage",
+                "value": 57.9
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 37.5
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_calculate/utils.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 11.0
+            },
+            {
+                "metric": "functions",
+                "value": 4.0
+            },
+            {
+                "metric": "coverage",
+                "value": 91.8
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_create/utils.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 51.0
+            },
+            {
+                "metric": "functions",
+                "value": 14.0
+            },
+            {
+                "metric": "coverage",
+                "value": 94.4
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_init/utils.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 19.0
+            },
+            {
+                "metric": "functions",
+                "value": 6.0
+            },
+            {
+                "metric": "coverage",
+                "value": 82.5
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "src/cli/commands/parse_get_entity/utils.py": {
+        "qualifier": "FIL",
+        "measures": [
+            {
+                "metric": "complexity",
+                "value": 10.0
+            },
+            {
+                "metric": "functions",
+                "value": 3.0
+            },
+            {
+                "metric": "coverage",
+                "value": 13.3
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            }
+        ]
+    },
+    "2022-2-MeasureSoftGram-CLI": {
+        "qualifier": "TRK",
+        "measures": [
+            {
+                "metric": "duplicated_lines_density",
+                "value": 0.0
+            },
+            {
+                "metric": "functions",
+                "value": 83.0
+            },
+            {
+                "metric": "test_execution_time",
+                "value": 1589.0
+            },
+            {
+                "metric": "test_failures",
+                "value": 0.0
+            },
+            {
+                "metric": "test_errors",
+                "value": 0.0
+            },
+            {
+                "metric": "tests",
+                "value": 84.0
+            },
+            {
+                "metric": "complexity",
+                "value": 235.0
+            },
+            {
+                "metric": "coverage",
+                "value": 62.9
+            },
+            {
+                "metric": "comment_lines_density",
+                "value": 4.0
+            }
+        ]
+    }
+}

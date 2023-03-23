@@ -1,102 +1,71 @@
 import os
-import copy
-import json
-from io import StringIO
-
+import sys
 import pytest
+import tempfile
+import shutil
 
-from src.cli.commands import parse_init
-from tests.test_helpers import read_json
-from src.cli.exceptions import exceptions
-from src.cli.commands.parse_init.utils import validate_user_file
+from io import StringIO
+from pathlib import Path
+from unittest.mock import patch
 
-DUMMY_HOST = "http://dummy_host.com/"
-EXPECTED_INIT_DATA = {
-    "organization": {
-        "name": "fga-eps-mds",
-        "id": 1
-    },
-    "product": {
-        "name": "MeasureSoftGram",
-        "id": 1
-    },
-    "repositories": [
-        {"2022-1-MeasureSoftGram-CLI": 1},
-        {"2022-1-MeasureSoftGram-Core": 1},
-        {"2022-1-MeasureSoftGram-Front": 1},
-        {"2022-1-MeasureSoftGram-Service": 1}
-    ]
+from src.cli.commands.cmd_init import command_init
+
+INIT_ARGS = {
+    'config_path': '.testmsgram'
 }
 
 
-class DummyResponse:
-    def __init__(self, status_code, mocked_data):
-        self.status_code = status_code
-        self.text = json.dumps(mocked_data)
+@pytest.mark.parametrize(
+    "init_arg",
+    ['config_path']
+)
+def test_init_invalid_args(init_arg):
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    with pytest.raises(SystemExit):
+        command_init({})
+
+    sys.stdout = sys.__stdout__
+    assert f"KeyError: args['{init_arg}'] - non-existent parameters" in captured_output.getvalue()
 
 
-def setup():
-    try:
-        os.remove(".measuresoftgram")
-    except OSError:
-        pass
+def test_init_config_file():
+    temp_path = tempfile.mkdtemp()
+    config_path = f'{temp_path}/{INIT_ARGS["config_path"]}'
+
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    command_init({'config_path': Path(config_path)})
+    sys.stdout = sys.__stdout__
+
+    assert len(os.listdir(config_path)) == 1
+    assert os.listdir(config_path)[0] == 'msgram.json'
+
+    assert "The file config: '.testmsgram/msgram.json' was created successfully." in captured_output.getvalue()
+
+    shutil.rmtree(temp_path)
 
 
-def teardown():
-    try:
-        os.remove(".measuresoftgram")
-    except OSError:
-        pass
+def test_init_replace_file():
+    config_path = tempfile.mkdtemp()
 
+    captured_output = StringIO()
+    sys.stdout = captured_output
 
-def test_init_create_file(mocker):
-    mocker.patch(
-        "src.clients.service_client.ServiceClient.make_post_request",
-        return_value=DummyResponse(201, {"id": 1})
+    shutil.copy(
+        "tests/unit/data/msgram.json",
+        f"{config_path}/msgram.json"
     )
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-        parse_init("tests/unit/data/init.json", DUMMY_HOST)
 
-        assert EXPECTED_INIT_DATA == read_json(".measuresoftgram")
-        assert "'.measuresoftgram' init file created with success" in fake_out.getvalue()
-        assert os.path.exists(".measuresoftgram")
+    with patch('builtins.input', return_value='n'):
+        command_init({'config_path': Path(config_path)})
+        sys.stdout = sys.__stdout__
 
+    assert len(os.listdir(config_path)) == 1
+    assert os.listdir(config_path)[0] == 'msgram.json'
 
-def test_init_file_already_exists(mocker):
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-        with open('.measuresoftgram', 'w') as file:
-            file.write(json.dumps(EXPECTED_INIT_DATA, indent=4))
+    assert f"The file config: '{config_path.split('/')[-1]}/msgram.json' not changed..." in captured_output.getvalue()
 
-        return_code = parse_init("tests/unit/data/init.json", DUMMY_HOST)
-
-        assert return_code == 1
-        assert "Error: Init file already exists. Check the file '.measuresoftgram'" in fake_out.getvalue()
-
-
-def test_user_init_invalid_file():
-    user_init_file_data = read_json("tests/unit/data/init.json")
-
-    with pytest.raises(exceptions.InvalidMeasuresoftgramFormat):
-        invalid_data = copy.deepcopy(user_init_file_data)
-        invalid_data.pop("organization_name")
-        validate_user_file(invalid_data)
-
-    with pytest.raises(exceptions.InvalidMeasuresoftgramFormat):
-        invalid_data = copy.deepcopy(user_init_file_data)
-        invalid_data["organization_name"] = ""
-        validate_user_file(invalid_data)
-
-    with pytest.raises(exceptions.InvalidMeasuresoftgramFormat):
-        invalid_data = copy.deepcopy(user_init_file_data)
-        invalid_data["product_name"] = ""
-        validate_user_file(invalid_data)
-
-    with pytest.raises(exceptions.InvalidMeasuresoftgramFormat):
-        invalid_data = copy.deepcopy(user_init_file_data)
-        invalid_data["repositories"] = "Repositórios"
-        validate_user_file(invalid_data)
-
-    with pytest.raises(exceptions.InvalidMeasuresoftgramFormat):
-        invalid_data = copy.deepcopy(user_init_file_data)
-        invalid_data["repositories"][0] = "invalid_url/com"
-        validate_user_file(invalid_data)
+    shutil.rmtree(config_path)

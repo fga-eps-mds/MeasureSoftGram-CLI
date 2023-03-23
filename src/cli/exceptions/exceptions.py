@@ -57,19 +57,23 @@ class RepositoryUrlNotFound(MeasureSoftGramCLIException):
     Excessão lançada quando não é possível encontrar uma URL que contenha a
     substring do nome do arquivo
     """
+
     pass
 
 
 class ConfigFileNotFound(MeasureSoftGramCLIException):
     """Raised when the .measuresoftgram file is not found"""
+
     pass
 
 
 class ConfigFileQueryFailed(MeasureSoftGramCLIException):
     """Raised when the query is in the config file"""
+
     pass
 
 
 class ConfigFileFormatInvalid(MeasureSoftGramCLIException):
     """Raised when the config file is invalid"""
+
     pass

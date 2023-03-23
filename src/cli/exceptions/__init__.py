@@ -6,5 +6,5 @@ from src.cli.exceptions.exceptions import (
     InvalidWeight,
     MeasureSoftGramCLIException,
     UnableToOpenFile,
-    UnableToReadFile
+    UnableToReadFile,
 )
