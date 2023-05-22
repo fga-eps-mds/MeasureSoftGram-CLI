@@ -10,4 +10,4 @@ setuptools~=60.2.0
 python-dotenv
 rich
 validators==0.20.0
-/home/markt/eps/2023-1-MeasureSoftGram-Core
+msgram-core
