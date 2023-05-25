@@ -91,20 +91,20 @@ def test_calculate_all_dict():
         'version': [{'key': 'version', 'value': '01-05-2023-21-40'}],
         'measures': [
             {'key': 'passed_tests', 'value': 1.0},
-            {'key': 'test_builds', 'value': 0.9999969696180555},
-            {'key': 'test_coverage', 'value': 0.5153846153846154},
-            {'key': 'non_complex_file_density', 'value': 0.3789488966318234},
-            {'key': 'commented_file_density', 'value': 0.029230769230769227},
+            {'key': 'test_builds', 'value': pytest.approx(0.9999969696180555, 0.00000000000001)},
+            {'key': 'test_coverage', 'value': pytest.approx(0.5153846153846154, 0.00000000000001)},
+            {'key': 'non_complex_file_density', 'value': pytest.approx(0.3789488966318234, 0.00000000000001)},
+            {'key': 'commented_file_density', 'value': pytest.approx(0.029230769230769227, 0.00000000000001)},
             {'key': 'duplication_absense', 'value': 1.0}
         ],
         'subcharacteristics': [
-            {'key': 'testing_status', 'value': 0.8633460569923477},
-            {'key': 'modifiability', 'value': 0.6276266582884098}
+            {'key': 'testing_status', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
+            {'key': 'modifiability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}
         ],
         'characteristics': [
-            {'key': 'reliability', 'value': 0.8633460569923477},
-            {'key': 'maintainability', 'value': 0.6276266582884098}],
-        'sqc': [{'key': 'sqc', 'value': 0.754745532056504}]
+            {'key': 'reliability', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
+            {'key': 'maintainability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}],
+        'sqc': [{'key': 'sqc', 'value': pytest.approx(0.754745532056504, 0.00000000000001)}]
     }
 
 
