@@ -86,27 +86,25 @@ def test_calculate_all_dict():
     config = open_json_file(Path('tests/unit/data/msgram.json'))
 
     calculated = calculate_all(json_data, file_name, config)
-
     assert calculated == {
         'repository': [{'key': 'repository', 'value': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI'}],
         'version': [{'key': 'version', 'value': '01-05-2023-21-40'}],
         'measures': [
             {'key': 'passed_tests', 'value': 1.0},
-            {'key': 'test_builds', 'value': 0.9999969696180555},
-            {'key': 'test_coverage', 'value': 0.5153846153846154},
-            {'key': 'non_complex_file_density', 'value': 0.4829268292682926},
-            {'key': 'commented_file_density', 'value': 0.029230769230769227},
+            {'key': 'test_builds', 'value': pytest.approx(0.9999969696180555, 0.00000000000001)},
+            {'key': 'test_coverage', 'value': pytest.approx(0.5153846153846154, 0.00000000000001)},
+            {'key': 'non_complex_file_density', 'value': pytest.approx(0.3789488966318234, 0.00000000000001)},
+            {'key': 'commented_file_density', 'value': pytest.approx(0.029230769230769227, 0.00000000000001)},
             {'key': 'duplication_absense', 'value': 1.0}
         ],
         'subcharacteristics': [
-            {'key': 'testing_status', 'value': 0.8633460569923477},
-            {'key': 'modifiability', 'value': 0.650528195701257}
+            {'key': 'testing_status', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
+            {'key': 'modifiability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}
         ],
         'characteristics': [
-            {'key': 'reliability', 'value': 0.8633460569923477},
-            {'key': 'maintainability', 'value': 0.650528195701257}
-        ],
-        'sqc': [{'key': 'sqc', 'value': 0.7643799276297641}]
+            {'key': 'reliability', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
+            {'key': 'maintainability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}],
+        'sqc': [{'key': 'sqc', 'value': pytest.approx(0.754745532056504, 0.00000000000001)}]
     }
 
 

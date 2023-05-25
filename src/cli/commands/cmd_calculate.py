@@ -77,7 +77,7 @@ def command_calculate(args):
 
 
 def calculate_all(json_data, file_name, config):
-    data_measures, _ = calculate_measures(json_data)
+    data_measures, _ = calculate_measures(json_data, config)
 
     data_subcharacteristics, _ = calculate_subcharacteristics(
         config, data_measures["measures"]

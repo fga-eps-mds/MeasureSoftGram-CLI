@@ -23,7 +23,7 @@ def get_measure_value(measures, subchar):
     return measures_calculated
 
 
-def calculate_measures(json_data):
+def calculate_measures(json_data, config: dict = {"thresholds": {}}):
     extracted = get_metric_value(json_data)
 
     calculate_infos = []
@@ -38,4 +38,4 @@ def calculate_measures(json_data):
         )
 
     headers = ["Id", "Name", "Description", "Value", "Created at"]
-    return core_calculate({"measures": calculate_infos}), headers
+    return core_calculate({"measures": calculate_infos}, config), headers
