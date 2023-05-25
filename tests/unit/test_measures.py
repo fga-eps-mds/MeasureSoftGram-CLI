@@ -19,4 +19,3 @@ def test_calculate_measures():
         {'key': 'commented_file_density', 'value': 0.029230769230769227},
         {'key': 'duplication_absense', 'value': 1.0}
     ]}
-    

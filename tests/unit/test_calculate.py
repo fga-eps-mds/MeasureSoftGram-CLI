@@ -100,14 +100,13 @@ def test_calculate_all_dict():
         'subcharacteristics': [
             {'key': 'testing_status', 'value': 0.8633460569923477},
             {'key': 'modifiability', 'value': 0.6276266582884098}
-            ],
+        ],
         'characteristics': [
             {'key': 'reliability', 'value': 0.8633460569923477},
             {'key': 'maintainability', 'value': 0.6276266582884098}],
-            'sqc': [{'key': 'sqc', 'value': 0.754745532056504}]
+        'sqc': [{'key': 'sqc', 'value': 0.754745532056504}]
     }
 
-    
 
 def test_calculate_invalid_config_file():
     captured_output = StringIO()
