@@ -62,5 +62,5 @@
         "max_fast_test_time": 300000, 
         "min_coverage": 60,
         "max_coverage": 90 
-      }
+    }
 }
