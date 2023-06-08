@@ -23,7 +23,9 @@ def get_measure_value(measures, subchar):
     return measures_calculated
 
 
-def calculate_measures(json_data, config: dict = {"thresholds": {}}):
+def calculate_measures(json_data, config: dict = {
+        "characteristics": [{"subcharacteristics": [{"measures": [{}]}]}]
+    }):
     extracted = get_metric_value(json_data)
 
     calculate_infos = []
