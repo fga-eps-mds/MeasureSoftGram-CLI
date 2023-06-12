@@ -24,7 +24,7 @@ def get_measure_value(measures, subchar):
 
 
 def calculate_measures(json_data, config: dict = {
-        "characteristics": [{"subcharacteristics": [{"measures": [{}]}]}]
+        "characteristics": [{"subcharacteristics": [{"measures": [{"key": ""}]}]}]
     }):
     extracted = get_metric_value(json_data)
 
