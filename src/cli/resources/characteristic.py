@@ -3,9 +3,9 @@ from src.cli.resources.subcharacteristic import get_subcharacteristic_value
 from resources import calculate_characteristics as core_calculate
 
 
-def get_characteristic_value(chars, sqc):
+def get_characteristic_value(chars, tsqmi):
     char_calculated = []
-    for char in sqc:
+    for char in tsqmi:
         char_key = char["key"]
 
         char_calculated.append({

@@ -87,7 +87,7 @@ def create_parser():
         type=str,
         nargs="?",
         help=(
-            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, tsqmi"
         ),
     )
 

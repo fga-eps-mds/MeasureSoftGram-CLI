@@ -104,7 +104,7 @@ def test_calculate_all_dict():
         'characteristics': [
             {'key': 'reliability', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
             {'key': 'maintainability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}],
-        'sqc': [{'key': 'sqc', 'value': pytest.approx(0.754745532056504, 0.00000000000001)}]
+        'tsqmi': [{'key': 'tsqmi', 'value': pytest.approx(0.754745532056504, 0.00000000000001)}]
     }
 
 
