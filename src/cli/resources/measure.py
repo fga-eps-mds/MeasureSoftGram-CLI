@@ -23,9 +23,12 @@ def get_measure_value(measures, subchar):
     return measures_calculated
 
 
-def calculate_measures(json_data, config: dict = {
+def calculate_measures(
+    json_data,
+    config: dict = {
         "characteristics": [{"subcharacteristics": [{"measures": [{"key": ""}]}]}]
-}):
+    },
+):
     extracted = get_metric_value(json_data)
 
     calculate_infos = []
@@ -34,7 +37,8 @@ def calculate_measures(json_data, config: dict = {
             {
                 "key": list(measures.keys())[0],
                 "parameters": {
-                    metric: extracted[metric] for metric in list(measures.values())[0]["metrics"]
+                    metric: extracted[metric]
+                    for metric in list(measures.values())[0]["metrics"]
                 },
             }
         )

@@ -37,7 +37,9 @@ def command_init(args):
 
     if file_path.exists():
         print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
-        replace = Confirm.ask(f"> Do you want to replace [bold blue]'{FILE_CONFIG}'[/]?")
+        replace = Confirm.ask(
+            f"> Do you want to replace [bold blue]'{FILE_CONFIG}'[/]?"
+        )
 
     if replace:
         try:
@@ -46,7 +48,9 @@ def command_init(args):
         except OSError:
             console.line(2)
             print_error("Error opening or writing to file")
-        print_info(f"The file config: '{config_path.name}/msgram.json' was created successfully.")
+        print_info(
+            f"The file config: '{config_path.name}/msgram.json' was created successfully."
+        )
 
     else:
         print_info(f"The file config: '{config_path.name}/msgram.json' not changed...")

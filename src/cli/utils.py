@@ -26,7 +26,6 @@ def print_error(text: str):
 
 
 def print_table(the_dict: dict, table_name: str = "", field: str = ""):
-
     table = Table(
         title=table_name,
         title_style="bold",

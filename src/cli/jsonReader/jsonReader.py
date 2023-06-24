@@ -34,13 +34,17 @@ def read_mult_files(directory: Path, pattern: str):
         try:
             yield open_json_file(path_file), path_file.name
         except exceptions.MeasureSoftGramCLIException:
-            print(f"[red]Error calculating {path_file.name}: Failed to decode the JSON file.\n")
+            print(
+                f"[red]Error calculating {path_file.name}: Failed to decode the JSON file.\n"
+            )
 
 
 def folder_reader(dir_path, pattern):
     num_files_error = 0
     if not list(dir_path.glob(f"*.{pattern}")):
-        raise exceptions.MeasureSoftGramCLIException(f"No files .{pattern} found inside folder.")
+        raise exceptions.MeasureSoftGramCLIException(
+            f"No files .{pattern} found inside folder."
+        )
 
     for path_file in dir_path.glob(f"*.{pattern}"):
         try:
@@ -71,7 +75,9 @@ def open_json_file(path_file: Path, disable=False):
     except IsADirectoryError:
         raise exceptions.UnableToOpenFile(f"File {path_file.name} is a directory")
     except json.JSONDecodeError as error:
-        raise exceptions.InvalidMetricsJsonFile(f"Failed to decode the JSON file. {error}")
+        raise exceptions.InvalidMetricsJsonFile(
+            f"Failed to decode the JSON file. {error}"
+        )
 
 
 def get_missing_keys_str(attrs, required_attrs):
@@ -90,7 +96,9 @@ def check_sonar_format(json_data):
 
     base_component = json_data["baseComponent"]
     base_component_attrs = list(base_component.keys())
-    missing_keys = get_missing_keys_str(base_component_attrs, REQUIRED_SONAR_BASE_COMPONENT_KEYS)
+    missing_keys = get_missing_keys_str(
+        base_component_attrs, REQUIRED_SONAR_BASE_COMPONENT_KEYS
+    )
 
     if len(missing_keys) > 0:
         raise exceptions.InvalidMetricsJsonFile(
@@ -99,7 +107,9 @@ def check_sonar_format(json_data):
 
     base_component_measures = base_component["measures"]
     base_component_measures_attrs = [bc["metric"] for bc in base_component_measures]
-    missing_keys = get_missing_keys_str(base_component_measures_attrs, REQUIRED_TRK_MEASURES)
+    missing_keys = get_missing_keys_str(
+        base_component_measures_attrs, REQUIRED_TRK_MEASURES
+    )
 
     if len(missing_keys) > 0:
         raise exceptions.InvalidMetricsJsonFile(
@@ -107,7 +117,9 @@ def check_sonar_format(json_data):
         )
 
     if len(json_data["components"]) == 0:
-        raise exceptions.InvalidMetricsJsonFile("File with valid schema but no metrics data.")
+        raise exceptions.InvalidMetricsJsonFile(
+            "File with valid schema but no metrics data."
+        )
 
 
 def check_file_extension(file_name):
