@@ -10,7 +10,7 @@ AVAILABLE_ENTITIES = [
     "measures",
     "subcharacteristics",
     "characteristics",
-    "tsqmi"
+    "tsqmi",
 ]
 
 SUPPORTED_FORMATS = [

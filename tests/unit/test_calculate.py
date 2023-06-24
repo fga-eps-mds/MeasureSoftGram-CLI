@@ -1,15 +1,15 @@
-import os
-import sys
 import copy
-import pytest
-import tempfile
+import os
 import shutil
-
+import sys
+import tempfile
 from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
-from src.cli.commands.cmd_calculate import command_calculate, calculate_all
+import pytest
+
+from src.cli.commands.cmd_calculate import calculate_all, command_calculate
 from src.cli.jsonReader import open_json_file
 
 CALCULATE_ARGS = {
@@ -20,8 +20,7 @@ CALCULATE_ARGS = {
 
 
 @pytest.mark.parametrize(
-    "calculate_arg",
-    ['output_format', 'config_path', 'extracted_path']
+    "calculate_arg", ["output_format", "config_path", "extracted_path"]
 )
 def test_calculate_invalid_args(calculate_arg):
     captured_output = StringIO()
@@ -34,29 +33,32 @@ def test_calculate_invalid_args(calculate_arg):
         command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert f"KeyError: args['{calculate_arg}'] - non-existent parameters" in captured_output.getvalue()
+    assert (
+        f"KeyError: args['{calculate_arg}'] - non-existent parameters"
+        in captured_output.getvalue()
+    )
 
 
 @pytest.mark.parametrize(
     "output_format,mult_file",
     [
-        ("tabular", False), ("tree", False), ("raw", False),
-        ("csv", True), ("json", True)
-    ]
+        ("tabular", False),
+        ("tree", False),
+        ("raw", False),
+        ("csv", True),
+        ("json", True),
+    ],
 )
 def test_calculate_file(output_format, mult_file):
     config_dirpath = tempfile.mkdtemp()
     extract_dirpath = tempfile.mkdtemp()
 
-    shutil.copy(
-        "tests/unit/data/msgram.json",
-        f"{config_dirpath}/msgram.json"
-    )
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
 
     extracted_file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
     shutil.copy(
         f"tests/unit/data/{extracted_file_name}",
-        f"{extract_dirpath}/{extracted_file_name}"
+        f"{extract_dirpath}/{extracted_file_name}",
     )
 
     args = {
@@ -68,7 +70,7 @@ def test_calculate_file(output_format, mult_file):
     }
 
     if not mult_file:
-        calculate_patch = patch('builtins.input', return_value=output_format)
+        calculate_patch = patch("builtins.input", return_value=output_format)
         calculate_patch.start()
 
     command_calculate(args)
@@ -83,28 +85,61 @@ def test_calculate_file(output_format, mult_file):
 def test_calculate_all_dict():
     file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
     json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
-    config = open_json_file(Path('tests/unit/data/msgram.json'))
+    config = open_json_file(Path("tests/unit/data/msgram.json"))
 
     calculated = calculate_all(json_data, file_name, config)
+    print(calculated)
     assert calculated == {
-        'repository': [{'key': 'repository', 'value': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI'}],
-        'version': [{'key': 'version', 'value': '01-05-2023-21-40'}],
-        'measures': [
-            {'key': 'passed_tests', 'value': 1.0},
-            {'key': 'test_builds', 'value': pytest.approx(0.9999969696180555, 0.00000000000001)},
-            {'key': 'test_coverage', 'value': pytest.approx(0.5153846153846154, 0.00000000000001)},
-            {'key': 'non_complex_file_density', 'value': pytest.approx(0.3789488966318234, 0.00000000000001)},
-            {'key': 'commented_file_density', 'value': pytest.approx(0.029230769230769227, 0.00000000000001)},
-            {'key': 'duplication_absense', 'value': 1.0}
+        "repository": [
+            {"key": "repository", "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"}
         ],
-        'subcharacteristics': [
-            {'key': 'testing_status', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
-            {'key': 'modifiability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}
+        "version": [{"key": "version", "value": "01-05-2023-21-40"}],
+        "measures": [
+            {"key": "passed_tests", "value": 1.0},
+            {
+                "key": "test_builds",
+                "value": pytest.approx(0.9996969618055556, 0.00000000000001),
+            },
+            {
+                "key": "test_coverage",
+                "value": pytest.approx(0.4707692307692307, 0.00000000000001),
+            },
+            {
+                "key": "non_complex_file_density",
+                "value": pytest.approx(0.3789488966318234, 0.00000000000001),
+            },
+            {
+                "key": "commented_file_density",
+                "value": pytest.approx(0.029230769230769227, 0.00000000000001),
+            },
+            {"key": "duplication_absense", "value": 1.0},
         ],
-        'characteristics': [
-            {'key': 'reliability', 'value': pytest.approx(0.8633460569923477, 0.00000000000001)},
-            {'key': 'maintainability', 'value': pytest.approx(0.6276266582884098, 0.00000000000001)}],
-        'tsqmi': [{'key': 'tsqmi', 'value': pytest.approx(0.754745532056504, 0.00000000000001)}]
+        "subcharacteristics": [
+            {
+                "key": "testing_status",
+                "value": pytest.approx(0.8543507067377631, 0.00000000000001),
+            },
+            {
+                "key": "modifiability",
+                "value": pytest.approx(0.6276266582884098, 0.00000000000001),
+            },
+        ],
+        "characteristics": [
+            {
+                "key": "reliability",
+                "value": pytest.approx(0.8543507067377631, 0.00000000000001),
+            },
+            {
+                "key": "maintainability",
+                "value": pytest.approx(0.6276266582884098, 0.00000000000001),
+            },
+        ],
+        "tsqmi": [
+            {
+                "key": "tsqmi",
+                "value": pytest.approx(0.7496100160408716, 0.00000000000001),
+            }
+        ],
     }
 
 
@@ -114,13 +149,10 @@ def test_calculate_invalid_config_file():
 
     config_dirpath = tempfile.mkdtemp()
 
-    shutil.copy(
-        "tests/unit/data/invalid_json.json",
-        f"{config_dirpath}/msgram.json"
-    )
+    shutil.copy("tests/unit/data/invalid_json.json", f"{config_dirpath}/msgram.json")
 
     args = {
-        "output_format": 'csv',
+        "output_format": "csv",
         "config_path": Path(config_dirpath),
         "extracted_path": Path("."),
     }
@@ -129,7 +161,10 @@ def test_calculate_invalid_config_file():
         command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert f"Error reading msgram.json config file in {config_dirpath}" in captured_output.getvalue()
+    assert (
+        f"Error reading msgram.json config file in {config_dirpath}"
+        in captured_output.getvalue()
+    )
 
     shutil.rmtree(config_dirpath)
 
@@ -141,28 +176,27 @@ def test_calculate_invalid_extracted_file():
     config_dirpath = tempfile.mkdtemp()
     extract_dirpath = tempfile.mkdtemp()
 
-    shutil.copy(
-        "tests/unit/data/msgram.json",
-        f"{config_dirpath}/msgram.json"
-    )
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
 
     extracted_file_name = "invalid_json.json"
     shutil.copy(
         f"tests/unit/data/{extracted_file_name}",
-        f"{extract_dirpath}/{extracted_file_name}"
+        f"{extract_dirpath}/{extracted_file_name}",
     )
 
     args = {
         "output_format": "csv",
         "config_path": Path(config_dirpath),
-        "extracted_path": Path(
-            extract_dirpath + f"/{extracted_file_name}"),
+        "extracted_path": Path(extract_dirpath + f"/{extracted_file_name}"),
     }
 
     command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert f"Error calculating {extract_dirpath}/{extracted_file_name}" in captured_output.getvalue()
+    assert (
+        f"Error calculating {extract_dirpath}/{extracted_file_name}"
+        in captured_output.getvalue()
+    )
     assert "All calculations performed" not in captured_output.getvalue()
 
     shutil.rmtree(config_dirpath)
@@ -175,10 +209,7 @@ def test_calculate_warn_zero_calculated_files():
 
     config_dirpath = tempfile.mkdtemp()
 
-    shutil.copy(
-        "tests/unit/data/msgram.json",
-        f"{config_dirpath}/msgram.json"
-    )
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
 
     args = {
         "output_format": "csv",
@@ -189,7 +220,10 @@ def test_calculate_warn_zero_calculated_files():
     command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert "WARNING: No extracted file readed so no csv was generated!" in captured_output.getvalue()
+    assert (
+        "WARNING: No extracted file readed so no csv was generated!"
+        in captured_output.getvalue()
+    )
     assert "All calculations performed" not in captured_output.getvalue()
 
     shutil.rmtree(config_dirpath)

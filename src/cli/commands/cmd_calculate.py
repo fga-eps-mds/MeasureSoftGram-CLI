@@ -57,9 +57,13 @@ def command_calculate(args):
             success = True
     else:
         try:
-            data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+            data_calculated = calculate_all(
+                open_json_file(extracted_path), extracted_path.name, config
+            )
             success = True
-            output_format = Prompt.ask("\n\n[black]Display as:", choices=["tabular", "tree", "raw"])
+            output_format = Prompt.ask(
+                "\n\n[black]Display as:", choices=["tabular", "tree", "raw"]
+            )
         except exceptions.MeasureSoftGramCLIException as e:
             print(f"[red]Error calculating {extracted_path}: {e}\n")
 
@@ -113,7 +117,9 @@ def show_results(output_format, data_calculated, config_path):
         show_tree(data_calculated)
 
     elif len(data_calculated) == 0:
-        print_info(f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!")
+        print_info(
+            f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!"
+        )
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
@@ -127,7 +133,9 @@ def show_results(output_format, data_calculated, config_path):
 def show_tabulate(data_calculated):
     tsqmi = data_calculated["tsqmi"][0]
     characteristics = {c["key"]: c["value"] for c in data_calculated["characteristics"]}
-    subcharacteristics = {sc["key"]: sc["value"] for sc in data_calculated["subcharacteristics"]}
+    subcharacteristics = {
+        sc["key"]: sc["value"] for sc in data_calculated["subcharacteristics"]
+    }
     measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
 
     print_table(measures, "measures", "measures")

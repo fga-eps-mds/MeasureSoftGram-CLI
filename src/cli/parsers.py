@@ -4,8 +4,10 @@ from pathlib import Path
 
 from src.cli.commands import command_init, command_extract, command_calculate
 from src.config.settings import (
-    AVAILABLE_IMPORTS, SUPPORTED_FORMATS,
-    DEFAULT_CONFIG_PATH, AVAILABLE_GEN_FORMATS
+    AVAILABLE_IMPORTS,
+    SUPPORTED_FORMATS,
+    DEFAULT_CONFIG_PATH,
+    AVAILABLE_GEN_FORMATS,
 )
 
 
@@ -79,7 +81,8 @@ def create_parser():
 
     # =====================================< COMMAND calculate >=====================================
     parser_calculate = subparsers.add_parser(
-        "calculate", help="Calculates all entities",
+        "calculate",
+        help="Calculates all entities",
     )
 
     parser_calculate.add_argument(

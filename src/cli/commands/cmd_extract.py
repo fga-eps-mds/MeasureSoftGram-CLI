@@ -10,7 +10,13 @@ from rich import print
 from rich.console import Console
 
 from src.cli.jsonReader import folder_reader
-from src.cli.utils import make_progress_bar, print_info, print_panel, print_rule, print_warn
+from src.cli.utils import (
+    make_progress_bar,
+    print_info,
+    print_panel,
+    print_rule,
+    print_warn,
+)
 
 logger = logging.getLogger("msgram")
 
@@ -53,8 +59,12 @@ def command_extract(args):
     print_rule("Extract metrics")
 
     if not os.path.isdir(extracted_path):
-        logger.error(f'FileNotFoundError: extract directory "{extracted_path}" does not exists')
-        print_warn(f"FileNotFoundError: extract directory[blue]'{extracted_path}'[/]does not exists")
+        logger.error(
+            f'FileNotFoundError: extract directory "{extracted_path}" does not exists'
+        )
+        print_warn(
+            f"FileNotFoundError: extract directory[blue]'{extracted_path}'[/]does not exists"
+        )
         sys.exit(1)
 
     logger.debug(f"output_origin: {output_origin}")
@@ -67,8 +77,9 @@ def command_extract(args):
 
     print_info(f"\n> Extract and save metrics [[blue ]{output_origin}[/]]:")
     with make_progress_bar() as progress_bar:
-
-        task_request = progress_bar.add_task("[#A9A9A9]Extracting files: ", total=len(files))
+        task_request = progress_bar.add_task(
+            "[#A9A9A9]Extracting files: ", total=len(files)
+        )
         progress_bar.advance(task_request)
 
         for component, filename, files_error in folder_reader(data_path, "json"):
