@@ -88,7 +88,8 @@ def command_extract(args):
                 valid_files = valid_files - files_error
 
             name = get_infos_from_name(filename)
-            result = parser.parse(input_value=filename, type_input=output_origin)
+            parserinfos = {'input_value': filename, 'type_input': output_origin}
+            result = parser.parse(parserinfos)
 
             print(f"[dark_green]Reading:[/] [black]{filename}[/]")
             print(f"[dark_green]Save   :[/] [black]{name}[/]\n")
