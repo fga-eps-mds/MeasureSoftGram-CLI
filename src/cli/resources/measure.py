@@ -1,7 +1,7 @@
 import logging
 
 from resources import calculate_measures as core_calculate
-from staticfiles import SONARQUBE_SUPPORTED_MEASURES
+from src.config.settings import SUPPORTED_MEASURES
 
 from src.cli.resources.metrics import get_metric_value
 
@@ -23,18 +23,22 @@ def get_measure_value(measures, subchar):
     return measures_calculated
 
 
-def calculate_measures(json_data, config: dict = {
+def calculate_measures(
+    json_data,
+    config: dict = {
         "characteristics": [{"subcharacteristics": [{"measures": [{"key": ""}]}]}]
-}):
+    },
+):
     extracted = get_metric_value(json_data)
 
     calculate_infos = []
-    for measures in SONARQUBE_SUPPORTED_MEASURES:
+    for measures in SUPPORTED_MEASURES:
         calculate_infos.append(
             {
                 "key": list(measures.keys())[0],
                 "parameters": {
-                    metric: extracted[metric] for metric in list(measures.values())[0]["metrics"]
+                    metric: extracted[metric]
+                    for metric in list(measures.values())[0]["metrics"]
                 },
             }
         )

@@ -83,7 +83,7 @@ def command_extract(args):
         )
         progress_bar.advance(task_request)
 
-        for component, filename, files_error in folder_reader(data_path, "json"):
+        for _, filename, files_error in folder_reader(data_path, "json"):
             if files_error:
                 progress_bar.update(task_request, advance=files_error)
                 valid_files = valid_files - files_error
