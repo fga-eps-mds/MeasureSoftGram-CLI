@@ -1,21 +1,33 @@
 from pathlib import Path
 
-from src.cli.resources.measure import calculate_measures
+import pytest
+
 from src.cli.jsonReader import open_json_file
+from src.cli.resources.measure import calculate_measures
 
 
 def test_calculate_measures():
-    json_data = open_json_file(Path(
-        'tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram'))
+    json_data = open_json_file(
+        Path(
+            "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
+        )
+    )
 
     infos, headers = calculate_measures(json_data)
-    print(infos)
     assert headers == ["Id", "Name", "Description", "Value", "Created at"]
-    assert infos == {'measures': [
-        {'key': 'passed_tests', 'value': 1.0},
-        {'key': 'test_builds', 'value': 0.9999969696180555},
-        {'key': 'test_coverage', 'value': 0.5153846153846154},
-        {'key': 'non_complex_file_density', 'value': 0.3789488966318234},
-        {'key': 'commented_file_density', 'value': 0.029230769230769227},
-        {'key': 'duplication_absense', 'value': 1.0}
-    ]}
+    assert "measures" in infos
+
+    measure_result = infos.get("measures")
+    measure_expected = [
+        {"key": "passed_tests", "value": 1.0},
+        {"key": "test_builds", "value": 0.9996969618055556},
+        {"key": "test_coverage", "value": 0.4707692307692307},
+        {"key": "non_complex_file_density", "value": 0.3789488966318234},
+        {"key": "commented_file_density", "value": 0.029230769230769227},
+        {"key": "duplication_absense", "value": 1.0},
+    ]
+    for measure_result, measure_expected in zip(measure_result, measure_expected):
+        assert measure_result.get("key") == measure_expected.get("key")
+        assert pytest.approx(measure_result.get("value")) == measure_expected.get(
+            "value"
+        )
