@@ -82,14 +82,13 @@ def command_extract(args):
         )
         progress_bar.advance(task_request)
 
-        for _, filename, files_error in folder_reader(data_path, "json"):
+        for component, filename, files_error in folder_reader(data_path, "json"):
             if files_error:
                 progress_bar.update(task_request, advance=files_error)
                 valid_files = valid_files - files_error
 
             name = get_infos_from_name(filename)
-            parserinfos = {'input_value': filename, 'type_input': output_origin}
-            result = parser.parse(parserinfos)
+            result = parser.parse(input_value=component, type_input=output_origin)
 
             print(f"[dark_green]Reading:[/] [black]{filename}[/]")
             print(f"[dark_green]Save   :[/] [black]{name}[/]\n")
