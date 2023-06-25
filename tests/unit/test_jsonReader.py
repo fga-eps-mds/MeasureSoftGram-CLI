@@ -33,6 +33,7 @@ class TestOpenJsonFile:
     """
     Tests open_json_file function
     """
+
     def test_file_not_found(self):
         """
         Test when the file does not exists
@@ -78,7 +79,7 @@ class TestValidateMetricsPost:
         message = jsonReader.validate_metrics_post(status_code)
 
         assert (
-            f'FAIL: The host service server returned a {status_code} error. Trying again'
+            f"FAIL: The host service server returned a {status_code} error. Trying again"
             == message
         )
 
@@ -234,7 +235,7 @@ class TestCheckSonarFormat:
                         {"metric": "test_failures"},
                         {"metric": "test_errors"},
                         {"metric": "files"},
-                        {"metric": "ncloc"}
+                        {"metric": "ncloc"},
                     ],
                 },
                 "components": {},
@@ -258,12 +259,17 @@ def test_read_multiple_files():
     dirpath = tempfile.mkdtemp()
     shutil.copy(
         "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
-        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
     )
 
-    file_names = [file_name for _, file_name in jsonReader.read_mult_files(Path(dirpath), 'json')]
+    file_names = [
+        file_name for _, file_name in jsonReader.read_mult_files(Path(dirpath), "json")
+    ]
     assert len(file_names) == 1
-    assert file_names[0] == "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    assert (
+        file_names[0]
+        == "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+    )
 
     shutil.rmtree(dirpath)
 
@@ -272,11 +278,11 @@ def test_validate_empty_folder_pattern():
     dirpath = tempfile.mkdtemp()
     shutil.copy(
         "tests/unit/data/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
-        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json"
+        f"{dirpath}/fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-11-2023-21-59-03-develop.json",
     )
 
     with pytest.raises(exceptions.MeasureSoftGramCLIException) as error:
-        list(jsonReader.folder_reader(Path(dirpath), 'empty'))
+        list(jsonReader.folder_reader(Path(dirpath), "empty"))
 
     assert str(error.value) == "No files .empty found inside folder."
 

@@ -17,9 +17,7 @@ def test_msgram_init_should_execute_sucessfully():
     temp_path = tempfile.mkdtemp()
     dir_path = f"{temp_path}/.msgram"
 
-    _, _, returncode = capture(
-        ["msgram", "init", "-cp", dir_path]
-    )
+    _, _, returncode = capture(["msgram", "init", "-cp", dir_path])
 
     assert returncode == 0
     shutil.rmtree(temp_path)
@@ -28,9 +26,7 @@ def test_msgram_init_should_execute_sucessfully():
 def test_init_should_create_pre_config_in_existent_directory():
     temp_path = tempfile.mkdtemp()
 
-    _, err, returncode = capture(
-        ["msgram", "init", "-cp", temp_path]
-    )
+    _, err, returncode = capture(["msgram", "init", "-cp", temp_path])
 
     assert returncode == 0
     shutil.rmtree(temp_path)

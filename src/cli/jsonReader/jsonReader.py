@@ -43,7 +43,7 @@ def folder_reader(dir_path, pattern):
     num_files_error = 0
     if not list(dir_path.glob(f"*.{pattern}")):
         raise exceptions.MeasureSoftGramCLIException(
-            f"No files .{pattern} found inside folder.{dir_path}"
+            f"No files .{pattern} found inside folder {dir_path}."
         )
 
     for path_file in dir_path.glob(f"*.{pattern}"):
