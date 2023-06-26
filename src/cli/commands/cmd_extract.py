@@ -5,9 +5,9 @@ import re
 import sys
 from time import perf_counter
 
-from parsers.sonarqube import Sonarqube
 from rich import print
 from rich.console import Console
+from genericparser import GenericParser
 
 from src.cli.jsonReader import folder_reader
 from src.cli.utils import (
@@ -73,7 +73,7 @@ def command_extract(args):
 
     files = list(data_path.glob("*.json"))
     valid_files = len(files)
-    parser = Sonarqube() if output_origin == "sonarqube" else None
+    parser = GenericParser()
 
     print_info(f"\n> Extract and save metrics [[blue ]{output_origin}[/]]:")
     with make_progress_bar() as progress_bar:
@@ -88,7 +88,7 @@ def command_extract(args):
                 valid_files = valid_files - files_error
 
             name = get_infos_from_name(filename)
-            result = parser.extract_supported_metrics(component)
+            result = parser.parse(input_value=component, type_input=output_origin)
 
             print(f"[dark_green]Reading:[/] [black]{filename}[/]")
             print(f"[dark_green]Save   :[/] [black]{name}[/]\n")

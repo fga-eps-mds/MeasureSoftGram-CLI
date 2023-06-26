@@ -1,7 +1,7 @@
 import logging
 
 from resources import calculate_measures as core_calculate
-from staticfiles import SONARQUBE_SUPPORTED_MEASURES
+from src.config.settings import SUPPORTED_MEASURES
 
 from src.cli.resources.metrics import get_metric_value
 
@@ -32,7 +32,7 @@ def calculate_measures(
     extracted = get_metric_value(json_data)
 
     calculate_infos = []
-    for measures in SONARQUBE_SUPPORTED_MEASURES:
+    for measures in SUPPORTED_MEASURES:
         calculate_infos.append(
             {
                 "key": list(measures.keys())[0],
