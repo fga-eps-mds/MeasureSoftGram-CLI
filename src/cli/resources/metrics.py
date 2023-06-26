@@ -18,7 +18,7 @@ def get_metric_value(extracted):
     # Para todos os arquivos extraidos
     for path_readed in extracted.values():
         # Para cada métrica dentro das medidas
-        for metric in path_readed:
+        for metric in path_readed["measures"]:
             metric_name = metric["metric"]
             metric_value = metric["value"]
 

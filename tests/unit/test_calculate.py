@@ -88,7 +88,7 @@ def test_calculate_all_dict():
     config = open_json_file(Path("tests/unit/data/msgram.json"))
 
     calculated = calculate_all(json_data, file_name, config)
-    print(calculated)
+    
     assert calculated == {
         "repository": [
             {"key": "repository", "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"}
