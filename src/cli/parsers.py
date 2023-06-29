@@ -49,7 +49,7 @@ def create_parser():
         type=str,
         choices=(AVAILABLE_IMPORTS),
         help=(
-            "Import a metrics files from some origin. Valid values are: "
+            "Import a metrics files/repository from some origin. Valid values are: "
             + ", ".join(AVAILABLE_IMPORTS)
         ),
     )
@@ -77,6 +77,14 @@ def create_parser():
         help="The source code language extension",
         default="py",
     )
+
+    parser_extract.add_argument(
+        "-rep",
+        "--repository_path",
+        type=str,
+        help="Path to analysis git repository",
+    )
+
     parser_extract.set_defaults(func=command_extract)  # function command extract
 
     # =====================================< COMMAND calculate >=====================================
