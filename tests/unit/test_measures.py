@@ -18,7 +18,6 @@ def test_calculate_measures():
     assert "measures" in infos
 
     measure_result = infos.get("measures")
-    print(measure_result)
     measure_expected = [
         {"key": "passed_tests", "value": 1.0},
         {"key": "test_builds", "value": 0.9996329122628728},
