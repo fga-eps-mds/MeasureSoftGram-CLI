@@ -51,7 +51,6 @@ def command_extract(args):
         language_extension = args["language_extension"]
         repository_path = args["repository_path"]
 
-
     except Exception as e:
         logger.error(f"KeyError: args[{e}] - non-existent parameters")
         print_warn(f"KeyError: args[{e}] - non-existent parameters")
@@ -64,9 +63,13 @@ def command_extract(args):
 
     if repository_path and output_origin == "github":
         result = parser.parse(input_value=repository_path, type_input=output_origin)
-        save_file_with_results(repository_path,repository_path,name=f"github_extrated-in{datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.msgram",result=result)
-        return 0    
-
+        save_file_with_results(
+            ".msgram",
+            repository_path,
+            name=f"github_extrated-in{datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.msgram",
+            result=result,
+        )
+        return 0
 
     if not os.path.isdir(extracted_path):
         logger.error(
@@ -84,7 +87,6 @@ def command_extract(args):
 
     files = list(data_path.glob("*.json"))
     valid_files = len(files)
-
 
     print_info(f"\n> Extract and save metrics [[blue ]{output_origin}[/]]:")
     with make_progress_bar() as progress_bar:
@@ -113,6 +115,7 @@ def command_extract(args):
     print_panel(
         "> Run [#008080]msgram calculate all -ep 'extracted_path' -cp 'extracted_path' -o 'output_origin'"
     )
+
 
 def save_file_with_results(extracted_path, filename, name, result):
     print(f"[dark_green]Reading:[/] [black]{filename}[/]")
