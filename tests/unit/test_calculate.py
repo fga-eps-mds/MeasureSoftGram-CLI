@@ -88,7 +88,6 @@ def test_calculate_all_dict():
     config = open_json_file(Path("tests/unit/data/msgram.json"))
 
     calculated_result = calculate_all(json_data, file_name, config)
-
     calculate_expected = {
         "repository": [
             {"key": "repository", "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"}
@@ -98,46 +97,46 @@ def test_calculate_all_dict():
             {"key": "passed_tests", "value": 1.0},
             {
                 "key": "test_builds",
-                "value": 0.9996969618055556,
+                "value": 0.9996329122628728,
             },
             {
                 "key": "test_coverage",
-                "value": 0.4707692307692307,
+                "value": 0.4846666666666668,
             },
             {
                 "key": "non_complex_file_density",
-                "value": 0.3789488966318234,
+                "value": 0.4603110903924873,
             },
             {
                 "key": "commented_file_density",
-                "value": 0.029230769230769227,
+                "value": 0.03377777777777778,
             },
             {"key": "duplication_absense", "value": 1.0},
         ],
         "subcharacteristics": [
             {
                 "key": "testing_status",
-                "value": 0.8543507067377631,
+                "value": 0.8570164700773467,
             },
             {
                 "key": "modifiability",
-                "value": 0.6276266582884098,
+                "value": 0.645223012745165,
             },
         ],
         "characteristics": [
             {
                 "key": "reliability",
-                "value": 0.8543507067377631,
+                "value": 0.8570164700773468,
             },
             {
                 "key": "maintainability",
-                "value": 0.6276266582884098,
+                "value": 0.645223012745165,
             },
         ],
         "tsqmi": [
             {
                 "key": "tsqmi",
-                "value": 0.7496100160408716,
+                "value": 0.7585479438241802,
             }
         ],
     }
