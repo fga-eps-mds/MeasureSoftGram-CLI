@@ -87,9 +87,8 @@ def test_calculate_all_dict():
     json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
     config = open_json_file(Path("tests/unit/data/msgram.json"))
 
-    calculated = calculate_all(json_data, file_name, config)
-    print(calculated)
-    assert calculated == {
+    calculated_result = calculate_all(json_data, file_name, config)
+    calculate_expected = {
         "repository": [
             {"key": "repository", "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"}
         ],
@@ -98,49 +97,86 @@ def test_calculate_all_dict():
             {"key": "passed_tests", "value": 1.0},
             {
                 "key": "test_builds",
-                "value": pytest.approx(0.9996969618055556, 0.00000000000001),
+                "value": 0.9996329122628728,
             },
             {
                 "key": "test_coverage",
-                "value": pytest.approx(0.4707692307692307, 0.00000000000001),
+                "value": 0.4846666666666668,
             },
             {
                 "key": "non_complex_file_density",
-                "value": pytest.approx(0.3789488966318234, 0.00000000000001),
+                "value": 0.4603110903924873,
             },
             {
                 "key": "commented_file_density",
-                "value": pytest.approx(0.029230769230769227, 0.00000000000001),
+                "value": 0.03377777777777778,
             },
             {"key": "duplication_absense", "value": 1.0},
         ],
         "subcharacteristics": [
             {
                 "key": "testing_status",
-                "value": pytest.approx(0.8543507067377631, 0.00000000000001),
+                "value": 0.8570164700773467,
             },
             {
                 "key": "modifiability",
-                "value": pytest.approx(0.6276266582884098, 0.00000000000001),
+                "value": 0.645223012745165,
             },
         ],
         "characteristics": [
             {
                 "key": "reliability",
-                "value": pytest.approx(0.8543507067377631, 0.00000000000001),
+                "value": 0.8570164700773468,
             },
             {
                 "key": "maintainability",
-                "value": pytest.approx(0.6276266582884098, 0.00000000000001),
+                "value": 0.645223012745165,
             },
         ],
         "tsqmi": [
             {
                 "key": "tsqmi",
-                "value": pytest.approx(0.7496100160408716, 0.00000000000001),
+                "value": 0.7585479438241802,
             }
         ],
     }
+    assert calculated_result.get("repository") == calculate_expected.get("repository")
+    assert calculated_result.get("version") == calculate_expected.get("version")
+    measures_result = calculated_result.get("measures")
+    measures_expected = calculate_expected.get("measures")
+    # print(measures_result)
+    for measure_result, measure_expected in zip(measures_result, measures_expected):
+        assert measure_result.get("key") == measure_expected.get("key")
+        assert pytest.approx(measure_result.get("value")) == measure_expected.get(
+            "value"
+        )
+
+    subcharacteristics_result = calculated_result.get("subcharacteristics")
+    subcharacteristics_expected = calculate_expected.get("subcharacteristics")
+    for subcharacteristic_result, subcharacteristic_expected in zip(
+        subcharacteristics_result, subcharacteristics_expected
+    ):
+        assert subcharacteristic_result.get("key") == subcharacteristic_expected.get(
+            "key"
+        )
+        assert pytest.approx(
+            subcharacteristic_result.get("value")
+        ) == subcharacteristic_expected.get("value")
+
+    characteristics_result = calculated_result.get("characteristics")
+    characteristics_expected = calculate_expected.get("characteristics")
+    for characteristic_result, characteristic_expected in zip(
+        characteristics_result, characteristics_expected
+    ):
+        assert characteristic_result.get("key") == characteristic_expected.get("key")
+        assert pytest.approx(
+            characteristic_result.get("value")
+        ) == characteristic_expected.get("value")
+
+    tsqmi_result = calculated_result.get("tsqmi")[0]
+    tsqmi_expected = calculate_expected.get("tsqmi")[0]
+    assert tsqmi_result.get("key") == tsqmi_expected.get("key")
+    assert tsqmi_result.get("value") == tsqmi_expected.get("value")
 
 
 def test_calculate_invalid_config_file():

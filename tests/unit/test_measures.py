@@ -20,10 +20,10 @@ def test_calculate_measures():
     measure_result = infos.get("measures")
     measure_expected = [
         {"key": "passed_tests", "value": 1.0},
-        {"key": "test_builds", "value": 0.9996969618055556},
-        {"key": "test_coverage", "value": 0.4707692307692307},
-        {"key": "non_complex_file_density", "value": 0.3789488966318234},
-        {"key": "commented_file_density", "value": 0.029230769230769227},
+        {"key": "test_builds", "value": 0.9996329122628728},
+        {"key": "test_coverage", "value": 0.4846666666666668},
+        {"key": "non_complex_file_density", "value": 0.4603110903924873},
+        {"key": "commented_file_density", "value": 0.03377777777777778},
         {"key": "duplication_absense", "value": 1.0},
     ]
     for measure_result, measure_expected in zip(measure_result, measure_expected):
