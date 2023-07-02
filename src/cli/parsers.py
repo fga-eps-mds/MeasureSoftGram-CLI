@@ -57,7 +57,6 @@ def create_parser():
     parser_extract.add_argument(
         "-dp",
         "--data_path",
-        required=True,
         type=lambda p: Path(p).absolute(),
         help="Path to analysis data directory",
     )

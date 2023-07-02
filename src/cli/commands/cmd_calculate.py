@@ -82,27 +82,34 @@ def command_calculate(args):
 
 def calculate_all(json_data, file_name, config):
     data_measures, _ = calculate_measures(json_data, config)
-
     data_subcharacteristics, _ = calculate_subcharacteristics(
         config, data_measures["measures"]
     )
-
-    data_characteristics, _ = calculate_characteristics(
-        config, data_subcharacteristics["subcharacteristics"]
+    data_characteristics, _ = (
+        calculate_characteristics(config, data_subcharacteristics["subcharacteristics"])
+        if data_subcharacteristics["subcharacteristics"]
+        else ([], [])
     )
-
-    data_tsqmi, _ = calculate_tsqmi(config, data_characteristics["characteristics"])
+    data_tsqmi, _ = (
+        calculate_tsqmi(config, data_characteristics["characteristics"])
+        if data_characteristics
+        else ([], [])
+    )
 
     version = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)[0]
     repository = file_name.split(version)[0][:-1]
 
     return {
         "repository": [{"key": "repository", "value": repository}],
-        "version": [{"key": "version", "value": version}],
-        "measures": data_measures["measures"],
-        "subcharacteristics": data_subcharacteristics["subcharacteristics"],
-        "characteristics": data_characteristics["characteristics"],
-        "tsqmi": data_tsqmi["tsqmi"],
+        "version": [{"key": "version", "value": version}] if version else [],
+        "measures": data_measures["measures"] if data_measures else [],
+        "subcharacteristics": data_subcharacteristics["subcharacteristics"]
+        if data_subcharacteristics
+        else [],
+        "characteristics": data_characteristics["characteristics"]
+        if data_characteristics
+        else [],
+        "tsqmi": data_tsqmi["tsqmi"] if data_tsqmi else [],
     }
 
 

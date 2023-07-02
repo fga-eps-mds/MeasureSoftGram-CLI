@@ -47,13 +47,24 @@ def command_extract(args):
     try:
         output_origin = args["output_origin"]
         extracted_path = args["extracted_path"]
-        data_path = args["data_path"]
+        data_path = args.get("data_path", None)
         language_extension = args["language_extension"]
-        repository_path = args["repository_path"]
+        repository_path = args.get("repository_path", None)
 
     except Exception as e:
         logger.error(f"KeyError: args[{e}] - non-existent parameters")
         print_warn(f"KeyError: args[{e}] - non-existent parameters")
+        exit(1)
+
+    if data_path == None and repository_path == None:
+        print("data_path: ", data_path)
+        print("repository_path: ", repository_path)
+        logger.error(
+            f"It is necessary to pass the data_path or repository_path parameters"
+        )
+        print_warn(
+            f"It is necessary to pass the data_path or repository_path parameters"
+        )
         exit(1)
 
     console = Console()
@@ -63,13 +74,14 @@ def command_extract(args):
 
     if repository_path and output_origin == "github":
         result = parser.parse(input_value=repository_path, type_input=output_origin)
+        repository_name = repository_path.replace("/", "-")
         save_file_with_results(
             ".msgram",
             repository_path,
-            name=f"github_extrated-in{datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.msgram",
+            name=f"github_{repository_name}-{datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}-extracted.msgram",
             result=result,
         )
-        return 0
+        return
 
     if not os.path.isdir(extracted_path):
         logger.error(

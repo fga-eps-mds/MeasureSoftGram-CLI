@@ -37,11 +37,17 @@ def calculate_measures(
             {
                 "key": list(measures.keys())[0],
                 "parameters": {
-                    metric: extracted[metric]
+                    metric: extracted[metric] if extracted.get(metric) else None
                     for metric in list(measures.values())[0]["metrics"]
                 },
             }
         )
+        new_metrics = []
+        for measure in calculate_infos:
+            if measure.get("parameters", None) and all(measure["parameters"].values()):
+                new_metrics.append(measure)
+
+        calculate_infos = new_metrics
 
     headers = ["Id", "Name", "Description", "Value", "Created at"]
     return core_calculate({"measures": calculate_infos}, config), headers

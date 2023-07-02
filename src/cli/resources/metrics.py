@@ -18,7 +18,7 @@ def get_metric_value(extracted):
     # Para todos os arquivos extraidos
     for path_readed in extracted.values():
         # Para cada métrica dentro das medidas
-        for metric in path_readed["measures"]:
+        for metric in path_readed:
             metric_name = metric["metric"]
             metric_value = metric["value"]
 
@@ -27,7 +27,7 @@ def get_metric_value(extracted):
             all_value_list = listed_values + uts_values
             if metric_name in all_value_list:
                 response_data.setdefault(metric_name, []).append(metric_value)
-            elif metric_name not in (listed_values + uts_values):
+            else:
                 response_data[metric_name] = metric_value
 
     return response_data
