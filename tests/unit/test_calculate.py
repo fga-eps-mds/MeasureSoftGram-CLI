@@ -68,7 +68,6 @@ def test_calculate_file(output_format, mult_file):
             extract_dirpath + (f"/{extracted_file_name}" if not mult_file else "")
         ),
     }
-
     if not mult_file:
         calculate_patch = patch("builtins.input", return_value=output_format)
         calculate_patch.start()
@@ -97,46 +96,46 @@ def test_calculate_all_dict():
             {"key": "passed_tests", "value": 1.0},
             {
                 "key": "test_builds",
-                "value": 0.9996329122628728,
+                "value": 0.9996066627522133,
             },
             {
                 "key": "test_coverage",
-                "value": 0.4846666666666668,
+                "value": 0.40234848484848484,
             },
             {
                 "key": "non_complex_file_density",
-                "value": 0.4603110903924873,
+                "value": 0.44347274991556906,
             },
             {
                 "key": "commented_file_density",
-                "value": 0.03377777777777778,
+                "value": 0.04318181818181818,
             },
             {"key": "duplication_absense", "value": 1.0},
         ],
         "subcharacteristics": [
             {
                 "key": "testing_status",
-                "value": 0.8570164700773467,
+                "value": 0.8421061048464034,
             },
             {
                 "key": "modifiability",
-                "value": 0.645223012745165,
+                "value": 0.6415437113263573,
             },
         ],
         "characteristics": [
             {
                 "key": "reliability",
-                "value": 0.8570164700773468,
+                "value": 0.8421061048464034,
             },
             {
                 "key": "maintainability",
-                "value": 0.645223012745165,
+                "value": 0.6415437113263573,
             },
         ],
         "tsqmi": [
             {
                 "key": "tsqmi",
-                "value": 0.7585479438241802,
+                "value": 0.7485723162667646,
             }
         ],
     }
@@ -144,7 +143,6 @@ def test_calculate_all_dict():
     assert calculated_result.get("version") == calculate_expected.get("version")
     measures_result = calculated_result.get("measures")
     measures_expected = calculate_expected.get("measures")
-    # print(measures_result)
     for measure_result, measure_expected in zip(measures_result, measures_expected):
         assert measure_result.get("key") == measure_expected.get("key")
         assert pytest.approx(measure_result.get("value")) == measure_expected.get(

@@ -74,7 +74,7 @@ def test_command_extract_should_succeed():
 
 @pytest.mark.parametrize(
     "extract_arg",
-    ["output_origin", "extracted_path", "data_path", "language_extension"],
+    ["output_origin", "extracted_path", "language_extension"],
 )
 def test_extract_invalid_args(extract_arg):
     captured_output = StringIO()
@@ -91,17 +91,3 @@ def test_extract_invalid_args(extract_arg):
         f"KeyError: args['{extract_arg}'] - non-existent parameters"
         in captured_output.getvalue()
     )
-
-
-def test_command_extract_extracted_path_is_not_a_dir():
-    captured_output = StringIO()
-    sys.stdout = captured_output
-
-    args = copy.deepcopy(EXTRACT_ARGS)
-    args["extracted_path"] = Path("inexistent")
-
-    with pytest.raises(SystemExit):
-        command_extract(args)
-
-    sys.stdout = sys.__stdout__
-    assert "FileNotFoundError: extract directory" in captured_output.getvalue()

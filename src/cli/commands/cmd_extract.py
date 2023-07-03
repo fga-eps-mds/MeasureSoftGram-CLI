@@ -56,14 +56,12 @@ def command_extract(args):
         print_warn(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-    if data_path == None and repository_path == None:
-        print("data_path: ", data_path)
-        print("repository_path: ", repository_path)
+    if data_path is None and repository_path is None:
         logger.error(
-            f"It is necessary to pass the data_path or repository_path parameters"
+            "It is necessary to pass the data_path or repository_path parameters"
         )
         print_warn(
-            f"It is necessary to pass the data_path or repository_path parameters"
+            "It is necessary to pass the data_path or repository_path parameters"
         )
         exit(1)
 
