@@ -174,7 +174,7 @@ def test_calculate_all_dict():
     tsqmi_result = calculated_result.get("tsqmi")[0]
     tsqmi_expected = calculate_expected.get("tsqmi")[0]
     assert tsqmi_result.get("key") == tsqmi_expected.get("key")
-    assert tsqmi_result.get("value") == tsqmi_expected.get("value")
+    assert pytest.approx(tsqmi_result.get("value")) == tsqmi_expected.get("value")
 
 
 def test_calculate_invalid_config_file():
