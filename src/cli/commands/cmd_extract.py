@@ -63,7 +63,7 @@ def command_extract(args):
         print_warn(
             "It is necessary to pass the data_path or repository_path parameters"
         )
-        exit(1)
+        sys.exit(1)
 
     console = Console()
     console.clear()
