@@ -18,7 +18,7 @@ SUPPORTED_FORMATS = [
     "tabular",
 ]
 
-AVAILABLE_IMPORTS = ["sonarqube"]
+AVAILABLE_IMPORTS = ["sonarqube", "github"]
 
 AVAILABLE_GEN_FORMATS = ["csv", "json"]
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import logging
 import os
@@ -46,17 +47,39 @@ def command_extract(args):
     try:
         output_origin = args["output_origin"]
         extracted_path = args["extracted_path"]
-        data_path = args["data_path"]
+        data_path = args.get("data_path", None)
         language_extension = args["language_extension"]
+        repository_path = args.get("repository_path", None)
 
     except Exception as e:
         logger.error(f"KeyError: args[{e}] - non-existent parameters")
         print_warn(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
+    if data_path is None and repository_path is None:
+        logger.error(
+            "It is necessary to pass the data_path or repository_path parameters"
+        )
+        print_warn(
+            "It is necessary to pass the data_path or repository_path parameters"
+        )
+        sys.exit(1)
+
     console = Console()
     console.clear()
     print_rule("Extract metrics")
+    parser = GenericParser()
+
+    if repository_path and output_origin == "github":
+        result = parser.parse(input_value=repository_path, type_input=output_origin)
+        repository_name = repository_path.replace("/", "-")
+        save_file_with_results(
+            ".msgram",
+            repository_path,
+            name=f"github_{repository_name}-{datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}-extracted.msgram",
+            result=result,
+        )
+        return
 
     if not os.path.isdir(extracted_path):
         logger.error(
@@ -70,10 +93,10 @@ def command_extract(args):
     logger.debug(f"output_origin: {output_origin}")
     logger.debug(f"data_path: {data_path}")
     logger.debug(f"language_extension: {language_extension}")
+    logger.debug(f"extracted_path: {extracted_path}")
 
     files = list(data_path.glob("*.json"))
     valid_files = len(files)
-    parser = GenericParser()
 
     print_info(f"\n> Extract and save metrics [[blue ]{output_origin}[/]]:")
     with make_progress_bar() as progress_bar:
@@ -90,11 +113,7 @@ def command_extract(args):
             name = get_infos_from_name(filename)
             result = parser.parse(input_value=component, type_input=output_origin)
 
-            print(f"[dark_green]Reading:[/] [black]{filename}[/]")
-            print(f"[dark_green]Save   :[/] [black]{name}[/]\n")
-
-            with open(f"{extracted_path}/{name}", "w") as f:
-                f.write(json.dumps(result, indent=4))
+            save_file_with_results(extracted_path, filename, name, result)
 
             progress_bar.advance(task_request)
 
@@ -106,3 +125,11 @@ def command_extract(args):
     print_panel(
         "> Run [#008080]msgram calculate all -ep 'extracted_path' -cp 'extracted_path' -o 'output_origin'"
     )
+
+
+def save_file_with_results(extracted_path, filename, name, result):
+    print(f"[dark_green]Reading:[/] [black]{filename}[/]")
+    print(f"[dark_green]Save   :[/] [black]{name}[/]\n")
+
+    with open(f"{extracted_path}/{name}", "w") as f:
+        f.write(json.dumps(result, indent=4))

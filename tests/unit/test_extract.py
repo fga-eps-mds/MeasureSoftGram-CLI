@@ -74,7 +74,7 @@ def test_command_extract_should_succeed():
 
 @pytest.mark.parametrize(
     "extract_arg",
-    ["output_origin", "extracted_path", "data_path", "language_extension"],
+    ["output_origin", "extracted_path", "language_extension"],
 )
 def test_extract_invalid_args(extract_arg):
     captured_output = StringIO()
@@ -93,15 +93,40 @@ def test_extract_invalid_args(extract_arg):
     )
 
 
-def test_command_extract_extracted_path_is_not_a_dir():
+def test_extract_fail_no_dp_or_rep():
+    extract_dirpath = tempfile.mkdtemp()
+    args = {
+        "output_origin": "sonarqube",
+        "language_extension": "py",
+        "extracted_path": Path(extract_dirpath),
+    }
+
     captured_output = StringIO()
     sys.stdout = captured_output
-
-    args = copy.deepcopy(EXTRACT_ARGS)
-    args["extracted_path"] = Path("inexistent")
-
     with pytest.raises(SystemExit):
         command_extract(args)
 
     sys.stdout = sys.__stdout__
+
+    assert (
+        "It is necessary to pass the data_path or repository_path parameters"
+        in captured_output.getvalue()
+    )
+
+
+def test_extract_directory_not_exist():
+    args = {
+        "output_origin": "sonarqube",
+        "language_extension": "py",
+        "extracted_path": Path("tests/directory_not_exist"),
+        "data_path": Path("tests/directory_not_exist"),
+    }
+
+    captured_output = StringIO()
+    sys.stdout = captured_output
+    with pytest.raises(SystemExit):
+        command_extract(args)
+
+    sys.stdout = sys.__stdout__
+
     assert "FileNotFoundError: extract directory" in captured_output.getvalue()
