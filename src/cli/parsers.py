@@ -4,8 +4,10 @@ from pathlib import Path
 
 from src.cli.commands import command_init, command_extract, command_calculate
 from src.config.settings import (
-    AVAILABLE_IMPORTS, SUPPORTED_FORMATS,
-    DEFAULT_CONFIG_PATH, AVAILABLE_GEN_FORMATS
+    AVAILABLE_IMPORTS,
+    SUPPORTED_FORMATS,
+    DEFAULT_CONFIG_PATH,
+    AVAILABLE_GEN_FORMATS,
 )
 
 
@@ -47,7 +49,7 @@ def create_parser():
         type=str,
         choices=(AVAILABLE_IMPORTS),
         help=(
-            "Import a metrics files from some origin. Valid values are: "
+            "Import a metrics files/repository from some origin. Valid values are: "
             + ", ".join(AVAILABLE_IMPORTS)
         ),
     )
@@ -55,7 +57,6 @@ def create_parser():
     parser_extract.add_argument(
         "-dp",
         "--data_path",
-        required=True,
         type=lambda p: Path(p).absolute(),
         help="Path to analysis data directory",
     )
@@ -75,11 +76,20 @@ def create_parser():
         help="The source code language extension",
         default="py",
     )
+
+    parser_extract.add_argument(
+        "-rep",
+        "--repository_path",
+        type=str,
+        help="Path to analysis git repository",
+    )
+
     parser_extract.set_defaults(func=command_extract)  # function command extract
 
     # =====================================< COMMAND calculate >=====================================
     parser_calculate = subparsers.add_parser(
-        "calculate", help="Calculates all entities",
+        "calculate",
+        help="Calculates all entities",
     )
 
     parser_calculate.add_argument(
@@ -87,7 +97,7 @@ def create_parser():
         type=str,
         nargs="?",
         help=(
-            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, sqc"
+            "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, tsqmi"
         ),
     )
 

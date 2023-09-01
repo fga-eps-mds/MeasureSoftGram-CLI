@@ -13,7 +13,7 @@ from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 from src.cli.jsonReader import open_json_file, read_mult_files
 from src.cli.resources.characteristic import calculate_characteristics
 from src.cli.resources.measure import calculate_measures
-from src.cli.resources.sqc import calculate_sqc
+from src.cli.resources.tsqmi import calculate_tsqmi
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
 from src.cli.exceptions import exceptions
@@ -57,9 +57,13 @@ def command_calculate(args):
             success = True
     else:
         try:
-            data_calculated = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+            data_calculated = calculate_all(
+                open_json_file(extracted_path), extracted_path.name, config
+            )
             success = True
-            output_format = Prompt.ask("\n\n[black]Display as:", choices=["tabular", "tree", "raw"])
+            output_format = Prompt.ask(
+                "\n\n[black]Display as:", choices=["tabular", "tree", "raw"]
+            )
         except exceptions.MeasureSoftGramCLIException as e:
             print(f"[red]Error calculating {extracted_path}: {e}\n")
 
@@ -77,28 +81,35 @@ def command_calculate(args):
 
 
 def calculate_all(json_data, file_name, config):
-    data_measures, _ = calculate_measures(json_data)
-
+    data_measures, _ = calculate_measures(json_data, config)
     data_subcharacteristics, _ = calculate_subcharacteristics(
         config, data_measures["measures"]
     )
-
-    data_characteristics, _ = calculate_characteristics(
-        config, data_subcharacteristics["subcharacteristics"]
+    data_characteristics, _ = (
+        calculate_characteristics(config, data_subcharacteristics["subcharacteristics"])
+        if data_subcharacteristics["subcharacteristics"]
+        else ([], [])
     )
-
-    data_sqc, _ = calculate_sqc(config, data_characteristics["characteristics"])
+    data_tsqmi, _ = (
+        calculate_tsqmi(config, data_characteristics["characteristics"])
+        if data_characteristics
+        else ([], [])
+    )
 
     version = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)[0]
     repository = file_name.split(version)[0][:-1]
 
     return {
         "repository": [{"key": "repository", "value": repository}],
-        "version": [{"key": "version", "value": version}],
-        "measures": data_measures["measures"],
-        "subcharacteristics": data_subcharacteristics["subcharacteristics"],
-        "characteristics": data_characteristics["characteristics"],
-        "sqc": data_sqc["sqc"],
+        "version": [{"key": "version", "value": version}] if version else [],
+        "measures": data_measures["measures"] if data_measures else [],
+        "subcharacteristics": data_subcharacteristics["subcharacteristics"]
+        if data_subcharacteristics
+        else [],
+        "characteristics": data_characteristics["characteristics"]
+        if data_characteristics
+        else [],
+        "tsqmi": data_tsqmi["tsqmi"] if data_tsqmi else [],
     }
 
 
@@ -113,7 +124,9 @@ def show_results(output_format, data_calculated, config_path):
         show_tree(data_calculated)
 
     elif len(data_calculated) == 0:
-        print_info(f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!")
+        print_info(
+            f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!"
+        )
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
@@ -125,15 +138,17 @@ def show_results(output_format, data_calculated, config_path):
 
 
 def show_tabulate(data_calculated):
-    sqc = data_calculated["sqc"][0]
+    tsqmi = data_calculated["tsqmi"][0]
     characteristics = {c["key"]: c["value"] for c in data_calculated["characteristics"]}
-    subcharacteristics = {sc["key"]: sc["value"] for sc in data_calculated["subcharacteristics"]}
+    subcharacteristics = {
+        sc["key"]: sc["value"] for sc in data_calculated["subcharacteristics"]
+    }
     measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
 
     print_table(measures, "measures", "measures")
     print_table(subcharacteristics, "subcharacteristics", "subcharacteristics")
     print_table(characteristics, "characteristics", "characteristics")
-    print_table(sqc, "sqc", "sqc")
+    print_table(tsqmi, "tsqmi", "tsqmi")
 
 
 def get_obj_by_element(object_list: list, element_key: str, element_to_find):
@@ -141,16 +156,16 @@ def get_obj_by_element(object_list: list, element_key: str, element_to_find):
 
 
 def show_tree(data_calculated):
-    sqc = data_calculated["sqc"][0]
+    tsqmi = data_calculated["tsqmi"][0]
     characteristics = data_calculated["characteristics"]
     subcharacteristics = data_calculated["subcharacteristics"]
     measures = data_calculated["measures"]
 
     print("Overview - tree:\n\n")
-    sqc_tree = Tree(f"[green]{sqc['key']}: {sqc['value']}")
+    tsqmi_tree = Tree(f"[green]{tsqmi['key']}: {tsqmi['value']}")
 
     for char_c, char in zip(pre_config["characteristics"], characteristics):
-        char_tree = sqc_tree.add(f"[red]{char['key']}: {char['value']}")
+        char_tree = tsqmi_tree.add(f"[red]{char['key']}: {char['value']}")
 
         for subchar_c in char_c["subcharacteristics"]:
             subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
@@ -160,7 +175,7 @@ def show_tree(data_calculated):
                 measure = get_obj_by_element(measures, "key", measure_c["key"])
                 sub_char_tree.add(f"[yellow]{measure['key']} {measure['value']}")
 
-    print(sqc_tree)
+    print(tsqmi_tree)
 
 
 def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):

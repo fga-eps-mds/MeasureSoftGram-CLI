@@ -37,11 +37,11 @@ def config_logger(log_mod):
     else:
         basic_config("WARNING", "ERROR", "w")
 
+
 # =================================================================================================
 
 
 def basic_config(console_level_name, file_level_name, file_mode):
-
     console_handler = logging.StreamHandler(sys.stdout)
     console_formatter = logging.Formatter(LOG_FORMATS[console_level_name], datefmt)
     console_handler.setFormatter(console_formatter)
