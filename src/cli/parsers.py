@@ -2,7 +2,11 @@ import argparse
 
 from pathlib import Path
 
-from src.cli.commands import command_init, command_extract, command_calculate
+from src.cli.commands.cmd_init import command_init
+from src.cli.commands.cmd_extract import  command_extract
+from src.cli.commands.cmd_calculate import command_calculate
+from src.cli.commands.cmd_print_config import command_print_config
+
 from src.config.settings import (
     AVAILABLE_IMPORTS,
     SUPPORTED_FORMATS,
@@ -38,6 +42,21 @@ def create_parser():
         help="Path to default config directory",
     )
     parser_init.set_defaults(func=command_init)  # function command init
+
+    # =====================================< COMMAND print_config >=====================================
+    parser_print_config = subparsers.add_parser(
+        "print_config",
+        help="THIS MESSAGE IS FROM PARSER",
+    )
+
+    parser_print_config.add_argument(
+        "-hw",
+        "--hello_world",
+        type=lambda p: Path(p).absolute(),
+        default=DEFAULT_CONFIG_PATH,
+        help="HELP PARSER",
+    )
+    parser_print_config.set_defaults(func=command_print_config)  # function command print config
 
     # =====================================< COMMAND extract >=====================================
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
