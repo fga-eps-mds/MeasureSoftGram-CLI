@@ -1,22 +1,21 @@
 from rich.console import Console
-
 from src.cli.utils import  print_info,  print_rule
-
 from src.config.settings import FILE_CONFIG
 from src.config.settings import DEFAULT_CONFIG_FILE_PATH
-
 import json
 import os
 
 def print_json_tree(data):
-    result = []  # Initialize an empty list to store the output as strings
+    result = []
     stack = [(data, "")]
-
+    is_top = True
     while stack:
         data, indent = stack.pop()
-
         key = data.get("key")
-        result.append(f"[#FFFFFF]\nCaracterística:")
+
+        if is_top:
+            result.append(f"[#FFFFFF]\nCaracterística:")
+            is_top = False
         result.append(f"[#FFFFFF]{indent}[#458B00]{key}")
 
         weight = data.get("weight", 0)
@@ -43,7 +42,6 @@ def print_json_tree(data):
             
     result.append("[#FFFFFF]Fim-Característica")
 
-    # Join the result list into a single string with newlines
     return '\n'.join(result)
 
 def command_list_config(args):
