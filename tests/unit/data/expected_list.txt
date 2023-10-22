@@ -2,8 +2,6 @@ Característica:
 reliability
 Peso: 50%
 Subcaracteristica(s):
-
-Característica:
 |  testing_status
 |  Peso: 100%
 |  Medida(s):
