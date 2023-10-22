@@ -28,24 +28,24 @@ def print_json_tree(data, indent="", isTop = True):
 
     if "subcharacteristics" in data:
         for subchar in data["subcharacteristics"]:
-            print_info(f"[#FFFFFF]{indent}Subcaracteristica (s):")
+            print_info(f"[#FFFFFF]{indent}Subcaracteristica(s):")
             print_json_tree(subchar, indent + "|  ",False)
-            print_info(f"[#FFFFFF]{indent}{indent}Fim-Subcaracterística\n")
+            print_info(f"[#FFFFFF]{indent}{indent}Fim-Subcaracterística")
 
     if "measures" in data:
         for measure in data["measures"]:
-            print_info(f"[#FFFFFF]{indent}{indent}Medida (s):")
+            print_info(f"[#FFFFFF]{indent}{indent}Medida(s):")
             print_json_tree(measure, indent + "|  ",False)
-            print_info(f"[#FFFFFF]{indent}{indent}Fim-Medida(s)\n")
+            print_info(f"[#FFFFFF]{indent}{indent}Fim-Medida(s)")
 
     if "min_threshold" in data and "max_threshold" in data:
-            print_info(f"[#FFFFFF]{indent}{indent}Métrica (s):")
+            print_info(f"[#FFFFFF]{indent}{indent}Métrica(s):")
             value = data.get("metric")
             #print_info("{indent} |     |     |      {value}")
             min_threshold = data.get("min_threshold")
             max_threshold = data.get("max_threshold")
             print_info(f"[#FFFFFF]{indent}|    Valores de referência: Min: [#458B00]{min_threshold} [#FFFFFF]e Max: [#458B00]{max_threshold}")
-            print_info(f"[#FFFFFF]{indent}{indent}Fim-Metrica(s)\n")
+            print_info(f"[#FFFFFF]{indent}{indent}Fim-Metrica(s)")
 
 def command_list_config(args):
     console = Console()
