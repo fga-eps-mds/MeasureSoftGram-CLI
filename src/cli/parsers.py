@@ -66,6 +66,8 @@ def create_parser():
 
     parser_list_config.set_defaults(func=command_list_config)  # function command list config
 
+
+
     # =====================================< COMMAND extract >=====================================
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
 
