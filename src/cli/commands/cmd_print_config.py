@@ -16,32 +16,37 @@ from src.config.settings import DEFAULT_CONFIG_PATH
 logger = logging.getLogger("msgram")
 
 def print_json_tree(data, indent="",isTop = True):
-    if isTop:
-        print_info("---------------------------- Listing Configuration Parameters ---------------------------\n\n")
-   
     key = data.get("key")
-    print_info(f"{indent}{key}")
+
+    if isTop:
+        print_info("\n\n")
+        print_info("---------------------------- Listing Configuration Parameters ---------------------------\n")   
+        print_info(f"[#FFFFFF]{indent}[#458B00]{key}")
+    else:
+        print_info(f"[#FFFFFF]{indent}[#458B00]{key}")
    
     weight = data.get("weight", 0)
-    print_info(f"{indent}Peso: {weight}%")
+    print_info(f"[#FFFFFF]{indent}Peso: [#458B00]{weight}%")
 
     if "subcharacteristics" in data:
         for subchar in data["subcharacteristics"]:
-            print_info(f"{indent}Subcaracteristica (s):")
-            print_json_tree(subchar, indent + "|      ",False)
+            print_info(f"[#FFFFFF]{indent}Subcaracteristica (s):")
+            print_json_tree(subchar, indent + "|     ",False)
+            print_info(f"[#FFFFFF]{indent}Fim-Subcaracteristica(s)\n")
 
     if "measures" in data:
         for measure in data["measures"]:
-            print_info(f"{indent}Medida (s):")
-            print_json_tree(measure, indent + "|      |       ",False)
+            print_info(f"[#FFFFFF]{indent}{indent}Medida (s):")
+            print_json_tree(measure, indent + "|     |      ",False)
+            print_info(f"[#FFFFFF]{indent}{indent}Fim-Medida(s)\n")
 
     if "min_threshold" in data and "max_threshold" in data:
         min_threshold = data.get("min_threshold")
         max_threshold = data.get("max_threshold")
-        print_info(f"{indent}Metrica (s):")
-        print_info(f"{indent}|       [#458B00]coverage")
-        print_info(f"{indent}|       Peso: {weight}%")
-        print_info(f"{indent}|       Valores de referência: Min: {min_threshold} e Max: {max_threshold}")
+        print_info(f"[#FFFFFF]{indent}Metrica (s):")
+        print_info(f"[#FFFFFF]{indent}|      [#458B00]coverage")
+        print_info(f"[#FFFFFF]{indent}|      Peso: [#458B00]{weight}%")
+        print_info(f"[#FFFFFF]{indent}|      Valores de referência: Min: [#458B00]{min_threshold} [#FFFFFF]e Max: [#458B00]{max_threshold}")
 
 def command_list_config(args):
     
@@ -60,8 +65,11 @@ def command_list_config(args):
     data = json.load(f)
 
 
+    isTop = True
     for characteristic in data.get("characteristics", []):
-        print_json_tree(characteristic)
+        print_json_tree(characteristic,"",isTop)
+        print_info(f"[#FFFFFF]Fim-Caracteristica(s)\n")
+        isTop = False
 
 
 
