@@ -56,16 +56,17 @@ def command_list_config(args):
     if not (os.path.exists(DEFAULT_CONFIG_FILE_PATH)):
         print_info( f"[#A9A9A9] O arquivo de configuração não foi encontrado. Execute o comando msgram init para criá-lo." )
         exit()
-    else:
-        print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
+    
+    print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
 
-        f = open(DEFAULT_CONFIG_FILE_PATH)
-        data = json.load(f)
+    f = open(DEFAULT_CONFIG_FILE_PATH)
+    
+    data = json.load(f)
 
-        isTop = True
-        for data in data.get("characteristics", []):
-            print_json_tree(data, "", isTop)
-            print_info(f"[#FFFFFF]Fim-Característica\n")
-            isTop = False
+    isTop = True
+    for data in data.get("characteristics", []):
+        print_json_tree(data, "", isTop)
+        print_info(f"[#FFFFFF]Fim-Característica\n")
+        isTop = False
 
-        print_info("\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <caminho_arquivo ../.msgram/.msgram/msgram.json>")
+    print_info("\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <caminho_arquivo ../.msgram/.msgram/msgram.json>")
