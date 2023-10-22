@@ -1,21 +1,15 @@
-import json
-import logging
-import os
-import sys
-from pathlib import Path
-
 from rich.console import Console
-from rich.prompt import Confirm
-from staticfiles import DEFAULT_PRE_CONFIG
 
-from src.cli.utils import print_error, print_info, print_panel, print_rule
+from src.cli.utils import  print_info,  print_rule
+
 from src.config.settings import FILE_CONFIG
 from src.config.settings import DEFAULT_CONFIG_FILE_PATH
-from src.config.settings import DEFAULT_CONFIG_PATH
+
+import json
+import os
 
 def print_json_tree(data, indent="", isTop = True):
     key = data.get("key")
-    value = data.get("metric")
 
     if isTop:
         print_info(f"[#FFFFFF]\nCaracterística:")
@@ -40,8 +34,6 @@ def print_json_tree(data, indent="", isTop = True):
 
     if "min_threshold" in data and "max_threshold" in data:
             print_info(f"[#FFFFFF]{indent}{indent}Métrica(s):")
-            value = data.get("metric")
-            #print_info("{indent} |     |     |      {value}")
             min_threshold = data.get("min_threshold")
             max_threshold = data.get("max_threshold")
             print_info(f"[#FFFFFF]{indent}|    Valores de referência: Min: [#458B00]{min_threshold} [#FFFFFF]e Max: [#458B00]{max_threshold}")
@@ -69,4 +61,7 @@ def command_list_config(args):
         print_info(f"[#FFFFFF]Fim-Característica\n")
         isTop = False
 
-    print_info("\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <caminho_arquivo ../.msgram/.msgram/msgram.json>")
+    print_info(
+        "\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <caminho_arquivo ../.msgram/.msgram/msgram.json>"
+        )
+    
