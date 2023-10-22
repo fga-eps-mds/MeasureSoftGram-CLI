@@ -1,0 +1,29 @@
+
+[#FFFFFF]Característica:
+reliability
+[#FFFFFF]Peso: 50%
+[#FFFFFF]Subcaracteristica(s):
+[#FFFFFF]Fim-Subcaracterística
+|  |  testing_status
+|  |  [#FFFFFF]Peso: 100%
+|  |  [#FFFFFF]Medida(s):
+|  |  [#FFFFFF]Fim-Medida(s)
+|  |  [#FFFFFF]Medida(s):
+|  |  [#FFFFFF]Fim-Medida(s)
+|  |  Medida(s):
+|  |  Fim-Medida(s)
+|  |  |  |  test_coverage
+|  |  |  |  Peso: 34%
+|  |  |  |  Métrica(s):
+|  |  |    Valores de referência: Min: 60 e Max: 100
+|  |  |  |  Fim-Metrica(s)
+|  |  |  |  test_builds
+|  |  |  |  Peso: 33%
+|  |  |  |  Métrica(s):
+|  |  |    Valores de referência: Min: 0 e Max: 300000
+|  |  |  |  Fim-Metrica(s)
+|  |  |  |  passed_tests
+|  |  |  |  Peso: 33%
+|  |  |  |  Métrica(s):
+|  |  |    Valores de referência: Min: 0 e Max: 1
+|  |  |  |  Fim-Metrica(s)
