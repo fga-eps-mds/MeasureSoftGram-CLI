@@ -45,5 +45,5 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage.xml
           flags: unittests
-          name: 2023-1-MeasureSoftGram-CLI
+          name: 2023-2-MeasureSoftGram-CLI
           verbose: true
