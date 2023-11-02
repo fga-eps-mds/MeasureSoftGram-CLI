@@ -24,25 +24,26 @@ def print_json_tree(data):
         if "subcharacteristics" in data:
             for subchar in data["subcharacteristics"]:
                 result.append(f"[#FFFFFF]{indent}Subcaracteristica(s):")
-                stack.append((subchar, f"{indent}|  "))
+                stack.append((subchar, f"{indent}│  "))  # Use the ASCII character │ (code 179)
 
         if "measures" in data:
             result.append(f"[#FFFFFF]{indent}Medida(s):")
             for measure in data["measures"]:
-                result.append(f"[#FFFFFF]{indent}|  [#458B00]{measure['key']}")
-                result.append(f"[#FFFFFF]{indent}|  Peso: [#458B00]{measure['weight']}%")
+                result.append(f"[#FFFFFF]{indent}│  [#458B00]{measure['key']}")  # Use the ASCII character │ (code 179)
+                result.append(f"[#FFFFFF]{indent}│  Peso: [#458B00]{measure['weight']}%")
                 if "min_threshold" in measure and "max_threshold" in measure:
                     min_threshold = measure.get("min_threshold")
                     max_threshold = measure.get("max_threshold")
-                    result.append(f"[#FFFFFF]{indent}|  Métrica(s):")
-                    result.append(f"[#FFFFFF]{indent}|  |  Valores de referência: Min: [#458B00]{min_threshold} [#FFFFFF]e Max: [#458B00]{max_threshold}")
-                    result.append(f"[#FFFFFF]{indent}|  Fim-Metrica(s)")
-                result.append(f"[#FFFFFF]{indent}Fim-Medida(s)")
+                    result.append(f"[#FFFFFF]{indent}│  Métrica(s):")  # Use the ASCII character │ (code 179)
+                    result.append(f"[#FFFFFF]{indent}│  │  Valores de referência: Min: [#458B00]{min_threshold} [#FFFFFF]e Max: [#458B00]{max_threshold}")
+                    result.append(f"[#FFFFFF]{indent}│  Fim-Metrica(s)")
+                result.append(f"[#FFFFFF]{indent}│  Fim-Medida(s)")
             result.append("[#FFFFFF]Fim-SubCaracterística")
             
     result.append("[#FFFFFF]Fim-Característica")
 
     return '\n'.join(result)
+
 
 def command_list_config(args):
     console = Console()
