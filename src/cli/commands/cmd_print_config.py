@@ -32,40 +32,35 @@ def print_json_tree(data):
 
         if "subcharacteristics" in data:
             for subchar in data["subcharacteristics"]:
-                result.append(f"[#FFFFFF]{indent}Subcaracteristica(s):")
+                result.append(f"[#FFFFFF]{indent}Sub-característica(s):")
                 stack.append((subchar, f"{indent}│  "))  # Use the ASCII character │ (code 179)
 
         if "measures" in data:
             for measure in data["measures"]:
+                result.append(f"[#FFFFFF]{indent}│  Medida(s):")
                 measure_key = measure.get("key")
-                result.append(f"[#FFFFFF]{indent}│  [#00FF00]{measure_key}")  # Use the ASCII character │ (code 179)
-                result.append(f"[#FFFFFF]{indent}│  Peso: [#00FF00]{measure['weight']}%")
+                result.append(f"[#FFFFFF]{indent}{indent}│  [#00FF00]{measure_key}")  # Use the ASCII character │ (code 179)
+                result.append(f"[#FFFFFF]{indent}{indent}│  Peso: [#00FF00]{measure['weight']}%")
                 if "min_threshold" in measure and "max_threshold" in measure:
                     min_threshold = measure.get("min_threshold")
                     max_threshold = measure.get("max_threshold")
-                    result.append(f"[#FFFFFF]{indent}│  Métrica(s):")  # Use the ASCII character │ (code 179)
-                    result.append(f"[#FFFFFF]{indent}│  │  Valores de referência: Min: [#00FF00]{min_threshold} [#FFFFFF]e Max: [#00FF00]{max_threshold}")
+                    result.append(f"[#FFFFFF]{indent}{indent}│  Métrica(s):")  # Use the ASCII character │ (code 179)
                     metrics = measure_to_metric.get(measure_key, [])  # Get associated metrics
                     for metric in metrics:
-                        result.append(f"[#FFFFFF]{indent}│  │  [#00FF00]{metric}")  # Print metrics in green color
-                    result.append(f"[#FFFFFF]{indent}│  Fim-Metrica(s)")
-                
+                        result.append(f"[#FFFFFF]{indent}{indent}│  │  [#00FF00]{metric}")  # Print metrics in green color
+                    result.append(f"[#FFFFFF]{indent}{indent}│  │  Valores de referência: Min = [#00FF00]{min_threshold} [#FFFFFF]e Max = [#00FF00]{max_threshold}")
+                    result.append(f"[#FFFFFF]{indent}{indent}│  Fim-Métrica(s)")
                 result.append(f"[#FFFFFF]{indent}│  Fim-Medida(s)")
-
             result.append("[#FFFFFF]Fim-SubCaracterística")
-            
     result.append("[#FFFFFF]Fim-Característica")
 
     return '\n'.join(result)
-
-
-
 
 def command_list_config(args):
     console = Console()
     console.clear()
 
-    print_rule("[#FFFFFF] Listing Configuration Parameters[/]:")
+    print_rule("[#FFFFFF] Listing Configuration Parameters")
 
     if not (os.path.exists(DEFAULT_CONFIG_FILE_PATH)):
         print_info(f"[#A9A9A9] O arquivo de configuração não foi encontrado. Execute o comando msgram init para criá-lo.")
@@ -78,13 +73,10 @@ def command_list_config(args):
 
     data = json.load(f)
 
-    #dictionary of metrics and measures
-    
     for characteristic in data.get("characteristics", []):
         output_string = print_json_tree(characteristic)
         print_info(output_string)
 
     print_info(
-        "\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <caminho_arquivo ../.msgram/.msgram/msgram.json>"
+        "\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <.msgram/msgram.json>"
     )
-
