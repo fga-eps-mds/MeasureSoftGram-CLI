@@ -50,7 +50,7 @@ def print_json_tree(data):
                     result.append(f"[#FFFFFF]{indent}{indent}│  Métrica(s):")  # Use the ASCII character │ (code 179)
                     metrics = measure_to_metric.get(measure_key, [])  # Get associated metrics
                     for metric in metrics:
-                        result.append(f"[#FFFFFF]{indent}{indent}│  │  [#00FF00]{metric}")  # Print metrics in green color
+                        result.append(f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}")  # Print metrics in green color
                     result.append(f"[#FFFFFF]{indent}{indent}│  │  Valores de referência: Min = [#00FF00]{min_threshold} [#FFFFFF]e Max = [#00FF00]{max_threshold}")
                     result.append(f"[#FFFFFF]{indent}{indent}│  Fim-Métrica(s)")
                 result.append(f"[#FFFFFF]{indent}│  Fim-Medida(s)")

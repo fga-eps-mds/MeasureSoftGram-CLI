@@ -8,7 +8,7 @@ Sub-característica(s):
 │  │  │  passed_tests
 │  │  │  Peso: 33%
 │  │  │  Métrica(s):
-│  │  │  │  test_success_density
+│  │  │  └─test_success_density
 │  │  │  │  Valores de referência: Min = 0 e Max = 1
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
@@ -16,8 +16,8 @@ Sub-característica(s):
 │  │  │  test_builds
 │  │  │  Peso: 33%
 │  │  │  Métrica(s):
-│  │  │  │  tests
-│  │  │  │  tests_execution_time
+│  │  │  └─tests
+│  │  │  └─tests_execution_time
 │  │  │  │  Valores de referência: Min = 0 e Max = 300000
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
@@ -25,7 +25,7 @@ Sub-característica(s):
 │  │  │  test_coverage
 │  │  │  Peso: 34%
 │  │  │  Métrica(s):
-│  │  │  │  coverage
+│  │  │  └─coverage
 │  │  │  │  Valores de referência: Min = 60 e Max = 100
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
