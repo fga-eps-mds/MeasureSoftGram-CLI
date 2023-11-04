@@ -1,7 +1,10 @@
 from rich.console import Console
-from src.cli.utils import  print_info,  print_rule
-from src.config.settings import FILE_CONFIG
-from src.config.settings import DEFAULT_CONFIG_FILE_PATH
+from src.cli.utils import  print_info, print_rule, print_error
+
+from src.config.settings import FILE_CONFIG, DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_FILE_PATH
+
+from pathlib import Path
+
 import json
 import os
 
@@ -60,16 +63,32 @@ def command_list_config(args):
     console = Console()
     console.clear()
 
+    file_path = DEFAULT_CONFIG_FILE_PATH
+    try:
+        config_path: Path = args["config_path"]
+
+        if config_path != DEFAULT_CONFIG_PATH:
+            print_info(f"[#A9A9A9] Será usado arquivo informado pelo usuário: ")
+            file_path = str(config_path) + "/msgram.json"
+        else:
+            print_info(f"[#A9A9A9] Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
+
+
+    except Exception as e:
+        print_error(f"KeyError: args[{e}] - non-existent parameters")
+        exit(1)
+
+    
     print_rule("[#FFFFFF] Listing Configuration Parameters")
 
-    if not (os.path.exists(DEFAULT_CONFIG_FILE_PATH)):
-        print_info(f"[#A9A9A9] O arquivo de configuração não foi encontrado. Execute o comando msgram init para criá-lo.")
+    if not (os.path.exists(file_path)):
+        print_info(f"[#A9A9A9] O arquivo de configuração não foi encontrado. \n Execute o comando msgram init no projeto desejado para criá-lo.")
         exit()
 
     print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
 
     #get data
-    f = open(DEFAULT_CONFIG_FILE_PATH)
+    f = open(file_path)
 
     data = json.load(f)
 
