@@ -9,7 +9,7 @@ Sub-característica(s):
 │  │  │  Peso: 33%
 │  │  │  Métrica(s):
 │  │  │  └─test_success_density
-│  │  │  │  Valores de referência: Min = 0 e Max = 1
+│  │  │  │ Valores de referência: Min = 0 e Max = 1
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
 │  │  Medida(s):
@@ -18,7 +18,7 @@ Sub-característica(s):
 │  │  │  Métrica(s):
 │  │  │  └─tests
 │  │  │  └─tests_execution_time
-│  │  │  │  Valores de referência: Min = 0 e Max = 300000
+│  │  │  │ Valores de referência: Min = 0 e Max = 300000
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
 │  │  Medida(s):
@@ -26,7 +26,7 @@ Sub-característica(s):
 │  │  │  Peso: 34%
 │  │  │  Métrica(s):
 │  │  │  └─coverage
-│  │  │  │  Valores de referência: Min = 60 e Max = 100
+│  │  │  │ Valores de referência: Min = 60 e Max = 100
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
 Fim-SubCaracterística
