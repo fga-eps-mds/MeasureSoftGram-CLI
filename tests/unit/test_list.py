@@ -4,8 +4,8 @@ from io import StringIO
 import sys
 import json
 
-from src.cli.commands.cmd_print_config import print_json_tree
-from src.cli.utils import  print_info,  print_rule
+from src.cli.commands.cmd_list import print_json_tree
+
 
 import re
     

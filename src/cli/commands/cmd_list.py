@@ -59,7 +59,7 @@ def print_json_tree(data):
 
     return '\n'.join(result)
 
-def command_list_config(args):
+def command_list(args):
     console = Console()
     console.clear()
 
@@ -71,7 +71,7 @@ def command_list_config(args):
             print_info(f"[#A9A9A9] Será usado arquivo informado pelo usuário: ")
             file_path = str(config_path) + "/msgram.json"
         else:
-            print_info(f"[#A9A9A9] Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
+            print_info(f"[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
 
 
     except Exception as e:
@@ -79,10 +79,11 @@ def command_list_config(args):
         exit(1)
 
     
-    print_rule("[#FFFFFF] Listing Configuration Parameters")
+    print_rule("[#FFFFFF]Listing Configuration Parameters")
 
     if not (os.path.exists(file_path)):
-        print_info(f"[#A9A9A9] O arquivo de configuração não foi encontrado. \n Execute o comando msgram init no projeto desejado para criá-lo.")
+        print_info(f"[#A9A9A9] O arquivo de configuração não foi encontrado. \n")
+        print_info(f"Execute o comando msgram init no projeto desejado para criá-lo.")
         exit()
 
     print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
@@ -96,6 +97,5 @@ def command_list_config(args):
         output_string = print_json_tree(characteristic)
         print_info(output_string)
 
-    print_info(
-        "\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando: vim <.msgram/msgram.json>"
-    )
+    print_info(f"\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:")
+    print_info(f"nano <.msgram/msgram.json>\n")

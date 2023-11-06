@@ -5,7 +5,7 @@ from pathlib import Path
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import  command_extract
 from src.cli.commands.cmd_calculate import command_calculate
-from src.cli.commands.cmd_print_config import command_list_config
+from src.cli.commands.cmd_list import command_list
 
 from src.config.settings import (
     AVAILABLE_IMPORTS,
@@ -64,7 +64,7 @@ def create_parser():
         help="Show configuration file.",
     )
 
-    parser_list_config.set_defaults(func=command_list_config)  # function command list config
+    parser_list_config.set_defaults(func=command_list)  # function command list config
 
 
 
