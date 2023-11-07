@@ -4,6 +4,7 @@ import shutil
 
 from src.config.settings import DEFAULT_CONFIG_FILE_PATH
 
+
 def capture(command):
     proc = subprocess.Popen(
         command,

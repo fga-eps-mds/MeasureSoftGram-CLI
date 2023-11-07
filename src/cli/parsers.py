@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 
 from src.cli.commands.cmd_init import command_init
-from src.cli.commands.cmd_extract import  command_extract
+from src.cli.commands.cmd_extract import command_extract
 from src.cli.commands.cmd_calculate import command_calculate
 from src.cli.commands.cmd_list import command_list
 
@@ -65,8 +65,6 @@ def create_parser():
     )
 
     parser_list_config.set_defaults(func=command_list)  # function command list config
-
-
 
     # =====================================< COMMAND extract >=====================================
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
