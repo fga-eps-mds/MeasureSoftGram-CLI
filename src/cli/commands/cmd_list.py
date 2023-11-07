@@ -27,7 +27,7 @@ def print_json_tree(data):
         key = data.get("key")
 
         if is_top:
-            result.append(f"[#FFFFFF]\nCaracterística:")
+            result.append("[#FFFFFF]\nCaracterística:")
             is_top = False
         result.append(f"[#FFFFFF]{indent}[#00FF00]{key}")
 
@@ -62,6 +62,7 @@ def print_json_tree(data):
     return '\n'.join(result)
 
 def command_list(args):
+
     console = Console()
     console.clear()
 
@@ -70,22 +71,20 @@ def command_list(args):
         config_path: Path = args["config_path"]
 
         if config_path != DEFAULT_CONFIG_PATH:
-            print_info(f"[#A9A9A9] Será usado arquivo informado pelo usuário: ")
+            print_info("[#A9A9A9] Será usado arquivo informado pelo usuário: ")
             file_path = str(config_path) + "/msgram.json"
         else:
-            print_info(f"[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
-
+            print_info("[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
 
     except Exception as e:
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-
     print_rule("[#FFFFFF]Listing Configuration Parameters")
 
     if not (os.path.exists(file_path)):
-        print_info(f"[#A9A9A9] O arquivo de configuração não foi encontrado. \n")
-        print_info(f"Execute o comando msgram init no projeto desejado para criá-lo.")
+        print_info("[#A9A9A9] O arquivo de configuração não foi encontrado. \n")
+        print_info("Execute o comando msgram init no projeto desejado para criá-lo.")
         exit()
 
     print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")

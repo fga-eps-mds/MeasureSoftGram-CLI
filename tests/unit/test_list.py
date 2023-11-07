@@ -4,8 +4,8 @@ import json
 
 from src.cli.commands.cmd_list import print_json_tree
 
-
 import re
+
 
 def test_print_json_tree():
 
