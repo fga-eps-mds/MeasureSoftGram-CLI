@@ -1,27 +1,33 @@
 Característica:
 reliability
 Peso: 50%
-Subcaracteristica(s):
-|  testing_status
-|  Peso: 100%
-|  Medida(s):
-|  |  passed_tests
-|  |  Peso: 33%
-|  |  Métrica(s):
-|  |  |  Valores de referência: Min: 0 e Max: 1
-|  |  Fim-Metrica(s)
-|  Fim-Medida(s)
-|  |  test_builds
-|  |  Peso: 33%
-|  |  Métrica(s):
-|  |  |  Valores de referência: Min: 0 e Max: 300000
-|  |  Fim-Metrica(s)
-|  Fim-Medida(s)
-|  |  test_coverage
-|  |  Peso: 34%
-|  |  Métrica(s):
-|  |  |  Valores de referência: Min: 60 e Max: 100
-|  |  Fim-Metrica(s)
-|  Fim-Medida(s)
+Sub-característica(s):
+│  testing_status
+│  Peso: 100%
+│  │  Medida(s):
+│  │  │  passed_tests
+│  │  │  Peso: 33%
+│  │  │  Métrica(s):
+│  │  │  └─test_success_density
+│  │  │  │ Valores de referência: Min = 0 e Max = 1
+│  │  │  Fim-Métrica(s)
+│  │  Fim-Medida(s)
+│  │  Medida(s):
+│  │  │  test_builds
+│  │  │  Peso: 33%
+│  │  │  Métrica(s):
+│  │  │  └─tests
+│  │  │  └─tests_execution_time
+│  │  │  │ Valores de referência: Min = 0 e Max = 300000
+│  │  │  Fim-Métrica(s)
+│  │  Fim-Medida(s)
+│  │  Medida(s):
+│  │  │  test_coverage
+│  │  │  Peso: 34%
+│  │  │  Métrica(s):
+│  │  │  └─coverage
+│  │  │  │ Valores de referência: Min = 60 e Max = 100
+│  │  │  Fim-Métrica(s)
+│  │  Fim-Medida(s)
 Fim-SubCaracterística
 Fim-Característica
