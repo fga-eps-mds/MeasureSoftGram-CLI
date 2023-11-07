@@ -93,5 +93,3 @@ def print_panel(menssage: str, title: str = "Next steps"):
             width=140,
         ),
     )
-
-# testegit

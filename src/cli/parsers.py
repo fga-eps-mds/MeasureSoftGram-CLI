@@ -43,7 +43,7 @@ def create_parser():
     )
     parser_init.set_defaults(func=command_init)  # function command init
 
-    # =====================================< COMMAND list_config >=====================================
+    # =====================================< COMMAND list >=====================================
     parser_list_config = subparsers.add_parser(
         "list",
         help="Listing configurations parameters.",
@@ -59,7 +59,6 @@ def create_parser():
 
     parser_list_config.add_argument(
         "all",
-        #type=str,
         nargs="?",
         help="Show configuration file.",
     )

@@ -61,6 +61,7 @@ def print_json_tree(data):
 
     return '\n'.join(result)
 
+
 def command_list(args):
 
     console = Console()
@@ -89,7 +90,6 @@ def command_list(args):
 
     print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
 
-    #get data
     f = open(file_path)
 
     data = json.load(f)
@@ -98,5 +98,5 @@ def command_list(args):
         output_string = print_json_tree(characteristic)
         print_info(output_string)
 
-    print_info(f"\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:")
-    print_info(f"nano <.msgram/msgram.json>\n")
+    print_info("\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:")
+    print_info("nano <.msgram/msgram.json>\n")
