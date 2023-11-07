@@ -1,5 +1,3 @@
-import unittest
-from unittest.mock import patch
 from io import StringIO
 import sys
 import json
@@ -8,7 +6,7 @@ from src.cli.commands.cmd_list import print_json_tree
 
 
 import re
-    
+
 def test_print_json_tree():
 
     file = open("tests/unit/data/newmsgram.json")

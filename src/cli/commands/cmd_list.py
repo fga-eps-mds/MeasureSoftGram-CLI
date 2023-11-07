@@ -1,5 +1,5 @@
 from rich.console import Console
-from src.cli.utils import  print_info, print_rule, print_error
+from src.cli.utils import print_info, print_rule, print_error
 
 from src.config.settings import FILE_CONFIG, DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_FILE_PATH
 
@@ -8,11 +8,12 @@ from pathlib import Path
 import json
 import os
 
+
 def print_json_tree(data):
     result = []
     stack = [(data, "")]
     is_top = True
-    
+
     measure_to_metric = {}
     measure_to_metric["passed_tests"] = ['test_success_density']
     measure_to_metric["test_builds"] = ['tests', 'tests_execution_time']
@@ -20,7 +21,7 @@ def print_json_tree(data):
     measure_to_metric["non_complex_file_density"] = ['complexity_functions', 'total_number_of_files']
     measure_to_metric["commented_file_density"] = ['commented_lines_density']
     measure_to_metric["duplication_absense"] = ['duplication_lines_density']
-    
+
     while stack:
         data, indent = stack.pop()
         key = data.get("key")
@@ -42,17 +43,17 @@ def print_json_tree(data):
             for measure in data["measures"]:
                 result.append(f"[#FFFFFF]{indent}│  Medida(s):")
                 measure_key = measure.get("key")
-                result.append(f"[#FFFFFF]{indent}{indent}│  [#00FF00]{measure_key}")  # Use the ASCII character │ (code 179)
+                result.append(f"[#FFFFFF]{indent}{indent}│  [#00FF00]{measure_key}")
                 result.append(f"[#FFFFFF]{indent}{indent}│  Peso: [#00FF00]{measure['weight']}%")
                 if "min_threshold" in measure and "max_threshold" in measure:
                     min_threshold = measure.get("min_threshold")
                     max_threshold = measure.get("max_threshold")
-                    result.append(f"[#FFFFFF]{indent}{indent}│  Métrica(s):")  # Use the ASCII character │ (code 179)
+                    result.append(f"[#FFFFFF]{indent}{indent}│  Métrica(s):")
                     metrics = measure_to_metric.get(measure_key, [])  # Get associated metrics
                     for metric in metrics:
-                        result.append(f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}")  # Print metrics in green color
-                        min_max = f"Valores de referência: Min = [#00FF00]{min_threshold} [#FFFFFF]e Max = [#00FF00]{max_threshold}"
-                    result.append(f"[#FFFFFF]{indent}{indent}│  │ {min_max}")
+                        result.append(f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}")
+                        min_max = f"Min = [#00FF00]{min_threshold} [#FFFFFF]e Max = [#00FF00]{max_threshold}"
+                    result.append(f"[#FFFFFF]{indent}{indent}│  │ Valores de referência: {min_max}")
                     result.append(f"[#FFFFFF]{indent}{indent}│  Fim-Métrica(s)")
                 result.append(f"[#FFFFFF]{indent}│  Fim-Medida(s)")
             result.append("[#FFFFFF]Fim-SubCaracterística")
@@ -79,7 +80,7 @@ def command_list(args):
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-    
+
     print_rule("[#FFFFFF]Listing Configuration Parameters")
 
     if not (os.path.exists(file_path)):
