@@ -20,7 +20,7 @@ def print_json_tree(data):
     measure_to_metric["test_coverage"] = ['coverage']
     measure_to_metric["non_complex_file_density"] = ['complexity_functions', 'total_number_of_files']
     measure_to_metric["commented_file_density"] = ['commented_lines_density']
-    measure_to_metric["duplication_absense"] = ['duplication_lines_density']
+    measure_to_metric["duplication_absence"] = ['duplication_lines_density']
 
     while stack:
         data, indent = stack.pop()
@@ -75,7 +75,9 @@ def command_list(args):
             print_info("[#A9A9A9] Será usado arquivo informado pelo usuário: ")
             file_path = str(config_path) + "/msgram.json"
         else:
-            print_info("[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
+            print_info(
+                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão."
+                )
 
     except Exception as e:
         print_error(f"KeyError: args[{e}] - non-existent parameters")
@@ -85,7 +87,8 @@ def command_list(args):
 
     if not (os.path.exists(file_path)):
         print_info("[#A9A9A9] O arquivo de configuração não foi encontrado. \n")
-        print_info("Execute o comando msgram init no projeto desejado para criá-lo.")
+        print_info("Execute o comando 'msgram init' no projeto desejado para criá-lo.\n")
+        print_info("Ou use 'msgram init --config_path <path>' para informar o caminho ate o arquivo.")
         exit()
 
     print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
@@ -99,4 +102,4 @@ def command_list(args):
         print_info(output_string)
 
     print_info("\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:")
-    print_info("nano <.msgram/msgram.json>\n")
+    print_info("vim .msgram/msgram.json\n")
