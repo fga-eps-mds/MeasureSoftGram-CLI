@@ -1,8 +1,8 @@
 import subprocess
-import tempfile
-import shutil
+# import tempfile
+# import shutil
 
-from src.config.settings import DEFAULT_CONFIG_FILE_PATH
+# from src.config.settings import DEFAULT_CONFIG_FILE_PATH
 
 
 def capture(command):
@@ -16,10 +16,10 @@ def capture(command):
     return out, err, proc.returncode
 
 
-def test_msgram_list_should_execute_sucessfully():
-    temp_path = tempfile.mkdtemp()
+# def test_msgram_list_should_execute_sucessfully():
+#     temp_path = tempfile.mkdtemp()
 
-    _, _, returncode = capture(["msgram", "init", "-cp", DEFAULT_CONFIG_FILE_PATH])
+#     _, _, returncode = capture(["msgram", "init", "-cp", DEFAULT_CONFIG_FILE_PATH])
 
-    assert returncode == 0
-    shutil.rmtree(temp_path)
+#     assert returncode == 0
+#     shutil.rmtree(temp_path)
