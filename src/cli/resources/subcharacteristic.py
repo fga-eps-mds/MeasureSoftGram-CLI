@@ -22,6 +22,9 @@ def get_subcharacteristic_value(subchars, char):
 
 
 def calculate_subcharacteristics(config, measures):
+    
+    # print(measures)
+
     subchars = [sc["subcharacteristics"] for sc in config["characteristics"]]
     calculate_infos = []
 

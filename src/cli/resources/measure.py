@@ -9,6 +9,9 @@ logger = logging.getLogger("msgram")
 
 
 def get_measure_value(measures, subchar):
+
+    # print(measures)
+
     measures_calculated = []
     for measure in subchar:
         measure_key = measure["key"]
