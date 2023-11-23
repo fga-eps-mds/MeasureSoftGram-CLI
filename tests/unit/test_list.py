@@ -2,13 +2,16 @@ from io import StringIO
 from pathlib import Path
 import sys
 import json
+import tempfile
+from src.cli.commands.cmd_init import command_init
 
 from src.cli.commands.cmd_list import command_list, print_json_tree
 
 import re
 
-from src.config.settings import DEFAULT_CONFIG_PATH
 import pytest
+
+INIT_ARGS = {"config_path": ".testmsgram"}
 
 
 def test_print_json_tree():
@@ -38,10 +41,15 @@ def test_print_json_tree():
 
 
 def test_cmd_list():
+    temp_path = tempfile.mkdtemp()
+    config_path = f'{temp_path}/{INIT_ARGS["config_path"]}'
+
     captured_output = StringIO()
     sys.stdout = captured_output
 
-    command_list({"config_path": DEFAULT_CONFIG_PATH})
+    command_init({"config_path": Path(config_path)})
+
+    command_list({"config_path": Path(config_path)})
     sys.stdout = sys.__stdout__
 
     assert (
