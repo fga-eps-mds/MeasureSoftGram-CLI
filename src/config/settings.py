@@ -69,19 +69,19 @@ SUPPORTED_MEASURES = [
             ],
         }
     },
+    {
+        "team_throughput": {
+            "metrics": [
+                "total_issues",
+                "resolved_issues",
+            ],
+        }
+    },
     # {
     #     "ci_feedback_time": {
     #         "metrics": [
     #             "number_of_build_pipelines_in_the_last_x_days",
     #             "runtime_sum_of_build_pipelines_in_the_last_x_days",
-    #         ],
-    #     }
-    # },
-    # {
-    #     "team_throughput": {
-    #         "metrics": [
-    #             "number_of_resolved_issues_with_US_label_in_the_last_x_days",
-    #             "total_number_of_issues_with_US_label_in_the_last_x_days",
     #         ],
     #     }
     # },

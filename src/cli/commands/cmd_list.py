@@ -20,7 +20,8 @@ def print_json_tree(data):
     measure_to_metric["test_coverage"] = ['coverage']
     measure_to_metric["non_complex_file_density"] = ['complexity_functions', 'total_number_of_files']
     measure_to_metric["commented_file_density"] = ['commented_lines_density']
-    measure_to_metric["duplication_absence"] = ['duplication_lines_density']
+    measure_to_metric["duplication_absense"] = ['duplication_lines_density']
+    measure_to_metric["team_throughput"] = ['resolved_issues', 'total_issues']
 
     while stack:
         data, indent = stack.pop()
@@ -76,8 +77,7 @@ def command_list(args):
             file_path = str(config_path) + "/msgram.json"
         else:
             print_info(
-                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão."
-                )
+                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
 
     except Exception as e:
         print_error(f"KeyError: args[{e}] - non-existent parameters")
