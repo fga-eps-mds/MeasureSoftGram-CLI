@@ -9,6 +9,8 @@ def get_metric_value(extracted):
         "functions",
         "comment_lines_density",
         "duplicated_lines_density",
+        "resolved_issues", 
+        "total_issues"
     ]
 
     # Métricas que o parâmetro é extraido do UTS

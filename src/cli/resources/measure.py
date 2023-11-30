@@ -39,15 +39,19 @@ def calculate_measures(
         calculate_infos.append(
             {
                 "key": list(measures.keys())[0],
-                "parameters": {
-                    metric: extracted[metric] if extracted.get(metric) else None
+                "metrics": [
+                    {
+                        "key": metric,
+                        "value": [float(value) for value in extracted[metric]] if extracted.get(metric) and extracted[metric] else None
+
+                    }
                     for metric in list(measures.values())[0]["metrics"]
-                },
+                ],
             }
         )
         new_metrics = []
         for measure in calculate_infos:
-            if measure.get("parameters", None) and all(measure["parameters"].values()):
+            if measure.get("metrics", None) and all(metric["value"] for metric in measure["metrics"]):
                 new_metrics.append(measure)
 
         calculate_infos = new_metrics
