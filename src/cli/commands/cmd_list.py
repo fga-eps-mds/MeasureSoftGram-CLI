@@ -77,8 +77,7 @@ def command_list(args):
             file_path = str(config_path) + "/msgram.json"
         else:
             print_info(
-                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão."
-                )
+                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
 
     except Exception as e:
         print_error(f"KeyError: args[{e}] - non-existent parameters")

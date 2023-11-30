@@ -42,8 +42,11 @@ def calculate_measures(
                 "metrics": [
                     {
                         "key": metric,
-                        "value": [float(value) for value in extracted[metric]] if extracted.get(metric) and extracted[metric] else None
-
+                        "value": (
+                            [float(value) for value in extracted[metric]]
+                            if extracted.get(metric) and extracted[metric]
+                            else None
+                        )
                     }
                     for metric in list(measures.values())[0]["metrics"]
                 ],
