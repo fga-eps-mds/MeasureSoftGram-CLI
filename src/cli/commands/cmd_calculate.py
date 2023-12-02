@@ -51,7 +51,11 @@ def command_calculate(args):
     data_calculated = []
     success = False
 
-    aggregate_metrics(extracted_path)
+
+    if not aggregate_metrics(extracted_path,(config_path / FILE_CONFIG)):
+        print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
+        return
+
     
     if not isfile:
         for file, file_name in read_mult_files(extracted_path, "metrics"):
