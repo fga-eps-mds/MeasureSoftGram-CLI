@@ -16,6 +16,7 @@ from src.cli.resources.measure import calculate_measures
 from src.cli.resources.tsqmi import calculate_tsqmi
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
+from src.cli.aggregate_metrics import aggregate_metrics
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 
@@ -50,6 +51,8 @@ def command_calculate(args):
     data_calculated = []
     success = False
 
+    aggregate_metrics(extracted_path)
+    
     if not isfile:
         for file, file_name in read_mult_files(extracted_path, "metrics"):
             result = calculate_all(file, file_name, config)
@@ -125,7 +128,7 @@ def show_results(output_format, data_calculated, config_path):
 
     elif len(data_calculated) == 0:
         print_info(
-            f"[yellow]WARNING: No extracted file readed so no {output_format} was generated!"
+            f"[yellow]WARNING: No extracted file read so no {output_format} was generated!"
         )
 
     elif output_format == "csv":
