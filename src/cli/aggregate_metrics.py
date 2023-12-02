@@ -1,40 +1,67 @@
+import os
 import json
+
+metrics = {}
+metrics["sonar"] = ['tests',
+                    'test_failures',
+                    'test_errors',
+                    'coverage',
+                    'test_execution_time',
+                    'functions',
+                    'complexity',
+                    'comment_lines_density',
+                    'duplicated_lines_density']
+
+metrics["github"] = ['resolved_issues', 'total_issues']
 
 def read_msgram(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
 
 def save_metrics(file_name, metrics):
-    output_file_path = file_name.split('.')[0] + '.metrics'
+    output_file_path = file_name.replace('.msgram', '.metrics')
     with open(output_file_path, 'w') as output_file:
         json.dump(metrics, output_file, indent=2)
     print(f'Metrics saved to: {output_file_path}')
 
 def main():
-    file1_path = 'fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram'
-    file2_path = 'github_nlohmann-json-19-11-2023-12-53-58-extracted.msgram'
+    # Get all .msgram files in the current directory
+    msgram_files = [file for file in os.listdir() if file.endswith('.msgram')]
 
-    file1_content = read_msgram(file1_path)
-    file2_content = read_msgram(file2_path)
+    # Identify GitHub files based on the file name prefix
+    github_files = [file for file in msgram_files if file.startswith('github_')]
 
+    # Check if at least one GitHub file was found
+    if github_files:
+        print(f'GitHub metrics found in: {", ".join(github_files)}')
 
-    resolved_issues_metric = next((metric['value'] for metric in file2_content['nlohmann/json'] if metric['metric'] == 'resolved_issues'), None)
-    total_issues_metric = next((metric['value'] for metric in file2_content['nlohmann/json'] if metric['metric'] == 'total_issues'), None)
+        # Iterate through remaining files
+        for file in msgram_files:
+            if file not in github_files:
+                print(f'Processing {file}')
+                file_content = read_msgram(file)
 
-    # Extract the list of metrics from the first file
-    file1_metrics = file1_content['fga-eps-mds_2022-2-MeasureSoftGram-CLI']
+                # Extract GitHub metrics from the GitHub files
+                github_metrics = [
+                    {"metric": metric, "value": next((m["value"] for m in read_msgram(github_file)['nlohmann/json'] if m["metric"] == metric), None)}
+                    for github_file in github_files
+                    for metric in metrics["github"]
+                ]
 
-    # Add new metrics to the list
-    file1_metrics += [
-        {"metric": "resolved_issues", "value": resolved_issues_metric},
-        {"metric": "total_issues", "value": total_issues_metric}
-    ]
+                # Extract the list of metrics from the current file
+                current_metrics = file_content.get('fga-eps-mds_2022-2-MeasureSoftGram-CLI', [])
 
-    # Update the original dictionary with the modified list of metrics
-    file1_content['fga-eps-mds_2022-2-MeasureSoftGram-CLI'] = file1_metrics
+                # Add GitHub metrics to the list
+                current_metrics += github_metrics
 
-    # Save the modified content to the file
-    save_metrics(file1_path, file1_content)
+                # Update the original dictionary with the modified list of metrics
+                file_content['fga-eps-mds_2022-2-MeasureSoftGram-CLI'] = current_metrics
+
+                # Save the modified content to the file
+                save_metrics(file, file_content)
+
+    else:
+        print('GitHub files not found in the current directory.')
 
 
 if __name__ == "__main__":
