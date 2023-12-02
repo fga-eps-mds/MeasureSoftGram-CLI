@@ -51,7 +51,7 @@ def command_calculate(args):
     success = False
 
     if not isfile:
-        for file, file_name in read_mult_files(extracted_path, "msgram"):
+        for file, file_name in read_mult_files(extracted_path, "metrics"):
             result = calculate_all(file, file_name, config)
             data_calculated.append(result)
             success = True
