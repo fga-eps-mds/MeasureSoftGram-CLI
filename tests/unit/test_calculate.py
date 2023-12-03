@@ -45,7 +45,7 @@ def test_calculate_invalid_args(calculate_arg):
         ("tabular", False),
         ("tree", False),
         ("raw", False),
-        # ("csv", True),
+        ("csv", True),
         # ("json", True),
     ],
 )
