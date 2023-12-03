@@ -82,6 +82,53 @@ def process_sonar_metrics(folder_path, msgram_files, github_files, project_key):
     return processed_files
 
 
+def process_github_metrics(folder_path, msgram_files, github_files, project_key, metrics):
+    # Check if no GitHub files were found
+    if not github_files:
+        print_error(f'> [red] GitHub files not found in the directory: {folder_path}\n')
+        return False 
+
+    print_info(f'> [blue] GitHub metrics found in: {", ".join(github_files)}\n')
+
+    # Extract key for GitHub metrics from the first GitHub file
+    first_github_file = read_msgram(os.path.join(folder_path, github_files[0]))
+    
+    github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
+
+    processed_files = []
+
+    # Iterate through remaining files
+    for file in msgram_files:
+        if file not in github_files:
+            print_info(f'> [blue] Processing {file}')
+            file_content = read_msgram(os.path.join(folder_path, file))
+
+            # Extract Sonar metrics from the current file
+            sonar_metrics = file_content.get(project_key, [])
+
+            # Extract GitHub metrics from the GitHub file
+            github_metrics = [
+                {
+                    "metric": metric,
+                    "value": next(
+                        (m["value"] for m in first_github_file[github_key] if m["metric"] == metric),
+                        None
+                    )
+                }
+                for metric in metrics["github"]
+            ]
+
+            # Add GitHub metrics to the Sonar metrics block
+            sonar_metrics += github_metrics
+
+            # Update the original dictionary with the modified list of metrics
+            file_content[project_key] = sonar_metrics
+
+            processed_files.append((file, file_content))
+
+    return processed_files
+
+
 def aggregate_metrics(folder_path, config_path):
     # Load the config file
     with open(config_path, 'r') as config_file:
@@ -100,50 +147,22 @@ def aggregate_metrics(folder_path, config_path):
     # Check if GitHub metrics should be processed based on the config file
     if should_process_github_metrics(config):
         
+        # Process GitHub metrics and check the length of the result
+        result_github_metrics = process_github_metrics(folder_path, msgram_files, github_files, project_key, metrics)
 
-        # Check if no GitHub files were found
-        if not github_files:
-            print_error(f'> [red] GitHub files not found in the directory: {folder_path}\n')
-            return False 
-
-        print_info(f'> [blue] GitHub metrics found in: {", ".join(github_files)}\n')
-
-        # Extract key for GitHub metrics from the first GitHub file
-        first_github_file = read_msgram(os.path.join(folder_path, github_files[0]))
+        # Check that the result always has exactly one file and file_content
+        if len(result_github_metrics) != 1:  
+            # Handle the case where the result does not have exactly one file and file_content
+            print("Error: Unexpected result_github_metrics from process_sonar_metrics")
+            return False
         
-        github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
+        file, file_content = result_github_metrics[0]
+            
+        # Save only the Sonar metrics to the file
+        save_metrics(os.path.join(folder_path, file), file_content)
 
-        # Iterate through remaining files
-        for file in msgram_files:
-            if file not in github_files:
-                print_info(f'> [blue] Processing {file}')
-                file_content = read_msgram(os.path.join(folder_path, file))
-
-                # Extract Sonar metrics from the current file
-                sonar_metrics = file_content.get(project_key, [])
-
-                # Extract GitHub metrics from the GitHub file
-                github_metrics = [
-                    {
-                        "metric": metric,
-                        "value": next(
-                            (m["value"] for m in first_github_file[github_key] if m["metric"] == metric),
-                            None
-                        )
-                    }
-                    for metric in metrics["github"]
-                ]
-
-                # Add GitHub metrics to the Sonar metrics block
-                sonar_metrics += github_metrics
-
-                # Update the original dictionary with the modified list of metrics
-                file_content[project_key] = sonar_metrics
-
-                # Save the modified content to the file
-                save_metrics(os.path.join(folder_path, file), file_content)
-
-                return True
+        # Return True after processing all files
+        return True
     else:
         result = process_sonar_metrics(folder_path, msgram_files, github_files, project_key)
 
