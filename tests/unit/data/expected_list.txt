@@ -8,7 +8,9 @@ Sub-característica(s):
 │  │  │  passed_tests
 │  │  │  Peso: 33%
 │  │  │  Métrica(s):
-│  │  │  └─test_success_density
+│  │  │  └─tests
+│  │  │  └─test_failures
+│  │  │  └─test_errors
 │  │  │  │ Valores de referência: Min = 0 e Max = 1
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
@@ -17,7 +19,7 @@ Sub-característica(s):
 │  │  │  Peso: 33%
 │  │  │  Métrica(s):
 │  │  │  └─tests
-│  │  │  └─tests_execution_time
+│  │  │  └─test_execution_time
 │  │  │  │ Valores de referência: Min = 0 e Max = 300000
 │  │  │  Fim-Métrica(s)
 │  │  Fim-Medida(s)
