@@ -16,6 +16,36 @@ metrics["sonar"] = ['tests',
 
 metrics["github"] = ['resolved_issues', 'total_issues']
 
+measures = {}
+measures["sonar"] = ['passed_tests',
+                    'test_builds',
+                    'test_errors',
+                    'test_coverage',
+                    'non_complex_file_density',
+                    'commented_file_density',
+                    'duplication_absense']
+
+measures["github"] = ['team_throughput']
+
+def should_process_sonar_metrics(config):
+    # Check if any Sonar measures are present in the config file
+    for characteristic in config.get("characteristics", []):
+        for subcharacteristic in characteristic.get("subcharacteristics", []):
+            for measure in subcharacteristic.get("measures", []):
+                if measure.get("key") in measures["sonar"]:
+                    return True
+    return False
+
+def should_process_github_metrics(config):
+    # Check if any GitHub measures are present in the config file
+    for characteristic in config.get("characteristics", []):
+        for subcharacteristic in characteristic.get("subcharacteristics", []):
+            for measure in subcharacteristic.get("measures", []):
+                if measure.get("key") in measures["github"]:
+                    return True
+    return False
+
+
 def read_msgram(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
@@ -34,14 +64,23 @@ def save_metrics(file_name, metrics):
     
     print_info(f'> [blue] Metrics saved to: {output_file_path}\n')
 
-def should_process_github_metrics(config):
-    # Check if the "team_throughput" measure is present in the config file
-    for characteristic in config.get("characteristics", []):
-        for subcharacteristic in characteristic.get("subcharacteristics", []):
-            for measure in subcharacteristic.get("measures", []):
-                if measure.get("key") == "team_throughput":
-                    return True
-    return False
+
+def process_sonar_metrics(folder_path, msgram_files, github_files, project_key):
+    processed_files = []
+
+    for file in msgram_files:
+        if file not in github_files:
+            print_info(f'> [blue] Processing {file}')
+            file_content = read_msgram(os.path.join(folder_path, file))
+
+            # Extract Sonar metrics from the current file
+            sonar_metrics = file_content.get(project_key, [])
+
+            file_content[project_key] = sonar_metrics
+            processed_files.append((file, file_content))
+
+    return processed_files
+
 
 def aggregate_metrics(folder_path, config_path):
     # Load the config file
@@ -106,19 +145,20 @@ def aggregate_metrics(folder_path, config_path):
 
                 return True
     else:
-        # Only save Sonar metrics if GitHub metrics should not be processed
-        for file in msgram_files:
-            if file not in github_files:
-                print_info(f'> [blue] Processing {file}')
-                file_content = read_msgram(os.path.join(folder_path, file))
+        result = process_sonar_metrics(folder_path, msgram_files, github_files, project_key)
 
-                # Extract Sonar metrics from the current file
-                sonar_metrics = file_content.get(project_key, [])
+        # Check that the result always has exactly one file and file_content
+        if len(result) != 1:  
+            # Handle the case where the result does not have exactly one file and file_content
+            print("Error: Unexpected result from process_sonar_metrics")
+            return False
+        
+        file, file_content = result[0]
+            
+        # Save only the Sonar metrics to the file
+        save_metrics(os.path.join(folder_path, file), file_content)
 
-                file_content[project_key] = sonar_metrics
-
-                # Save only the Sonar metrics to the file
-                save_metrics(os.path.join(folder_path, file), file_content)
-                return True
+        # Return True after processing all files
+        return True
 
 
