@@ -46,7 +46,7 @@ def test_calculate_invalid_args(calculate_arg):
         ("tree", False),
         ("raw", False),
         ("csv", True),
-        # ("json", True),
+        ("json", True),
     ],
 )
 def test_calculate_file(output_format, multiple_files):
@@ -74,107 +74,107 @@ def test_calculate_file(output_format, multiple_files):
 
     command_calculate(args)
 
-    assert len(os.listdir(config_dirpath)) == 2 if multiple_files else 1
+    assert len(os.listdir(config_dirpath)) ==  1
     assert len(os.listdir(extract_dirpath)) == 1
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)
 
 
-# def test_calculate_all_dict():
-#     file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
-#     json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
-#     config = open_json_file(Path("tests/unit/data/msgram.json"))
+def test_calculate_all_dict():
+    file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics"
+    json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
+    config = open_json_file(Path("tests/unit/data/msgram.json"))
 
-#     calculated_result = calculate_all(json_data, file_name, config)
-#     calculate_expected = {
-#         "repository": [
-#             {"key": "repository", "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"}
-#         ],
-#         "version": [{"key": "version", "value": "01-05-2023-21-40"}],
-#         "measures": [
-#             {"key": "passed_tests", "value": 1.0},
-#             {
-#                 "key": "test_builds",
-#                 "value": 0.9996066627522133,
-#             },
-#             {
-#                 "key": "test_coverage",
-#                 "value": 0.40234848484848484,
-#             },
-#             {
-#                 "key": "non_complex_file_density",
-#                 "value": 0.44347274991556906,
-#             },
-#             {
-#                 "key": "commented_file_density",
-#                 "value": 0.04318181818181818,
-#             },
-#             {"key": "duplication_absense", "value": 1.0},
-#         ],
-#         "subcharacteristics": [
-#             {
-#                 "key": "testing_status",
-#                 "value": 0.8421061048464034,
-#             },
-#             {
-#                 "key": "modifiability",
-#                 "value": 0.6415437113263573,
-#             },
-#         ],
-#         "characteristics": [
-#             {
-#                 "key": "reliability",
-#                 "value": 0.8421061048464034,
-#             },
-#             {
-#                 "key": "maintainability",
-#                 "value": 0.6415437113263573,
-#             },
-#         ],
-#         "tsqmi": [
-#             {
-#                 "key": "tsqmi",
-#                 "value": 0.7485723162667646,
-#             }
-#         ],
-#     }
-#     assert calculated_result.get("repository") == calculate_expected.get("repository")
-#     assert calculated_result.get("version") == calculate_expected.get("version")
-#     measures_result = calculated_result.get("measures")
-#     measures_expected = calculate_expected.get("measures")
-#     for measure_result, measure_expected in zip(measures_result, measures_expected):
-#         assert measure_result.get("key") == measure_expected.get("key")
-#         assert pytest.approx(measure_result.get("value")) == measure_expected.get(
-#             "value"
-#         )
+    calculated_result = calculate_all(json_data, file_name, config)
+    calculate_expected = {
+        "repository": [
+            {"key": "repository", "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"}
+        ],
+        "version": [{"key": "version", "value": "01-05-2023-21-40"}],
+        "measures": [
+            {"key": "passed_tests", "value": 1.0},
+            {
+                "key": "test_builds",
+                "value": 0.9996066627522133,
+            },
+            {
+                "key": "test_coverage",
+                "value": 0.40234848484848484,
+            },
+            {
+                "key": "non_complex_file_density",
+                "value": 0.44347274991556906,
+            },
+            {
+                "key": "commented_file_density",
+                "value": 0.04318181818181818,
+            },
+            {"key": "duplication_absense", "value": 1.0},
+        ],
+        "subcharacteristics": [
+            {
+                "key": "testing_status",
+                "value": 0.8421061048464034,
+            },
+            {
+                "key": "modifiability",
+                "value": 0.6415437113263573,
+            },
+        ],
+        "characteristics": [
+            {
+                "key": "reliability",
+                "value": 0.8421061048464034,
+            },
+            {
+                "key": "maintainability",
+                "value": 0.6415437113263573,
+            },
+        ],
+        "tsqmi": [
+            {
+                "key": "tsqmi",
+                "value": 0.7485723162667646,
+            }
+        ],
+    }
+    assert calculated_result.get("repository") == calculate_expected.get("repository")
+    assert calculated_result.get("version") == calculate_expected.get("version")
+    measures_result = calculated_result.get("measures")
+    measures_expected = calculate_expected.get("measures")
+    for measure_result, measure_expected in zip(measures_result, measures_expected):
+        assert measure_result.get("key") == measure_expected.get("key")
+        assert pytest.approx(measure_result.get("value")) == measure_expected.get(
+            "value"
+        )
 
-#     subcharacteristics_result = calculated_result.get("subcharacteristics")
-#     subcharacteristics_expected = calculate_expected.get("subcharacteristics")
-#     for subcharacteristic_result, subcharacteristic_expected in zip(
-#         subcharacteristics_result, subcharacteristics_expected
-#     ):
-#         assert subcharacteristic_result.get("key") == subcharacteristic_expected.get(
-#             "key"
-#         )
-#         assert pytest.approx(
-#             subcharacteristic_result.get("value")
-#         ) == subcharacteristic_expected.get("value")
+    subcharacteristics_result = calculated_result.get("subcharacteristics")
+    subcharacteristics_expected = calculate_expected.get("subcharacteristics")
+    for subcharacteristic_result, subcharacteristic_expected in zip(
+        subcharacteristics_result, subcharacteristics_expected
+    ):
+        assert subcharacteristic_result.get("key") == subcharacteristic_expected.get(
+            "key"
+        )
+        assert pytest.approx(
+            subcharacteristic_result.get("value")
+        ) == subcharacteristic_expected.get("value")
 
-#     characteristics_result = calculated_result.get("characteristics")
-#     characteristics_expected = calculate_expected.get("characteristics")
-#     for characteristic_result, characteristic_expected in zip(
-#         characteristics_result, characteristics_expected
-#     ):
-#         assert characteristic_result.get("key") == characteristic_expected.get("key")
-#         assert pytest.approx(
-#             characteristic_result.get("value")
-#         ) == characteristic_expected.get("value")
+    characteristics_result = calculated_result.get("characteristics")
+    characteristics_expected = calculate_expected.get("characteristics")
+    for characteristic_result, characteristic_expected in zip(
+        characteristics_result, characteristics_expected
+    ):
+        assert characteristic_result.get("key") == characteristic_expected.get("key")
+        assert pytest.approx(
+            characteristic_result.get("value")
+        ) == characteristic_expected.get("value")
 
-#     tsqmi_result = calculated_result.get("tsqmi")[0]
-#     tsqmi_expected = calculate_expected.get("tsqmi")[0]
-#     assert tsqmi_result.get("key") == tsqmi_expected.get("key")
-#     assert pytest.approx(tsqmi_result.get("value")) == tsqmi_expected.get("value")
+    tsqmi_result = calculated_result.get("tsqmi")[0]
+    tsqmi_expected = calculate_expected.get("tsqmi")[0]
+    assert tsqmi_result.get("key") == tsqmi_expected.get("key")
+    assert pytest.approx(tsqmi_result.get("value")) == tsqmi_expected.get("value")
 
 
 def test_calculate_invalid_config_file():
@@ -228,7 +228,7 @@ def test_calculate_invalid_extracted_file():
 
     sys.stdout = sys.__stdout__
     assert (
-        f"Can not read msgram files in provided directory"
+        f"Error calculating {extract_dirpath}/{extracted_file_name}"
         in captured_output.getvalue()
     )
     assert "All calculations performed" not in captured_output.getvalue()

@@ -47,14 +47,15 @@ def command_calculate(args):
 
     print_info("\n> [blue] Reading extracted files:[/]")
 
-    if not aggregate_metrics(extracted_path,config):
-        print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
-        return
 
     data_calculated = []
     success = False
     
     if not extracted_path.is_file():
+        if not aggregate_metrics(extracted_path,config):
+            print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
+            return
+        
         for file, file_name in read_multiple_files(extracted_path, "metrics"):
             result = calculate_all(file, file_name, config)
             data_calculated.append(result)
