@@ -47,8 +47,22 @@ def should_process_github_metrics(config):
 
 
 def read_msgram(file_path):
-    with open(file_path, 'r') as file:
-        return json.load(file)
+    try:
+        with open(file_path, 'r') as file:
+            return json.load(file)
+    except IsADirectoryError:
+        return False
+
+def list_msgram_files(folder_path):
+    try:
+        if not os.path.isdir(folder_path):
+            raise NotADirectoryError(f"{folder_path} is not a directory.")
+        
+        msgram_files = [file for file in os.listdir(folder_path) if file.endswith('.msgram')]
+        return msgram_files
+    
+    except NotADirectoryError as e:
+        print(f"Error: {e}")
 
 def save_metrics(file_name, metrics):
     # Extract the directory path from the file_name
@@ -73,6 +87,10 @@ def process_sonar_metrics(folder_path, msgram_files, github_files):
             print_info('> [blue] Processing {file}')
             sonar_metrics_dict = read_msgram(os.path.join(folder_path, file))
 
+            if not sonar_metrics_dict:
+                print_error('> [red] Error to read sonar metrics in: {folder_path}\n')
+                return False
+            
             processed_files.append((file, sonar_metrics_dict))
 
     return processed_files
@@ -88,6 +106,10 @@ def process_github_metrics(folder_path, github_files, metrics):
 
     # Extract key for GitHub metrics from the first GitHub file
     first_github_file = read_msgram(os.path.join(folder_path, github_files[0]))
+
+    if not first_github_file:
+        print_error('> [red] Error to read github metrics in: {folder_path}\n')
+        return False
     
     github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
 
@@ -107,13 +129,15 @@ def process_github_metrics(folder_path, github_files, metrics):
     return (github_files[0],github_metrics)
 
 
-def aggregate_metrics(folder_path, config_path):
-    # Load the config file
-    with open(config_path, 'r') as config_file:
-        config = json.load(config_file)
+def aggregate_metrics(folder_path, config: json):
 
     # Get all .msgram files in the specified directory
-    msgram_files = [file for file in os.listdir(folder_path) if file.endswith('.msgram')]
+    msgram_files = list_msgram_files(folder_path)
+
+    if not msgram_files:
+        print_error('> [red]Error: Can not read msgram files in provided directory')
+        return False
+
 
     # Identify GitHub files based on the file name prefix
     github_files = [file for file in msgram_files if file.startswith('github_')]
@@ -129,6 +153,12 @@ def aggregate_metrics(folder_path, config_path):
         
         # Process GitHub metrics and check the length of the result
         file,github_metrics = process_github_metrics(folder_path, github_files, metrics)
+        # Check that the result always has exactly one file and file_content
+        if not github_metrics:  
+            # Handle the case where the result does not have exactly one file and file_content
+            print_error('> [red]Error: Unexpected result from process_github_metrics')
+            return False
+        
         have_metrics = True
             
 
@@ -136,7 +166,7 @@ def aggregate_metrics(folder_path, config_path):
         result = process_sonar_metrics(folder_path, msgram_files, github_files)
 
         # Check that the result always has exactly one file and file_content
-        if len(result) != 1:  
+        if not result or len(result) != 1:  
             # Handle the case where the result does not have exactly one file and file_content
             print_error('> [red]Error: Unexpected result from process_sonar_metrics')
             return False

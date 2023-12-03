@@ -10,7 +10,7 @@ from rich.prompt import Prompt
 from rich.tree import Tree
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
-from src.cli.jsonReader import open_json_file, read_mult_files
+from src.cli.jsonReader import open_json_file, read_multiple_files
 from src.cli.resources.characteristic import calculate_characteristics
 from src.cli.resources.measure import calculate_measures
 from src.cli.resources.tsqmi import calculate_tsqmi
@@ -47,18 +47,15 @@ def command_calculate(args):
 
     print_info("\n> [blue] Reading extracted files:[/]")
 
-    isfile = extracted_path.is_file()
-    data_calculated = []
-    success = False
-
-
-    if not aggregate_metrics(extracted_path,(config_path / FILE_CONFIG)):
+    if not aggregate_metrics(extracted_path,config):
         print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
         return
 
+    data_calculated = []
+    success = False
     
-    if not isfile:
-        for file, file_name in read_mult_files(extracted_path, "metrics"):
+    if not extracted_path.is_file():
+        for file, file_name in read_multiple_files(extracted_path, "metrics"):
             result = calculate_all(file, file_name, config)
             data_calculated.append(result)
             success = True
