@@ -147,40 +147,35 @@ def test_save_metrics():
         assert saved_metrics == metrics
 
 
-# def test_aggregate_metrics_happy_case(tmp_path, ):
-#     folder_path = str(tmp_path)
+def test_aggregate_metrics():
 
-#     # Create sample msgram files
-#     msgram_file1 = os.path.join(folder_path, 'file1.msgram')
-#     msgram_file2 = os.path.join(folder_path, 'github_file.msgram')
+    with tempfile.TemporaryDirectory() as temp_dir:
+        folder_path = temp_dir
 
-#     with open(msgram_file1, 'w') as file:
-#         json.dump({"some_metric": 42}, file)
+        msgram_file1 = os.path.join(folder_path, 'file1.msgram')
+        msgram_file2 = os.path.join(folder_path, 'github_file.msgram')
 
-#     with open(msgram_file2, 'w') as file:
-#         json.dump({"github_metrics": [{"metric": "resolved_issues", "value": 25}]}, file)
+        with open(msgram_file1, 'w') as file:
+            json.dump({"some_metric": 42}, file)
 
-#     # Create a sample configuration with both Sonar and GitHub metrics
-#     config = {
-#         "characteristics": [
-#             {
-#                 "subcharacteristics": [
-#                     {
-#                         "measures": [{"key": "passed_tests"}, {"key": "resolved_issues"}]
-#                     }
-#                 ]
-#             }
-#         ]
-#     }
+        with open(msgram_file2, 'w') as file:
+            json.dump({"github_metrics": [{"metric": 'resolved_issues', 'value': 25}, {'metric': 'total_issues', 'value': None}]}, file)
 
-#     # Call the function
-#     result = aggregate_metrics(folder_path, config)
+        result = aggregate_metrics(folder_path, all_config)
 
-#     # Validate the result
-#     assert result is True
+        assert result is True
 
+        output_file_path = os.path.join(folder_path, 'file1.metrics')
+        assert os.path.exists(output_file_path)
 
-#     # Clean up temporary files created for testing
-#     os.remove(msgram_file1)
-#     os.remove(msgram_file2)
-#     os.remove(os.path.join(folder_path, 'github_file.metrics'))
+        with open(output_file_path, 'r') as output_file:
+            saved_metrics = json.load(output_file)
+
+        expected_metrics = {
+            "some_metric": 42,
+            "github_metrics": [
+                {"metric": 'resolved_issues', 'value': 25},
+                {"metric": 'total_issues', 'value': None}
+            ]
+        }
+        assert saved_metrics == expected_metrics
