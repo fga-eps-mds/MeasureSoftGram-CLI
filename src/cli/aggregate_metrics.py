@@ -18,14 +18,15 @@ metrics["github"] = ['resolved_issues', 'total_issues']
 
 measures = {}
 measures["sonar"] = ['passed_tests',
-                    'test_builds',
-                    'test_errors',
-                    'test_coverage',
-                    'non_complex_file_density',
-                    'commented_file_density',
-                    'duplication_absense']
+                     'test_builds',
+                     'test_errors',
+                     'test_coverage',
+                     'non_complex_file_density',
+                     'commented_file_density',
+                     'duplication_absense']
 
 measures["github"] = ['team_throughput']
+
 
 def should_process_sonar_metrics(config):
 
@@ -36,6 +37,7 @@ def should_process_sonar_metrics(config):
                     return True
     return False
 
+
 def should_process_github_metrics(config):
 
     for characteristic in config.get("characteristics", []):
@@ -44,6 +46,7 @@ def should_process_github_metrics(config):
                 if measure.get("key") in measures["github"]:
                     return True
     return False
+
 
 def read_msgram(file_path):
     try:
@@ -56,6 +59,7 @@ def read_msgram(file_path):
         print_error(f'> [red] Error: {e}')
         return False
 
+
 def list_msgram_files(folder_path):
     try:
         if not os.path.isdir(folder_path):
@@ -65,8 +69,9 @@ def list_msgram_files(folder_path):
         return msgram_files
 
     except NotADirectoryError as e:
-        print_error('> [red] Error: {e}')
+        print_error(f'> [red] Error: {e}')
         return False
+
 
 def save_metrics(file_name, metrics):
 
@@ -79,6 +84,7 @@ def save_metrics(file_name, metrics):
         json.dump(metrics, output_file, indent=2)
 
     print_info('> [blue] Metrics saved to: {output_file_path}\n')
+
 
 def process_sonar_metrics(folder_path, msgram_files, github_files):
     processed_files = []
@@ -96,11 +102,12 @@ def process_sonar_metrics(folder_path, msgram_files, github_files):
 
     return processed_files
 
+
 def process_github_metrics(folder_path, github_files, metrics):
 
     if not github_files:
         print_error('> [red] GitHub files not found in the directory: {folder_path}\n')
-        return False 
+        return False
 
     print_info('> [blue] GitHub metrics found in: {", ".join(github_files)}\n')
 
@@ -109,7 +116,7 @@ def process_github_metrics(folder_path, github_files, metrics):
     if not first_github_file:
         print_error('> [red] Error to read github metrics in: {folder_path}\n')
         return False
-    
+
     github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
 
     github_metrics = [
@@ -143,9 +150,9 @@ def aggregate_metrics(folder_path, config: json):
 
     if should_process_github_metrics(config):
 
-        file,github_metrics = process_github_metrics(folder_path, github_files, metrics)
+        file, github_metrics = process_github_metrics(folder_path, github_files, metrics)
 
-        if not github_metrics:  
+        if not github_metrics:
 
             print_error('> [red]Error: Unexpected result from process_github_metrics')
             return False
@@ -155,7 +162,7 @@ def aggregate_metrics(folder_path, config: json):
     if should_process_sonar_metrics(config):
         result = process_sonar_metrics(folder_path, msgram_files, github_files)
 
-        if not result or len(result) != 1:  
+        if not result or len(result) != 1:
 
             print_error('> [red]Error: Unexpected result from process_sonar_metrics')
             return False
@@ -163,13 +170,11 @@ def aggregate_metrics(folder_path, config: json):
         have_metrics = True
         file, file_content = result[0]
     
-    all_metrics = github_metrics
-
     if not have_metrics:
         print_error('> [red]Error: No metrics where found in the .msgram files')
         return False
 
-    file_content["github_metrics"] = all_metrics
+    file_content["github_metrics"] = github_metrics
 
     save_metrics(os.path.join(folder_path, file), file_content)
 

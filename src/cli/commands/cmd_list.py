@@ -15,7 +15,7 @@ def print_json_tree(data):
     is_top = True
 
     measure_to_metric = {}
-    measure_to_metric["passed_tests"] = ['tests','test_failures','test_errors']
+    measure_to_metric["passed_tests"] = ['tests', 'test_failures', 'test_errors']
     measure_to_metric["test_builds"] = ['tests', 'test_execution_time']
     measure_to_metric["test_coverage"] = ['coverage']
     measure_to_metric["non_complex_file_density"] = ['functions', 'complexity']

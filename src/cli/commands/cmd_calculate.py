@@ -23,12 +23,45 @@ from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 logger = logging.getLogger("msgram")
 
 
+
+    
+
+def read_config_file(config_path):
+    try:
+        return open_json_file(config_path / FILE_CONFIG)
+    except exceptions.MeasureSoftGramCLIException as e:
+        print_error(f"[red]Error reading msgram.json config file in {config_path}: {e}\n")
+        print_rule()
+        exit(1)
+
+def calculate_metrics(extracted_path, config):
+    data_calculated = []
+
+    if not extracted_path.is_file():
+        if not aggregate_metrics(extracted_path, config):
+            print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
+            return data_calculated, False
+
+        for file, file_name in read_multiple_files(extracted_path, "metrics"):
+            result = calculate_all(file, file_name, config)
+            data_calculated.append(result)
+
+        return data_calculated, True
+    else:
+        try:
+            result = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+            return result, True
+        except exceptions.MeasureSoftGramCLIException as e:
+            print_error(f"[red]Error calculating {extracted_path}: {e}\n")
+            return data_calculated, False
+
 def command_calculate(args):
     try:
         output_format: str = args["output_format"]
-        config_path: Path = args["config_path"]
-        extracted_path: Path = args["extracted_path"]
-    except Exception as e:
+        config_path = args["config_path"]
+        extracted_path = args["extracted_path"]
+
+    except KeyError as e:
         logger.error(f"KeyError: args[{e}] - non-existent parameters")
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
@@ -38,39 +71,11 @@ def command_calculate(args):
     print_rule("Calculate")
     print_info("> [blue] Reading config file:[/]")
 
-    try:
-        config = open_json_file(config_path / FILE_CONFIG)
-    except exceptions.MeasureSoftGramCLIException as e:
-        print(f"[red]Error reading msgram.json config file in {config_path}: {e}\n")
-        print_rule()
-        exit(1)
+    config = read_config_file(config_path)
 
     print_info("\n> [blue] Reading extracted files:[/]")
 
-
-    data_calculated = []
-    success = False
-    
-    if not extracted_path.is_file():
-        if not aggregate_metrics(extracted_path,config):
-            print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
-            return
-        
-        for file, file_name in read_multiple_files(extracted_path, "metrics"):
-            result = calculate_all(file, file_name, config)
-            data_calculated.append(result)
-            success = True
-    else:
-        try:
-            data_calculated = calculate_all(
-                open_json_file(extracted_path), extracted_path.name, config
-            )
-            success = True
-            output_format = Prompt.ask(
-                "\n\n[black]Display as:", choices=["tabular", "tree", "raw"]
-            )
-        except exceptions.MeasureSoftGramCLIException as e:
-            print(f"[red]Error calculating {extracted_path}: {e}\n")
+    data_calculated, success = calculate_metrics(extracted_path, config)
 
     if success:
         print_info("\n[#A9A9A9]All calculations performed[/] successfully!")

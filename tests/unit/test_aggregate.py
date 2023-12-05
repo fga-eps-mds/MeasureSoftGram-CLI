@@ -3,10 +3,8 @@ import json
 import os
 import tempfile
 
-from src.cli.utils import print_error, print_info
-
 from src.cli.aggregate_metrics import should_process_github_metrics, should_process_sonar_metrics
-from src.cli.aggregate_metrics import list_msgram_files, read_msgram,save_metrics
+from src.cli.aggregate_metrics import list_msgram_files, read_msgram, save_metrics
 from src.cli.aggregate_metrics import process_github_metrics, process_sonar_metrics, aggregate_metrics
 
 
@@ -47,6 +45,7 @@ def test_should_process_github_metrics(config, expected_result):
     result = should_process_github_metrics(config)
     assert result == expected_result
 
+
 def test_list_msgram_files():
 
     expected_result = ['github_nlohmann-json-19-11-2023-12-53-58-extracted.msgram',
@@ -54,10 +53,11 @@ def test_list_msgram_files():
     assert list_msgram_files(TEST_DATA_DIR) == expected_result
 
     folder_path = 'path/to/invalid/file.txt'
-    assert list_msgram_files(folder_path) == False
+    assert list_msgram_files(folder_path) is False
 
     folder_path = 'nonexistent/folder'
-    assert list_msgram_files(folder_path) == False
+    assert list_msgram_files(folder_path) is False
+
 
 def test_read_msgram():
     # Create a temporary directory for testing
@@ -73,16 +73,16 @@ def test_read_msgram():
         assert read_msgram(file_path) == expected_result
 
         # Test reading from a directory (should return False)
-        assert read_msgram(temp_dir) == False
+        assert read_msgram(temp_dir) is False
 
         # Test reading from a nonexistent file (should return False)
         nonexistent_file_path = os.path.join(temp_dir, 'nonexistent_file.msgram')
-        assert read_msgram(nonexistent_file_path) == False
+        assert read_msgram(nonexistent_file_path) is False
 
 def test_process_github_metrics():
 
     result = process_github_metrics(TEST_DATA_DIR, [], {"sonar": [], "github": []})
-    assert result == False
+    assert result is False
 
     folder_path = TEST_DATA_DIR
     github_file_name = 'github_nlohmann-json-19-11-2023-12-53-58-extracted.msgram'
@@ -103,6 +103,7 @@ def test_process_github_metrics():
         ]
     )
     assert result == expected_result
+
 
 def test_process_sonar_metrics():
 
@@ -129,6 +130,7 @@ def test_process_sonar_metrics():
 
         assert os.path.exists(sonar_file_path)
         assert os.path.exists(github_file_path)
+
 
 def test_save_metrics():
 
