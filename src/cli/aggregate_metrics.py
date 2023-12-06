@@ -83,7 +83,7 @@ def save_metrics(file_name, metrics):
     with open(output_file_path, 'w') as output_file:
         json.dump(metrics, output_file, indent=2)
 
-    print_info('> [blue] Metrics saved to: {output_file_path}\n')
+    print_info(f'> [blue] Metrics saved to: {output_file_path}\n')
 
 
 def process_sonar_metrics(folder_path, msgram_files, github_files):
@@ -91,11 +91,11 @@ def process_sonar_metrics(folder_path, msgram_files, github_files):
 
     for file in msgram_files:
         if file not in github_files:
-            print_info('> [blue] Processing {file}')
+            print_info(f'> [blue] Processing {file}')
             sonar_metrics_dict = read_msgram(os.path.join(folder_path, file))
 
             if not sonar_metrics_dict:
-                print_error('> [red] Error to read sonar metrics in: {folder_path}\n')
+                print_error(f'> [red] Error to read sonar metrics in: {folder_path}\n')
                 return False
 
             processed_files.append((file, sonar_metrics_dict))
@@ -106,15 +106,15 @@ def process_sonar_metrics(folder_path, msgram_files, github_files):
 def process_github_metrics(folder_path, github_files, metrics):
 
     if not github_files:
-        print_error('> [red] GitHub files not found in the directory: {folder_path}\n')
+        print_error(f'> [red] GitHub files not found in the directory: {folder_path}\n')
         return False
 
-    print_info('> [blue] GitHub metrics found in: {", ".join(github_files)}\n')
+    print_info(f'> [blue] GitHub metrics found in: {folder_path}\n')
 
     first_github_file = read_msgram(os.path.join(folder_path, github_files[0]))
 
     if not first_github_file:
-        print_error('> [red] Error to read github metrics in: {folder_path}\n')
+        print_error(f'> [red] Error to read github metrics in: {folder_path}\n')
         return False
 
     github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
