@@ -15,12 +15,12 @@ def print_json_tree(data):
     is_top = True
 
     measure_to_metric = {}
-    measure_to_metric["passed_tests"] = ['test_success_density']
-    measure_to_metric["test_builds"] = ['tests', 'tests_execution_time']
+    measure_to_metric["passed_tests"] = ['tests', 'test_failures', 'test_errors']
+    measure_to_metric["test_builds"] = ['tests', 'test_execution_time']
     measure_to_metric["test_coverage"] = ['coverage']
-    measure_to_metric["non_complex_file_density"] = ['complexity_functions', 'total_number_of_files']
-    measure_to_metric["commented_file_density"] = ['commented_lines_density']
-    measure_to_metric["duplication_absense"] = ['duplication_lines_density']
+    measure_to_metric["non_complex_file_density"] = ['functions', 'complexity']
+    measure_to_metric["commented_file_density"] = ['comment_lines_density']
+    measure_to_metric["duplication_absense"] = ['duplicated_lines_density']
     measure_to_metric["team_throughput"] = ['resolved_issues', 'total_issues']
 
     while stack:

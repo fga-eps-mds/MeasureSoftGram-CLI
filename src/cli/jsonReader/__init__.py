@@ -9,6 +9,6 @@ from src.cli.jsonReader.jsonReader import (
     get_missing_keys_str,
     open_json_file,
     raise_invalid_metric,
-    read_mult_files,
+    read_multiple_files,
     validate_metrics_post,
 )
