@@ -4,7 +4,7 @@ import os
 import tempfile
 
 from src.cli.aggregate_metrics import should_process_github_metrics, should_process_sonar_metrics
-from src.cli.aggregate_metrics import list_msgram_files, read_msgram, save_metrics
+from src.cli.aggregate_metrics import read_msgram, save_metrics
 from src.cli.aggregate_metrics import process_github_metrics, process_sonar_metrics, aggregate_metrics
 
 
