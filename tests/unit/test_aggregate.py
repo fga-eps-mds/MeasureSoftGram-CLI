@@ -114,7 +114,6 @@ def test_process_sonar_metrics():
             json.dump(github_data, github_file)
 
         result = process_sonar_metrics(temp_dir, [sonar_file_name], [github_file_name])
-
         expected_result = [(sonar_file_name, sonar_data)]
         assert result == expected_result
 
