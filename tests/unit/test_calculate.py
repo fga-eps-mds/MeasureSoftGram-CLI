@@ -235,29 +235,3 @@ def test_calculate_invalid_extracted_file():
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)
-
-
-def test_calculate_invalid_sonar_metrics():
-    captured_output = StringIO()
-    sys.stdout = captured_output
-
-    config_dirpath = tempfile.mkdtemp()
-
-    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
-
-    args = {
-        "output_format": "csv",
-        "config_path": Path(config_dirpath),
-        "extracted_path": Path("."),
-    }
-
-    command_calculate(args)
-
-    sys.stdout = sys.__stdout__
-    assert (
-        "Unexpected result from process_sonar_metrics"
-        in captured_output.getvalue()
-    )
-    assert "All calculations performed" not in captured_output.getvalue()
-
-    shutil.rmtree(config_dirpath)

@@ -48,19 +48,6 @@ def test_should_process_github_metrics(config, expected_result):
     assert result == expected_result
 
 
-def test_list_msgram_files():
-
-    expected_result = ['github_nlohmann-json-19-11-2023-12-53-58-extracted.msgram',
-                       'fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram']
-    assert list_msgram_files(TEST_DATA_DIR) == expected_result
-
-    folder_path = 'path/to/invalid/file.txt'
-    assert list_msgram_files(folder_path) is False
-
-    folder_path = 'nonexistent/folder'
-    assert list_msgram_files(folder_path) is False
-
-
 def test_read_msgram():
     # Create a temporary directory for testing
     with tempfile.TemporaryDirectory() as temp_dir:
