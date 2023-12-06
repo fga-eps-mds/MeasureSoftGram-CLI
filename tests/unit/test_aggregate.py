@@ -19,6 +19,7 @@ with open(os.path.join(TEST_DATA_DIR, 'allmsgram.json'), 'r') as file:
 with open(os.path.join(TEST_DATA_DIR, 'onlygithubmsgram.json'), 'r') as file:
     only_github_msgram = json.load(file)
 
+
 @pytest.mark.parametrize("config, expected_result", [
     (config, True),
     (all_config, True),
@@ -31,6 +32,7 @@ with open(os.path.join(TEST_DATA_DIR, 'onlygithubmsgram.json'), 'r') as file:
 def test_should_process_sonar_metrics(config, expected_result):
     result = should_process_sonar_metrics(config)
     assert result == expected_result
+
 
 @pytest.mark.parametrize("config, expected_result", [
     (config, False),
@@ -78,6 +80,7 @@ def test_read_msgram():
         # Test reading from a nonexistent file (should return False)
         nonexistent_file_path = os.path.join(temp_dir, 'nonexistent_file.msgram')
         assert read_msgram(nonexistent_file_path) is False
+
 
 def test_process_github_metrics():
 
@@ -161,7 +164,15 @@ def test_aggregate_metrics():
             json.dump({"some_metric": 42}, file)
 
         with open(msgram_file2, 'w') as file:
-            json.dump({"github_metrics": [{"metric": 'resolved_issues', 'value': 25}, {'metric': 'total_issues', 'value': None}]}, file)
+            json.dump(
+                {
+                    "github_metrics": [
+                        {"metric": 'resolved_issues', 'value': 25},
+                        {'metric': 'total_issues', 'value': None}
+                    ]
+                },
+                file
+            )
 
         result = aggregate_metrics(folder_path, all_config)
 

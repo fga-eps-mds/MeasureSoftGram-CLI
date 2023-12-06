@@ -120,17 +120,18 @@ def process_github_metrics(folder_path, github_files, metrics):
     github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
 
     github_metrics = [
-            {
-                "metric": metric,
-                "value": next(
-                    (m["value"] for m in first_github_file[github_key] if m["metric"] == metric),
-                    None
-                )
-            }
-            for metric in metrics["github"]
-        ]
+    {
+        "metric": metric,
+        "value": next(
+            (m["value"] for m in first_github_file[github_key] if m["metric"] == metric),
+            None
+        )
+    }
+        for metric in metrics["github"]
+    ]
 
-    return (github_files[0],github_metrics)
+    return (github_files[0], github_metrics)
+
 
 def aggregate_metrics(folder_path, config: json):
 
@@ -166,10 +167,10 @@ def aggregate_metrics(folder_path, config: json):
 
             print_error('> [red]Error: Unexpected result from process_sonar_metrics')
             return False
-        
+
         have_metrics = True
         file, file_content = result[0]
-    
+
     if not have_metrics:
         print_error('> [red]Error: No metrics where found in the .msgram files')
         return False

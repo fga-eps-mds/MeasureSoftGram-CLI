@@ -6,7 +6,6 @@ from pathlib import Path
 
 from rich import print
 from rich.console import Console
-from rich.prompt import Prompt
 from rich.tree import Tree
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
@@ -23,9 +22,6 @@ from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 logger = logging.getLogger("msgram")
 
 
-
-    
-
 def read_config_file(config_path):
     try:
         return open_json_file(config_path / FILE_CONFIG)
@@ -33,6 +29,7 @@ def read_config_file(config_path):
         print_error(f"[red]Error reading msgram.json config file in {config_path}: {e}\n")
         print_rule()
         exit(1)
+
 
 def calculate_metrics(extracted_path, config):
     data_calculated = []
@@ -54,6 +51,7 @@ def calculate_metrics(extracted_path, config):
         except exceptions.MeasureSoftGramCLIException as e:
             print_error(f"[red]Error calculating {extracted_path}: {e}\n")
             return data_calculated, False
+
 
 def command_calculate(args):
     try:
