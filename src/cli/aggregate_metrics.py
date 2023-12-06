@@ -120,13 +120,13 @@ def process_github_metrics(folder_path, github_files, metrics):
     github_key = next(iter(first_github_file.keys() - metrics["sonar"]), '')
 
     github_metrics = [
-    {
-        "metric": metric,
-        "value": next(
-            (m["value"] for m in first_github_file[github_key] if m["metric"] == metric),
-            None
-        )
-    }
+        {
+            "metric": metric,
+            "value": next(
+                (m["value"] for m in first_github_file[github_key] if m["metric"] == metric),
+                None
+            )
+        }
         for metric in metrics["github"]
     ]
 

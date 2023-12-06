@@ -74,7 +74,7 @@ def test_calculate_file(output_format, multiple_files):
 
     command_calculate(args)
 
-    assert len(os.listdir(config_dirpath)) ==  1
+    assert len(os.listdir(config_dirpath)) == 1
     assert len(os.listdir(extract_dirpath)) == 1
 
     shutil.rmtree(config_dirpath)
@@ -261,5 +261,3 @@ def test_calculate_invalid_sonar_metrics():
     assert "All calculations performed" not in captured_output.getvalue()
 
     shutil.rmtree(config_dirpath)
-
-# calculate_warn_zero_calculated_files
