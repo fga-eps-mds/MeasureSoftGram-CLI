@@ -26,7 +26,9 @@ def read_config_file(config_path):
     try:
         return open_json_file(config_path / FILE_CONFIG)
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error reading msgram.json config file in {config_path}: {e}\n")
+        print_error(
+            f"[red]Error reading msgram.json config file in {config_path}: {e}\n"
+        )
         print_rule()
         exit(1)
 
@@ -36,7 +38,9 @@ def calculate_metrics(extracted_path, config):
 
     if not extracted_path.is_file():
         if not aggregate_metrics(extracted_path, config):
-            print_error('> [red] Failed to aggregate metrics, calculate was not performed. \n')
+            print_error(
+                "> [red] Failed to aggregate metrics, calculate was not performed. \n"
+            )
             return data_calculated, False
 
         for file, file_name in read_multiple_files(extracted_path, "metrics"):
@@ -46,7 +50,9 @@ def calculate_metrics(extracted_path, config):
         return data_calculated, True
     else:
         try:
-            result = calculate_all(open_json_file(extracted_path), extracted_path.name, config)
+            result = calculate_all(
+                open_json_file(extracted_path), extracted_path.name, config
+            )
             return result, True
         except exceptions.MeasureSoftGramCLIException as e:
             print_error(f"[red]Error calculating {extracted_path}: {e}\n")

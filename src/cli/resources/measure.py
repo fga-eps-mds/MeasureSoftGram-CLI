@@ -9,7 +9,6 @@ logger = logging.getLogger("msgram")
 
 
 def get_measure_value(measures, subchar):
-
     measures_calculated = []
     for measure in subchar:
         measure_key = measure["key"]
@@ -44,7 +43,7 @@ def calculate_measures(
                             [float(value) for value in extracted[metric]]
                             if extracted.get(metric) and extracted[metric]
                             else None
-                        )
+                        ),
                     }
                     for metric in list(measures.values())[0]["metrics"]
                 ],
@@ -52,7 +51,9 @@ def calculate_measures(
         )
         new_metrics = []
         for measure in calculate_infos:
-            if measure.get("metrics", None) and all(metric["value"] for metric in measure["metrics"]):
+            if measure.get("metrics", None) and all(
+                metric["value"] for metric in measure["metrics"]
+            ):
                 new_metrics.append(measure)
 
         calculate_infos = new_metrics
