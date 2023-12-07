@@ -14,7 +14,10 @@ metrics["sonar"] = ['tests',
                     'comment_lines_density',
                     'duplicated_lines_density']
 
-metrics["github"] = ['resolved_issues', 'total_issues']
+metrics["github"] = ['resolved_issues',
+                     'total_issues',
+                     'sum_ci_feedback_times',
+                     'total_builds']
 
 measures = {}
 measures["sonar"] = ['passed_tests',
@@ -25,7 +28,8 @@ measures["sonar"] = ['passed_tests',
                      'commented_file_density',
                      'duplication_absense']
 
-measures["github"] = ['team_throughput']
+measures["github"] = ['team_throughput',
+                      'ci_feedback_time']
 
 
 def should_process_sonar_metrics(config):

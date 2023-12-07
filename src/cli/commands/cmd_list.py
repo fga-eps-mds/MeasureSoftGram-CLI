@@ -22,6 +22,7 @@ def print_json_tree(data):
     measure_to_metric["commented_file_density"] = ['comment_lines_density']
     measure_to_metric["duplication_absense"] = ['duplicated_lines_density']
     measure_to_metric["team_throughput"] = ['resolved_issues', 'total_issues']
+    measure_to_metric["ci_feedback_time"] = ['sum_ci_feedback_times', 'total_builds']
 
     while stack:
         data, indent = stack.pop()
