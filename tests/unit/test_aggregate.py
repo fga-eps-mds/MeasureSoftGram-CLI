@@ -174,7 +174,9 @@ def test_aggregate_metrics():
             "some_metric": 42,
             "github_metrics": [
                 {"metric": 'resolved_issues', 'value': 25},
-                {"metric": 'total_issues', 'value': None}
+                {"metric": 'total_issues', 'value': None},
+                {'metric': 'sum_ci_feedback_times', 'value': None},
+                {'metric': 'total_builds', 'value': None}
             ]
         }
         assert saved_metrics == expected_metrics
