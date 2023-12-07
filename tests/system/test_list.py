@@ -1,4 +1,5 @@
 import subprocess
+
 # import tempfile
 # import shutil
 
@@ -6,7 +7,6 @@ import subprocess
 
 
 def capture(command):
-
     proc = subprocess.Popen(
         command,
         stdout=subprocess.PIPE,

@@ -1,7 +1,11 @@
 from rich.console import Console
 from src.cli.utils import print_info, print_rule, print_error
 
-from src.config.settings import FILE_CONFIG, DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_FILE_PATH
+from src.config.settings import (
+    FILE_CONFIG,
+    DEFAULT_CONFIG_PATH,
+    DEFAULT_CONFIG_FILE_PATH,
+)
 
 from pathlib import Path
 
@@ -15,13 +19,14 @@ def print_json_tree(data):
     is_top = True
 
     measure_to_metric = {}
-    measure_to_metric["passed_tests"] = ['tests', 'test_failures', 'test_errors']
-    measure_to_metric["test_builds"] = ['tests', 'test_execution_time']
-    measure_to_metric["test_coverage"] = ['coverage']
-    measure_to_metric["non_complex_file_density"] = ['functions', 'complexity']
-    measure_to_metric["commented_file_density"] = ['comment_lines_density']
-    measure_to_metric["duplication_absense"] = ['duplicated_lines_density']
-    measure_to_metric["team_throughput"] = ['resolved_issues', 'total_issues']
+    measure_to_metric["passed_tests"] = ["tests", "test_failures", "test_errors"]
+    measure_to_metric["test_builds"] = ["tests", "test_execution_time"]
+    measure_to_metric["test_coverage"] = ["coverage"]
+    measure_to_metric["non_complex_file_density"] = ["functions", "complexity"]
+    measure_to_metric["commented_file_density"] = ["comment_lines_density"]
+    measure_to_metric["duplication_absense"] = ["duplicated_lines_density"]
+    measure_to_metric["team_throughput"] = ["resolved_issues", "total_issues"]
+    measure_to_metric["ci_feedback_time"] = ["sum_ci_feedback_times", "total_builds"]
 
     while stack:
         data, indent = stack.pop()
@@ -38,33 +43,42 @@ def print_json_tree(data):
         if "subcharacteristics" in data:
             for subchar in data["subcharacteristics"]:
                 result.append(f"[#FFFFFF]{indent}Sub-característica(s):")
-                stack.append((subchar, f"{indent}│  "))  # Use the ASCII character │ (code 179)
+                stack.append(
+                    (subchar, f"{indent}│  ")
+                )  # Use the ASCII character │ (code 179)
 
         if "measures" in data:
             for measure in data["measures"]:
                 result.append(f"[#FFFFFF]{indent}│  Medida(s):")
                 measure_key = measure.get("key")
                 result.append(f"[#FFFFFF]{indent}{indent}│  [#00FF00]{measure_key}")
-                result.append(f"[#FFFFFF]{indent}{indent}│  Peso: [#00FF00]{measure['weight']}%")
+                result.append(
+                    f"[#FFFFFF]{indent}{indent}│  Peso: [#00FF00]{measure['weight']}%"
+                )
                 if "min_threshold" in measure and "max_threshold" in measure:
                     min_threshold = measure.get("min_threshold")
                     max_threshold = measure.get("max_threshold")
                     result.append(f"[#FFFFFF]{indent}{indent}│  Métrica(s):")
-                    metrics = measure_to_metric.get(measure_key, [])  # Get associated metrics
+                    metrics = measure_to_metric.get(
+                        measure_key, []
+                    )  # Get associated metrics
                     for metric in metrics:
-                        result.append(f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}")
+                        result.append(
+                            f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}"
+                        )
                         min_max = f"Min = [#00FF00]{min_threshold} [#FFFFFF]e Max = [#00FF00]{max_threshold}"
-                    result.append(f"[#FFFFFF]{indent}{indent}│  │ Valores de referência: {min_max}")
+                    result.append(
+                        f"[#FFFFFF]{indent}{indent}│  │ Valores de referência: {min_max}"
+                    )
                     result.append(f"[#FFFFFF]{indent}{indent}│  Fim-Métrica(s)")
                 result.append(f"[#FFFFFF]{indent}│  Fim-Medida(s)")
             result.append("[#FFFFFF]Fim-SubCaracterística")
     result.append("[#FFFFFF]Fim-Característica")
 
-    return '\n'.join(result)
+    return "\n".join(result)
 
 
 def command_list(args):
-
     console = Console()
     console.clear()
 
@@ -77,7 +91,8 @@ def command_list(args):
             file_path = str(config_path) + "/msgram.json"
         else:
             print_info(
-                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão.")
+                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão."
+            )
 
     except Exception as e:
         print_error(f"KeyError: args[{e}] - non-existent parameters")
@@ -87,8 +102,12 @@ def command_list(args):
 
     if not (os.path.exists(file_path)):
         print_info("[#A9A9A9] O arquivo de configuração não foi encontrado. \n")
-        print_info("Execute o comando 'msgram init' no projeto desejado para criá-lo.\n")
-        print_info("Ou use 'msgram init --config_path <path>' para informar o caminho ate o arquivo.")
+        print_info(
+            "Execute o comando 'msgram init' no projeto desejado para criá-lo.\n"
+        )
+        print_info(
+            "Ou use 'msgram init --config_path <path>' para informar o caminho ate o arquivo."
+        )
         exit()
 
     print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
@@ -101,5 +120,7 @@ def command_list(args):
         output_string = print_json_tree(characteristic)
         print_info(output_string)
 
-    print_info("\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:")
+    print_info(
+        "\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
+    )
     print_info("vim .msgram/msgram.json\n")

@@ -10,5 +10,5 @@ setuptools~=60.2.0
 python-dotenv
 rich
 validators==0.20.0
-msgram-core==1.4.3
+msgram-core==1.4.4
 msgram-parser==1.1.0

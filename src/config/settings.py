@@ -77,12 +77,12 @@ SUPPORTED_MEASURES = [
             ],
         }
     },
-    # {
-    #     "ci_feedback_time": {
-    #         "metrics": [
-    #             "number_of_build_pipelines_in_the_last_x_days",
-    #             "runtime_sum_of_build_pipelines_in_the_last_x_days",
-    #         ],
-    #     }
-    # },
+    {
+        "ci_feedback_time": {
+            "metrics": [
+                "sum_ci_feedback_times",
+                "total_builds",
+            ],
+        }
+    },
 ]
