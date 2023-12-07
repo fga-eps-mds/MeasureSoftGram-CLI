@@ -11,6 +11,8 @@ def get_metric_value(extracted):
         "duplicated_lines_density",
         "resolved_issues",
         "total_issues",
+        "sum_ci_feedback_times",
+        "total_builds",
     ]
 
     # Métricas que o parâmetro é extraido do UTS

@@ -22,20 +22,17 @@ def get_subcharacteristic_value(subchars, char):
 
 
 def calculate_subcharacteristics(config, measures):
-    subchars = [sc["subcharacteristics"] for sc in config["characteristics"]]
     calculate_infos = []
 
-    calculate_infos = [
-        (
-            {
-                "key": subchar[0]["key"],
-                "measures": get_measure_value(measures, subchar[0]["measures"]),
-            }
-        )
-        if measures
-        else None
-        for subchar in subchars
-    ]
-    calculate_infos = list(filter(None, calculate_infos))
+    for characteristic in config["characteristics"]:
+        subcharacteristics = characteristic.get("subcharacteristics", [])
+        for subchar in subcharacteristics:
+            if measures:
+                subchar_info = {
+                    "key": subchar["key"],
+                    "measures": get_measure_value(measures, subchar["measures"]),
+                }
+                calculate_infos.append(subchar_info)
+
     headers = ["Id", "Name", "Description", "Value", "Created at"]
     return core_calculate({"subcharacteristics": calculate_infos}), headers
