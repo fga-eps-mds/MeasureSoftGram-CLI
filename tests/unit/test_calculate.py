@@ -6,17 +6,75 @@ import tempfile
 from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
+from anytree import Node, RenderTree
 
 import pytest
 
-from src.cli.commands.cmd_calculate import calculate_all, command_calculate
+from src.cli.commands.cmd_calculate import calculate_all, command_calculate, show_tree
 from src.cli.jsonReader import open_json_file
+from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 CALCULATE_ARGS = {
     "output_format": "csv",
     "config_path": Path(""),
     "extracted_path": Path(""),
 }
+
+
+def test_show_tree(capfd):
+
+    data_calculated = {
+        'repository': [{'key': 'repository', 'value': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI'}],
+        'version': [{'key': 'version', 'value': '01-05-2023-21-40'}],
+        'measures': [
+            {'key': 'passed_tests', 'value': 1.0},
+            {'key': 'test_builds', 'value': 0.9996066627522133},
+            {'key': 'test_coverage', 'value': 0.40234848484848484},
+            {'key': 'non_complex_file_density', 'value': 0.44347274991556906},
+            {'key': 'commented_file_density', 'value': 0.04318181818181818},
+            {'key': 'duplication_absence', 'value': 1.0},
+            {'key': 'team_throughput', 'value': 0.6969696969696971},
+            {'key': 'ci_feedback_time', 'value': 0.06117908787541713}
+        ],
+        'subcharacteristics': [
+            {'key': 'testing_status', 'value': 0.8421061048464034},
+            {'key': 'maturity', 'value': 0.06117908787541713},
+            {'key': 'modifiability', 'value': 0.6415437113263573},
+            {'key': 'functional_completeness', 'value': 0.6969696969696971}
+        ],
+        'characteristics': [
+            {'key': 'reliability', 'value': 0.5970282960684735},
+            {'key': 'maintainability', 'value': 0.6415437113263573},
+            {'key': 'functional_suitability', 'value': 0.6969696969696971}
+        ],
+        'tsqmi': [{'key': 'tsqmi', 'value': 0.6455181338484177}]
+    }
+
+    expected_output = (
+        "Overview - tree:\n\n"
+        "\n"
+        "tsqmi: 0.6455181338484177\n"
+        "├── reliability: 0.5970282960684735\n"
+        "│   ├── testing_status 0.8421061048464034\n"
+        "│   │   ├── passed_tests 1.0\n"
+        "│   │   ├── test_builds 0.9996066627522133\n"
+        "│   │   └── test_coverage 0.40234848484848484\n"
+        "│   └── maturity 0.06117908787541713\n"
+        "│       └── ci_feedback_time 0.06117908787541713\n"
+        "├── maintainability: 0.6415437113263573\n"
+        "│   └── modifiability 0.6415437113263573\n"
+        "│       ├── non_complex_file_density 0.44347274991556906\n"
+        "│       └── commented_file_density 0.04318181818181818\n"
+        "└── functional_suitability: 0.6969696969696971\n"
+        "    └── functional_completeness 0.6969696969696971\n"
+        "        └── team_throughput 0.6969696969696971"
+    )
+
+    show_tree(data_calculated, pre_config)
+
+    captured = capfd.readouterr()
+
+    assert captured.out.strip() == expected_output.strip()
 
 
 @pytest.mark.parametrize(
