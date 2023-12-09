@@ -4,6 +4,8 @@ import logging
 import re
 from pathlib import Path
 
+from anytree import Node, RenderTree
+
 from rich import print
 from rich.console import Console
 from rich.tree import Tree
@@ -128,6 +130,7 @@ def calculate_all(json_data, file_name, config):
 
 
 def show_results(output_format, data_calculated, config_path):
+
     if output_format == "tabular":
         show_tabulate(data_calculated)
 
@@ -135,7 +138,7 @@ def show_results(output_format, data_calculated, config_path):
         print(data_calculated)
 
     elif output_format == "tree":
-        show_tree(data_calculated)
+        show_tree(data_calculated,pre_config)
 
     elif len(data_calculated) == 0:
         print_info(
@@ -169,27 +172,36 @@ def get_obj_by_element(object_list: list, element_key: str, element_to_find):
     return next((obj for obj in object_list if obj[element_key] == element_to_find), {})
 
 
-def show_tree(data_calculated):
+def show_tree(data_calculated, pre_config):
     tsqmi = data_calculated["tsqmi"][0]
     characteristics = data_calculated["characteristics"]
     subcharacteristics = data_calculated["subcharacteristics"]
     measures = data_calculated["measures"]
 
     print("Overview - tree:\n\n")
-    tsqmi_tree = Tree(f"[green]{tsqmi['key']}: {tsqmi['value']}")
+    tsqmi_tree = Node(f"[green]{tsqmi['key']}: {tsqmi['value']}")
 
     for char_c, char in zip(pre_config["characteristics"], characteristics):
-        char_tree = tsqmi_tree.add(f"[red]{char['key']}: {char['value']}")
+        char_tree = Node(f"[red]{char['key']}: {char['value']}", parent=tsqmi_tree)
 
         for subchar_c in char_c["subcharacteristics"]:
             subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
-            sub_char_tree = char_tree.add(f"[blue]{subchar['key']} {subchar['value']}")
+            if subchar:
+                sub_char_tree = Node(f"[blue]{subchar['key']} {subchar['value']}", parent=char_tree)
 
-            for measure_c in subchar_c["measures"]:
-                measure = get_obj_by_element(measures, "key", measure_c["key"])
-                sub_char_tree.add(f"[yellow]{measure['key']} {measure['value']}")
+                for measure_c in subchar_c["measures"]:
+                    measure = get_obj_by_element(measures, "key", measure_c["key"])
+                    if measure:
+                        Node(f"[yellow]{measure['key']} {measure['value']}", parent=sub_char_tree)
 
-    print(tsqmi_tree)
+    for pre, fill, node in RenderTree(tsqmi_tree):
+        print(f"{pre}{node.name}")
+
+def get_obj_by_element(lst, key, value):
+    for obj in lst:
+        if obj.get(key) == value:
+            return obj
+    return None
 
 
 def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
@@ -203,24 +215,29 @@ def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
     print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as JSON")
 
 
-def export_csv(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
+def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PATH")):
     file_path = file_path.joinpath("calc_msgram.csv")
+
     with open(file_path, "w", newline="") as csv_file:
         writer = csv.writer(csv_file)
+
         csv_header = []
         csv_rows = []
 
-        for row in data_calculated:
-            header_column = []
-            columns = []
-            for _, value in row.items():
-                for column in value:
-                    header_column.append(column["key"])
-                    columns.append(column["value"])
-            csv_header.append(header_column)
-            csv_rows.append(columns)
+        for item in data_calculated:
+            if isinstance(item, dict):
+                header_column = []
+                columns = []
 
-        writer.writerow(csv_header[0])
+                for _, value in item.items():
+                    for column in value:
+                        header_column.append(column["key"])
+                        columns.append(column["value"])
+
+                csv_header.extend(header_column)
+                csv_rows.append(columns)
+
+        writer.writerow(csv_header)
         writer.writerows(csv_rows)
 
-    print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as CSV")
+    print(f"Success: {file_path.name} exported as CSV")

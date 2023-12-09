@@ -39,46 +39,46 @@ def test_calculate_invalid_args(calculate_arg):
     )
 
 
-# @pytest.mark.parametrize(
-#     "output_format,multiple_files",
-#     [
-#         ("tabular", False),
-#         ("tree", False),
-#         ("raw", False),
-#         ("csv", True),
-#         ("json", True),
-#     ],
-# )
-# def test_calculate_file(output_format, multiple_files):
-#     config_dirpath = tempfile.mkdtemp()
-#     extract_dirpath = tempfile.mkdtemp()
+@pytest.mark.parametrize(
+    "output_format,multiple_files",
+    [
+        ("tabular", False),
+        ("tree", False),
+        ("raw", False),
+        ("csv", True),
+        ("json", True),
+    ],
+)
+def test_calculate_file(output_format, multiple_files):
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
 
-#     shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
 
-#     extracted_file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics"
-#     shutil.copy(
-#         f"tests/unit/data/{extracted_file_name}",
-#         f"{extract_dirpath}/{extracted_file_name}",
-#     )
+    extracted_file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics"
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/{extracted_file_name}",
+    )
 
-#     args = {
-#         "output_format": output_format,
-#         "config_path": Path(config_dirpath),
-#         "extracted_path": Path(
-#             extract_dirpath + (f"/{extracted_file_name}" if not multiple_files else "")
-#         ),
-#     }
-#     if not multiple_files:
-#         calculate_patch = patch("builtins.input", return_value=output_format)
-#         calculate_patch.start()
+    args = {
+        "output_format": output_format,
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(
+            extract_dirpath + (f"/{extracted_file_name}" if not multiple_files else "")
+        ),
+    }
+    if not multiple_files:
+        calculate_patch = patch("builtins.input", return_value=output_format)
+        calculate_patch.start()
 
-#     command_calculate(args)
+    command_calculate(args)
 
-#     assert len(os.listdir(config_dirpath)) == 1
-#     assert len(os.listdir(extract_dirpath)) == 1
+    assert len(os.listdir(config_dirpath)) == 1
+    assert len(os.listdir(extract_dirpath)) == 1
 
-#     shutil.rmtree(config_dirpath)
-#     shutil.rmtree(extract_dirpath)
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
 
 
 def test_calculate_all_dict():
