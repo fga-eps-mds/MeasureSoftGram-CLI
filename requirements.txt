@@ -11,5 +11,5 @@ python-dotenv
 rich
 validators==0.20.0
 msgram-core==1.4.4
-msgram-parser==1.1.0
+msgram-parser==1.1.2
 anytree
