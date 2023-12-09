@@ -6,7 +6,6 @@ import tempfile
 from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
-from anytree import Node, RenderTree
 
 import pytest
 
