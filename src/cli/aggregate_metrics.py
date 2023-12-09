@@ -1,6 +1,5 @@
 import os
 import json
-import re
 
 from src.cli.utils import print_error, print_info
 
