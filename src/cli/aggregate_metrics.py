@@ -1,5 +1,6 @@
 import os
 import json
+import re
 
 from src.cli.utils import print_error, print_info
 
@@ -120,31 +121,59 @@ def process_github_metrics(folder_path, github_files, metrics):
 
     print_info(f"> [blue] GitHub metrics found in: {folder_path}\n")
 
-    first_github_file = read_msgram(os.path.join(folder_path, github_files[0]))
+    github_metrics_list = []
 
-    if not first_github_file:
-        print_error(f"> [red] Error to read github metrics in: {folder_path}\n")
-        return False
+    for github_file_name in github_files:
+        github_file_path = os.path.join(folder_path, github_file_name)
+        github_file_content = read_msgram(github_file_path)
 
-    github_key = next(iter(first_github_file.keys() - metrics["sonar"]), "")
+        if not github_file_content:
+            print_error(f"> [red] Error to read github metrics in: {github_file_path}\n")
+            continue
 
-    github_metrics = [
-        {
-            "metric": metric,
-            "value": next(
-                (
-                    m["value"]
-                    for m in first_github_file[github_key]
-                    if m["metric"] == metric
+        github_key = next(iter(github_file_content.keys() - metrics["sonar"]), "")
+
+        github_metrics = [
+            {
+                "metric": metric,
+                "value": next(
+                    (
+                        m["value"]
+                        for m in github_file_content[github_key]
+                        if m["metric"] == metric
+                    ),
+                    None,
                 ),
-                None,
-            ),
-        }
-        for metric in metrics["github"]
-    ]
+            }
+            for metric in metrics["github"]
+        ]
 
-    return (github_files[0], github_metrics)
+        github_metrics_list.append((github_file_name, github_metrics))
 
+    return github_metrics_list
+
+
+def find_common_part(sonar_filename, github_result):
+    # Define the regex patterns to extract the common part
+
+    sonar_pattern = re.compile(r'.*?([a-zA-Z0-9_-]+)-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}-extracted')
+    github_pattern = re.compile(r'(?:github_)?([a-zA-Z0-9_-]+)-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}-extracted')
+
+    # Find match in sonar file name
+
+    sonar_filename, _ = os.path.splitext(sonar_filename)
+    sonar_match = re.search(sonar_pattern, sonar_filename)
+
+    if sonar_match:
+        for github_filename, github_metrics in github_result:
+            
+            github_filename, _ = os.path.splitext(github_filename)
+            github_match = re.search(github_pattern, github_filename)
+            print(github_match)
+            if sonar_match == github_match:
+                return github_metrics
+
+    return False
 
 def aggregate_metrics(folder_path, config: json):
     msgram_files = list_msgram_files(folder_path)
@@ -162,32 +191,39 @@ def aggregate_metrics(folder_path, config: json):
     have_metrics = False
 
     if should_process_github_metrics(config):
-        file, github_metrics = process_github_metrics(
+        github_result = process_github_metrics(
             folder_path, github_files, metrics
         )
 
-        if not github_metrics:
+        if not github_result:
             print_error("> [red]Error: Unexpected result from process_github_metrics")
             return False
 
         have_metrics = True
 
     if should_process_sonar_metrics(config):
-        result = process_sonar_metrics(folder_path, msgram_files, github_files)
+        sonar_result = process_sonar_metrics(folder_path, msgram_files, github_files)
 
-        if not result or len(result) != 1:
-            print_error("> [red]Error: Unexpected result from process_sonar_metrics")
+        if not sonar_result:
+            
             return False
 
         have_metrics = True
-        file, file_content = result[0]
 
     if not have_metrics:
         print_error("> [red]Error: No metrics where found in the .msgram files")
         return False
 
-    file_content["github_metrics"] = github_metrics
+    
+    for sonar_filename,file_content in sonar_result:
+        github_metrics = find_common_part(sonar_filename, github_result)
 
-    save_metrics(os.path.join(folder_path, file), file_content)
+        if github_metrics:
+            file_content["github_metrics"] = github_metrics
+        else:
+            print_error("> [red]Error: did not find a match")
+            return False
+
+        save_metrics(os.path.join(folder_path, sonar_filename), file_content)
 
     return True

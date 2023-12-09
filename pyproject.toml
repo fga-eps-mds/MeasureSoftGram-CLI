@@ -33,7 +33,8 @@ dependencies = [
         "rich",
         "validators==0.20.0",
         "msgram-core==1.4.5",
-        "msgram-parser==1.1.3"
+        "msgram-parser==1.1.3".
+        "anytree"
     ]
 
 [project.scripts]
