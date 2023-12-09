@@ -154,26 +154,23 @@ def process_github_metrics(folder_path, github_files, metrics):
 
 
 def find_common_part(sonar_filename, github_result):
-    # Define the regex patterns to extract the common part
 
-    sonar_pattern = re.compile(r'.*?([a-zA-Z0-9_-]+)-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}-extracted')
-    github_pattern = re.compile(r'(?:github_)?([a-zA-Z0-9_-]+)-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}-extracted')
+    sonar_pattern = re.compile(r'([a-zA-Z0-9_-]+)-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}-.*-extracted')
 
-    # Find match in sonar file name
-
-    sonar_filename, _ = os.path.splitext(sonar_filename)
-    sonar_match = re.search(sonar_pattern, sonar_filename)
+    sonar_filename_root, _ = os.path.splitext(sonar_filename)
+    sonar_match = sonar_pattern.search(sonar_filename_root)
 
     if sonar_match:
+        sonar_key = sonar_match.group(1)
+
         for github_filename, github_metrics in github_result:
-            
-            github_filename, _ = os.path.splitext(github_filename)
-            github_match = re.search(github_pattern, github_filename)
-            print(github_match)
-            if sonar_match == github_match:
+            github_filename_root, _ = os.path.splitext(github_filename)
+
+            if sonar_key in github_filename_root:
                 return github_metrics
 
     return False
+
 
 def aggregate_metrics(folder_path, config: json):
     msgram_files = list_msgram_files(folder_path)
@@ -186,11 +183,15 @@ def aggregate_metrics(folder_path, config: json):
 
     file_content = {}
 
-    github_metrics = []
+    sonar_result = []
+    github_result = []
+
 
     have_metrics = False
 
-    if should_process_github_metrics(config):
+    config_has_github = should_process_github_metrics(config)
+
+    if config_has_github:
         github_result = process_github_metrics(
             folder_path, github_files, metrics
         )
@@ -220,8 +221,9 @@ def aggregate_metrics(folder_path, config: json):
 
         if github_metrics:
             file_content["github_metrics"] = github_metrics
-        else:
-            print_error("> [red]Error: did not find a match")
+        elif config_has_github:
+            print_error(f"> [red]Error: The configuration provided by the user requires github metrics\n\
+        but there was not found github metrics associated with the file:\n\{sonar_filename}")
             return False
 
         save_metrics(os.path.join(folder_path, sonar_filename), file_content)
