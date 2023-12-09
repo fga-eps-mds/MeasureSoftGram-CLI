@@ -93,9 +93,8 @@ def test_process_github_metrics():
 
     metrics = {"sonar": ["some_metric"], "github": ["resolved_issues", "total_issues"]}
 
-    result = process_github_metrics(folder_path, [github_file_name,github_file_name], metrics)
+    result = process_github_metrics(folder_path, [github_file_name, github_file_name], metrics)
 
-    # Validate the result
     expected_result = (
         github_file_name,
         [
@@ -152,10 +151,13 @@ def test_aggregate_metrics():
     with tempfile.TemporaryDirectory() as temp_dir:
         folder_path = temp_dir
 
-        msgram_file1 = os.path.join(folder_path,\
-                        "fga-eps-mds-2023-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram")
-        msgram_file2 = os.path.join(folder_path,\
-                        "github_fga-eps-mds-2023-2-MeasureSoftGram-CLI-09-12-2023-01-24-36-extracted.msgram")
+        msgram_file1 = os.path.join(
+            folder_path, "fga-eps-mds-2023-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
+        )
+        msgram_file2 = os.path.join(
+            folder_path, "github_fga-eps-mds-2023-2-MeasureSoftGram-CLI-09-12-2023-01-24-36-extracted.msgram"
+        )
+
 
         with open(msgram_file1, "w") as file:
             json.dump({"some_metric": 42}, file)
@@ -175,8 +177,10 @@ def test_aggregate_metrics():
 
         assert result is True
 
-        output_file_path = os.path.join(folder_path,\
-                        "fga-eps-mds-2023-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics")
+        output_file_path = os.path.join(
+            folder_path, "fga-eps-mds-2023-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics"
+        )
+
         assert os.path.exists(output_file_path)
 
         with open(output_file_path, "r") as output_file:
@@ -192,6 +196,7 @@ def test_aggregate_metrics():
             ],
         }
         assert saved_metrics == expected_metrics
+
 
 def test_find_common_part():
     sonar_filename = "fga-eps-mds-2023-2-MeasureSoftGram-Parser-02-06-2023-21-40-30-develop-extracted"

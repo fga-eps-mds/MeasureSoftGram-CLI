@@ -186,7 +186,6 @@ def aggregate_metrics(folder_path, config: json):
     sonar_result = []
     github_result = []
 
-
     have_metrics = False
 
     config_has_github = should_process_github_metrics(config)
@@ -206,7 +205,7 @@ def aggregate_metrics(folder_path, config: json):
         sonar_result = process_sonar_metrics(folder_path, msgram_files, github_files)
 
         if not sonar_result:
-            
+            print_error("> [red]Error: Unexpected result from process_sonar_metrics")
             return False
 
         have_metrics = True
@@ -215,15 +214,18 @@ def aggregate_metrics(folder_path, config: json):
         print_error("> [red]Error: No metrics where found in the .msgram files")
         return False
 
-    
     for sonar_filename,file_content in sonar_result:
         github_metrics = find_common_part(sonar_filename, github_result)
 
         if github_metrics:
             file_content["github_metrics"] = github_metrics
         elif config_has_github:
-            print_error(f"> [red]Error: The configuration provided by the user requires github metrics\n\
-        but there was not found github metrics associated with the file:\n\{sonar_filename}")
+            print_error(
+                f"> [red]Error: The configuration provided by the user requires github metrics\n"
+                f"  but there was not found github metrics associated with the file:\n"
+                f"  {sonar_filename}"
+            )
+
             return False
 
         save_metrics(os.path.join(folder_path, sonar_filename), file_content)
