@@ -40,7 +40,7 @@ def test_parser_list():
 
 def test_parser_extract():
     parser = create_parser()
-    
+
     args = parser.parse_args(['extract',
                               '-o',
                               'sonarqube',

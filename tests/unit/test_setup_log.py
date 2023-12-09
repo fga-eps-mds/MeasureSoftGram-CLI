@@ -1,6 +1,7 @@
 import logging
 from src.config.setup_log import config_logger, basic_config
 
+
 def test_logging_config_verbose(caplog):
     caplog.set_level(logging.DEBUG)
 
