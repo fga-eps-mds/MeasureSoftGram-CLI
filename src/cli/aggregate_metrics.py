@@ -154,14 +154,11 @@ def process_github_metrics(folder_path, github_files, metrics):
 
 
 def find_common_part(sonar_filename, github_result):
-
-    sonar_pattern = re.compile(r'([a-zA-Z0-9_-]+)-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2}-.*-extracted')
-
     sonar_filename_root, _ = os.path.splitext(sonar_filename)
-    sonar_match = sonar_pattern.search(sonar_filename_root)
 
-    if sonar_match:
-        sonar_key = sonar_match.group(1)
+    sonar_parts = sonar_filename_root.split('-')
+    if len(sonar_parts) >= 7:
+        sonar_key = '-'.join(sonar_parts[:7])
 
         for github_filename, github_metrics in github_result:
             github_filename_root, _ = os.path.splitext(github_filename)
