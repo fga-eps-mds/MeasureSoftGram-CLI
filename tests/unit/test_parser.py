@@ -4,19 +4,24 @@ from src.cli.commands.cmd_extract import command_extract
 from src.cli.commands.cmd_calculate import command_calculate
 from src.cli.commands.cmd_list import command_list
 
-from src.cli.parsers import create_parser  
+from src.cli.parsers import create_parser
+
 
 def mock_command_init(args):
     return f"Mocked command_init with args: {args}"
 
+
 def mock_command_extract(args):
     return f"Mocked command_extract with args: {args}"
+
 
 def mock_command_calculate(args):
     return f"Mocked command_calculate with args: {args}"
 
+
 def mock_command_list(args):
     return f"Mocked command_list with args: {args}"
+
 
 def test_parser_init():
     parser = create_parser()
@@ -24,12 +29,14 @@ def test_parser_init():
     assert args.func == command_init
     assert args.config_path == Path('/path/to/config')
 
+
 def test_parser_list():
     parser = create_parser()
     args = parser.parse_args(['list', '-cp', '/path/to/config', 'all'])
     assert args.func == command_list
     assert args.config_path == Path('/path/to/config')
     assert args.all == 'all'
+
 
 def test_parser_extract():
     parser = create_parser()
@@ -61,5 +68,3 @@ def test_parser_calculate():
     assert args.extracted_path == Path('/path/to/extracted')
     assert args.config_path == Path('/path/to/config')
     assert args.output_format == 'csv'
-
-
