@@ -56,5 +56,6 @@ def command_init(args):
         print_info(f"The file config: '{config_path.name}/msgram.json' not changed...")
 
     print_panel(
-        "> [#008080]Run msgram extract -o sonarqube -dp data_path -ep extract_path[/], to extract supported metrics!"
+        "> [#008080]Run msgram extract -o <source of information> -dp data_path -ep extract_path[/],\n"
+        "  to extract supported metrics!"
     )

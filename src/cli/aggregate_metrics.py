@@ -120,30 +120,52 @@ def process_github_metrics(folder_path, github_files, metrics):
 
     print_info(f"> [blue] GitHub metrics found in: {folder_path}\n")
 
-    first_github_file = read_msgram(os.path.join(folder_path, github_files[0]))
+    github_metrics_list = []
 
-    if not first_github_file:
-        print_error(f"> [red] Error to read github metrics in: {folder_path}\n")
-        return False
+    for github_file_name in github_files:
+        github_file_path = os.path.join(folder_path, github_file_name)
+        github_file_content = read_msgram(github_file_path)
 
-    github_key = next(iter(first_github_file.keys() - metrics["sonar"]), "")
+        if not github_file_content:
+            print_error(f"> [red] Error to read github metrics in: {github_file_path}\n")
+            continue
 
-    github_metrics = [
-        {
-            "metric": metric,
-            "value": next(
-                (
-                    m["value"]
-                    for m in first_github_file[github_key]
-                    if m["metric"] == metric
+        github_key = next(iter(github_file_content.keys() - metrics["sonar"]), "")
+
+        github_metrics = [
+            {
+                "metric": metric,
+                "value": next(
+                    (
+                        m["value"]
+                        for m in github_file_content[github_key]
+                        if m["metric"] == metric
+                    ),
+                    None,
                 ),
-                None,
-            ),
-        }
-        for metric in metrics["github"]
-    ]
+            }
+            for metric in metrics["github"]
+        ]
 
-    return (github_files[0], github_metrics)
+        github_metrics_list.append((github_file_name, github_metrics))
+
+    return github_metrics_list
+
+
+def find_common_part(sonar_filename, github_result):
+    sonar_filename_root, _ = os.path.splitext(sonar_filename)
+
+    sonar_parts = sonar_filename_root.split('-')
+    if len(sonar_parts) >= 7:
+        sonar_key = '-'.join(sonar_parts[:7])
+
+        for github_filename, github_metrics in github_result:
+            github_filename_root, _ = os.path.splitext(github_filename)
+
+            if sonar_key in github_filename_root:
+                return github_metrics
+
+    return False
 
 
 def aggregate_metrics(folder_path, config: json):
@@ -157,37 +179,51 @@ def aggregate_metrics(folder_path, config: json):
 
     file_content = {}
 
-    github_metrics = []
+    sonar_result = []
+    github_result = []
 
     have_metrics = False
 
-    if should_process_github_metrics(config):
-        file, github_metrics = process_github_metrics(
+    config_has_github = should_process_github_metrics(config)
+
+    if config_has_github:
+        github_result = process_github_metrics(
             folder_path, github_files, metrics
         )
 
-        if not github_metrics:
+        if not github_result:
             print_error("> [red]Error: Unexpected result from process_github_metrics")
             return False
 
         have_metrics = True
 
     if should_process_sonar_metrics(config):
-        result = process_sonar_metrics(folder_path, msgram_files, github_files)
+        sonar_result = process_sonar_metrics(folder_path, msgram_files, github_files)
 
-        if not result or len(result) != 1:
+        if not sonar_result:
             print_error("> [red]Error: Unexpected result from process_sonar_metrics")
             return False
 
         have_metrics = True
-        file, file_content = result[0]
 
     if not have_metrics:
         print_error("> [red]Error: No metrics where found in the .msgram files")
         return False
 
-    file_content["github_metrics"] = github_metrics
+    for sonar_filename, file_content in sonar_result:
+        github_metrics = find_common_part(sonar_filename, github_result)
 
-    save_metrics(os.path.join(folder_path, file), file_content)
+        if github_metrics:
+            file_content["github_metrics"] = github_metrics
+        elif config_has_github:
+            print_error(
+                f"> [red]Error: The configuration provided by the user requires github metrics\n"
+                f"  but there was not found github metrics associated with the file:\n"
+                f"  {sonar_filename}"
+            )
+
+            return False
+
+        save_metrics(os.path.join(folder_path, sonar_filename), file_content)
 
     return True

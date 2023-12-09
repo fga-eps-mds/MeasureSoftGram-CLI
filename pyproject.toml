@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "msgram"
-version = "3.1.8"
+version = "3.1.9"
 description = "The msgram CLI is a command-line interface to use MeasureSoftGram software"
 readme = "README.md"
 authors = [
@@ -33,7 +33,8 @@ dependencies = [
         "rich",
         "validators==0.20.0",
         "msgram-core==1.4.5",
-        "msgram-parser==1.1.3"
+        "msgram-parser==1.1.3",
+        "anytree"
     ]
 
 [project.scripts]
