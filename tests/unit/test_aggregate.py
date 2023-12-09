@@ -158,7 +158,6 @@ def test_aggregate_metrics():
             folder_path, "github_fga-eps-mds-2023-2-MeasureSoftGram-CLI-09-12-2023-01-24-36-extracted.msgram"
         )
 
-
         with open(msgram_file1, "w") as file:
             json.dump({"some_metric": 42}, file)
 

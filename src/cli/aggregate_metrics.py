@@ -214,7 +214,7 @@ def aggregate_metrics(folder_path, config: json):
         print_error("> [red]Error: No metrics where found in the .msgram files")
         return False
 
-    for sonar_filename,file_content in sonar_result:
+    for sonar_filename, file_content in sonar_result:
         github_metrics = find_common_part(sonar_filename, github_result)
 
         if github_metrics:

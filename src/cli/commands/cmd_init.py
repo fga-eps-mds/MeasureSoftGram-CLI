@@ -59,4 +59,3 @@ def command_init(args):
         "> [#008080]Run msgram extract -o <source of information> -dp data_path -ep extract_path[/],\n"
         "  to extract supported metrics!"
     )
-
