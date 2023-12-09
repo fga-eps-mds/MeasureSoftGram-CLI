@@ -8,7 +8,6 @@ from anytree import Node, RenderTree
 
 from rich import print
 from rich.console import Console
-from rich.tree import Tree
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 from src.cli.jsonReader import open_json_file, read_multiple_files
@@ -138,7 +137,7 @@ def show_results(output_format, data_calculated, config_path):
         print(data_calculated)
 
     elif output_format == "tree":
-        show_tree(data_calculated,pre_config)
+        show_tree(data_calculated, pre_config)
 
     elif len(data_calculated) == 0:
         print_info(
@@ -196,12 +195,6 @@ def show_tree(data_calculated, pre_config):
 
     for pre, fill, node in RenderTree(tsqmi_tree):
         print(f"{pre}{node.name}")
-
-def get_obj_by_element(lst, key, value):
-    for obj in lst:
-        if obj.get(key) == value:
-            return obj
-    return None
 
 
 def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
