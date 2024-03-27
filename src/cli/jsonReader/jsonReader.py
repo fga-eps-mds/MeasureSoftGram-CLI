@@ -29,7 +29,7 @@ def file_reader(path_file):
     return components
 
 
-def read_mult_files(directory: Path, pattern: str):
+def read_multiple_files(directory: Path, pattern: str):
     for path_file in directory.glob(f"*.{pattern}"):
         try:
             yield open_json_file(path_file), path_file.name

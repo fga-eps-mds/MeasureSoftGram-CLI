@@ -263,7 +263,8 @@ def test_read_multiple_files():
     )
 
     file_names = [
-        file_name for _, file_name in jsonReader.read_mult_files(Path(dirpath), "json")
+        file_name
+        for _, file_name in jsonReader.read_multiple_files(Path(dirpath), "json")
     ]
     assert len(file_names) == 1
     assert (

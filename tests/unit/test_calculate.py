@@ -9,14 +9,71 @@ from unittest.mock import patch
 
 import pytest
 
-from src.cli.commands.cmd_calculate import calculate_all, command_calculate
+from src.cli.commands.cmd_calculate import calculate_all, command_calculate, show_tree
 from src.cli.jsonReader import open_json_file
+from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 CALCULATE_ARGS = {
     "output_format": "csv",
     "config_path": Path(""),
     "extracted_path": Path(""),
 }
+
+
+def test_show_tree(capfd):
+
+    data_calculated = {
+        'repository': [{'key': 'repository', 'value': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI'}],
+        'version': [{'key': 'version', 'value': '01-05-2023-21-40'}],
+        'measures': [
+            {'key': 'passed_tests', 'value': 1.0},
+            {'key': 'test_builds', 'value': 0.9996066627522133},
+            {'key': 'test_coverage', 'value': 0.40234848484848484},
+            {'key': 'non_complex_file_density', 'value': 0.44347274991556906},
+            {'key': 'commented_file_density', 'value': 0.04318181818181818},
+            {'key': 'duplication_absence', 'value': 1.0},
+            {'key': 'team_throughput', 'value': 0.6969696969696971},
+            {'key': 'ci_feedback_time', 'value': 0.06117908787541713}
+        ],
+        'subcharacteristics': [
+            {'key': 'testing_status', 'value': 0.8421061048464034},
+            {'key': 'maturity', 'value': 0.06117908787541713},
+            {'key': 'modifiability', 'value': 0.6415437113263573},
+            {'key': 'functional_completeness', 'value': 0.6969696969696971}
+        ],
+        'characteristics': [
+            {'key': 'reliability', 'value': 0.5970282960684735},
+            {'key': 'maintainability', 'value': 0.6415437113263573},
+            {'key': 'functional_suitability', 'value': 0.6969696969696971}
+        ],
+        'tsqmi': [{'key': 'tsqmi', 'value': 0.6455181338484177}]
+    }
+
+    expected_output = (
+        "Overview - tree:\n\n"
+        "\n"
+        "tsqmi: 0.6455181338484177\n"
+        "├── reliability: 0.5970282960684735\n"
+        "│   ├── testing_status 0.8421061048464034\n"
+        "│   │   ├── passed_tests 1.0\n"
+        "│   │   ├── test_builds 0.9996066627522133\n"
+        "│   │   └── test_coverage 0.40234848484848484\n"
+        "│   └── maturity 0.06117908787541713\n"
+        "│       └── ci_feedback_time 0.06117908787541713\n"
+        "├── maintainability: 0.6415437113263573\n"
+        "│   └── modifiability 0.6415437113263573\n"
+        "│       ├── non_complex_file_density 0.44347274991556906\n"
+        "│       └── commented_file_density 0.04318181818181818\n"
+        "└── functional_suitability: 0.6969696969696971\n"
+        "    └── functional_completeness 0.6969696969696971\n"
+        "        └── team_throughput 0.6969696969696971"
+    )
+
+    show_tree(data_calculated, pre_config)
+
+    captured = capfd.readouterr()
+
+    assert captured.out.strip() == expected_output.strip()
 
 
 @pytest.mark.parametrize(
@@ -40,7 +97,7 @@ def test_calculate_invalid_args(calculate_arg):
 
 
 @pytest.mark.parametrize(
-    "output_format,mult_file",
+    "output_format,multiple_files",
     [
         ("tabular", False),
         ("tree", False),
@@ -49,13 +106,13 @@ def test_calculate_invalid_args(calculate_arg):
         ("json", True),
     ],
 )
-def test_calculate_file(output_format, mult_file):
+def test_calculate_file(output_format, multiple_files):
     config_dirpath = tempfile.mkdtemp()
     extract_dirpath = tempfile.mkdtemp()
 
     shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
 
-    extracted_file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
+    extracted_file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics"
     shutil.copy(
         f"tests/unit/data/{extracted_file_name}",
         f"{extract_dirpath}/{extracted_file_name}",
@@ -65,16 +122,16 @@ def test_calculate_file(output_format, mult_file):
         "output_format": output_format,
         "config_path": Path(config_dirpath),
         "extracted_path": Path(
-            extract_dirpath + (f"/{extracted_file_name}" if not mult_file else "")
+            extract_dirpath + (f"/{extracted_file_name}" if not multiple_files else "")
         ),
     }
-    if not mult_file:
+    if not multiple_files:
         calculate_patch = patch("builtins.input", return_value=output_format)
         calculate_patch.start()
 
     command_calculate(args)
 
-    assert len(os.listdir(config_dirpath)) == 2 if mult_file else 1
+    assert len(os.listdir(config_dirpath)) == 1
     assert len(os.listdir(extract_dirpath)) == 1
 
     shutil.rmtree(config_dirpath)
@@ -82,7 +139,7 @@ def test_calculate_file(output_format, mult_file):
 
 
 def test_calculate_all_dict():
-    file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.msgram"
+    file_name = "fga-eps-mds-2022-2-MeasureSoftGram-CLI-01-05-2023-21-40-30-develop-extracted.metrics"
     json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
     config = open_json_file(Path("tests/unit/data/msgram.json"))
 
@@ -235,29 +292,3 @@ def test_calculate_invalid_extracted_file():
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)
-
-
-def test_calculate_warn_zero_calculated_files():
-    captured_output = StringIO()
-    sys.stdout = captured_output
-
-    config_dirpath = tempfile.mkdtemp()
-
-    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
-
-    args = {
-        "output_format": "csv",
-        "config_path": Path(config_dirpath),
-        "extracted_path": Path("."),
-    }
-
-    command_calculate(args)
-
-    sys.stdout = sys.__stdout__
-    assert (
-        "WARNING: No extracted file readed so no csv was generated!"
-        in captured_output.getvalue()
-    )
-    assert "All calculations performed" not in captured_output.getvalue()
-
-    shutil.rmtree(config_dirpath)

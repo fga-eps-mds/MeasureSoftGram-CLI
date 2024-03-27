@@ -1,4 +1,4 @@
-# 2023-1-MeasureSoftGram-CLI
+# 2023-2 MeasureSoftGram-CLI
 
 ## Badges
 

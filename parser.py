@@ -23,7 +23,6 @@ METRICS_SONAR = [
 BASE_URL = "https://sonarcloud.io/api/measures/component_tree?component=fga-eps-mds_"
 
 if __name__ == "__main__":
-
     REPO = sys.argv[1]
     RELEASE_VERSION = sys.argv[2]
 
