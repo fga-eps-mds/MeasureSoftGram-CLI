@@ -122,6 +122,13 @@ def create_parser():
         help="Path to analysis git repository",
     )
 
+    parser_extract.add_argument(
+        "-wf",
+        "--workflows",
+        type=list,
+        help="A list of workflow names to be considered in the ci feedback time calculation",
+    )
+
     parser_extract.set_defaults(func=command_extract)  # function command extract
 
     # =====================================< COMMAND calculate >=====================================

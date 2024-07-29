@@ -57,6 +57,7 @@ def command_extract(args):
         exit(1)
 
     label = args.get("label", None)
+    workflows = args.get("workflows", None)
 
     if label is not None and output_origin == "sonarqube":
         logger.error(
@@ -76,13 +77,23 @@ def command_extract(args):
         )
         sys.exit(1)
 
+    if workflows is not None and output_origin == "sonarqube":
+        logger.error(
+            'Error: The parameter "-wf" must accompany a github repository output'
+        )
+        print_warn(
+            'Error: The parameter "-wf" must accompany a github repository output'
+        )
+        sys.exit(1)
+
     console = Console()
     console.clear()
     print_rule("Extract metrics")
     parser = GenericParser()
 
     if repository_path and output_origin == "github":
-        filters = {"labels": label if label else "US,User Story,User Stories"}
+        filters = {"labels": label if label else "US,User Story,User Stories",
+                   "workflows": workflows if workflows else None}
         result = parser.parse(
             input_value=repository_path, type_input=output_origin, filters=filters
         )
