@@ -198,7 +198,8 @@ def create_parser():
     # =====================================< COMMAND norm_diff >=====================================
     parser_norm_diff = subparsers.add_parser(
         "norm_diff",
-        help="Calculate the norm difference between the planned metrics and the developed.",
+        help="Calculates the Frobenius norm of the difference between tensors RP and RD, which means the quantitative "
+        "perception of the discrepancy between the planned and developed quality requirements in a release.",
     )
 
     parser_norm_diff.add_argument(
@@ -224,7 +225,8 @@ def create_parser():
     # =====================================< COMMAND diff >=====================================
     parser_calculate = subparsers.add_parser(
         "diff",
-        help="Calculates differences between planned and developed values. Returns the result vector.",
+        help="Calculates and interprets the difference between the planned and developed quantitative perceptions "
+        "of each quality characteristic, represented by the RP and RD tensors.",
     )
 
     parser_calculate.add_argument(

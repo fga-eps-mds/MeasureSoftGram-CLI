@@ -15,6 +15,7 @@ from src.cli.utils import (
     print_info,
     print_panel,
     print_rule,
+    validate_json_values,
 )
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH
@@ -61,7 +62,7 @@ def read_calculated_file(extracted_calculation):
         exit(1)
 
 
-def calculate_diff(planned, calculated):
+def calculate_diff(planned, calculated, rp_path, rd_path):
     formated_result = []
 
     try:
@@ -73,7 +74,7 @@ def calculate_diff(planned, calculated):
                 )
 
             data_planned, data_calculated = extract_values(
-                planned, calculated_item["characteristics"]
+                planned, calculated_item["characteristics"], rp_path, rd_path
             )
 
             diff_calculated = diff(data_planned, data_calculated)
@@ -124,7 +125,9 @@ def command_diff(args):
 
     calculated = read_calculated_file(extracted_calculation)
 
-    diff_calculated, success = calculate_diff(planned, calculated)
+    diff_calculated, success = calculate_diff(
+        planned, calculated, config_path, extracted_calculation
+    )
 
     if success:
         print_info("\n[#A9A9A9]Diff calculation performed[/] successfully!")
@@ -136,8 +139,9 @@ def command_diff(args):
 
     print_panel(
         title="Done",
-        menssage="> See our docs for more information: \n"
-        " https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-CLI",
+        menssage="> See the publications for more information: \n"
+        "https://dl.acm.org/doi/10.1145/3239235.3267438 \n"
+        "https://dl.acm.org/doi/10.1145/3422392.3422450 \n",
     )
 
 
@@ -208,7 +212,7 @@ def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PAT
     print(f"Success: {file_path.name} exported as CSV")
 
 
-def extract_values(planned, calculated):
+def extract_values(planned, calculated, rp_path, rd_path):
     vector_calculated = []
     vector_planned = []
 
@@ -220,5 +224,8 @@ def extract_values(planned, calculated):
         else:
             vector_calculated.append(calculated[x]["value"])
             vector_planned.append(planned[x]["value"])
+
+    validate_json_values(vector_planned, rp_path)
+    validate_json_values(vector_calculated, rd_path)
 
     return vector_planned, vector_calculated

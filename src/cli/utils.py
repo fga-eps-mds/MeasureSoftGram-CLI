@@ -9,6 +9,8 @@ from rich.progress import BarColumn, Progress, TaskProgressColumn, TextColumn
 from rich.table import Table
 from rich.text import Text
 
+from src.cli.exceptions import exceptions
+
 logger = logging.getLogger("msgram")
 console = Console(highlight=False, soft_wrap=False, width=140)
 
@@ -173,3 +175,20 @@ def format_diff_color(value):
         return "red"
     else:
         return "white"
+
+
+def validate_json_values(file, file_path):
+    for value in file:
+        try:
+            if value > 1 or value < 0:
+                raise exceptions.MeasureSoftGramCLIException(
+                    f"[red]The values informed in the .json file {file_path} must be between 0 and 1.\n"
+                )
+        except exceptions.MeasureSoftGramCLIException as e:
+            print_error(f"[red]Failed to decode the JSON file: {e}\n")
+            print_rule()
+            exit(1)
+        except TypeError as e:
+            print_error(f"[red]Failed to decode the JSON file: The values informed in the .json file {file_path} must be between 0 and 1.\n")
+            print_rule()
+            exit(1)

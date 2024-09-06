@@ -96,8 +96,9 @@ def command_calculate(args):
 
     print_panel(
         title="Done",
-        menssage="> See our docs for more information: \n"
-        " https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-CLI",
+        menssage="> See the publications for more information: \n"
+        "https://dl.acm.org/doi/10.1145/3239235.3267438 \n"
+        "https://dl.acm.org/doi/10.1145/3422392.3422450 \n",
     )
 
 

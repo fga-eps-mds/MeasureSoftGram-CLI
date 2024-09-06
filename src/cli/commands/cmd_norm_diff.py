@@ -1,7 +1,12 @@
 import logging
 from core.transformations import norm_diff
 from src.cli.jsonReader import open_json_file
-from src.cli.utils import print_error, print_info, print_rule
+from src.cli.utils import (
+    print_error,
+    print_info,
+    print_rule,
+    validate_json_values,
+)
 from src.cli.exceptions import exceptions
 import numpy as np
 
@@ -51,6 +56,7 @@ def command_norm_diff(args):
         exit(1)
 
     planned_data = read_planned_file(rp_path, sort_key="key")
+
     calculated_data = read_calculated_file(rd_path)
 
     planned_vector, calculated_vector = extract_values(
@@ -98,21 +104,8 @@ def extract_values(planned_data, calculated_data, rp_path, rd_path):
         planned_values = [planned_dict[key] for key in planned_keys]
         calculated_values = [calculated_dict[key] for key in planned_keys]
 
-        for value in planned_values:
-            if value > 1 or value < 0:
-                print_error(
-                    f"[red]The values informed in the .json file {rp_path} must be between 0 and 1.\n"
-                )
-                print_rule()
-                exit(1)
-
-        for value in calculated_values:
-            if value > 1 or value < 0:
-                print_error(
-                    f"[red]The values informed in the .json file {rd_path} must be between 0 and 1.\n"
-                )
-                print_rule()
-                exit(1)
+        validate_json_values(planned_values, rp_path)
+        validate_json_values(calculated_values, rd_path)
 
         return (np.array(planned_values), np.array(calculated_values))
     except exceptions.MeasureSoftGramCLIException as e:
