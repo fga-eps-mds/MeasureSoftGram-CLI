@@ -110,6 +110,6 @@ For more informations, you can see our wiki:
 ### Demais repositórios do produto
 - [Core](https://github.com/fga-eps-mds/MeasureSoftGram-Core)
 - [Service](https://github.com/fga-eps-mds/MeasureSoftGram-Service)
-- [Front Web](https://github.com/fga-eps-mds/MeasureSoftGram-Front])
+- [Front Web](https://github.com/fga-eps-mds/MeasureSoftGram-Front)
 - [Action](https://github.com/fga-eps-mds/MeasureSoftGram-Action)
 - [Parser](https://github.com/fga-eps-mds/MeasureSoftGram-Parser)
