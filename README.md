@@ -106,3 +106,10 @@ Our services are available on [Docker Hub](https://hub.docker.com/):
 ### Wiki
 For more informations, you can see our wiki:
 - [Wiki](https://fga-eps-mds.github.io/2023-1-MeasureSoftGram-Doc/)
+
+### Demais repositórios do produto
+- [Core](https://github.com/fga-eps-mds/MeasureSoftGram-Core)
+- [Service](https://github.com/fga-eps-mds/MeasureSoftGram-Service)
+- [Front Web](https://github.com/fga-eps-mds/MeasureSoftGram-Front])
+- [Action](https://github.com/fga-eps-mds/MeasureSoftGram-Action)
+- [Parser](https://github.com/fga-eps-mds/MeasureSoftGram-Parser)
