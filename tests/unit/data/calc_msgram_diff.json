@@ -1,0 +1,134 @@
+[
+    {
+        "repository": [
+            {
+                "key": "repository",
+                "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"
+            }
+        ],
+        "version": [
+            {
+                "key": "version",
+                "value": "01-05-2023-21-40"
+            }
+        ],
+        "measures": [
+            {
+                "key": "passed_tests",
+                "value": 1.0
+            },
+            {
+                "key": "test_builds",
+                "value": 0.9996066627522133
+            },
+            {
+                "key": "test_coverage",
+                "value": 0.40234848484848484
+            },
+            {
+                "key": "non_complex_file_density",
+                "value": 0.44347274991556906
+            },
+            {
+                "key": "commented_file_density",
+                "value": 0.04318181818181818
+            },
+            {
+                "key": "duplication_absense",
+                "value": 1.0
+            }
+        ],
+        "subcharacteristics": [
+            {
+                "key": "testing_status",
+                "value": 0.8421061048464034
+            },
+            {
+                "key": "modifiability",
+                "value": 0.6415437113263573
+            }
+        ],
+        "characteristics": [
+            {
+                "key": "reliability",
+                "value": 0.8421061048464034
+            },
+            {
+                "key": "maintainability",
+                "value": 0.6415437113263573
+            }
+        ],
+        "tsqmi": [
+            {
+                "key": "tsqmi",
+                "value": 0.7485723162667646
+            }
+        ]
+    },
+    {
+        "repository": [
+            {
+                "key": "repository",
+                "value": "fga-eps-mds-2022-3-MeasureSoftGram-CLI"
+            }
+        ],
+        "version": [
+            {
+                "key": "version",
+                "value": "01-05-2023-21-40"
+            }
+        ],
+        "measures": [
+            {
+                "key": "passed_tests",
+                "value": 1.0
+            },
+            {
+                "key": "test_builds",
+                "value": 0.9996066627522133
+            },
+            {
+                "key": "test_coverage",
+                "value": 0.40234848484848484
+            },
+            {
+                "key": "non_complex_file_density",
+                "value": 0.44347274991556906
+            },
+            {
+                "key": "commented_file_density",
+                "value": 0.04318181818181818
+            },
+            {
+                "key": "duplication_absense",
+                "value": 1.0
+            }
+        ],
+        "subcharacteristics": [
+            {
+                "key": "testing_status",
+                "value": 0.8421061048464034
+            },
+            {
+                "key": "modifiability",
+                "value": 0.6415437113263573
+            }
+        ],
+        "characteristics": [
+            {
+                "key": "reliability",
+                "value": 0.75
+            },
+            {
+                "key": "maintainability",
+                "value": 0.55
+            }
+        ],
+        "tsqmi": [
+            {
+                "key": "tsqmi",
+                "value": 0.7485723162667646
+            }
+        ]
+    }
+]

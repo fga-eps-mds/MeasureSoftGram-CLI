@@ -1,5 +1,5 @@
-# 2023-2 MeasureSoftGram-CLI
-
+# 2024-1 MeasureSoftGram-CLI
+Command line project to MeasureSoftGram
 ## Badges
 
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2023-1-MeasureSoftGram-CLI&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2023-1-MeasureSoftGram-CLI)

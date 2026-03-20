@@ -12,13 +12,15 @@ def get_measure_value(measures, subchar):
     measures_calculated = []
     for measure in subchar:
         measure_key = measure["key"]
-        measures_calculated.append(
-            {
-                "key": measure_key,
-                "value": {m["key"]: m["value"] for m in measures}[measure_key],
-                "weight": measure["weight"],
-            }
-        )
+        found = any(measure_key == m["key"] for m in measures)
+        if found:
+            measures_calculated.append(
+                {
+                    "key": measure_key,
+                    "value": {m["key"]: m["value"] for m in measures}[measure_key],
+                    "weight": measure["weight"],
+                }
+            )
 
     return measures_calculated
 

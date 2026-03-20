@@ -4,6 +4,7 @@ FILE_CONFIG = "msgram.json"
 DEFAULT_CONFIG_PATH = Path.cwd() / ".msgram"
 DEFAULT_RAW_DATA_PATH = Path.cwd() / "analytics-raw-data"
 DEFAULT_CONFIG_FILE_PATH = DEFAULT_CONFIG_PATH / FILE_CONFIG
+DIFF_FILE_CONFIG = "msgram_diff.json"
 
 AVAILABLE_ENTITIES = [
     "metrics",

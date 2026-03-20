@@ -8,15 +8,17 @@ def get_subcharacteristic_value(subchars, char):
     for subchar in char:
         subchar_key = subchar["key"]
 
-        subchar_calculated.append(
-            {
-                "key": subchar_key,
-                "value": {m["key"]: m["value"] for m in subchars}.get(
-                    subchar_key, None
-                ),
-                "weight": subchar["weight"],
-            }
-        )
+        found = any(subchar_key == m["key"] for m in subchars)
+        if found:
+            subchar_calculated.append(
+                {
+                    "key": subchar_key,
+                    "value": {m["key"]: m["value"] for m in subchars}.get(
+                        subchar_key, None
+                    ),
+                    "weight": subchar["weight"],
+                }
+            )
 
     return subchar_calculated
 
@@ -32,7 +34,9 @@ def calculate_subcharacteristics(config, measures):
                     "key": subchar["key"],
                     "measures": get_measure_value(measures, subchar["measures"]),
                 }
-                calculate_infos.append(subchar_info)
+                if len(subchar_info["measures"]) > 0:
+                    calculate_infos.append(subchar_info)
 
     headers = ["Id", "Name", "Description", "Value", "Created at"]
+
     return core_calculate({"subcharacteristics": calculate_infos}), headers

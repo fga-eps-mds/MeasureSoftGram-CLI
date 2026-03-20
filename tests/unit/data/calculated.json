@@ -1,0 +1,52 @@
+[
+    {
+        "repository": [
+            {
+                "key": "repository",
+                "value": "Example Repository"
+            }
+        ],
+        "version": [
+            {
+                "key": "version",
+                "value": "27-07-2024-21-40"
+            }
+        ],
+        "measures": [
+            {
+                "key": "first_measure",
+                "value": 1.0
+            },
+            {
+                "key": "second_measure",
+                "value": 0.9996066627522133
+            }
+        ],
+        "subcharacteristics": [
+            {
+                "key": "first_subcharacteristics",
+                "value": 0.8421061048464034
+            },
+            {
+                "key": "second_subcharacteristics",
+                "value": 0.6415437113263573
+            }
+        ],
+        "characteristics": [
+            {
+                "key": "first_characteristics",
+                "value": 0.8421061048464034
+            },
+            {
+                "key": "second_characteristics",
+                "value": 0.6415437113263573
+            }
+        ],
+        "tsqmi": [
+            {
+                "key": "tsqmi",
+                "value": 0.7485723162667646
+            }
+        ]
+    }
+]

@@ -1,0 +1,38 @@
+[
+    {
+        "repository": "fga-eps-mds-2022-2-MeasureSoftGram-CLI",
+        "version": "01-05-2023-21-40",
+        "characteristics": [
+            {
+                "key": "maintainability",
+                "planned": 0.95,
+                "developed": 0.6415437113263573,
+                "diff": 0.3084562886736426
+            },
+            {
+                "key": "reliability",
+                "planned": 0.95,
+                "developed": 0.8421061048464034,
+                "diff": 0.1078938951535966
+            }
+        ]
+    },
+    {
+        "repository": "fga-eps-mds-2022-3-MeasureSoftGram-CLI",
+        "version": "01-05-2023-21-40",
+        "characteristics": [
+            {
+                "key": "maintainability",
+                "planned": 0.95,
+                "developed": 0.55,
+                "diff": 0.3999999999999999
+            },
+            {
+                "key": "reliability",
+                "planned": 0.95,
+                "developed": 0.75,
+                "diff": 0.19999999999999996
+            }
+        ]
+    }
+]

@@ -1,0 +1,24 @@
+{
+    "fga-eps-mds/2024.1-MeasureSoftGram-DOC": [
+        {
+            "metric": "resolved_issues",
+            "value": 1.0
+        },
+        {
+            "metric": "resolved_ratio",
+            "value": 0.16666666666666666
+        },
+        {
+            "metric": "sum_ci_feedback_times",
+            "value": 925.0
+        },
+        {
+            "metric": "total_builds",
+            "value": 30.0
+        },
+        {
+            "metric": "total_issues",
+            "value": 6.0
+        }
+    ]
+}

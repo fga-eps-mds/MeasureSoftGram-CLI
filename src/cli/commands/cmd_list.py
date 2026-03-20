@@ -62,6 +62,7 @@ def print_json_tree(data):
                     metrics = measure_to_metric.get(
                         measure_key, []
                     )  # Get associated metrics
+                    min_max = ""
                     for metric in metrics:
                         result.append(
                             f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}"

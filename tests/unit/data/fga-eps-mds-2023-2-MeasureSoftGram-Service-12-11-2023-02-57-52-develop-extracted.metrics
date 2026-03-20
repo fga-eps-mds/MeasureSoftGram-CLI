@@ -1,0 +1,7584 @@
+{
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service": [
+    {
+      "metric": "comment_lines_density",
+      "value": "10.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "558"
+    },
+    {
+      "metric": "coverage",
+      "value": "80.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "149"
+    },
+    {
+      "metric": "functions",
+      "value": "315"
+    },
+    {
+      "metric": "ncloc",
+      "value": "7112"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "14909"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "115"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "48"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "139"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "5.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "5"
+    },
+    {
+      "metric": "coverage",
+      "value": "75.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "87"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "18"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "8"
+    },
+    {
+      "metric": "ncloc",
+      "value": "78"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/tests.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "4638"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "16"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/urls.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "53"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/accounts/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "28.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "4"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "53"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.2"
+    },
+    {
+      "metric": "complexity",
+      "value": "5"
+    },
+    {
+      "metric": "coverage",
+      "value": "84.1"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "84"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "77"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/migrations/0002_balancematrix.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "2.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "50"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/migrations/0003_calculatedcharacteristic_release.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "4.8"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "20"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/migrations/0004_alter_calculatedcharacteristic_unique_together.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "5.9"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "16"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/migrations/0005_alter_calculatedcharacteristic_unique_together.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "5.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "19"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "29.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "14"
+    },
+    {
+      "metric": "coverage",
+      "value": "93.8"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "8"
+    },
+    {
+      "metric": "ncloc",
+      "value": "120"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "19.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "4"
+    },
+    {
+      "metric": "coverage",
+      "value": "79.3"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "108"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/characteristics/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "11"
+    },
+    {
+      "metric": "coverage",
+      "value": "97.5"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "7"
+    },
+    {
+      "metric": "ncloc",
+      "value": "167"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "1"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/github/__init__.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "18.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "40"
+    },
+    {
+      "metric": "coverage",
+      "value": "21.5"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "13"
+    },
+    {
+      "metric": "ncloc",
+      "value": "187"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/github/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "26.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "7"
+    },
+    {
+      "metric": "coverage",
+      "value": "59.1"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "2"
+    },
+    {
+      "metric": "ncloc",
+      "value": "68"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/github/utils.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.9"
+    },
+    {
+      "metric": "complexity",
+      "value": "8"
+    },
+    {
+      "metric": "coverage",
+      "value": "21.9"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "41"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/github/view.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "11.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "6"
+    },
+    {
+      "metric": "coverage",
+      "value": "41.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "64"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "1"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/sonarqube/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/sonarqube/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "37.5"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "5"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/sonarqube/utils.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "15.6"
+    },
+    {
+      "metric": "complexity",
+      "value": "6"
+    },
+    {
+      "metric": "coverage",
+      "value": "81.8"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "1"
+    },
+    {
+      "metric": "ncloc",
+      "value": "38"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/collectors/sonarqube/view.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "13.8"
+    },
+    {
+      "metric": "complexity",
+      "value": "2"
+    },
+    {
+      "metric": "coverage",
+      "value": "70.6"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "2"
+    },
+    {
+      "metric": "ncloc",
+      "value": "25"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/config/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/config/asgi.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "66.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "0.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/config/settings.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "1"
+    },
+    {
+      "metric": "coverage",
+      "value": "94.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "381"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/config/urls.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "2"
+    },
+    {
+      "metric": "coverage",
+      "value": "96.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "1"
+    },
+    {
+      "metric": "ncloc",
+      "value": "51"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/config/wsgi.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "66.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "0.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "1"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "1"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "11.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "7"
+    },
+    {
+      "metric": "coverage",
+      "value": "95.2"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "70"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/tests.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/entity_trees/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "25.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "3"
+    },
+    {
+      "metric": "coverage",
+      "value": "87.5"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "42"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "9"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "2.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "50"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/migrations/0002_alter_goal_created_by.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "6.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "14"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/migrations/0003_alter_goal_created_by.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "5.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "18"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/migrations/0004_remove_goal_end_at_remove_goal_release_name_and_more.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "5.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "19"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "12.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "12"
+    },
+    {
+      "metric": "coverage",
+      "value": "95.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "6"
+    },
+    {
+      "metric": "ncloc",
+      "value": "117"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "16.9"
+    },
+    {
+      "metric": "complexity",
+      "value": "19"
+    },
+    {
+      "metric": "coverage",
+      "value": "97.5"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "12"
+    },
+    {
+      "metric": "ncloc",
+      "value": "123"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/tests/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/tests/test_goal_endpoints.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "1900"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "9"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/goals/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "11"
+    },
+    {
+      "metric": "coverage",
+      "value": "83.6"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "8"
+    },
+    {
+      "metric": "ncloc",
+      "value": "84"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/manage.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "16.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "2"
+    },
+    {
+      "metric": "coverage",
+      "value": "0.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "1"
+    },
+    {
+      "metric": "ncloc",
+      "value": "15"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "6.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "6"
+    },
+    {
+      "metric": "coverage",
+      "value": "77.3"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "6"
+    },
+    {
+      "metric": "ncloc",
+      "value": "74"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "77"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "36.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "7"
+    },
+    {
+      "metric": "coverage",
+      "value": "91.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "57"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "21.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "6"
+    },
+    {
+      "metric": "coverage",
+      "value": "76.4"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "90"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/measures/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "16.8"
+    },
+    {
+      "metric": "complexity",
+      "value": "9"
+    },
+    {
+      "metric": "coverage",
+      "value": "98.2"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "124"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "4"
+    },
+    {
+      "metric": "coverage",
+      "value": "75.9"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "54"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.9"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "107"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/migrations/0002_alter_collectedmetric_repository.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "5.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "18"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "26.9"
+    },
+    {
+      "metric": "complexity",
+      "value": "7"
+    },
+    {
+      "metric": "coverage",
+      "value": "94.9"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "117"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "4"
+    },
+    {
+      "metric": "coverage",
+      "value": "67.3"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "77"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/metrics/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "31.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "3"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "57"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "37"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/management/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/management/commands/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/management/commands/load_initial_data.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "3.5"
+    },
+    {
+      "metric": "complexity",
+      "value": "55"
+    },
+    {
+      "metric": "coverage",
+      "value": "42.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "30"
+    },
+    {
+      "metric": "ncloc",
+      "value": "502"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/management/commands/utils.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "19"
+    },
+    {
+      "metric": "coverage",
+      "value": "75.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "10"
+    },
+    {
+      "metric": "ncloc",
+      "value": "132"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "101"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0002_organization_admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "4.5"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "21"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0003_alter_repository_key.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "12"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0004_alter_organization_key.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "12"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0005_alter_repository_key.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "12"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0005_product_gaugeredlimit_product_gaugeyellowlimit.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "4.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "22"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0006_repository_url.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "7.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "12"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0007_repository_platform.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "3.8"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "25"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0008_alter_repository_unique_together.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "11"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0009_alter_repository_unique_together.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "11"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0010_alter_repository_platform.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "3.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "26"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/0011_merge_20231209_1347.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "9.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "10"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "10"
+    },
+    {
+      "metric": "coverage",
+      "value": "88.1"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "6"
+    },
+    {
+      "metric": "ncloc",
+      "value": "108"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/routers/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/routers/organizations.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "1"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "1"
+    },
+    {
+      "metric": "ncloc",
+      "value": "17"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/routers/products.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "3"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "88"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/routers/repos.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "5"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "140"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/routers/routers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "6"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "1"
+    },
+    {
+      "metric": "ncloc",
+      "value": "21"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.6"
+    },
+    {
+      "metric": "complexity",
+      "value": "30"
+    },
+    {
+      "metric": "coverage",
+      "value": "90.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "20"
+    },
+    {
+      "metric": "ncloc",
+      "value": "414"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/tests/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/tests/test_organizations_endpoints.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "2064"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "10"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/tests/test_products_endpoints.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "2100"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "21"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/tests/test_repositories_endpoints.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "2072"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "30"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/organizations/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "3.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "9"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "9"
+    },
+    {
+      "metric": "ncloc",
+      "value": "97"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "12"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "2.2"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "44"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "23.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "53"
+    },
+    {
+      "metric": "coverage",
+      "value": "86.3"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "18"
+    },
+    {
+      "metric": "ncloc",
+      "value": "251"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "3"
+    },
+    {
+      "metric": "coverage",
+      "value": "88.9"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "2"
+    },
+    {
+      "metric": "ncloc",
+      "value": "34"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/tests.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "1041"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "3"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/pre_configs/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "10"
+    },
+    {
+      "metric": "coverage",
+      "value": "97.6"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "68"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "11"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "2"
+    },
+    {
+      "metric": "coverage",
+      "value": "77.8"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "1"
+    },
+    {
+      "metric": "ncloc",
+      "value": "9"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/jobs.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "2.8"
+    },
+    {
+      "metric": "complexity",
+      "value": "7"
+    },
+    {
+      "metric": "coverage",
+      "value": "0.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "2"
+    },
+    {
+      "metric": "ncloc",
+      "value": "104"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.6"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "62"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/migrations/0002_alter_release_table.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "11"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "11.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "24"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "10"
+    },
+    {
+      "metric": "coverage",
+      "value": "88.6"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "87"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/service.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "9"
+    },
+    {
+      "metric": "coverage",
+      "value": "85.2"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "42"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/tests/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/tests/test_releases_endpoints.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "1024"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "17"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/releases/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.8"
+    },
+    {
+      "metric": "complexity",
+      "value": "10"
+    },
+    {
+      "metric": "coverage",
+      "value": "96.7"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "125"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "5"
+    },
+    {
+      "metric": "coverage",
+      "value": "82.1"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "73"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "1.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "77"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "32.7"
+    },
+    {
+      "metric": "complexity",
+      "value": "9"
+    },
+    {
+      "metric": "coverage",
+      "value": "92.9"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "6"
+    },
+    {
+      "metric": "ncloc",
+      "value": "72"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "19.5"
+    },
+    {
+      "metric": "complexity",
+      "value": "4"
+    },
+    {
+      "metric": "coverage",
+      "value": "76.5"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "3"
+    },
+    {
+      "metric": "ncloc",
+      "value": "95"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/subcharacteristics/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "8.9"
+    },
+    {
+      "metric": "complexity",
+      "value": "7"
+    },
+    {
+      "metric": "coverage",
+      "value": "96.5"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "5"
+    },
+    {
+      "metric": "ncloc",
+      "value": "133"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tmp.json": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/admin.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "11"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/migrations/0001_initial.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "2.4"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "40"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/migrations/0002_alter_tsqmi_options.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "6.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "15"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/migrations/__init__.py": [
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/models.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "17.6"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "14"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/serializers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "15.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "17"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/tests.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/tsqmi/views.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "3.2"
+    },
+    {
+      "metric": "complexity",
+      "value": "12"
+    },
+    {
+      "metric": "coverage",
+      "value": "71.6"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "11"
+    },
+    {
+      "metric": "ncloc",
+      "value": "152"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/__init__.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "12.1"
+    },
+    {
+      "metric": "complexity",
+      "value": "27"
+    },
+    {
+      "metric": "coverage",
+      "value": "94.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "14"
+    },
+    {
+      "metric": "ncloc",
+      "value": "131"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/apps.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "4"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/decorators.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "43.5"
+    },
+    {
+      "metric": "complexity",
+      "value": "4"
+    },
+    {
+      "metric": "coverage",
+      "value": "76.9"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "4"
+    },
+    {
+      "metric": "ncloc",
+      "value": "13"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/exceptions.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "13.3"
+    },
+    {
+      "metric": "complexity",
+      "value": "0"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "0"
+    },
+    {
+      "metric": "ncloc",
+      "value": "26"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/managers.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "19.5"
+    },
+    {
+      "metric": "complexity",
+      "value": "6"
+    },
+    {
+      "metric": "coverage",
+      "value": "100.0"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "2"
+    },
+    {
+      "metric": "ncloc",
+      "value": "33"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/mocks.py": [
+    {
+      "metric": "comment_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "complexity",
+      "value": "9"
+    },
+    {
+      "metric": "coverage",
+      "value": "58.8"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "files",
+      "value": "1"
+    },
+    {
+      "metric": "functions",
+      "value": "9"
+    },
+    {
+      "metric": "ncloc",
+      "value": "43"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/tests.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    }
+  ],
+  "fga-eps-mds_2023-2-MeasureSoftGram-Service:src/utils/tests/test_utils_methods_and_functions.py": [
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0"
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0"
+    },
+    {
+      "metric": "test_errors",
+      "value": "0"
+    },
+    {
+      "metric": "test_execution_time",
+      "value": "70"
+    },
+    {
+      "metric": "test_failures",
+      "value": "0"
+    },
+    {
+      "metric": "test_success_density",
+      "value": "100.0"
+    },
+    {
+      "metric": "tests",
+      "value": "9"
+    }
+  ]
+}

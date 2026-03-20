@@ -25,46 +25,52 @@ def mock_command_list(args):
 
 def test_parser_init():
     parser = create_parser()
-    args = parser.parse_args(['init', '-cp', '/path/to/config'])
+    args = parser.parse_args(["init", "-cp", "/path/to/config"])
     assert args.func == command_init
-    assert args.config_path == Path('/path/to/config')
+    assert args.config_path == Path("/path/to/config")
 
 
 def test_parser_list():
     parser = create_parser()
-    args = parser.parse_args(['list', '-cp', '/path/to/config', 'all'])
+    args = parser.parse_args(["list", "-cp", "/path/to/config"])
     assert args.func == command_list
-    assert args.config_path == Path('/path/to/config')
-    assert args.all == 'all'
+    assert args.config_path == Path("/path/to/config")
 
 
 def test_parser_extract():
     parser = create_parser()
 
-    args = parser.parse_args(['extract',
-                              '-o',
-                              'sonarqube',
-                              '-dp',
-                              '/path/to/data',
-                              '-ep',
-                              '/path/to/extracted',
-                              '-le',
-                              'py',
-                              '-rep',
-                              '/path/to/repo'])
+    args = parser.parse_args(
+        [
+            "extract",
+            "-sp",
+            "/path/to/data",
+            "-ep",
+            "/path/to/extracted",
+            "-gr",
+            "/path/to/repo",
+        ]
+    )
     assert args.func == command_extract
-    assert args.output_origin == 'sonarqube'
-    assert args.data_path == Path('/path/to/data')
-    assert args.extracted_path == Path('/path/to/extracted')
-    assert args.language_extension == 'py'
-    assert args.repository_path == '/path/to/repo'
+    assert args.sonar_path == Path("/path/to/data")
+    assert args.extracted_path == Path("/path/to/extracted")
+    assert args.gh_repository == "/path/to/repo"
 
 
 def test_parser_calculate():
     parser = create_parser()
-    args = parser.parse_args(['calculate', 'all', '-ep', '/path/to/extracted', '-cp', '/path/to/config', '-o', 'csv'])
+    args = parser.parse_args(
+        [
+            "calculate",
+            "-ep",
+            "/path/to/extracted",
+            "-cp",
+            "/path/to/config",
+            "-o",
+            "csv",
+        ]
+    )
     assert args.func == command_calculate
-    assert args.all == 'all'
-    assert args.extracted_path == Path('/path/to/extracted')
-    assert args.config_path == Path('/path/to/config')
-    assert args.output_format == 'csv'
+    assert args.extracted_path == Path("/path/to/extracted")
+    assert args.config_path == Path("/path/to/config")
+    assert args.output_format == "csv"

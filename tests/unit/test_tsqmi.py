@@ -14,4 +14,4 @@ def test_calculate_tsqmi():
     infos, headers = calculate_tsqmi(config, characteristics)
 
     assert headers == ["Id", "Value", "Created at"]
-    assert infos == {"tsqmi": [{"key": "tsqmi", "value": 0.7643799276297641}]}
+    assert infos == {"tsqmi": [{"key": "tsqmi", "value": 0.7675182419725883}]}

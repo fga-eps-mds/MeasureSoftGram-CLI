@@ -16,9 +16,9 @@ from src.cli.resources.measure import calculate_measures
 from src.cli.resources.tsqmi import calculate_tsqmi
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
-from src.cli.aggregate_metrics import aggregate_metrics
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
+from src.cli.resources.perf_eff_measure import calculate_perf_eff_measures
 
 logger = logging.getLogger("msgram")
 
@@ -34,27 +34,43 @@ def read_config_file(config_path):
         exit(1)
 
 
+# calculate_sonar
+# calculate_github
+
+
 def calculate_metrics(extracted_path, config):
     data_calculated = []
 
+    print(extracted_path)
     if not extracted_path.is_file():
-        if not aggregate_metrics(extracted_path, config):
-            print_error(
-                "> [red] Failed to aggregate metrics, calculate was not performed. \n"
-            )
-            return data_calculated, False
+        # should not aggregate
+        # if not aggregate_metrics(input_format, extracted_path, config):
+        #    print_error(
+        #        "> [red] Failed to aggregate metrics, calculate was not performed. \n"
+        #    )
+        #    return data_calculated, False
 
         for file, file_name in read_multiple_files(extracted_path, "metrics"):
-            result = calculate_all(file, file_name, config)
-            data_calculated.append(result)
+            print(file_name)
+            if file_name.startswith("perf-eff_"):
+                file_name = file_name[len("perf-eff_") :]
+                result = calculate_perf_eff_measures(file_name, file)
+                data_calculated.append(result)
+            else:
+                if file_name.startswith("github_"):
+                    file_name = file_name[len("github_") :]
+                result = calculate_all(file, file_name, config)
+                data_calculated.append(result)
 
         return data_calculated, True
     else:
         try:
-            result = calculate_all(
-                open_json_file(extracted_path), extracted_path.name, config
-            )
-            return result, True
+            file_name = extracted_path.name
+            if extracted_path.name.startswith("github_"):
+                file_name = file_name[len("github_") :]
+            result = calculate_all(open_json_file(extracted_path), file_name, config)
+            data_calculated.append(result)
+            return data_calculated, True
         except exceptions.MeasureSoftGramCLIException as e:
             print_error(f"[red]Error calculating {extracted_path}: {e}\n")
             return data_calculated, False
@@ -63,6 +79,7 @@ def calculate_metrics(extracted_path, config):
 def command_calculate(args):
     try:
         output_format: str = args["output_format"]
+        # input_format: str = args["input_format"]
         config_path = args["config_path"]
         extracted_path = args["extracted_path"]
 
@@ -90,8 +107,9 @@ def command_calculate(args):
 
     print_panel(
         title="Done",
-        menssage="> See our docs for more information: \n"
-        " https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-CLI",
+        menssage="> See the publications for more information: \n"
+        "https://dl.acm.org/doi/10.1145/3239235.3267438 \n"
+        "https://dl.acm.org/doi/10.1145/3422392.3422450 \n",
     )
 
 
@@ -118,12 +136,14 @@ def calculate_all(json_data, file_name, config):
         "repository": [{"key": "repository", "value": repository}],
         "version": [{"key": "version", "value": version}] if version else [],
         "measures": data_measures["measures"] if data_measures else [],
-        "subcharacteristics": data_subcharacteristics["subcharacteristics"]
-        if data_subcharacteristics
-        else [],
-        "characteristics": data_characteristics["characteristics"]
-        if data_characteristics
-        else [],
+        "subcharacteristics": (
+            data_subcharacteristics["subcharacteristics"]
+            if data_subcharacteristics
+            else []
+        ),
+        "characteristics": (
+            data_characteristics["characteristics"] if data_characteristics else []
+        ),
         "tsqmi": data_tsqmi["tsqmi"] if data_tsqmi else [],
     }
 
@@ -131,13 +151,13 @@ def calculate_all(json_data, file_name, config):
 def show_results(output_format, data_calculated, config_path):
 
     if output_format == "tabular":
-        show_tabulate(data_calculated)
+        show_tabulate(data_calculated[0])
 
     elif output_format == "raw":
-        print(data_calculated)
+        print(data_calculated[0])
 
     elif output_format == "tree":
-        show_tree(data_calculated, pre_config)
+        show_tree(data_calculated[0], pre_config)
 
     elif len(data_calculated) == 0:
         print_info(
@@ -186,12 +206,17 @@ def show_tree(data_calculated, pre_config):
         for subchar_c in char_c["subcharacteristics"]:
             subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
             if subchar:
-                sub_char_tree = Node(f"[blue]{subchar['key']} {subchar['value']}", parent=char_tree)
+                sub_char_tree = Node(
+                    f"[blue]{subchar['key']} {subchar['value']}", parent=char_tree
+                )
 
                 for measure_c in subchar_c["measures"]:
                     measure = get_obj_by_element(measures, "key", measure_c["key"])
                     if measure:
-                        Node(f"[yellow]{measure['key']} {measure['value']}", parent=sub_char_tree)
+                        Node(
+                            f"[yellow]{measure['key']} {measure['value']}",
+                            parent=sub_char_tree,
+                        )
 
     for pre, fill, node in RenderTree(tsqmi_tree):
         print(f"{pre}{node.name}")
