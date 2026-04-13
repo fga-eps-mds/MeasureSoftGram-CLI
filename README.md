@@ -1,4 +1,4 @@
-# 2024-1 MeasureSoftGram-CLI
+# 2026-1 MeasureSoftGram-CLI
 Command line project to MeasureSoftGram
 ## Badges
 
@@ -157,11 +157,11 @@ AGPL-3.0 License
 
 ## Documentation
 
-The documentation of this project can be accessed at this website: [Documentation](https://github.com/fga-eps-mds/2023-1-MeasureSoftGram-Doc).
+The documentation of this project can be accessed at this website: [Documentation](https://github.com/fga-eps-mds/2026.1-MeasureSoftGram-DOC/).
 
 ## Contribute
 
-Do you want to contribute with our project? Access our [contribution guide](https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-Doc/blob/main/docs/politicas/contribuindo.md) where we explain how you do it.
+Do you want to contribute with our project? Access our [contribution guide](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/codigo-de-conduta/) where we explain how you do it.
 
 ## Another informations
 Our services are available on [Docker Hub](https://hub.docker.com/):
@@ -170,7 +170,7 @@ Our services are available on [Docker Hub](https://hub.docker.com/):
 
 ### Wiki
 For more informations, you can see our wiki:
-- [Wiki](https://fga-eps-mds.github.io/2023-1-MeasureSoftGram-Doc/)
+- [Wiki](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/)
 
 ### Demais repositórios do produto
 - [Core](https://github.com/fga-eps-mds/MeasureSoftGram-Core)
