@@ -2,6 +2,7 @@ import argparse
 
 from pathlib import Path
 
+from src.cli.utils import THEME_CHOICES
 from src.cli.commands.cmd_diff import command_diff
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import command_extract
@@ -16,12 +17,22 @@ from src.config.settings import (
 )
 
 
+def add_theme_argument(parser, default=argparse.SUPPRESS):
+    parser.add_argument(
+        "--theme",
+        choices=THEME_CHOICES,
+        default=default,
+        help="Terminal contrast theme. Use auto, dark, or light.",
+    )
+
+
 def create_parser():
     parser = argparse.ArgumentParser(
         prog="msgram",
         description="Command line interface for measuresoftgram",
         epilog="Thanks for using %(prog)s!",
     )
+    add_theme_argument(parser, default="auto")
 
     subparsers = parser.add_subparsers(
         title="subcommands",
@@ -34,6 +45,7 @@ def create_parser():
         "init",
         help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
     )
+    add_theme_argument(parser_init)
 
     parser_init.add_argument(
         "-cp",
@@ -49,6 +61,7 @@ def create_parser():
         "list",
         help="Listing configurations parameters.",
     )
+    add_theme_argument(parser_list_config)
 
     parser_list_config.add_argument(
         "-cp",
@@ -68,6 +81,7 @@ def create_parser():
 
     # =====================================< COMMAND extract >=====================================
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
+    add_theme_argument(parser_extract)
 
     parser_extract.add_argument(
         "-sp",
@@ -149,6 +163,7 @@ def create_parser():
         "calculate",
         help="Calculates all entities",
     )
+    add_theme_argument(parser_calculate)
 
     # parser_calculate.add_argument(
     #     "all",
@@ -194,6 +209,7 @@ def create_parser():
         help="Calculates the Frobenius norm of the difference between tensors RP and RD, which means the quantitative "
         "perception of the discrepancy between the planned and developed quality requirements in a release.",
     )
+    add_theme_argument(parser_norm_diff)
 
     parser_norm_diff.add_argument(
         "-rp",
@@ -221,6 +237,7 @@ def create_parser():
         help="Calculates and interprets the difference between the planned and developed quantitative perceptions "
         "of each quality characteristic, represented by the RP and RD tensors.",
     )
+    add_theme_argument(parser_calculate)
 
     parser_calculate.add_argument(
         "-rd",

@@ -3,9 +3,9 @@ import math
 from pathlib import Path
 
 import rich.progress
-from rich import print
 
 from src.cli.exceptions import exceptions
+from src.cli.utils import print_error, print_status
 
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
 REQUIRED_TRK_MEASURES = ["test_failures", "test_errors", "files", "ncloc"]
@@ -42,8 +42,8 @@ def read_multiple_files(directory: Path, pattern: str):
         try:
             yield open_json_file(path_file), path_file.name
         except exceptions.MeasureSoftGramCLIException:
-            print(
-                f"[red]Error calculating {path_file.name}: Failed to decode the JSON file.\n"
+            print_error(
+                f"Error calculating {path_file.name}: Failed to decode the JSON file.\n"
             )
 
 
@@ -59,8 +59,8 @@ def folder_reader(dir_path, pattern):
             yield file_reader(path_file), path_file.name, num_files_error
             num_files_error = 0
         except exceptions.MeasureSoftGramCLIException as e:
-            print(f"[green]Reading:[/] [black]{path_file.name}[/]")
-            print(f"[red]Error  : {e}\n")
+            print_status("Reading:", path_file.name, "success")
+            print_error(f"Error  : {e}\n")
             num_files_error += 1
 
 

@@ -6,8 +6,6 @@ from pathlib import Path
 
 from anytree import Node, RenderTree
 
-from rich import print
-from rich.console import Console
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 from src.cli.jsonReader import open_json_file, read_multiple_files
@@ -15,7 +13,18 @@ from src.cli.resources.characteristic import calculate_characteristics
 from src.cli.resources.measure import calculate_measures
 from src.cli.resources.tsqmi import calculate_tsqmi
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
-from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
+from src.cli.utils import (
+    clear_console,
+    color_tag,
+    print_error,
+    print_info,
+    print_output,
+    print_panel,
+    print_rule,
+    print_success,
+    print_table,
+    print_warn,
+)
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 from src.cli.resources.perf_eff_measure import calculate_perf_eff_measures
@@ -27,9 +36,7 @@ def read_config_file(config_path):
     try:
         return open_json_file(config_path / FILE_CONFIG)
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(
-            f"[red]Error reading msgram.json config file in {config_path}: {e}\n"
-        )
+        print_error(f"Error reading msgram.json config file in {config_path}: {e}\n")
         print_rule()
         exit(1)
 
@@ -41,7 +48,7 @@ def read_config_file(config_path):
 def calculate_metrics(extracted_path, config):
     data_calculated = []
 
-    print(extracted_path)
+    print_info(extracted_path)
     if not extracted_path.is_file():
         # should not aggregate
         # if not aggregate_metrics(input_format, extracted_path, config):
@@ -51,7 +58,7 @@ def calculate_metrics(extracted_path, config):
         #    return data_calculated, False
 
         for file, file_name in read_multiple_files(extracted_path, "metrics"):
-            print(file_name)
+            print_info(file_name)
             if file_name.startswith("perf-eff_"):
                 file_name = file_name[len("perf-eff_") :]
                 result = calculate_perf_eff_measures(file_name, file)
@@ -72,7 +79,7 @@ def calculate_metrics(extracted_path, config):
             data_calculated.append(result)
             return data_calculated, True
         except exceptions.MeasureSoftGramCLIException as e:
-            print_error(f"[red]Error calculating {extracted_path}: {e}\n")
+            print_error(f"Error calculating {extracted_path}: {e}\n")
             return data_calculated, False
 
 
@@ -88,19 +95,18 @@ def command_calculate(args):
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-    console = Console()
-    console.clear()
+    clear_console()
     print_rule("Calculate")
-    print_info("> [blue] Reading config file:[/]")
+    print_info("> Reading config file:")
 
     config = read_config_file(config_path)
 
-    print_info("\n> [blue] Reading extracted files:[/]")
+    print_info("\n> Reading extracted files:")
 
     data_calculated, success = calculate_metrics(extracted_path, config)
 
     if success:
-        print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
+        print_success("\nAll calculations performed successfully!")
 
     show_results(output_format, data_calculated, config_path)
     print_rule()
@@ -154,15 +160,13 @@ def show_results(output_format, data_calculated, config_path):
         show_tabulate(data_calculated[0])
 
     elif output_format == "raw":
-        print(data_calculated[0])
+        print_output(data_calculated[0])
 
     elif output_format == "tree":
         show_tree(data_calculated[0], pre_config)
 
     elif len(data_calculated) == 0:
-        print_info(
-            f"[yellow]WARNING: No extracted file read so no {output_format} was generated!"
-        )
+        print_warn(f"WARNING: No extracted file read so no {output_format} was generated!")
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
@@ -196,30 +200,34 @@ def show_tree(data_calculated, pre_config):
     characteristics = data_calculated["characteristics"]
     subcharacteristics = data_calculated["subcharacteristics"]
     measures = data_calculated["measures"]
+    tree_success = color_tag("success")
+    tree_accent = color_tag("accent")
+    tree_muted = color_tag("muted")
 
-    print("Overview - tree:\n\n")
-    tsqmi_tree = Node(f"[green]{tsqmi['key']}: {tsqmi['value']}")
+    print_info("Overview - tree:\n\n")
+    tsqmi_tree = Node(f"{tree_success}{tsqmi['key']}: {tsqmi['value']}")
 
     for char_c, char in zip(pre_config["characteristics"], characteristics):
-        char_tree = Node(f"[red]{char['key']}: {char['value']}", parent=tsqmi_tree)
+        char_tree = Node(f"{tree_accent}{char['key']}: {char['value']}", parent=tsqmi_tree)
 
         for subchar_c in char_c["subcharacteristics"]:
             subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
             if subchar:
                 sub_char_tree = Node(
-                    f"[blue]{subchar['key']} {subchar['value']}", parent=char_tree
+                    f"{tree_accent}{subchar['key']} {subchar['value']}",
+                    parent=char_tree,
                 )
 
                 for measure_c in subchar_c["measures"]:
                     measure = get_obj_by_element(measures, "key", measure_c["key"])
                     if measure:
                         Node(
-                            f"[yellow]{measure['key']} {measure['value']}",
+                            f"{tree_muted}{measure['key']} {measure['value']}",
                             parent=sub_char_tree,
                         )
 
     for pre, fill, node in RenderTree(tsqmi_tree):
-        print(f"{pre}{node.name}")
+        print_info(f"{pre}{node.name}")
 
 
 def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
@@ -230,7 +238,7 @@ def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
             write_file,
             indent=4,
         )
-    print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as JSON")
+    print_success(f"Success: {file_path.name} exported as JSON")
 
 
 def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PATH")):
@@ -258,4 +266,4 @@ def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PAT
         writer.writerow(csv_header)
         writer.writerows(csv_rows)
 
-    print(f"Success: {file_path.name} exported as CSV")
+    print_success(f"Success: {file_path.name} exported as CSV")
