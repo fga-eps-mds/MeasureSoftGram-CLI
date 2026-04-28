@@ -1,5 +1,4 @@
-from rich.console import Console
-from src.cli.utils import print_info, print_rule, print_error
+from src.cli.utils import clear_console, color_tag, print_error, print_info, print_rule
 
 from src.config.settings import (
     FILE_CONFIG,
@@ -17,6 +16,8 @@ def print_json_tree(data):
     result = []
     stack = [(data, "")]
     is_top = True
+    main_color = color_tag("main")
+    success_color = color_tag("success")
 
     measure_to_metric = {}
     measure_to_metric["passed_tests"] = ["tests", "test_failures", "test_errors"]
@@ -33,76 +34,78 @@ def print_json_tree(data):
         key = data.get("key")
 
         if is_top:
-            result.append("[#FFFFFF]\nCaracterística:")
+            result.append(f"{main_color}\nCaracterística:")
             is_top = False
-        result.append(f"[#FFFFFF]{indent}[#00FF00]{key}")
+        result.append(f"{main_color}{indent}{success_color}{key}")
 
         weight = data.get("weight", 0)
-        result.append(f"[#FFFFFF]{indent}Peso: [#00FF00]{weight}%")
+        result.append(f"{main_color}{indent}Peso: {success_color}{weight}%")
 
         if "subcharacteristics" in data:
             for subchar in data["subcharacteristics"]:
-                result.append(f"[#FFFFFF]{indent}Sub-característica(s):")
+                result.append(f"{main_color}{indent}Sub-característica(s):")
                 stack.append(
                     (subchar, f"{indent}│  ")
                 )  # Use the ASCII character │ (code 179)
 
         if "measures" in data:
             for measure in data["measures"]:
-                result.append(f"[#FFFFFF]{indent}│  Medida(s):")
+                result.append(f"{main_color}{indent}│  Medida(s):")
                 measure_key = measure.get("key")
-                result.append(f"[#FFFFFF]{indent}{indent}│  [#00FF00]{measure_key}")
+                result.append(f"{main_color}{indent}{indent}│  {success_color}{measure_key}")
                 result.append(
-                    f"[#FFFFFF]{indent}{indent}│  Peso: [#00FF00]{measure['weight']}%"
+                    f"{main_color}{indent}{indent}│  Peso: {success_color}{measure['weight']}%"
                 )
                 if "min_threshold" in measure and "max_threshold" in measure:
                     min_threshold = measure.get("min_threshold")
                     max_threshold = measure.get("max_threshold")
-                    result.append(f"[#FFFFFF]{indent}{indent}│  Métrica(s):")
+                    result.append(f"{main_color}{indent}{indent}│  Métrica(s):")
                     metrics = measure_to_metric.get(
                         measure_key, []
                     )  # Get associated metrics
                     min_max = ""
                     for metric in metrics:
                         result.append(
-                            f"[#FFFFFF]{indent}{indent}│  └─[#00FF00]{metric}"
+                            f"{main_color}{indent}{indent}│  └─{success_color}{metric}"
                         )
-                        min_max = f"Min = [#00FF00]{min_threshold} [#FFFFFF]e Max = [#00FF00]{max_threshold}"
+                        min_max = (
+                            f"Min = {success_color}{min_threshold} {main_color}"
+                            f"e Max = {success_color}{max_threshold}"
+                        )
                     result.append(
-                        f"[#FFFFFF]{indent}{indent}│  │ Valores de referência: {min_max}"
+                        f"{main_color}{indent}{indent}│  │ Valores de referência: {min_max}"
                     )
-                    result.append(f"[#FFFFFF]{indent}{indent}│  Fim-Métrica(s)")
-                result.append(f"[#FFFFFF]{indent}│  Fim-Medida(s)")
-            result.append("[#FFFFFF]Fim-SubCaracterística")
-    result.append("[#FFFFFF]Fim-Característica")
+                    result.append(f"{main_color}{indent}{indent}│  Fim-Métrica(s)")
+                result.append(f"{main_color}{indent}│  Fim-Medida(s)")
+            result.append(f"{main_color}Fim-SubCaracterística")
+    result.append(f"{main_color}Fim-Característica")
 
     return "\n".join(result)
 
 
 def command_list(args):
-    console = Console()
-    console.clear()
+    clear_console()
 
     file_path = DEFAULT_CONFIG_FILE_PATH
     try:
         config_path: Path = args["config_path"]
 
         if config_path != DEFAULT_CONFIG_PATH:
-            print_info("[#A9A9A9] Será usado arquivo informado pelo usuário: ")
+            print_info("Será usado arquivo informado pelo usuário: ")
             file_path = str(config_path) + "/msgram.json"
         else:
             print_info(
-                "[#A9A9A9]Não foi informado caminho do arquivo de configuração, será usado caminho padrão."
+                "Não foi informado caminho do arquivo de configuração, será usado caminho padrão."
             )
 
     except Exception as e:
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-    print_rule("[#FFFFFF]Listing Configuration Parameters")
+    print_rule("Listing Configuration Parameters")
 
     if not (os.path.exists(file_path)):
-        print_info("[#A9A9A9] O arquivo de configuração não foi encontrado. \n")
+        print_info("O arquivo de configuração não foi encontrado. \n")
         print_info(
             "Execute o comando 'msgram init' no projeto desejado para criá-lo.\n"
         )
@@ -111,7 +114,7 @@ def command_list(args):
         )
         exit()
 
-    print_info(f"MSGram config file [bold red]'{FILE_CONFIG}'[/] exists already!")
+    print_info(f"MSGram config file '{FILE_CONFIG}' exists already!")
 
     f = open(file_path)
 
@@ -122,6 +125,6 @@ def command_list(args):
         print_info(output_string)
 
     print_info(
-        "\n[#A9A9A9]Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
+        "\nPara editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
     )
     print_info("vim .msgram/msgram.json\n")

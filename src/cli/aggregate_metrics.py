@@ -1,7 +1,7 @@
 import os
 import json
 
-from src.cli.utils import print_error, print_info
+from src.cli.utils import print_error, print_info, print_success
 
 metrics = {}
 metrics["sonar"] = [
@@ -54,10 +54,10 @@ def read_msgram(file_path):
         with open(file_path, "r") as file:
             return json.load(file)
     except IsADirectoryError as e:
-        print_error(f"> [red] Error: {e}")
+        print_error(f"> Error: {e}")
         return False
     except FileNotFoundError as e:
-        print_error(f"> [red] Error: {e}")
+        print_error(f"> Error: {e}")
         return False
 
 
@@ -72,7 +72,7 @@ def list_msgram_files(folder_path):
         return msgram_files
 
     except NotADirectoryError as e:
-        print_error(f"> [red] Error: {e}")
+        print_error(f"> Error: {e}")
         return False
 
 
@@ -87,18 +87,18 @@ def save_metrics(file_name, metrics):
     with open(output_file_path, "w") as output_file:
         json.dump(metrics, output_file, indent=2)
 
-    print_info(f"> [blue] Metrics saved to: {output_file_path}\n")
+    print_success(f"> Metrics saved to: {output_file_path}\n")
 
 
 def process_metrics(folder_path, msgram_files):
     processed_files = []
 
     for file in msgram_files:
-        print_info(f"> [blue] Processing {file}")
+        print_info(f"> Processing {file}")
         metrics_dict = read_msgram(os.path.join(folder_path, file))
 
         if not metrics_dict:
-            print_error(f"> [red] Error to read metrics in: {folder_path}\n")
+            print_error(f"> Error to read metrics in: {folder_path}\n")
             return False
 
         processed_files.append((file, metrics_dict))
@@ -110,7 +110,7 @@ def aggregate_metrics(input_format, folder_path, config: json):
     msgram_files = list_msgram_files(folder_path)
 
     if not msgram_files:
-        print_error("> [red]Error: Can not read msgram files in provided directory")
+        print_error("> Error: Can not read msgram files in provided directory")
         return False
 
     github_files = [file for file in msgram_files if file.startswith("github_")]
@@ -127,17 +127,17 @@ def aggregate_metrics(input_format, folder_path, config: json):
         )
 
         if not result:
-            print_error("> [red]Error: Unexpected result from process_github_metrics")
+            print_error("> Error: Unexpected result from process_github_metrics")
             return False
 
         have_metrics = True
     else:
-        print_error("> [red]Error: Unexpected measures from should_process_metrics")
+        print_error("> Error: Unexpected measures from should_process_metrics")
         return False
 
     if not have_metrics:
         print_error(
-            f"> [red]Error: No metrics where found in the .msgram files from the type: {input_format}"
+            f"> Error: No metrics where found in the .msgram files from the type: {input_format}"
         )
         return False
 
