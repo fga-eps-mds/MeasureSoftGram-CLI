@@ -38,5 +38,5 @@ jobs:
         uses: AButler/upload-release-assets@v2.0
         with:
           files: 'analytics-raw-data/*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.TOKEN_GITHUB }}
           release-tag: ${{ github.ref_name }}
