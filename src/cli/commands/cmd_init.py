@@ -3,10 +3,10 @@ import logging
 import sys
 from pathlib import Path
 
-from rich.prompt import Confirm
 from staticfiles import DEFAULT_PRE_CONFIG
 
 from src.cli.utils import (
+    ask_confirm,
     clear_console,
     console,
     print_error,
@@ -43,10 +43,7 @@ def command_init(args):
 
     if file_path.exists():
         print_warn(f"MSGram config file '{FILE_CONFIG}' exists already!")
-        replace = Confirm.ask(
-            f"> Do you want to replace '{FILE_CONFIG}'?",
-            console=console,
-        )
+        replace = ask_confirm(f"> Do you want to replace '{FILE_CONFIG}'?")
 
     if replace:
         try:

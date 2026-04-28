@@ -5,7 +5,7 @@ from pathlib import Path
 import rich.progress
 
 from src.cli.exceptions import exceptions
-from src.cli.utils import print_error, print_status
+from src.cli.utils import print_error, print_status, progress_styles
 
 REQUIRED_SONAR_JSON_KEYS = ["paging", "baseComponent", "components"]
 REQUIRED_TRK_MEASURES = ["test_failures", "test_errors", "files", "ncloc"]
@@ -71,10 +71,7 @@ def open_json_file(path_file: Path, disable=False):
             "rb",
             description=path_file.name,
             disable=disable,
-            style="bar.back",
-            complete_style="bar.complete",
-            finished_style="bar.finished",
-            pulse_style="bar.pulse",
+            **progress_styles(),
         ) as file:
             return json.load(file)
 

@@ -1,4 +1,5 @@
 import os
+import sys
 from dotenv import load_dotenv
 import logging
 
@@ -10,10 +11,25 @@ from src.config.setup_log import config_logger
 logger = logging.getLogger("msgram")
 
 
+def get_theme_from_namespace(raw_args):
+    return getattr(raw_args, "command_theme", None) or getattr(raw_args, "theme", "auto")
+
+
+def get_theme_from_argv(argv):
+    theme = "auto"
+    for index, arg in enumerate(argv):
+        if arg == "--theme" and index + 1 < len(argv):
+            theme = argv[index + 1]
+        elif arg.startswith("--theme="):
+            theme = arg.split("=", 1)[1]
+    return theme
+
+
 def run_cli():
+    configure_theme(get_theme_from_argv(sys.argv))
     parser = create_parser()
     raw_args = parser.parse_args()
-    configure_theme(getattr(raw_args, "theme", "auto"))
+    configure_theme(get_theme_from_namespace(raw_args))
     command = getattr(raw_args, "command", "help")
 
     logger.debug(f"cmd  : {command}")
@@ -36,6 +52,7 @@ def parse_args(raw_args):
     del args["command"]
     del args["func"]
     args.pop("theme", None)
+    args.pop("command_theme", None)
 
     logger.debug(f"args : {args}")
     logger.debug(f"func : {func}")
@@ -48,6 +65,7 @@ def main():
     load_dotenv()
     log_mod = os.getenv("LOG")
     config_logger(log_mod)
+    configure_theme(get_theme_from_argv(sys.argv))
 
     logger.info("Starting MSGram CLI app")
     run_cli()

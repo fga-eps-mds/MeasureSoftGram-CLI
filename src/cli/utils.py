@@ -7,8 +7,10 @@ from rich import box
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import BarColumn, Progress, TaskProgressColumn, TextColumn
+from rich.prompt import Confirm
 from rich.table import Table
 from rich.text import Text
+from rich.theme import Theme
 
 from src.cli.exceptions import exceptions
 
@@ -21,22 +23,22 @@ _selected_theme = "auto"
 
 _THEME_STYLES = {
     "dark": {
-        "main": "#E6E6E6",
-        "muted": "#A9A9A9",
-        "success": "#00C853",
-        "warning": "#FFD54F",
-        "error": "#FF5252",
-        "accent": "#64B5F6",
-        "border": "#90A4AE",
+        "main": "bright_white",
+        "muted": "white",
+        "success": "bright_green",
+        "warning": "bright_yellow",
+        "error": "bright_red",
+        "accent": "bright_cyan",
+        "border": "white",
     },
     "light": {
-        "main": "#202124",
-        "muted": "#5F6368",
+        "main": "black",
+        "muted": "bright_black",
         "success": "#0B6B2B",
         "warning": "#8A5A00",
-        "error": "#B00020",
-        "accent": "#005F73",
-        "border": "#5F6368",
+        "error": "#8B0000",
+        "accent": "blue",
+        "border": "bright_black",
     },
 }
 
@@ -96,12 +98,12 @@ def _detect_terminal_theme():
 def _active_theme():
     if _selected_theme != "auto":
         return _selected_theme
-    return _detect_terminal_theme() or "dark"
+    return _detect_terminal_theme() or "auto"
 
 
 def _style(name: str):
     theme = _active_theme()
-    if theme:
+    if theme in _THEME_STYLES:
         return _THEME_STYLES[theme][name]
     return _AUTO_STYLES[name]
 
@@ -113,11 +115,60 @@ def _bold_style(name: str):
 
 def color_tag(name: str):
     color = _style(name)
-    return f"[{color}]" if color and color.startswith("#") else ""
+    return f"[{color}]" if color else ""
 
 
 def clear_console():
     console.clear()
+
+
+def progress_styles():
+    return {
+        "style": _style("muted") or "bar.back",
+        "complete_style": _style("success") or "bar.complete",
+        "finished_style": _style("success") or "bar.finished",
+        "pulse_style": _style("accent") or "bar.pulse",
+    }
+
+
+def _prompt_theme():
+    styles = {
+        "prompt.invalid": _style("error") or "red",
+        "prompt.invalid.choice": _style("warning") or "yellow",
+    }
+
+    prompt_style = _style("main")
+    muted_style = _style("muted")
+    if prompt_style:
+        styles["prompt"] = prompt_style
+    if muted_style:
+        styles["prompt.choices"] = muted_style
+        styles["prompt.default"] = muted_style
+
+    return Theme(styles)
+
+
+def ask_confirm(prompt: str) -> bool:
+    prompt_text = Text(str(prompt), style=_style("main"))
+    console.push_theme(_prompt_theme())
+    try:
+        return Confirm.ask(prompt_text, console=console)
+    finally:
+        console.pop_theme()
+
+
+def print_help(help_text: str):
+    text = Text()
+    for line in help_text.splitlines(keepends=True):
+        stripped = line.strip()
+        style = _style("main")
+
+        if stripped.startswith("usage:") or stripped.endswith(":"):
+            style = _bold_style("accent")
+
+        text.append(line, style=style)
+
+    console.print(text, end="")
 
 
 def print_output(text, style_name: str = "main"):
