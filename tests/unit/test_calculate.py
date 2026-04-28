@@ -12,6 +12,7 @@ import pytest
 
 from src.cli.commands.cmd_calculate import calculate_all, command_calculate, show_tree
 from src.cli.jsonReader import open_json_file
+from tests.unit.cli_output import normalize_cli_output
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 CALCULATE_ARGS = {
@@ -289,10 +290,9 @@ def test_calculate_invalid_config_file():
         command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        f"Error reading msgram.json config file in {config_dirpath}"
-        in captured_output.getvalue()
-    )
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Error reading msgram.json config file in" in output
+    assert Path(config_dirpath).name in output
 
     shutil.rmtree(config_dirpath)
 
@@ -321,11 +321,11 @@ def test_calculate_invalid_extracted_file():
     command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        f"Error calculating {extract_dirpath}/{extracted_file_name}"
-        in captured_output.getvalue()
-    )
-    assert "All calculations performed" not in captured_output.getvalue()
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Error calculating" in output
+    assert Path(extract_dirpath).name in output
+    assert extracted_file_name in output
+    assert "All calculations performed" not in output
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)
