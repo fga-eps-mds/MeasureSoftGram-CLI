@@ -2,7 +2,6 @@ import sys
 import logging
 from datetime import datetime
 
-
 LOG_LEVELS = {
     "DEBUG": logging.DEBUG,
     "INFO": logging.INFO,

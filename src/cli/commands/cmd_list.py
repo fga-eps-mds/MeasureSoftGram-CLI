@@ -52,7 +52,9 @@ def print_json_tree(data):
             for measure in data["measures"]:
                 result.append(f"{main_color}{indent}│  Medida(s):")
                 measure_key = measure.get("key")
-                result.append(f"{main_color}{indent}{indent}│  {success_color}{measure_key}")
+                result.append(
+                    f"{main_color}{indent}{indent}│  {success_color}{measure_key}"
+                )
                 result.append(
                     f"{main_color}{indent}{indent}│  Peso: {success_color}{measure['weight']}%"
                 )

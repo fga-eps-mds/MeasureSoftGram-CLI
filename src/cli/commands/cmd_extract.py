@@ -114,9 +114,7 @@ def extract_sonar(extracted_path: Path, sonar_path: Path, parser: GenericParser)
 
     print_info(f"\n> Extract and save metrics [{input_origin}]:")
     with make_progress_bar() as progress_bar:
-        task_request = progress_bar.add_task(
-            "Extracting files: ", total=len(files)
-        )
+        task_request = progress_bar.add_task("Extracting files: ", total=len(files))
         progress_bar.advance(task_request)
 
         for component, filename, files_error in folder_reader(sonar_path, "json"):
