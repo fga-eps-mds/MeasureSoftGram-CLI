@@ -55,9 +55,9 @@ def test_auto_theme_fallback_is_safe_when_colorfgbg_is_missing(monkeypatch):
 
     cli_utils.configure_theme("auto")
 
-    assert cli_utils._active_theme() == "auto"
-    assert cli_utils._style("main") is None
-    assert cli_utils._style("success") == "green"
+    assert cli_utils._active_theme() == "dark"
+    assert cli_utils._style("main") == "bright_white"
+    assert cli_utils._style("success") == "bright_green"
 
 
 def test_light_and_dark_theme_main_styles_are_distinct():
@@ -102,13 +102,13 @@ def test_progress_styles_follow_active_theme():
     }
 
 
-def test_invalid_theme_falls_back_to_auto(monkeypatch):
+def test_invalid_theme_falls_back_to_safe_theme(monkeypatch):
     monkeypatch.delenv("COLORFGBG", raising=False)
 
     cli_utils.configure_theme("sepia")
 
-    assert cli_utils._active_theme() == "auto"
-    assert cli_utils._style("warning") == "yellow"
+    assert cli_utils._active_theme() == "dark"
+    assert cli_utils._style("warning") == "bright_yellow"
 
 
 @pytest.mark.parametrize(
