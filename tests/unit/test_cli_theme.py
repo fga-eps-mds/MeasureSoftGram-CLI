@@ -308,6 +308,7 @@ def test_cli_theme_helpers_and_parse_args():
         command_theme="light",
         config_path="/tmp/config",
     )
+    
     assert cli.get_theme_from_namespace(command_args) == "light"
 
     func, args = cli.parse_args(command_args)
