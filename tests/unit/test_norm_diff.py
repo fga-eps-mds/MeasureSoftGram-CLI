@@ -40,7 +40,7 @@ def test_norm_diff():
     assert match is not None
 
     norm_diff_value = float(match.group(1))
-    assert norm_diff_value == 0.24323122001478284
+    assert norm_diff_value == pytest.approx(0.24323122001478284)
 
 
 def test_missing_args():
