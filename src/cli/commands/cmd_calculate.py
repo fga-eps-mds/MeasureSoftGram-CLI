@@ -166,7 +166,9 @@ def show_results(output_format, data_calculated, config_path):
         show_tree(data_calculated[0], pre_config)
 
     elif len(data_calculated) == 0:
-        print_warn(f"WARNING: No extracted file read so no {output_format} was generated!")
+        print_warn(
+            f"WARNING: No extracted file read so no {output_format} was generated!"
+        )
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
@@ -208,7 +210,9 @@ def show_tree(data_calculated, pre_config):
     tsqmi_tree = Node(f"{tree_success}{tsqmi['key']}: {tsqmi['value']}")
 
     for char_c, char in zip(pre_config["characteristics"], characteristics):
-        char_tree = Node(f"{tree_accent}{char['key']}: {char['value']}", parent=tsqmi_tree)
+        char_tree = Node(
+            f"{tree_accent}{char['key']}: {char['value']}", parent=tsqmi_tree
+        )
 
         for subchar_c in char_c["subcharacteristics"]:
             subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])

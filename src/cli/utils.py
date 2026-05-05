@@ -42,16 +42,6 @@ _THEME_STYLES = {
     },
 }
 
-_AUTO_STYLES = {
-    "main": None,
-    "muted": None,
-    "success": "green",
-    "warning": "yellow",
-    "error": "red",
-    "accent": "cyan",
-    "border": "bright_black",
-}
-
 ASCII_BOX = getattr(box, "ASCII", box.SIMPLE)
 
 
@@ -96,26 +86,30 @@ def _detect_terminal_theme():
 
 
 def _active_theme():
-    if _selected_theme != "auto":
+    if _selected_theme in {"dark", "light"}:
         return _selected_theme
-    return _detect_terminal_theme() or "auto"
+
+    detected_theme = _detect_terminal_theme()
+    if detected_theme in {"dark", "light"}:
+        return detected_theme
+
+    return "dark"
 
 
 def _style(name: str):
     theme = _active_theme()
-    if theme in _THEME_STYLES:
-        return _THEME_STYLES[theme][name]
-    return _AUTO_STYLES[name]
+    return _THEME_STYLES.get(theme, _THEME_STYLES["dark"]).get(
+        name,
+        _THEME_STYLES["dark"]["main"],
+    )
 
 
 def _bold_style(name: str):
-    color = _style(name)
-    return f"bold {color}" if color else "bold"
+    return f"bold {_style(name)}"
 
 
 def color_tag(name: str):
-    color = _style(name)
-    return f"[{color}]" if color else ""
+    return f"[{_style(name)}]"
 
 
 def clear_console():
@@ -124,26 +118,21 @@ def clear_console():
 
 def progress_styles():
     return {
-        "style": _style("muted") or "bar.back",
-        "complete_style": _style("success") or "bar.complete",
-        "finished_style": _style("success") or "bar.finished",
-        "pulse_style": _style("accent") or "bar.pulse",
+        "style": _style("muted"),
+        "complete_style": _style("success"),
+        "finished_style": _style("success"),
+        "pulse_style": _style("accent"),
     }
 
 
 def _prompt_theme():
     styles = {
-        "prompt.invalid": _style("error") or "red",
-        "prompt.invalid.choice": _style("warning") or "yellow",
+        "prompt": _style("main"),
+        "prompt.choices": _style("muted"),
+        "prompt.default": _style("muted"),
+        "prompt.invalid": _style("error"),
+        "prompt.invalid.choice": _style("warning"),
     }
-
-    prompt_style = _style("main")
-    muted_style = _style("muted")
-    if prompt_style:
-        styles["prompt"] = prompt_style
-    if muted_style:
-        styles["prompt.choices"] = muted_style
-        styles["prompt.default"] = muted_style
 
     return Theme(styles)
 
