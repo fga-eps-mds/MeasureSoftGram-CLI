@@ -12,7 +12,9 @@ logger = logging.getLogger("msgram")
 
 
 def get_theme_from_namespace(raw_args):
-    return getattr(raw_args, "command_theme", None) or getattr(raw_args, "theme", "auto")
+    return getattr(raw_args, "command_theme", None) or getattr(
+        raw_args, "theme", "auto"
+    )
 
 
 def get_theme_from_argv(argv):

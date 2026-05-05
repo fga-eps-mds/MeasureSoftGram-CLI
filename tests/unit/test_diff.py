@@ -124,10 +124,7 @@ def test_diff_invalid_config_value():
 
     sys.stdout = sys.__stdout__
     output = normalize_cli_output(captured_output.getvalue())
-    assert (
-        "Failed to decode the JSON file: The values informed in the"
-        in output
-    )
+    assert "Failed to decode the JSON file: The values informed in the" in output
 
     shutil.rmtree(config_dirpath)
 
@@ -219,9 +216,6 @@ def test_diff_differents_characteristics():
 
     sys.stdout = sys.__stdout__
     output = normalize_cli_output(captured_output.getvalue())
-    assert (
-        "Planned and calculated files have differents characteristics"
-        in output
-    )
+    assert "Planned and calculated files have differents characteristics" in output
 
     shutil.rmtree(config_dirpath)

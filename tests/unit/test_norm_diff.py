@@ -1,5 +1,6 @@
 from io import StringIO
 from pathlib import Path
+import re
 import shutil
 import sys
 import tempfile
@@ -35,7 +36,10 @@ def test_norm_diff():
         in output
     )
 
-    norm_diff_value = float(output.split("Norm Diff:")[1].split(" ")[0].strip())
+    match = re.search(r"Norm Diff:\s*([0-9.]+)", output)
+    assert match is not None
+
+    norm_diff_value = float(match.group(1))
     assert norm_diff_value == 0.24323122001478284
 
 
