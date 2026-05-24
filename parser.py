@@ -85,8 +85,13 @@ def save_github_metrics_issues():
     while True:
         response = requests.get(api_url_issues, params={'state': 'all', 'per_page': 100, 'page': page})
 
+        if response.status_code != 200:
+            print(f"Erro na API do GitHub (status {response.status_code}): {response.json()}")
+            break
+
         page_issues = response.json()
-        if not page_issues:
+
+        if not isinstance(page_issues, list) or not page_issues:
             break
 
         issues.extend(page_issues)
