@@ -2,11 +2,10 @@ name: Export de métricas
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main,develop]
     tags:
       - "v*"
   workflow_dispatch:
-
 jobs:
   release:
     runs-on: "ubuntu-latest"
@@ -26,8 +25,8 @@ jobs:
           git config --global user.email "${{secrets.USER_EMAIL}}"
           git config --global user.name "${{secrets.USER_NAME}}"
           git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC}}@github.com/fga-eps-mds/2026.1-MeasureSoftGram-DOC" doc
-          mkdir -p doc/analytics-raw-data
-          cp -R analytics-raw-data/*.json doc/analytics-raw-data
+          mkdir -p doc/Analytics/data
+          cp -R analytics-raw-data/*.json doc/Analytics/data
           cd doc/
           git add .
           git commit -m "Adicionando métricas do repositório ${{ github.event.repository.name }} ${{ github.ref_name }}"
