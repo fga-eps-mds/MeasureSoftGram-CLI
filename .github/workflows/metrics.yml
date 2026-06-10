@@ -10,7 +10,7 @@ jobs:
   release:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -18,7 +18,7 @@ jobs:
         run: mkdir analytics-raw-data
 
       - name: Coletar métricas no SonarCloud
-        run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
+        run: python parser.py "${{ github.event.repository.name }}" "${{ github.ref_name }}"
 
       - name: Envia métricas para repo de Doc
         run: |
