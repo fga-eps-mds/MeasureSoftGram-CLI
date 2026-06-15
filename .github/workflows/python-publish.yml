@@ -1,15 +1,16 @@
 name: Publicar pacote
 
 # Publicacao via Trusted Publishing (OIDC) - NAO usa token nem secret.
-# Disparada por tags git:
-#   tag vX.Y.ZrcN  (pre-release, ex: v1.5.4rc1)  -> publica no TestPyPI
-#   tag vX.Y.Z     (versao final, ex: v1.5.4)    -> publica no PyPI (producao)
+# Tudo no PyPI de producao, disparado por tags git:
+#   tag vX.Y.ZrcN (pre-release, ex: v1.5.4rc1) -> publica como PRE-RELEASE no PyPI.
+#       Pre-releases sao ignorados pelo `pip install` normal; so vem com
+#       `pip install --pre` ou pin exato (==1.5.4rc1). Serve pra validar a versao
+#       antes da final, sem afetar quem instala normalmente.
+#   tag vX.Y.Z (versao final, ex: v1.5.4) -> publica a versao final, SOMENTE se ja
+#       existir uma release candidate (vX.Y.ZrcN) da mesma versao no PyPI (trava
+#       de seguranca: forca testar a rc antes da final).
 #
-# Trava de seguranca: a publicacao em producao so roda se ja existir uma
-# release candidate (vX.Y.ZrcN) da MESMA versao publicada no TestPyPI.
-#
-# Passo a passo, configuracao do trusted publisher no PyPI e como testar:
-# ver PUBLISHING.md na raiz do repositorio.
+# Passo a passo, configuracao do trusted publisher e como testar: ver PUBLISHING.md.
 
 on:
   push:
@@ -76,12 +77,12 @@ jobs:
           name: dist
           path: dist/
 
-  testpypi:
-    name: Publicar no TestPyPI (release candidate)
+  publish-prerelease:
+    name: Publicar pre-release (rc) no PyPI
     needs: build
     if: needs.build.outputs.is_prerelease == 'true'
     runs-on: ubuntu-latest
-    environment: testpypi
+    environment: pypi
     permissions:
       id-token: write   # obrigatorio para Trusted Publishing (OIDC)
     steps:
@@ -91,13 +92,11 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Publicar no TestPyPI
+      - name: Publicar no PyPI (pre-release)
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
 
-  pypi:
-    name: Publicar no PyPI (producao)
+  publish-release:
+    name: Publicar versao final no PyPI
     needs: build
     if: needs.build.outputs.is_prerelease == 'false'
     runs-on: ubuntu-latest
@@ -110,7 +109,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Gate - exige release candidate da mesma versao no TestPyPI
+      - name: Gate - exige release candidate da mesma versao publicada no PyPI
         env:
           PACKAGE: ${{ needs.build.outputs.package }}
           VERSION: ${{ needs.build.outputs.version }}
@@ -122,12 +121,12 @@ jobs:
 
           pkg = os.environ["PACKAGE"]
           base = Version(os.environ["VERSION"]).base_version   # ex: 1.5.4
-          url = f"https://test.pypi.org/pypi/{pkg}/json"
+          url = f"https://pypi.org/pypi/{pkg}/json"
           try:
               with urllib.request.urlopen(url, timeout=30) as r:
                   data = json.load(r)
           except urllib.error.HTTPError as e:
-              print(f"::error::Nao foi possivel consultar o TestPyPI ({e.code}). "
+              print(f"::error::Nao foi possivel consultar o PyPI ({e.code}). "
                     f"Publique e teste a release candidate v{base}rc1 antes da "
                     f"versao final v{base}.")
               sys.exit(1)
@@ -137,11 +136,11 @@ jobs:
               if Version(v).base_version == base and Version(v).is_prerelease
           )
           if not rcs:
-              print(f"::error::Gate bloqueou a publicacao em producao: nenhuma "
-                    f"release candidate de {base} encontrada no TestPyPI. Crie e "
-                    f"teste a tag v{base}rc1 antes de publicar a final v{base}.")
+              print(f"::error::Gate bloqueou a publicacao da versao final: nenhuma "
+                    f"release candidate de {base} encontrada no PyPI. Crie e teste "
+                    f"a tag v{base}rc1 (pre-release) antes da final v{base}.")
               sys.exit(1)
-          print(f"Gate ok: release candidate(s) no TestPyPI para {base}: {rcs}")
+          print(f"Gate ok: release candidate(s) no PyPI para {base}: {rcs}")
           PY
 
       - name: Baixar artefato
@@ -150,5 +149,5 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Publicar no PyPI (producao)
+      - name: Publicar no PyPI (versao final)
         uses: pypa/gh-action-pypi-publish@release/v1
