@@ -1,37 +1,154 @@
 name: Publicar pacote
 
+# Publicacao via Trusted Publishing (OIDC) - NAO usa token nem secret.
+# Disparada por tags git:
+#   tag vX.Y.ZrcN  (pre-release, ex: v1.5.4rc1)  -> publica no TestPyPI
+#   tag vX.Y.Z     (versao final, ex: v1.5.4)    -> publica no PyPI (producao)
+#
+# Trava de seguranca: a publicacao em producao so roda se ja existir uma
+# release candidate (vX.Y.ZrcN) da MESMA versao publicada no TestPyPI.
+#
+# Passo a passo, configuracao do trusted publisher no PyPI e como testar:
+# ver PUBLISHING.md na raiz do repositorio.
+
 on:
   push:
-    branches: [ develop ]
     tags:
       - "v*"
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
+    name: Build e validacoes
     runs-on: ubuntu-latest
-
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      package: ${{ steps.meta.outputs.package }}
+      is_prerelease: ${{ steps.meta.outputs.is_prerelease }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
-      - name: Instalar dependências
+      - name: Instalar ferramentas de build
+        run: python -m pip install --upgrade pip build packaging twine
+
+      - name: Validar tag == versao do pyproject e detectar pre-release
+        id: meta
         run: |
-          python -m pip install --upgrade pip
-          pip install build
-          pip install twine
+          python - <<'PY'
+          import os, sys, tomllib
+          from packaging.version import Version
 
-      - name: Build package
+          ref = os.environ["GITHUB_REF_NAME"]          # ex: v1.5.4rc1
+          tag_version = ref[1:] if ref.startswith("v") else ref
+
+          with open("pyproject.toml", "rb") as f:
+              proj = tomllib.load(f)["project"]
+          pkg, pyproject_version = proj["name"], proj["version"]
+
+          if Version(tag_version) != Version(pyproject_version):
+              print(f"::error::A tag ({tag_version}) difere da versao em "
+                    f"pyproject.toml ({pyproject_version}). Atualize a versao "
+                    f"no pyproject antes de criar a tag.")
+              sys.exit(1)
+
+          is_pre = "true" if Version(tag_version).is_prerelease else "false"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"version={tag_version}\n")
+              out.write(f"package={pkg}\n")
+              out.write(f"is_prerelease={is_pre}\n")
+          print(f"OK: {pkg} {tag_version} (pre-release={is_pre})")
+          PY
+
+      - name: Build (sdist + wheel)
         run: python -m build
 
-      - name: Publish package on test pypi
-        if: github.ref == 'refs/heads/develop'
-        run: python -m twine upload -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }} --repository testpypi dist/*
+      - name: twine check
+        run: python -m twine check dist/*
 
-      - name: Publish package on pypi
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        run: python -m twine upload -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} dist/*
+      - name: Subir artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  testpypi:
+    name: Publicar no TestPyPI (release candidate)
+    needs: build
+    if: needs.build.outputs.is_prerelease == 'true'
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      id-token: write   # obrigatorio para Trusted Publishing (OIDC)
+    steps:
+      - name: Baixar artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publicar no TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  pypi:
+    name: Publicar no PyPI (producao)
+    needs: build
+    if: needs.build.outputs.is_prerelease == 'false'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # obrigatorio para Trusted Publishing (OIDC)
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Gate - exige release candidate da mesma versao no TestPyPI
+        env:
+          PACKAGE: ${{ needs.build.outputs.package }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          python -m pip install --upgrade packaging
+          python - <<'PY'
+          import json, os, sys, urllib.request, urllib.error
+          from packaging.version import Version
+
+          pkg = os.environ["PACKAGE"]
+          base = Version(os.environ["VERSION"]).base_version   # ex: 1.5.4
+          url = f"https://test.pypi.org/pypi/{pkg}/json"
+          try:
+              with urllib.request.urlopen(url, timeout=30) as r:
+                  data = json.load(r)
+          except urllib.error.HTTPError as e:
+              print(f"::error::Nao foi possivel consultar o TestPyPI ({e.code}). "
+                    f"Publique e teste a release candidate v{base}rc1 antes da "
+                    f"versao final v{base}.")
+              sys.exit(1)
+
+          rcs = sorted(
+              v for v in data.get("releases", {})
+              if Version(v).base_version == base and Version(v).is_prerelease
+          )
+          if not rcs:
+              print(f"::error::Gate bloqueou a publicacao em producao: nenhuma "
+                    f"release candidate de {base} encontrada no TestPyPI. Crie e "
+                    f"teste a tag v{base}rc1 antes de publicar a final v{base}.")
+              sys.exit(1)
+          print(f"Gate ok: release candidate(s) no TestPyPI para {base}: {rcs}")
+          PY
+
+      - name: Baixar artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publicar no PyPI (producao)
+        uses: pypa/gh-action-pypi-publish@release/v1
