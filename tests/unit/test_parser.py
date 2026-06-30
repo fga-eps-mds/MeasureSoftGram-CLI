@@ -74,3 +74,20 @@ def test_parser_calculate():
     assert args.extracted_path == Path("/path/to/extracted")
     assert args.config_path == Path("/path/to/config")
     assert args.output_format == "csv"
+
+
+def test_parser_calculate_tabular():
+    parser = create_parser()
+    args = parser.parse_args(
+        [
+            "calculate",
+            "-ep",
+            "/path/to/extracted",
+            "-cp",
+            "/path/to/config",
+            "-o",
+            "tabular",
+        ]
+    )
+    assert args.func == command_calculate
+    assert args.output_format == "tabular"
