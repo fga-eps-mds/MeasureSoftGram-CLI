@@ -156,6 +156,12 @@ def calculate_all(json_data, file_name, config):
 
 def show_results(output_format, data_calculated, config_path):
 
+    if len(data_calculated) == 0:
+        print_warn(
+            f"WARNING: No extracted file read so no {output_format} was generated!"
+        )
+        return
+
     if output_format == "tabular":
         show_tabulate(data_calculated[0])
 
@@ -164,11 +170,6 @@ def show_results(output_format, data_calculated, config_path):
 
     elif output_format == "tree":
         show_tree(data_calculated[0], pre_config)
-
-    elif len(data_calculated) == 0:
-        print_warn(
-            f"WARNING: No extracted file read so no {output_format} was generated!"
-        )
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
