@@ -1,6 +1,8 @@
 import logging
 import os
 import re
+import sys
+import subprocess
 from datetime import datetime
 
 from rich import box
@@ -67,22 +69,52 @@ def configure_theme(theme: str = "auto"):
     _selected_theme = theme if theme in THEME_CHOICES else "auto"
 
 
+def _detect_os_theme():
+    if sys.platform == "darwin":
+        try:
+            result = subprocess.run(
+                ["defaults", "read", "-g", "AppleInterfaceStyle"],
+                capture_output=True, text=True, timeout=1
+            )
+            if result.returncode == 0 and "Dark" in result.stdout:
+                return "dark"
+            return "light"
+        except Exception:
+            pass
+            
+    elif sys.platform.startswith("linux"):
+        try:
+            result = subprocess.run(
+                ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+                capture_output=True, text=True, timeout=1
+            )
+            if result.returncode == 0:
+                if "prefer-dark" in result.stdout:
+                    return "dark"
+                elif "prefer-light" in result.stdout or "default" in result.stdout:
+                    return "light"
+        except Exception:
+            pass
+
+    return None
+
+
 def _detect_terminal_theme():
     colorfgbg = os.getenv("COLORFGBG")
     if not colorfgbg:
-        return None
+        return _detect_os_theme()
 
     try:
         background = int(colorfgbg.split(";")[-1])
     except ValueError:
-        return None
+        return _detect_os_theme()
 
     if background in {0, 1, 2, 3, 4, 5, 6, 8}:
         return "dark"
     if background in {7, 9, 10, 11, 12, 13, 14, 15}:
         return "light"
 
-    return None
+    return _detect_os_theme()
 
 
 def _active_theme():
