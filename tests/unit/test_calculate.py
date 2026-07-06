@@ -272,6 +272,18 @@ def test_calculate_github():
     assert pytest.approx(tsqmi_result.get("value")) == tsqmi_expected.get("value")
 
 
+def test_calculate_without_version_in_filename():
+    file_name = "fga-eps-mds-2026-extracted.metrics"
+    # Using an existing valid json file but feeding it an invalid filename to test the regex failure branch
+    json_data = open_json_file(Path("tests/unit/data/fga-eps-mds-2023-2-MeasureSoftGram-Service-12-11-2023-02-57-52-develop-extracted.metrics"))
+    config = open_json_file(Path("tests/unit/data/msgram.json"))
+
+    calculated_result = calculate_all(json_data, file_name, config)
+    
+    assert calculated_result.get("repository") == [{"key": "repository", "value": "fga-eps-mds-2026"}]
+    assert calculated_result.get("version") == []
+
+
 def test_calculate_invalid_config_file():
     captured_output = StringIO()
     sys.stdout = captured_output
