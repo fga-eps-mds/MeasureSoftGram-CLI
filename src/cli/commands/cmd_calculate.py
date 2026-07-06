@@ -135,8 +135,12 @@ def calculate_all(json_data, file_name, config):
         else ([], [])
     )
 
-    version = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)[0]
-    repository = file_name.split(version)[0][:-1]
+    version_match = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)
+    version = version_match[0] if version_match else ""
+    if version:
+        repository = file_name.split(version)[0][:-1]
+    else:
+        repository = file_name.replace("-extracted.metrics", "")
 
     return {
         "repository": [{"key": "repository", "value": repository}],
