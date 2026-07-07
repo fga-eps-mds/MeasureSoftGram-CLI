@@ -1,5 +1,8 @@
+import subprocess
+import sys
 from argparse import Namespace
 from io import StringIO
+from unittest.mock import MagicMock
 
 import pytest
 from rich.console import Console
@@ -60,9 +63,6 @@ def test_auto_theme_fallback_is_safe_when_colorfgbg_is_missing(monkeypatch):
     assert cli_utils._style("success") == "bright_green"
 
 
-import subprocess
-import sys
-from unittest.mock import MagicMock
 
 
 def test_detect_mac_theme(monkeypatch):
