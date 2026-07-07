@@ -22,7 +22,6 @@ from src.cli.utils import (
     print_panel,
     print_rule,
     print_success,
-    print_table,
     generate_table,
     console,
     print_warn,

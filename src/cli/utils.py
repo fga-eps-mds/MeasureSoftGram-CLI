@@ -69,37 +69,45 @@ def configure_theme(theme: str = "auto"):
     _selected_theme = theme if theme in THEME_CHOICES else "auto"
 
 
+def _detect_mac_theme():
+    try:
+        result = subprocess.run(
+            ["defaults", "read", "-g", "AppleInterfaceStyle"],
+            capture_output=True,
+            text=True,
+            timeout=1,
+        )
+        if result.returncode == 0 and "Dark" in result.stdout:
+            return "dark"
+        return "light"
+    except Exception:
+        pass
+    return None
+
+
+def _detect_linux_theme():
+    try:
+        result = subprocess.run(
+            ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+            capture_output=True,
+            text=True,
+            timeout=1,
+        )
+        if result.returncode == 0:
+            if "prefer-dark" in result.stdout:
+                return "dark"
+            elif "prefer-light" in result.stdout or "default" in result.stdout:
+                return "light"
+    except Exception:
+        pass
+    return None
+
+
 def _detect_os_theme():
     if sys.platform == "darwin":
-        try:
-            result = subprocess.run(
-                ["defaults", "read", "-g", "AppleInterfaceStyle"],
-                capture_output=True,
-                text=True,
-                timeout=1,
-            )
-            if result.returncode == 0 and "Dark" in result.stdout:
-                return "dark"
-            return "light"
-        except Exception:
-            pass
-
+        return _detect_mac_theme()
     elif sys.platform.startswith("linux"):
-        try:
-            result = subprocess.run(
-                ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
-                capture_output=True,
-                text=True,
-                timeout=1,
-            )
-            if result.returncode == 0:
-                if "prefer-dark" in result.stdout:
-                    return "dark"
-                elif "prefer-light" in result.stdout or "default" in result.stdout:
-                    return "light"
-        except Exception:
-            pass
-
+        return _detect_linux_theme()
     return None
 
 
