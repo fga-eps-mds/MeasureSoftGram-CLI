@@ -24,6 +24,7 @@ from src.cli.utils import (
     print_success,
     print_table,
     print_warn,
+    make_progress_bar,
 )
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
@@ -48,26 +49,25 @@ def read_config_file(config_path):
 def calculate_metrics(extracted_path, config):
     data_calculated = []
 
-    print_info(extracted_path)
     if not extracted_path.is_file():
-        # should not aggregate
-        # if not aggregate_metrics(input_format, extracted_path, config):
-        #    print_error(
-        #        "> [red] Failed to aggregate metrics, calculate was not performed. \n"
-        #    )
-        #    return data_calculated, False
+        files = list(extracted_path.glob("*.metrics"))
+        if not files:
+            print_warn(f"No metrics files found in {extracted_path}")
+            return data_calculated, False
 
-        for file, file_name in read_multiple_files(extracted_path, "metrics"):
-            print_info(file_name)
-            if file_name.startswith("perf-eff_"):
-                file_name = file_name[len("perf-eff_") :]
-                result = calculate_perf_eff_measures(file_name, file)
-                data_calculated.append(result)
-            else:
-                if file_name.startswith("github_"):
-                    file_name = file_name[len("github_") :]
-                result = calculate_all(file, file_name, config)
-                data_calculated.append(result)
+        with make_progress_bar() as progress_bar:
+            task_calc = progress_bar.add_task("Calculating metrics: ", total=len(files))
+            for file, file_name in read_multiple_files(extracted_path, "metrics"):
+                if file_name.startswith("perf-eff_"):
+                    file_name = file_name[len("perf-eff_") :]
+                    result = calculate_perf_eff_measures(file_name, file)
+                    data_calculated.append(result)
+                else:
+                    if file_name.startswith("github_"):
+                        file_name = file_name[len("github_") :]
+                    result = calculate_all(file, file_name, config)
+                    data_calculated.append(result)
+                progress_bar.advance(task_calc)
 
         return data_calculated, True
     else:

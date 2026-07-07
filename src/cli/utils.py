@@ -44,7 +44,7 @@ _THEME_STYLES = {
     },
 }
 
-ASCII_BOX = getattr(box, "ASCII", box.SIMPLE)
+MODERN_BOX = getattr(box, "ROUNDED", box.MINIMAL)
 
 
 def is_valid_date_range(date):
@@ -198,22 +198,22 @@ def print_output(text, style_name: str = "main"):
 
 def print_info(text):
     """Print a regular CLI message using the active contrast."""
-    print_output(text, "main")
+    print_output(f"ℹ {text}", "main")
 
 
 def print_success(text):
     """Print a success message."""
-    print_output(text, "success")
+    print_output(f"✔ {text}", "success")
 
 
 def print_warn(text: str):
     """Print a warning message."""
-    print_output(text, "warning")
+    print_output(f"⚠ {text}", "warning")
 
 
 def print_error(text: str):
     """Print an error message."""
-    print_output(text, "error")
+    print_output(f"✖ {text}", "error")
 
 
 def print_status(label: str, value: str, status: str = "success"):
@@ -231,7 +231,7 @@ def print_table(the_dict: dict, table_name: str = "", field: str = ""):
         border_style=_style("border"),
         pad_edge=True,
         padding=(0, 1),
-        box=ASCII_BOX,
+        box=MODERN_BOX,
         safe_box=True,
     )
 
@@ -259,10 +259,15 @@ def print_table(the_dict: dict, table_name: str = "", field: str = ""):
 
 def make_progress_bar() -> Progress:
     progress_bar = Progress(
-        TextColumn("{task.description}"),
-        TextColumn("Waiting  ", style=_bold_style("error")),
-        BarColumn(complete_style=_style("error")),
-        TaskProgressColumn(),
+        TextColumn("[{task.description}]", style=_style("main")),
+        BarColumn(
+            bar_width=40,
+            complete_style=_style("success"),
+            finished_style=_style("success"),
+            pulse_style=_style("accent"),
+        ),
+        TaskProgressColumn(style=_bold_style("accent")),
+        TextColumn("[{task.completed}/{task.total}]", style=_style("muted")),
         refresh_per_second=10,
         transient=True,
     )
@@ -289,9 +294,10 @@ def print_panel(menssage: str, title: str = "Next steps"):
             title=title,
             title_align="center",
             style=_style("main"),
-            border_style=_style("border"),
+            border_style=_style("accent"),
             padding=(1, 2),
-            width=min(console.width, 140),
+            box=MODERN_BOX,
+            width=min(console.width, 140) if console.width else 140,
         ),
     )
 
@@ -303,7 +309,7 @@ def print_diff_table(the_dict: dict, table_name: str = "", field: str = ""):
         border_style=_style("border"),
         pad_edge=True,
         padding=(0, 1),
-        box=ASCII_BOX,
+        box=MODERN_BOX,
         safe_box=True,
     )
 
