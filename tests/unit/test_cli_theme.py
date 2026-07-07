@@ -60,6 +60,55 @@ def test_auto_theme_fallback_is_safe_when_colorfgbg_is_missing(monkeypatch):
     assert cli_utils._style("success") == "bright_green"
 
 
+import subprocess
+import sys
+from unittest.mock import MagicMock
+
+
+def test_detect_mac_theme(monkeypatch):
+    mock_run = MagicMock()
+    mock_run.return_value.returncode = 0
+    mock_run.return_value.stdout = "Dark"
+    monkeypatch.setattr(subprocess, "run", mock_run)
+    assert cli_utils._detect_mac_theme() == "dark"
+
+    mock_run.return_value.stdout = "Light"
+    assert cli_utils._detect_mac_theme() == "light"
+
+    mock_run.side_effect = Exception("error")
+    assert cli_utils._detect_mac_theme() is None
+
+
+def test_detect_linux_theme(monkeypatch):
+    mock_run = MagicMock()
+    mock_run.return_value.returncode = 0
+    mock_run.return_value.stdout = "prefer-dark"
+    monkeypatch.setattr(subprocess, "run", mock_run)
+    assert cli_utils._detect_linux_theme() == "dark"
+
+    mock_run.return_value.stdout = "prefer-light"
+    assert cli_utils._detect_linux_theme() == "light"
+
+    mock_run.side_effect = Exception("error")
+    assert cli_utils._detect_linux_theme() is None
+
+
+def test_detect_os_theme_dispatch(monkeypatch):
+    monkeypatch.setattr(sys, "platform", "darwin")
+    monkeypatch.setattr(cli_utils, "_detect_mac_theme", lambda: "dark")
+    assert cli_utils._detect_os_theme() == "dark"
+
+    monkeypatch.setattr(sys, "platform", "linux")
+    monkeypatch.setattr(cli_utils, "_detect_linux_theme", lambda: "light")
+    assert cli_utils._detect_os_theme() == "light"
+
+
+def test_generate_table_creates_table():
+    table = cli_utils.generate_table({"key": "val"}, "TestTable", "Field")
+    assert isinstance(table, Table)
+    assert table.title == "TestTable"
+
+
 def test_light_and_dark_theme_main_styles_are_distinct():
     cli_utils.configure_theme("light")
     assert cli_utils._style("main") == "black"
