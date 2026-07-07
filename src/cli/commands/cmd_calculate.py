@@ -23,9 +23,14 @@ from src.cli.utils import (
     print_rule,
     print_success,
     print_table,
+    generate_table,
+    console,
     print_warn,
     make_progress_bar,
 )
+from rich.columns import Columns
+from rich.panel import Panel
+from rich.align import Align
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 from src.cli.resources.perf_eff_measure import calculate_perf_eff_measures
@@ -188,10 +193,29 @@ def show_tabulate(data_calculated):
     }
     measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
 
-    print_table(measures, "measures", "measures")
-    print_table(subcharacteristics, "subcharacteristics", "subcharacteristics")
-    print_table(characteristics, "characteristics", "characteristics")
-    print_table(tsqmi, "tsqmi", "tsqmi")
+    # Generates tables without printing them
+    t_measures = generate_table(measures, "measures", "measures")
+    t_subchar = generate_table(
+        subcharacteristics, "subcharacteristics", "subcharacteristics"
+    )
+    t_char = generate_table(characteristics, "characteristics", "characteristics")
+
+    # Highlight the main TSQMI score
+    tsqmi_panel = Panel(
+        Align.center(f"[bold cyan]{tsqmi['value']}[/bold cyan]"),
+        title="[bold]TSQMI Score[/bold]",
+        border_style="cyan",
+        padding=(1, 5),
+    )
+
+    console.print("\n")
+    console.print(Align.center(tsqmi_panel))
+    console.print("\n")
+
+    # Render tables side by side
+    columns = Columns([t_char, t_subchar, t_measures], expand=True, equal=True)
+    console.print(columns)
+    console.print("\n")
 
 
 def get_obj_by_element(object_list: list, element_key: str, element_to_find):

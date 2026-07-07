@@ -74,19 +74,23 @@ def _detect_os_theme():
         try:
             result = subprocess.run(
                 ["defaults", "read", "-g", "AppleInterfaceStyle"],
-                capture_output=True, text=True, timeout=1
+                capture_output=True,
+                text=True,
+                timeout=1,
             )
             if result.returncode == 0 and "Dark" in result.stdout:
                 return "dark"
             return "light"
         except Exception:
             pass
-            
+
     elif sys.platform.startswith("linux"):
         try:
             result = subprocess.run(
                 ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
-                capture_output=True, text=True, timeout=1
+                capture_output=True,
+                text=True,
+                timeout=1,
             )
             if result.returncode == 0:
                 if "prefer-dark" in result.stdout:
@@ -224,7 +228,7 @@ def print_status(label: str, value: str, status: str = "success"):
     console.print(text)
 
 
-def print_table(the_dict: dict, table_name: str = "", field: str = ""):
+def generate_table(the_dict: dict, table_name: str = "", field: str = "") -> Table:
     table = Table(
         title=table_name or None,
         title_style=_bold_style("main"),
@@ -233,6 +237,7 @@ def print_table(the_dict: dict, table_name: str = "", field: str = ""):
         padding=(0, 1),
         box=MODERN_BOX,
         safe_box=True,
+        expand=True,
     )
 
     table.add_column(
@@ -254,6 +259,11 @@ def print_table(the_dict: dict, table_name: str = "", field: str = ""):
     for field, value in the_dict.items():
         table.add_row(str(field), str(value))
 
+    return table
+
+
+def print_table(the_dict: dict, table_name: str = "", field: str = ""):
+    table = generate_table(the_dict, table_name, field)
     console.print(table)
 
 
