@@ -63,8 +63,6 @@ def test_auto_theme_fallback_is_safe_when_colorfgbg_is_missing(monkeypatch):
     assert cli_utils._style("success") == "bright_green"
 
 
-
-
 def test_detect_mac_theme(monkeypatch):
     mock_run = MagicMock()
     mock_run.return_value.returncode = 0
