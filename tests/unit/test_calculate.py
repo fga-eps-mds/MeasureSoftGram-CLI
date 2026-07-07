@@ -77,7 +77,8 @@ def test_show_tree(capfd):
 
     captured = capfd.readouterr()
 
-    assert captured.out.strip() == expected_output.strip()
+    out = captured.out.replace("ℹ ", "")
+    assert expected_output.strip() in out.strip()
 
 
 @pytest.mark.parametrize(

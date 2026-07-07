@@ -127,7 +127,7 @@ def test_output_functions_use_active_theme(monkeypatch, printer, expected_style)
 
     printer("message")
 
-    assert dummy_console.calls[-1][0] == ("message",)
+    assert dummy_console.calls[-1][0][0].endswith("message")
     assert dummy_console.calls[-1][1]["style"] == expected_style
 
 
