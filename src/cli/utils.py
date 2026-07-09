@@ -1,6 +1,8 @@
 import logging
 import os
 import re
+import sys
+import subprocess
 from datetime import datetime
 
 from rich import box
@@ -42,7 +44,7 @@ _THEME_STYLES = {
     },
 }
 
-ASCII_BOX = getattr(box, "ASCII", box.SIMPLE)
+MODERN_BOX = getattr(box, "ROUNDED", box.MINIMAL)
 
 
 def is_valid_date_range(date):
@@ -67,22 +69,64 @@ def configure_theme(theme: str = "auto"):
     _selected_theme = theme if theme in THEME_CHOICES else "auto"
 
 
+def _detect_mac_theme():
+    try:
+        result = subprocess.run(
+            ["defaults", "read", "-g", "AppleInterfaceStyle"],
+            capture_output=True,
+            text=True,
+            timeout=1,
+        )
+        if result.returncode == 0 and "Dark" in result.stdout:
+            return "dark"
+        return "light"
+    except Exception:
+        pass
+    return None
+
+
+def _detect_linux_theme():
+    try:
+        result = subprocess.run(
+            ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+            capture_output=True,
+            text=True,
+            timeout=1,
+        )
+        if result.returncode == 0:
+            if "prefer-dark" in result.stdout:
+                return "dark"
+            elif "prefer-light" in result.stdout or "default" in result.stdout:
+                return "light"
+    except Exception:
+        pass
+    return None
+
+
+def _detect_os_theme():
+    if sys.platform == "darwin":
+        return _detect_mac_theme()
+    elif sys.platform.startswith("linux"):
+        return _detect_linux_theme()
+    return None
+
+
 def _detect_terminal_theme():
     colorfgbg = os.getenv("COLORFGBG")
     if not colorfgbg:
-        return None
+        return _detect_os_theme()
 
     try:
         background = int(colorfgbg.split(";")[-1])
     except ValueError:
-        return None
+        return _detect_os_theme()
 
     if background in {0, 1, 2, 3, 4, 5, 6, 8}:
         return "dark"
     if background in {7, 9, 10, 11, 12, 13, 14, 15}:
         return "light"
 
-    return None
+    return _detect_os_theme()
 
 
 def _active_theme():
@@ -166,22 +210,22 @@ def print_output(text, style_name: str = "main"):
 
 def print_info(text):
     """Print a regular CLI message using the active contrast."""
-    print_output(text, "main")
+    print_output(f"ℹ {text}", "main")
 
 
 def print_success(text):
     """Print a success message."""
-    print_output(text, "success")
+    print_output(f"✔ {text}", "success")
 
 
 def print_warn(text: str):
     """Print a warning message."""
-    print_output(text, "warning")
+    print_output(f"⚠ {text}", "warning")
 
 
 def print_error(text: str):
     """Print an error message."""
-    print_output(text, "error")
+    print_output(f"✖ {text}", "error")
 
 
 def print_status(label: str, value: str, status: str = "success"):
@@ -192,15 +236,16 @@ def print_status(label: str, value: str, status: str = "success"):
     console.print(text)
 
 
-def print_table(the_dict: dict, table_name: str = "", field: str = ""):
+def generate_table(the_dict: dict, table_name: str = "", field: str = "") -> Table:
     table = Table(
         title=table_name or None,
         title_style=_bold_style("main"),
         border_style=_style("border"),
         pad_edge=True,
         padding=(0, 1),
-        box=ASCII_BOX,
+        box=MODERN_BOX,
         safe_box=True,
+        expand=True,
     )
 
     table.add_column(
@@ -222,15 +267,25 @@ def print_table(the_dict: dict, table_name: str = "", field: str = ""):
     for field, value in the_dict.items():
         table.add_row(str(field), str(value))
 
+    return table
+
+
+def print_table(the_dict: dict, table_name: str = "", field: str = ""):
+    table = generate_table(the_dict, table_name, field)
     console.print(table)
 
 
 def make_progress_bar() -> Progress:
     progress_bar = Progress(
-        TextColumn("{task.description}"),
-        TextColumn("Waiting  ", style=_bold_style("error")),
-        BarColumn(complete_style=_style("error")),
-        TaskProgressColumn(),
+        TextColumn("[{task.description}]", style=_style("main")),
+        BarColumn(
+            bar_width=40,
+            complete_style=_style("success"),
+            finished_style=_style("success"),
+            pulse_style=_style("accent"),
+        ),
+        TaskProgressColumn(style=_bold_style("accent")),
+        TextColumn("[{task.completed}/{task.total}]", style=_style("muted")),
         refresh_per_second=10,
         transient=True,
     )
@@ -257,9 +312,10 @@ def print_panel(menssage: str, title: str = "Next steps"):
             title=title,
             title_align="center",
             style=_style("main"),
-            border_style=_style("border"),
+            border_style=_style("accent"),
             padding=(1, 2),
-            width=min(console.width, 140),
+            box=MODERN_BOX,
+            width=min(console.width, 140) if console.width else 140,
         ),
     )
 
@@ -271,7 +327,7 @@ def print_diff_table(the_dict: dict, table_name: str = "", field: str = ""):
         border_style=_style("border"),
         pad_edge=True,
         padding=(0, 1),
-        box=ASCII_BOX,
+        box=MODERN_BOX,
         safe_box=True,
     )
 

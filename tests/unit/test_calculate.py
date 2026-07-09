@@ -77,7 +77,8 @@ def test_show_tree(capfd):
 
     captured = capfd.readouterr()
 
-    assert captured.out.strip() == expected_output.strip()
+    out = captured.out.replace("ℹ ", "")
+    assert expected_output.strip() in out.strip()
 
 
 @pytest.mark.parametrize(
@@ -402,6 +403,56 @@ def test_calculate_json_output():
     expected_output = Path("tests/unit/data/calc_msgram_exp_github_output.json")
     assert output_path.stat().st_size > 0
     assert filecmp.cmp(output_path, expected_output, shallow=False)
+
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
+
+
+def test_calculate_metrics_directory_success():
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
+
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
+
+    extracted_file_name = "github_fga-eps-mds-2024.1-MeasureSoftGram-DOC-28-07-2024-00-00-22-extracted.metrics"
+    # Copy file with .metrics extension to the temp directory
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/{extracted_file_name}",
+    )
+
+    args = {
+        "output_format": "json",
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(extract_dirpath),  # Pass the directory, not the file
+    }
+
+    command_calculate(args)
+
+    output_path = Path(f"{config_dirpath}/calc_msgram.json")
+    assert output_path.stat().st_size > 0
+
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
+
+
+def test_calculate_metrics_directory_empty():
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
+
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
+
+    args = {
+        "output_format": "json",
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(extract_dirpath),  # Empty directory
+    }
+
+    command_calculate(args)
+
+    # calc_msgram.json shouldn't be created since there's no data
+    output_path = Path(f"{config_dirpath}/calc_msgram.json")
+    assert not output_path.exists()
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)

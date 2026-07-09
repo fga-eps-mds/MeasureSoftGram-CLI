@@ -22,9 +22,14 @@ from src.cli.utils import (
     print_panel,
     print_rule,
     print_success,
-    print_table,
+    generate_table,
+    console,
     print_warn,
+    make_progress_bar,
 )
+from rich.columns import Columns
+from rich.panel import Panel
+from rich.align import Align
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 from src.cli.resources.perf_eff_measure import calculate_perf_eff_measures
@@ -48,26 +53,25 @@ def read_config_file(config_path):
 def calculate_metrics(extracted_path, config):
     data_calculated = []
 
-    print_info(extracted_path)
     if not extracted_path.is_file():
-        # should not aggregate
-        # if not aggregate_metrics(input_format, extracted_path, config):
-        #    print_error(
-        #        "> [red] Failed to aggregate metrics, calculate was not performed. \n"
-        #    )
-        #    return data_calculated, False
+        files = list(extracted_path.glob("*.metrics"))
+        if not files:
+            print_warn(f"No metrics files found in {extracted_path}")
+            return data_calculated, False
 
-        for file, file_name in read_multiple_files(extracted_path, "metrics"):
-            print_info(file_name)
-            if file_name.startswith("perf-eff_"):
-                file_name = file_name[len("perf-eff_") :]
-                result = calculate_perf_eff_measures(file_name, file)
-                data_calculated.append(result)
-            else:
-                if file_name.startswith("github_"):
-                    file_name = file_name[len("github_") :]
-                result = calculate_all(file, file_name, config)
-                data_calculated.append(result)
+        with make_progress_bar() as progress_bar:
+            task_calc = progress_bar.add_task("Calculating metrics: ", total=len(files))
+            for file, file_name in read_multiple_files(extracted_path, "metrics"):
+                if file_name.startswith("perf-eff_"):
+                    file_name = file_name[len("perf-eff_") :]
+                    result = calculate_perf_eff_measures(file_name, file)
+                    data_calculated.append(result)
+                else:
+                    if file_name.startswith("github_"):
+                        file_name = file_name[len("github_") :]
+                    result = calculate_all(file, file_name, config)
+                    data_calculated.append(result)
+                progress_bar.advance(task_calc)
 
         return data_calculated, True
     else:
@@ -192,10 +196,29 @@ def show_tabulate(data_calculated):
     }
     measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
 
-    print_table(measures, "measures", "measures")
-    print_table(subcharacteristics, "subcharacteristics", "subcharacteristics")
-    print_table(characteristics, "characteristics", "characteristics")
-    print_table(tsqmi, "tsqmi", "tsqmi")
+    # Generates tables without printing them
+    t_measures = generate_table(measures, "measures", "measures")
+    t_subchar = generate_table(
+        subcharacteristics, "subcharacteristics", "subcharacteristics"
+    )
+    t_char = generate_table(characteristics, "characteristics", "characteristics")
+
+    # Highlight the main TSQMI score
+    tsqmi_panel = Panel(
+        Align.center(f"[bold cyan]{tsqmi['value']}[/bold cyan]"),
+        title="[bold]TSQMI Score[/bold]",
+        border_style="cyan",
+        padding=(1, 5),
+    )
+
+    console.print("\n")
+    console.print(Align.center(tsqmi_panel))
+    console.print("\n")
+
+    # Render tables side by side
+    columns = Columns([t_char, t_subchar, t_measures], expand=True, equal=True)
+    console.print(columns)
+    console.print("\n")
 
 
 def get_obj_by_element(object_list: list, element_key: str, element_to_find):
