@@ -392,6 +392,7 @@ def test_run_cli_configures_theme_before_executing_command(monkeypatch):
     assert configured_themes == ["dark", "light"]
     assert received_args == [{"config_path": "/tmp/config"}]
 
+
 def test_print_help_highlights_multi_line_usage_block(monkeypatch):
     dummy_console = DummyConsole()
     monkeypatch.setattr(cli_utils, "console", dummy_console)
@@ -408,9 +409,11 @@ def test_print_help_highlights_multi_line_usage_block(monkeypatch):
 
     printed_help = dummy_console.calls[-1][0][0]
     assert isinstance(printed_help, Text)
-    
+
     # Assert that all usage lines received the 'accent' style (cyan)
-    usage_spans = [span for span in printed_help.spans if "bright_cyan" in str(span.style)]
+    usage_spans = [
+        span for span in printed_help.spans if "bright_cyan" in str(span.style)
+    ]
     assert len(usage_spans) >= 3
 
 
@@ -424,14 +427,13 @@ def test_themed_parser_error_uses_print_error(monkeypatch):
         printed["usage_called"] = True
 
     monkeypatch.setattr(cli_utils, "print_error", fake_print_error)
-    
+
     parser = parsers.create_parser()
     monkeypatch.setattr(parser, "print_usage", fake_print_usage)
-    
+
     with pytest.raises(SystemExit) as excinfo:
         parser.error("test error message")
-        
+
     assert excinfo.value.code == 2
     assert printed.get("usage_called") is True
     assert "test error message" in printed.get("error", "")
-

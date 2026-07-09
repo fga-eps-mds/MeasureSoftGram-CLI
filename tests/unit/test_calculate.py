@@ -410,7 +410,13 @@ def test_calculate_metrics_directory_success(monkeypatch):
 
     # Mock calculate_perf_eff_measures to return dummy data
     from src.cli.commands import cmd_calculate
-    monkeypatch.setattr(cmd_calculate, "calculate_perf_eff_measures", lambda name, file: {"repository_name": name, "metrics": []})
+
+    def fake_perf(name, file):
+        return {"repository_name": name, "metrics": []}
+
+    monkeypatch.setattr(
+        cmd_calculate, "calculate_perf_eff_measures", fake_perf
+    )
 
     args = {
         "output_format": "json",
