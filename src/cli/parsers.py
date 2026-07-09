@@ -26,6 +26,21 @@ class ThemedArgumentParser(argparse.ArgumentParser):
 
         print_help(help_text)
 
+    def print_usage(self, file=None):
+        usage_text = self.format_usage()
+        if file is not None:
+            file.write(usage_text)
+            return
+
+        print_help(usage_text)
+
+    def error(self, message):
+        from src.cli.utils import print_error
+
+        self.print_usage()
+        print_error(f"{self.prog}: error: {message}")
+        self.exit(2)
+
 
 def add_theme_argument(parser, default=argparse.SUPPRESS, dest="theme"):
     parser.add_argument(

@@ -192,11 +192,22 @@ def ask_confirm(prompt: str) -> bool:
 
 def print_help(help_text: str):
     text = Text()
+    in_usage = False
     for line in help_text.splitlines(keepends=True):
         stripped = line.strip()
         style = _style("main")
 
-        if stripped.startswith("usage:") or stripped.endswith(":"):
+        if stripped.startswith("usage:"):
+            in_usage = True
+            style = _bold_style("accent")
+        elif in_usage:
+            if stripped == "" or stripped.endswith(":"):
+                in_usage = False
+                if stripped.endswith(":"):
+                    style = _bold_style("accent")
+            else:
+                style = _bold_style("accent")
+        elif stripped.endswith(":"):
             style = _bold_style("accent")
 
         text.append(line, style=style)

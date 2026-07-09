@@ -408,7 +408,7 @@ def test_calculate_json_output():
     shutil.rmtree(extract_dirpath)
 
 
-def test_calculate_metrics_directory_success():
+def test_calculate_metrics_directory_success(monkeypatch):
     config_dirpath = tempfile.mkdtemp()
     extract_dirpath = tempfile.mkdtemp()
 
@@ -419,6 +419,21 @@ def test_calculate_metrics_directory_success():
     shutil.copy(
         f"tests/unit/data/{extracted_file_name}",
         f"{extract_dirpath}/{extracted_file_name}",
+    )
+    # Copy a fake perf-eff metrics file to cover the branch
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/perf-eff_fake.metrics",
+    )
+
+    # Mock calculate_perf_eff_measures to return dummy data
+    from src.cli.commands import cmd_calculate
+
+    def fake_perf(name, file):
+        return {"repository_name": name, "metrics": []}
+
+    monkeypatch.setattr(
+        cmd_calculate, "calculate_perf_eff_measures", fake_perf
     )
 
     args = {
