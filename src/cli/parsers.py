@@ -7,6 +7,7 @@ from src.cli.commands.cmd_diff import command_diff
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import command_extract
 from src.cli.commands.cmd_calculate import command_calculate
+from src.cli.commands.cmd_demo import command_demo
 from src.cli.commands.cmd_list import command_list
 from src.cli.commands.cmd_norm_diff import command_norm_diff
 
@@ -82,6 +83,34 @@ def create_parser():
         help="Path to the directory with the model configuration file (msgram.json).",
     )
     parser_init.set_defaults(func=command_init)  # function command init
+
+    # =====================================< COMMAND demo >=====================================
+    parser_demo = subparsers.add_parser(
+        "demo",
+        help="Run an end-to-end pipeline (init, extract, calculate) on an embedded sample dataset.",
+    )
+    add_theme_argument(parser_demo, dest="command_theme")
+
+    parser_demo.add_argument(
+        "-o",
+        "--output_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path.cwd() / "msgram-demo",
+        help="Path to the working directory where the demo results are written.",
+    )
+
+    parser_demo.add_argument(
+        "-of",
+        "--output_format",
+        type=str,
+        choices=AVAILABLE_GEN_FORMATS,
+        default="csv",
+        help=(
+            "The format of the calculate output (export) values are: "
+            + ", ".join(AVAILABLE_GEN_FORMATS)
+        ),
+    )
+    parser_demo.set_defaults(func=command_demo)  # function command demo
 
     # =====================================< COMMAND list >=====================================
     parser_list_config = subparsers.add_parser(

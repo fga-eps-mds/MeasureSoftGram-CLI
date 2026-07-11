@@ -39,8 +39,9 @@ junit.xml
 .vscode
 **/*.code-workspace
 
-# analytics-raw-data
-analytics-raw-data/
+# analytics-raw-data (scratch de extracao na raiz; o dataset de exemplo
+# versionado em examples/ nao e ignorado)
+/analytics-raw-data/
 
 .measuresoftgram
 .msgram/

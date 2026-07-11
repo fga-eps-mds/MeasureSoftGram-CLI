@@ -64,6 +64,28 @@ python3 main.py -h
 
 If a module is not found, check if the virtual environment is activated and run `pip install -r requirements.txt` again.
 
+## Quickstart (msgram demo)
+
+If you just want to see the CLI working end to end without providing your own
+SonarQube export, run the demo. It ships an embedded sample dataset in
+`examples/analytics-raw-data/` and runs the full pipeline (init, extract,
+calculate) for you:
+
+```
+msgram demo
+```
+
+This creates a `./msgram-demo/` working directory with the generated
+`msgram.json`, the extracted `.metrics` file and the calculated result
+(`calc_msgram.csv` by default). No external data or network access is required.
+
+Optional arguments:
+
+```
+msgram demo -o <output_dir>    # choose the working directory
+msgram demo -of json           # export the result as JSON instead of CSV
+```
+
 ## Basic usage
 Create the default configuration file:
 
@@ -79,10 +101,12 @@ List the configuration:
 msgram list
 ```
 
-Extract metrics from SonarQube/SonarCloud JSON files:
+Extract metrics from SonarQube/SonarCloud JSON files. Point `-sp` to a
+directory holding your own JSON exports, or use the sample dataset bundled in
+`examples/analytics-raw-data/` to try it out:
 
 ```
-msgram extract -sp analytics-raw-data -ep .msgram
+msgram extract -sp examples/analytics-raw-data -ep .msgram
 ```
 
 The `-sp` argument is the path to the directory with the JSON files. The `-ep` argument is the path where the extracted `.metrics` files will be saved.
