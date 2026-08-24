@@ -2,10 +2,12 @@ import argparse
 
 from pathlib import Path
 
+from src.cli.utils import THEME_CHOICES, print_help
 from src.cli.commands.cmd_diff import command_diff
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import command_extract
 from src.cli.commands.cmd_calculate import command_calculate
+from src.cli.commands.cmd_demo import command_demo
 from src.cli.commands.cmd_list import command_list
 from src.cli.commands.cmd_norm_diff import command_norm_diff
 
@@ -16,17 +18,54 @@ from src.config.settings import (
 )
 
 
+class ThemedArgumentParser(argparse.ArgumentParser):
+    def print_help(self, file=None):
+        help_text = self.format_help()
+        if file is not None:
+            file.write(help_text)
+            return
+
+        print_help(help_text)
+
+    def print_usage(self, file=None):
+        usage_text = self.format_usage()
+        if file is not None:
+            file.write(usage_text)
+            return
+
+        print_help(usage_text)
+
+    def error(self, message):
+        from src.cli.utils import print_error
+
+        self.print_usage()
+        print_error(f"{self.prog}: error: {message}")
+        self.exit(2)
+
+
+def add_theme_argument(parser, default=argparse.SUPPRESS, dest="theme"):
+    parser.add_argument(
+        "--theme",
+        dest=dest,
+        choices=THEME_CHOICES,
+        default=default,
+        help="Terminal contrast theme. Use auto, dark, or light.",
+    )
+
+
 def create_parser():
-    parser = argparse.ArgumentParser(
+    parser = ThemedArgumentParser(
         prog="msgram",
         description="Command line interface for measuresoftgram",
         epilog="Thanks for using %(prog)s!",
     )
+    add_theme_argument(parser, default="auto")
 
     subparsers = parser.add_subparsers(
         title="subcommands",
         dest="command",
         help="sub-command help",
+        parser_class=ThemedArgumentParser,
     )
 
     # =====================================< COMMAND init >=====================================
@@ -34,6 +73,7 @@ def create_parser():
         "init",
         help="Create a init file `.measuresoftgram` with your default organization, product and repositories",
     )
+    add_theme_argument(parser_init, dest="command_theme")
 
     parser_init.add_argument(
         "-cp",
@@ -44,11 +84,40 @@ def create_parser():
     )
     parser_init.set_defaults(func=command_init)  # function command init
 
+    # =====================================< COMMAND demo >=====================================
+    parser_demo = subparsers.add_parser(
+        "demo",
+        help="Run an end-to-end pipeline (init, extract, calculate) on an embedded sample dataset.",
+    )
+    add_theme_argument(parser_demo, dest="command_theme")
+
+    parser_demo.add_argument(
+        "-o",
+        "--output_path",
+        type=lambda p: Path(p).absolute(),
+        default=Path.cwd() / "msgram-demo",
+        help="Path to the working directory where the demo results are written.",
+    )
+
+    parser_demo.add_argument(
+        "-of",
+        "--output_format",
+        type=str,
+        choices=AVAILABLE_GEN_FORMATS,
+        default="csv",
+        help=(
+            "The format of the calculate output (export) values are: "
+            + ", ".join(AVAILABLE_GEN_FORMATS)
+        ),
+    )
+    parser_demo.set_defaults(func=command_demo)  # function command demo
+
     # =====================================< COMMAND list >=====================================
     parser_list_config = subparsers.add_parser(
         "list",
         help="Listing configurations parameters.",
     )
+    add_theme_argument(parser_list_config, dest="command_theme")
 
     parser_list_config.add_argument(
         "-cp",
@@ -68,6 +137,7 @@ def create_parser():
 
     # =====================================< COMMAND extract >=====================================
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
+    add_theme_argument(parser_extract, dest="command_theme")
 
     parser_extract.add_argument(
         "-sp",
@@ -149,6 +219,7 @@ def create_parser():
         "calculate",
         help="Calculates all entities",
     )
+    add_theme_argument(parser_calculate, dest="command_theme")
 
     # parser_calculate.add_argument(
     #     "all",
@@ -194,6 +265,7 @@ def create_parser():
         help="Calculates the Frobenius norm of the difference between tensors RP and RD, which means the quantitative "
         "perception of the discrepancy between the planned and developed quality requirements in a release.",
     )
+    add_theme_argument(parser_norm_diff, dest="command_theme")
 
     parser_norm_diff.add_argument(
         "-rp",
@@ -221,6 +293,7 @@ def create_parser():
         help="Calculates and interprets the difference between the planned and developed quantitative perceptions "
         "of each quality characteristic, represented by the RP and RD tensors.",
     )
+    add_theme_argument(parser_calculate, dest="command_theme")
 
     parser_calculate.add_argument(
         "-rd",

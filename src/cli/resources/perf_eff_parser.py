@@ -71,6 +71,6 @@ def parse_performance_efficiency_data(path1: Path, path2: Path, repo_name: str):
         }
         return measures
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error parsing csv files: {e}\n")
+        print_error(f"Error parsing csv files: {e}\n")
         print_rule()
         exit(1)

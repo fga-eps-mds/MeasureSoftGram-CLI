@@ -6,8 +6,7 @@ import tempfile
 from src.cli.commands.cmd_init import command_init
 
 from src.cli.commands.cmd_list import command_list, print_json_tree
-
-import re
+from tests.unit.cli_output import normalize_cli_output
 
 import pytest
 
@@ -29,13 +28,8 @@ def test_print_json_tree():
 
     compare = fileExpected.read()
 
-    # O padrão de regex para cores no formato [#FFFFFF] e [#458B00]
-    color_pattern = r"\[#\w+\]"
-
-    # Substituir todas as ocorrências do padrão pelo texto vazio
-    result = re.sub(color_pattern, "", result)
-    result = re.sub("\n", "", result)
-    compare = re.sub("\n", "", compare)
+    result = normalize_cli_output(result)
+    compare = normalize_cli_output(compare)
 
     assert result == compare
 
@@ -52,9 +46,10 @@ def test_cmd_list():
     command_list({"config_path": Path(config_path)})
     sys.stdout = sys.__stdout__
 
+    output = normalize_cli_output(captured_output.getvalue())
     assert (
         "Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
-        in captured_output.getvalue()
+        in output
     )
 
 
@@ -67,4 +62,5 @@ def test_cmd_list_if_path_not_exists():
 
     sys.stdout = sys.__stdout__
 
-    assert "O arquivo de configuração não foi encontrado." in captured_output.getvalue()
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "O arquivo de configuração não foi encontrado." in output

@@ -26,6 +26,18 @@ def test_get_file_infos():
     )
 
 
+def test_get_file_infos_with_dots_in_name():
+    file_path = (
+        "tests/unit/data/2026.1-MeasureSoftGram-CLI-07-06-2026-19-25-04-3.3.1rc1.json"
+    )
+
+    file_name = get_infos_from_name(file_path)
+    assert (
+        "2026.1-MeasureSoftGram-CLI-07-06-2026-19-25-04-3.3.1rc1-extracted.metrics"
+        in file_name
+    )
+
+
 def test_not_get_file_infos_wrong_name():
     filename = "metrics/wrong-name.json"
 

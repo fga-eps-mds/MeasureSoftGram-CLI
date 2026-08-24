@@ -1,8 +1,6 @@
 import sys
 import logging
 from datetime import datetime
-from rich.logging import RichHandler
-
 
 LOG_LEVELS = {
     "DEBUG": logging.DEBUG,
@@ -41,8 +39,25 @@ def config_logger(log_mod):
 # =================================================================================================
 
 
+class CLIConsoleHandler(logging.StreamHandler):
+    def emit(self, record):
+        try:
+            message = self.format(record)
+            from src.cli.utils import print_error, print_info, print_warn
+
+            if record.levelno >= logging.ERROR:
+                print_error(message)
+            elif record.levelno >= logging.WARNING:
+                print_warn(message)
+            else:
+                print_info(message)
+            self.flush()
+        except Exception:
+            self.handleError(record)
+
+
 def basic_config(console_level_name, file_level_name, file_mode):
-    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler = CLIConsoleHandler(sys.stdout)
     console_formatter = logging.Formatter(LOG_FORMATS[console_level_name], datefmt)
     console_handler.setFormatter(console_formatter)
     # console_handler.setLevel(LOG_LEVELS[console_level_name])
@@ -52,12 +67,8 @@ def basic_config(console_level_name, file_level_name, file_mode):
     # file_handler.setFormatter(file_formatter)
     # file_handler.setLevel(LOG_LEVELS[file_level_name])
 
-    rich_handler = RichHandler(level=logging.DEBUG, rich_tracebacks=True)
-    rich_handler.setFormatter(logging.Formatter(LOG_FORMATS["RICH"], datefmt))
-
     logger = logging.getLogger("msgram")
     logger.addHandler(console_handler)
-    # logger.addHandler(rich_handler)
     # logger.addHandler(file_handler)
     logger.setLevel(LOG_LEVELS[console_level_name])
 

@@ -21,7 +21,7 @@ SUPPORTED_FORMATS = [
 
 AVAILABLE_IMPORTS = ["sonarqube", "github"]
 
-AVAILABLE_GEN_FORMATS = ["csv", "json"]
+AVAILABLE_GEN_FORMATS = ["csv", "json", "tabular", "raw", "tree"]
 
 SUPPORTED_MEASURES = [
     {

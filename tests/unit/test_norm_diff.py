@@ -1,11 +1,13 @@
 from io import StringIO
 from pathlib import Path
+import re
 import shutil
 import sys
 import tempfile
 
 import pytest
 from src.cli.commands.cmd_norm_diff import command_norm_diff
+from tests.unit.cli_output import normalize_cli_output
 
 
 def test_norm_diff():
@@ -26,7 +28,7 @@ def test_norm_diff():
 
     sys.stdout = sys.__stdout__
 
-    output = captured_output.getvalue()
+    output = normalize_cli_output(captured_output.getvalue())
 
     assert "Norm diff calculation performed successfully!" in output
     assert (
@@ -34,8 +36,11 @@ def test_norm_diff():
         in output
     )
 
-    norm_diff_value = float(output.split("Norm Diff:")[1].split("\n")[0].strip())
-    assert norm_diff_value == 0.24323122001478284
+    match = re.search(r"Norm Diff:\s*([0-9.]+)", output)
+    assert match is not None
+
+    norm_diff_value = float(match.group(1))
+    assert norm_diff_value == pytest.approx(0.24323122001478284)
 
 
 def test_missing_args():

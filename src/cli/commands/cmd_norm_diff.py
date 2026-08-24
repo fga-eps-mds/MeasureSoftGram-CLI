@@ -5,6 +5,7 @@ from src.cli.utils import (
     print_error,
     print_info,
     print_rule,
+    print_success,
     validate_json_values,
 )
 from src.cli.exceptions import exceptions
@@ -18,7 +19,7 @@ def read_planned_file(file_path, sort_key=None):
         json_data = open_json_file(file_path)
         return sorted(json_data, key=lambda x: x[sort_key]) if sort_key else json_data
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error reading planned file in {file_path}: {e}\n")
+        print_error(f"Error reading planned file in {file_path}: {e}\n")
         print_rule()
         exit(1)
 
@@ -41,7 +42,7 @@ def read_calculated_file(file_path):
 
         return calculated_data
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error reading calculated file in {file_path}: {e}\n")
+        print_error(f"Error reading calculated file in {file_path}: {e}\n")
         print_rule()
         exit(1)
 
@@ -64,19 +65,19 @@ def command_norm_diff(args):
     )
     norm_diff_value = norm_diff(planned_vector, calculated_vector)
 
-    print_info("\n[#A9A9A9]Norm diff calculation performed successfully![/]\n")
+    print_success("\nNorm diff calculation performed successfully!\n")
 
     print_info(
-        "[#A9A9A9]The norm_diff value indicates the difference between the observed "
+        "The norm_diff value indicates the difference between the observed "
         "quality (Rd) and the planned target (Rp). A norm_diff of 0 means that the "
         "observed quality perfectly aligns with the planned target. If norm_diff is "
         "not equal to 0, it shows a deviation from the target. In this case, you "
         "should determine whether the performance is above or below the planned "
         "quality. For a detailed analysis of these differences, use the msgram diff "
-        "command.[/]\n"
+        "command.\n"
     )
 
-    print(f"Norm Diff: {norm_diff_value}")
+    print_info(f"Norm Diff: {norm_diff_value}")
     print_rule()
 
 
@@ -109,6 +110,6 @@ def extract_values(planned_data, calculated_data, rp_path, rd_path):
 
         return (np.array(planned_values), np.array(calculated_values))
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error extracting values: {e}\n")
+        print_error(f"Error extracting values: {e}\n")
         print_rule()
         exit(1)

@@ -6,8 +6,6 @@ from pathlib import Path
 
 from anytree import Node, RenderTree
 
-from rich import print
-from rich.console import Console
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 from src.cli.jsonReader import open_json_file, read_multiple_files
@@ -15,7 +13,23 @@ from src.cli.resources.characteristic import calculate_characteristics
 from src.cli.resources.measure import calculate_measures
 from src.cli.resources.tsqmi import calculate_tsqmi
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
-from src.cli.utils import print_error, print_info, print_panel, print_rule, print_table
+from src.cli.utils import (
+    clear_console,
+    color_tag,
+    print_error,
+    print_info,
+    print_output,
+    print_panel,
+    print_rule,
+    print_success,
+    generate_table,
+    console,
+    print_warn,
+    make_progress_bar,
+)
+from rich.columns import Columns
+from rich.panel import Panel
+from rich.align import Align
 from src.cli.exceptions import exceptions
 from src.config.settings import DEFAULT_CONFIG_PATH, FILE_CONFIG
 from src.cli.resources.perf_eff_measure import calculate_perf_eff_measures
@@ -27,9 +41,7 @@ def read_config_file(config_path):
     try:
         return open_json_file(config_path / FILE_CONFIG)
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(
-            f"[red]Error reading msgram.json config file in {config_path}: {e}\n"
-        )
+        print_error(f"Error reading msgram.json config file in {config_path}: {e}\n")
         print_rule()
         exit(1)
 
@@ -41,26 +53,25 @@ def read_config_file(config_path):
 def calculate_metrics(extracted_path, config):
     data_calculated = []
 
-    print(extracted_path)
     if not extracted_path.is_file():
-        # should not aggregate
-        # if not aggregate_metrics(input_format, extracted_path, config):
-        #    print_error(
-        #        "> [red] Failed to aggregate metrics, calculate was not performed. \n"
-        #    )
-        #    return data_calculated, False
+        files = list(extracted_path.glob("*.metrics"))
+        if not files:
+            print_warn(f"No metrics files found in {extracted_path}")
+            return data_calculated, False
 
-        for file, file_name in read_multiple_files(extracted_path, "metrics"):
-            print(file_name)
-            if file_name.startswith("perf-eff_"):
-                file_name = file_name[len("perf-eff_") :]
-                result = calculate_perf_eff_measures(file_name, file)
-                data_calculated.append(result)
-            else:
-                if file_name.startswith("github_"):
-                    file_name = file_name[len("github_") :]
-                result = calculate_all(file, file_name, config)
-                data_calculated.append(result)
+        with make_progress_bar() as progress_bar:
+            task_calc = progress_bar.add_task("Calculating metrics: ", total=len(files))
+            for file, file_name in read_multiple_files(extracted_path, "metrics"):
+                if file_name.startswith("perf-eff_"):
+                    file_name = file_name[len("perf-eff_") :]
+                    result = calculate_perf_eff_measures(file_name, file)
+                    data_calculated.append(result)
+                else:
+                    if file_name.startswith("github_"):
+                        file_name = file_name[len("github_") :]
+                    result = calculate_all(file, file_name, config)
+                    data_calculated.append(result)
+                progress_bar.advance(task_calc)
 
         return data_calculated, True
     else:
@@ -72,7 +83,7 @@ def calculate_metrics(extracted_path, config):
             data_calculated.append(result)
             return data_calculated, True
         except exceptions.MeasureSoftGramCLIException as e:
-            print_error(f"[red]Error calculating {extracted_path}: {e}\n")
+            print_error(f"Error calculating {extracted_path}: {e}\n")
             return data_calculated, False
 
 
@@ -88,19 +99,18 @@ def command_calculate(args):
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-    console = Console()
-    console.clear()
+    clear_console()
     print_rule("Calculate")
-    print_info("> [blue] Reading config file:[/]")
+    print_info("> Reading config file:")
 
     config = read_config_file(config_path)
 
-    print_info("\n> [blue] Reading extracted files:[/]")
+    print_info("\n> Reading extracted files:")
 
     data_calculated, success = calculate_metrics(extracted_path, config)
 
     if success:
-        print_info("\n[#A9A9A9]All calculations performed[/] successfully!")
+        print_success("\nAll calculations performed successfully!")
 
     show_results(output_format, data_calculated, config_path)
     print_rule()
@@ -129,8 +139,12 @@ def calculate_all(json_data, file_name, config):
         else ([], [])
     )
 
-    version = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)[0]
-    repository = file_name.split(version)[0][:-1]
+    version_match = re.search(r"\d{1,2}-\d{1,2}-\d{4}-\d{1,2}-\d{1,2}", file_name)
+    version = version_match[0] if version_match else ""
+    if version:
+        repository = file_name.split(version)[0][:-1]
+    else:
+        repository = file_name.replace("-extracted.metrics", "")
 
     return {
         "repository": [{"key": "repository", "value": repository}],
@@ -150,19 +164,20 @@ def calculate_all(json_data, file_name, config):
 
 def show_results(output_format, data_calculated, config_path):
 
+    if len(data_calculated) == 0:
+        print_warn(
+            f"WARNING: No extracted file read so no {output_format} was generated!"
+        )
+        return
+
     if output_format == "tabular":
         show_tabulate(data_calculated[0])
 
     elif output_format == "raw":
-        print(data_calculated[0])
+        print_output(data_calculated[0])
 
     elif output_format == "tree":
         show_tree(data_calculated[0], pre_config)
-
-    elif len(data_calculated) == 0:
-        print_info(
-            f"[yellow]WARNING: No extracted file read so no {output_format} was generated!"
-        )
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
@@ -181,10 +196,29 @@ def show_tabulate(data_calculated):
     }
     measures = {m["key"]: m["value"] for m in data_calculated["measures"]}
 
-    print_table(measures, "measures", "measures")
-    print_table(subcharacteristics, "subcharacteristics", "subcharacteristics")
-    print_table(characteristics, "characteristics", "characteristics")
-    print_table(tsqmi, "tsqmi", "tsqmi")
+    # Generates tables without printing them
+    t_measures = generate_table(measures, "measures", "measures")
+    t_subchar = generate_table(
+        subcharacteristics, "subcharacteristics", "subcharacteristics"
+    )
+    t_char = generate_table(characteristics, "characteristics", "characteristics")
+
+    # Highlight the main TSQMI score
+    tsqmi_panel = Panel(
+        Align.center(f"[bold cyan]{tsqmi['value']}[/bold cyan]"),
+        title="[bold]TSQMI Score[/bold]",
+        border_style="cyan",
+        padding=(1, 5),
+    )
+
+    console.print("\n")
+    console.print(Align.center(tsqmi_panel))
+    console.print("\n")
+
+    # Render tables side by side
+    columns = Columns([t_char, t_subchar, t_measures], expand=True, equal=True)
+    console.print(columns)
+    console.print("\n")
 
 
 def get_obj_by_element(object_list: list, element_key: str, element_to_find):
@@ -196,30 +230,36 @@ def show_tree(data_calculated, pre_config):
     characteristics = data_calculated["characteristics"]
     subcharacteristics = data_calculated["subcharacteristics"]
     measures = data_calculated["measures"]
+    tree_success = color_tag("success")
+    tree_accent = color_tag("accent")
+    tree_muted = color_tag("muted")
 
-    print("Overview - tree:\n\n")
-    tsqmi_tree = Node(f"[green]{tsqmi['key']}: {tsqmi['value']}")
+    print_info("Overview - tree:\n\n")
+    tsqmi_tree = Node(f"{tree_success}{tsqmi['key']}: {tsqmi['value']}")
 
     for char_c, char in zip(pre_config["characteristics"], characteristics):
-        char_tree = Node(f"[red]{char['key']}: {char['value']}", parent=tsqmi_tree)
+        char_tree = Node(
+            f"{tree_accent}{char['key']}: {char['value']}", parent=tsqmi_tree
+        )
 
         for subchar_c in char_c["subcharacteristics"]:
             subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
             if subchar:
                 sub_char_tree = Node(
-                    f"[blue]{subchar['key']} {subchar['value']}", parent=char_tree
+                    f"{tree_accent}{subchar['key']} {subchar['value']}",
+                    parent=char_tree,
                 )
 
                 for measure_c in subchar_c["measures"]:
                     measure = get_obj_by_element(measures, "key", measure_c["key"])
                     if measure:
                         Node(
-                            f"[yellow]{measure['key']} {measure['value']}",
+                            f"{tree_muted}{measure['key']} {measure['value']}",
                             parent=sub_char_tree,
                         )
 
     for pre, fill, node in RenderTree(tsqmi_tree):
-        print(f"{pre}{node.name}")
+        print_info(f"{pre}{node.name}")
 
 
 def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
@@ -230,7 +270,7 @@ def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
             write_file,
             indent=4,
         )
-    print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as JSON")
+    print_success(f"Success: {file_path.name} exported as JSON")
 
 
 def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PATH")):
@@ -258,4 +298,4 @@ def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PAT
         writer.writerow(csv_header)
         writer.writerows(csv_rows)
 
-    print(f"Success: {file_path.name} exported as CSV")
+    print_success(f"Success: {file_path.name} exported as CSV")

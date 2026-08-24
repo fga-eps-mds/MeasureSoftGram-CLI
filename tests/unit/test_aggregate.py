@@ -12,7 +12,6 @@ from src.cli.aggregate_metrics import (
     aggregate_metrics,
 )
 
-
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 with open(os.path.join(TEST_DATA_DIR, "msgram.json"), "r") as file:

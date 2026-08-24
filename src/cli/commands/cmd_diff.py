@@ -3,18 +3,17 @@ import json
 import logging
 from pathlib import Path
 
-from rich import print
-from rich.console import Console
-
 from core.transformations import diff
 
 from src.cli.jsonReader import open_json_file
 from src.cli.utils import (
+    clear_console,
     print_diff_table,
     print_error,
     print_info,
     print_panel,
     print_rule,
+    print_success,
     validate_json_values,
 )
 from src.cli.exceptions import exceptions
@@ -29,7 +28,7 @@ def read_config_file(config_path):
 
         return sorted(json, key=lambda x: x["key"])
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error reading config file in {config_path}: {e}\n")
+        print_error(f"Error reading config file in {config_path}: {e}\n")
         print_rule()
         exit(1)
 
@@ -55,9 +54,7 @@ def read_calculated_file(extracted_calculation):
 
         return calculated_data
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(
-            f"[red]Error reading calculated file in {extracted_calculation}: {e}\n"
-        )
+        print_error(f"Error reading calculated file in {extracted_calculation}: {e}\n")
         print_rule()
         exit(1)
 
@@ -99,7 +96,7 @@ def calculate_diff(planned, calculated, rp_path, rd_path):
 
         return formated_result, True
     except exceptions.MeasureSoftGramCLIException as e:
-        print_error(f"[red]Error calculating: {e}\n")
+        print_error(f"Error calculating: {e}\n")
         return formated_result, False
 
 
@@ -114,14 +111,13 @@ def command_diff(args):
         print_error(f"KeyError: args[{e}] - non-existent parameters")
         exit(1)
 
-    console = Console()
-    console.clear()
+    clear_console()
     print_rule("Calculate")
-    print_info("> [blue] Reading config file:[/]")
+    print_info("> Reading config file:")
 
     planned = read_config_file(config_path)
 
-    print_info("\n> [blue] Reading calculated file:[/]")
+    print_info("\n> Reading calculated file:")
 
     calculated = read_calculated_file(extracted_calculation)
 
@@ -130,7 +126,7 @@ def command_diff(args):
     )
 
     if success:
-        print_info("\n[#A9A9A9]Diff calculation performed[/] successfully!")
+        print_success("\nDiff calculation performed successfully!")
     else:
         exit(1)
 
@@ -178,7 +174,7 @@ def export_json(data_calculated: list, file_path: Path = DEFAULT_CONFIG_PATH):
             write_file,
             indent=4,
         )
-    print_info(f"[blue]Success:[/] {file_path.name} [blue]exported as JSON")
+    print_success(f"Success: {file_path.name} exported as JSON")
 
 
 def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PATH")):
@@ -209,7 +205,7 @@ def export_csv(data_calculated: list, file_path: Path = Path("DEFAULT_CONFIG_PAT
                     }
                 )
 
-    print(f"Success: {file_path.name} exported as CSV")
+    print_success(f"Success: {file_path.name} exported as CSV")
 
 
 def extract_values(planned, calculated, rp_path, rd_path):

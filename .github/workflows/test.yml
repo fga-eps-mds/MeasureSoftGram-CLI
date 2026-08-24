@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
           cache: pip
@@ -31,13 +31,16 @@ jobs:
         run: tox
 
       - name: Scanner do SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v2.3.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-do-teste
+          path: ./coverage.xml
 
       - name: Envia cobertura para o Codecov
+        if: ${{ secrets.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v4.0.1
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./
@@ -45,5 +48,5 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage.xml
           flags: unittests
-          name: 2023-2-MeasureSoftGram-CLI
+          name: 2026.1-MeasureSoftGram-CLI
           verbose: true

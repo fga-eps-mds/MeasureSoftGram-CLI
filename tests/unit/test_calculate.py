@@ -12,6 +12,7 @@ import pytest
 
 from src.cli.commands.cmd_calculate import calculate_all, command_calculate, show_tree
 from src.cli.jsonReader import open_json_file
+from tests.unit.cli_output import normalize_cli_output
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 CALCULATE_ARGS = {
@@ -76,7 +77,8 @@ def test_show_tree(capfd):
 
     captured = capfd.readouterr()
 
-    assert captured.out.strip() == expected_output.strip()
+    out = captured.out.replace("ℹ ", "")
+    assert expected_output.strip() in out.strip()
 
 
 @pytest.mark.parametrize(
@@ -271,6 +273,24 @@ def test_calculate_github():
     assert pytest.approx(tsqmi_result.get("value")) == tsqmi_expected.get("value")
 
 
+def test_calculate_without_version_in_filename():
+    file_name = "fga-eps-mds-2026-extracted.metrics"
+    # Using an existing valid json file but feeding it an invalid filename to test the regex failure branch
+    json_data = open_json_file(
+        Path(
+            "tests/unit/data/fga-eps-mds-2023-2-MeasureSoftGram-Service-12-11-2023-02-57-52-develop-extracted.metrics"
+        )
+    )
+    config = open_json_file(Path("tests/unit/data/msgram.json"))
+
+    calculated_result = calculate_all(json_data, file_name, config)
+
+    assert calculated_result.get("repository") == [
+        {"key": "repository", "value": "fga-eps-mds-2026"}
+    ]
+    assert calculated_result.get("version") == []
+
+
 def test_calculate_invalid_config_file():
     captured_output = StringIO()
     sys.stdout = captured_output
@@ -289,10 +309,9 @@ def test_calculate_invalid_config_file():
         command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        f"Error reading msgram.json config file in {config_dirpath}"
-        in captured_output.getvalue()
-    )
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Error reading msgram.json config file in" in output
+    assert Path(config_dirpath).name in output
 
     shutil.rmtree(config_dirpath)
 
@@ -321,11 +340,11 @@ def test_calculate_invalid_extracted_file():
     command_calculate(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        f"Error calculating {extract_dirpath}/{extracted_file_name}"
-        in captured_output.getvalue()
-    )
-    assert "All calculations performed" not in captured_output.getvalue()
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Error calculating" in output
+    assert Path(extract_dirpath).name in output
+    assert extracted_file_name in output
+    assert "All calculations performed" not in output
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)
@@ -384,6 +403,71 @@ def test_calculate_json_output():
     expected_output = Path("tests/unit/data/calc_msgram_exp_github_output.json")
     assert output_path.stat().st_size > 0
     assert filecmp.cmp(output_path, expected_output, shallow=False)
+
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
+
+
+def test_calculate_metrics_directory_success(monkeypatch):
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
+
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
+
+    extracted_file_name = "github_fga-eps-mds-2024.1-MeasureSoftGram-DOC-28-07-2024-00-00-22-extracted.metrics"
+    # Copy file with .metrics extension to the temp directory
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/{extracted_file_name}",
+    )
+    # Copy a fake perf-eff metrics file to cover the branch
+    shutil.copy(
+        f"tests/unit/data/{extracted_file_name}",
+        f"{extract_dirpath}/perf-eff_fake.metrics",
+    )
+
+    # Mock calculate_perf_eff_measures to return dummy data
+    from src.cli.commands import cmd_calculate
+
+    def fake_perf(name, file):
+        return {"repository_name": name, "metrics": []}
+
+    monkeypatch.setattr(
+        cmd_calculate, "calculate_perf_eff_measures", fake_perf
+    )
+
+    args = {
+        "output_format": "json",
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(extract_dirpath),  # Pass the directory, not the file
+    }
+
+    command_calculate(args)
+
+    output_path = Path(f"{config_dirpath}/calc_msgram.json")
+    assert output_path.stat().st_size > 0
+
+    shutil.rmtree(config_dirpath)
+    shutil.rmtree(extract_dirpath)
+
+
+def test_calculate_metrics_directory_empty():
+    config_dirpath = tempfile.mkdtemp()
+    extract_dirpath = tempfile.mkdtemp()
+
+    shutil.copy("tests/unit/data/msgram.json", f"{config_dirpath}/msgram.json")
+
+    args = {
+        "output_format": "json",
+        "config_path": Path(config_dirpath),
+        "extracted_path": Path(extract_dirpath),  # Empty directory
+    }
+
+    command_calculate(args)
+
+    # calc_msgram.json shouldn't be created since there's no data
+    output_path = Path(f"{config_dirpath}/calc_msgram.json")
+    assert not output_path.exists()
 
     shutil.rmtree(config_dirpath)
     shutil.rmtree(extract_dirpath)

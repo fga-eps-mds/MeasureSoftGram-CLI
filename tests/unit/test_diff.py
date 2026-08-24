@@ -10,6 +10,7 @@ import tempfile
 import pytest
 
 from src.cli.commands.cmd_diff import command_diff
+from tests.unit.cli_output import normalize_cli_output
 
 CALCULATE_ARGS = {
     "output_format": "json",
@@ -90,9 +91,9 @@ def test_diff_invalid_config_file():
         command_diff(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        f"Error reading config file in {config_dirpath}" in captured_output.getvalue()
-    )
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Error reading config file in" in output
+    assert Path(config_dirpath).name in output
 
     shutil.rmtree(config_dirpath)
 
@@ -122,10 +123,8 @@ def test_diff_invalid_config_value():
         command_diff(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        "Failed to decode the JSON file: The values informed in the"
-        in captured_output.getvalue()
-    )
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Failed to decode the JSON file: The values informed in the" in output
 
     shutil.rmtree(config_dirpath)
 
@@ -150,10 +149,9 @@ def test_diff_invalid_calculated_file():
         command_diff(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        f"Error reading calculated file in {config_dirpath}"
-        in captured_output.getvalue()
-    )
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Error reading calculated file in" in output
+    assert Path(config_dirpath).name in output
 
     shutil.rmtree(config_dirpath)
 
@@ -183,9 +181,10 @@ def test_diff_invalid_vectors_size():
         command_diff(args)
 
     sys.stdout = sys.__stdout__
+    output = normalize_cli_output(captured_output.getvalue())
     assert (
         "Error calculating: The size between planned and developed release vectors is not equal."
-        in captured_output.getvalue()
+        in output
     )
 
     shutil.rmtree(config_dirpath)
@@ -216,9 +215,7 @@ def test_diff_differents_characteristics():
         command_diff(args)
 
     sys.stdout = sys.__stdout__
-    assert (
-        "Planned and calculated files have differents characteristics"
-        in captured_output.getvalue()
-    )
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "Planned and calculated files have differents characteristics" in output
 
     shutil.rmtree(config_dirpath)

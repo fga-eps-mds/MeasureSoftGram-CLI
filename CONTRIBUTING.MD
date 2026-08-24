@@ -1,13 +1,33 @@
-# Como contribuir
+# Guia de contribuição
 
 ## Primeiramente
 
-Antes de enviar uma alteração para este repositório, se já não houver uma issue, crie uma a partir do template, e utilize as tags oferecidas para ajudar na identificação da issue. Certifique-se sobre as nossas políticas:
+Antes de enviar uma alteração para este repositório, se já não houver uma issue, crie uma a partir do template, e utilize as tags oferecidas para ajudar na identificação da issue.
 
-- [Código de conduta](https://github.com/fga-eps-mds/2021-2-MeasureSoftGram-CLI/blob/main/code_of_conduct.md)
-- [Padrões no Github](https://fga-eps-mds.github.io/2021-2-MeasureSoftGram-Doc/docs/contribute/github_standards)
+Certifique-se sobre as nossas políticas:
+
+- [Código de conduta](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/codigo-de-conduta/)
+- [Política de Commits](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/politica-de-commits/)
+- [Política de Branches](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/politica-de-branch/)
 - Critérios de aceitação devidamente cumpridos
 - Testes automatizados para tudo o que for alterado
+
+## Setup local
+
+Use um ambiente virtual e instale as dependências (o próprio pacote entra em modo
+editável, então o comando `msgram` fica disponível):
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+make install     # pip install -r requirements.txt
+make test        # roda testes + lint via tox
+make lint        # black + flake8
+```
+
+A CLI lê apenas a variável de ambiente `LOG` (nível de log: `verbose` ou
+`quiet`). Um template está em `env-vars/.env.example`; copie-o para `.env` se
+quiser ajustar o nível localmente.
 
 ## Crie branches ou fork
 
