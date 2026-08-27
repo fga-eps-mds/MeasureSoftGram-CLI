@@ -6,9 +6,9 @@ Antes de enviar uma alteração para este repositório, se já não houver uma i
 
 Certifique-se sobre as nossas políticas:
 
-- [Código de conduta](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/codigo-de-conduta/)
-- [Política de Commits](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/politica-de-commits/)
-- [Política de Branches](https://fga-eps-mds.github.io/2026.1-MeasureSoftGram-DOC/guia-de-contribuicao/politica-de-branch/)
+- [Código de conduta](./code_of_conduct.md)
+- [Política de Commits](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/guia-de-contribuicao/politica-de-commits/)
+- [Política de Branches](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/guia-de-contribuicao/politica-de-branch/)
 - Critérios de aceitação devidamente cumpridos
 - Testes automatizados para tudo o que for alterado
 

@@ -21,10 +21,14 @@ jobs:
         run: python parser.py "${{ github.event.repository.name }}" "${{ github.ref_name }}"
 
       - name: Envia métricas para repo de Doc
+        env:
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          API_TOKEN_DOC: ${{ secrets.API_TOKEN_DOC }}
         run: |
-          git config --global user.email "${{secrets.USER_EMAIL}}"
-          git config --global user.name "${{secrets.USER_NAME}}"
-          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC}}@github.com/fga-eps-mds/2026.1-MeasureSoftGram-DOC" doc
+          git config --global user.email "$USER_EMAIL"
+          git config --global user.name "$USER_NAME"
+          git clone --single-branch --branch main "https://x-access-token:$API_TOKEN_DOC@github.com/fga-eps-mds/2026.1-MeasureSoftGram-DOC" doc
           mkdir -p doc/Analytics/data
           cp -R analytics-raw-data/*.json doc/Analytics/data
           cd doc/

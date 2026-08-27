@@ -30,23 +30,10 @@ jobs:
       - name: Rodar testes
         run: tox
 
-      - name: Scanner do SonarCloud
-        uses: actions/upload-artifact@v4
-        with:
-          name: cobertura-do-teste
-          path: ./coverage.xml
-
-      - name: Envia cobertura para o Codecov
-        if: ${{ secrets.CODECOV_TOKEN != '' }}
-        uses: codecov/codecov-action@v4.0.1
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@c7ee0f9df90b7aa20e8dcf9695dcfe2e7da5b4f2 # v7
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./
-          env_vars: OS,PYTHON
-          fail_ci_if_error: true
-          files: ./coverage.xml
-          flags: unittests
-          name: 2026.1-MeasureSoftGram-CLI
-          verbose: true
+          args: >
+            -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
