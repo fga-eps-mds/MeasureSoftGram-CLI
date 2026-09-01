@@ -1,5 +1,5 @@
 # MeasureSoftGram-CLI
-Command line project to MeasureSoftGram
+
 ## Badges
 
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_MeasureSoftGram-CLI&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_MeasureSoftGram-CLI)
@@ -13,193 +13,138 @@ Command line project to MeasureSoftGram
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_MeasureSoftGram-CLI&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_MeasureSoftGram-CLI)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_MeasureSoftGram-CLI&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_MeasureSoftGram-CLI)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_MeasureSoftGram-CLI&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_MeasureSoftGram-CLI)
-[![Downloads](https://pepy.tech/badge/msgram)](https://pepy.tech/project/msgram)
-[![Downloads](https://pepy.tech/badge/msgram/month)](https://pepy.tech/project/msgram)
-[![Downloads](https://pepy.tech/badge/msgram/week)](https://pepy.tech/project/msgram)
-
+[![Downloads](https://static.pepy.tech/badge/msgram)](https://pepy.tech/project/msgram)
+[![Downloads](https://static.pepy.tech/badge/msgram/month)](https://pepy.tech/project/msgram)
+[![Downloads](https://static.pepy.tech/badge/msgram/week)](https://pepy.tech/project/msgram)
 [![PyPI](https://img.shields.io/pypi/v/msgram.svg)](https://pypi.python.org/pypi/msgram/)
 
-## What is the MeasureSoftGram-CLI?
-The CLI is a command-line interface to the software.
+> **Este README resume o componente CLI.** A documentação completa do produto — incluindo o uso
+> detalhado da CLI, as políticas de contribuição e o código de conduta — é central e vive no
+> [MeasureSoftGram Docs](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/).
 
-## How to use CLI
-- [How to use](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/componente-cli/)
+## O que é
 
-## How to run the project
-Use Python 3.9 or higher. The CI currently uses Python 3.10.
+O **MeasureSoftGram-CLI** (pacote [`msgram`](https://pypi.org/project/msgram/)) é a interface de linha de comando do MeasureSoftGram. É o módulo responsável por configurar o modelo de qualidade, extrair métricas de exports do SonarQube/SonarCloud e do GitHub, e calcular localmente os valores das medidas, subcaracterísticas e características do modelo algébrico.
 
-First, clone the repository and enter the project folder:
+## Como Executar o Projeto
 
-```
-git clone <repository-url>
-cd <repository-folder>
-```
+Requisitos: **Python 3.9 ou superior** (o CI de testes e lint roda em 3.10).
 
-It is recommended to create and activate a virtual environment:
+### 1. Criar e ativar o ambiente virtual
 
-```
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Then install the project dependencies:
+### 2. Instalar as dependências
 
+```bash
+make install
 ```
-pip install -r requirements.txt
-```
 
-The `requirements.txt` file already installs the local application in editable mode through `-e .`. After that, the `msgram` command is available in the terminal.
+*(Equivale a `pip install -r requirements.txt`, que instala o próprio pacote em modo editável — o comando `msgram` fica disponível no terminal).*
 
-To show all MeasureSoftGram commands, use:
+### 3. Verificar a instalação
 
-```
+```bash
 msgram -h
 ```
 
-If you do not want to use the installed `msgram` command, run the Python entry point directly:
+### 4. Ver a CLI funcionando (demo)
 
-```
-python3 main.py -h
-```
+Para executar o fluxo completo (init, extract e calculate) sobre o dataset de exemplo embutido em `examples/analytics-raw-data/`, sem precisar fornecer dados próprios nem acesso à rede:
 
-If a module is not found, check if the virtual environment is activated and run `pip install -r requirements.txt` again.
-
-## Quickstart (msgram demo)
-
-If you just want to see the CLI working end to end without providing your own
-SonarQube export, run the demo. It ships an embedded sample dataset in
-`examples/analytics-raw-data/` and runs the full pipeline (init, extract,
-calculate) for you:
-
-```
+```bash
 msgram demo
 ```
 
-This creates a `./msgram-demo/` working directory with the generated
-`msgram.json`, the extracted `.metrics` file and the calculated result
-(`calc_msgram.csv` by default). No external data or network access is required.
+O resultado é gerado em `./msgram-demo/`.
 
-Optional arguments:
+---
 
-```
-msgram demo -o <output_dir>    # choose the working directory
-msgram demo -of json           # export the result as JSON instead of CSV
-```
+## Principais Comandos
 
-## Basic usage
-Create the default configuration file:
+### Comandos da CLI
 
-```
-msgram init
-```
+| Comando | Descrição |
+|---|---|
+| `msgram init` | Cria o arquivo de configuração padrão do modelo (`.msgram/msgram.json`) |
+| `msgram list` | Lista os parâmetros da configuração atual |
+| `msgram extract` | Extrai as métricas suportadas a partir dos arquivos de análise |
+| `msgram calculate` | Calcula os valores das entidades do modelo a partir das métricas extraídas |
+| `msgram diff` | Calcula e interpreta a diferença entre os tensores planejado (RP) e desenvolvido (RD) |
+| `msgram norm_diff` | Calcula a norma de Frobenius da diferença entre os tensores RP e RD |
+| `msgram demo` | Executa o pipeline completo sobre o dataset de exemplo embutido |
+| `msgram <comando> -h` | Exibe as opções de um comando específico |
 
-This creates the `.msgram/msgram.json` file in the current directory.
+### Alvos do Makefile
 
-List the configuration:
+| Comando | Descrição |
+|---|---|
+| `make install` | Instala as dependências, incluindo o próprio pacote em modo editável |
+| `make test` | Roda testes + lint via `tox` |
+| `make lint` | Roda `black` e `flake8` via `tox` |
+| `make format` | Formata o código com `black` |
+| `make build` | Gera os artefatos de distribuição (sdist + wheel) |
+| `make clean` | Remove artefatos de build e caches |
+| `make help` | Lista os alvos disponíveis |
 
-```
-msgram list
-```
+> 📖 **Flags, valores padrão e o fluxo típico de uso de cada subcomando estão na [Referência da CLI](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/referencia-cli/).**
 
-Extract metrics from SonarQube/SonarCloud JSON files. Point `-sp` to a
-directory holding your own JSON exports, or use the sample dataset bundled in
-`examples/analytics-raw-data/` to try it out:
+---
 
-```
-msgram extract -sp examples/analytics-raw-data -ep .msgram
-```
+## Como Rodar os Testes
 
-The `-sp` argument is the path to the directory with the JSON files. The `-ep` argument is the path where the extracted `.metrics` files will be saved.
+```bash
+# Testes + lint via tox
+make test
 
-Calculate the model values from extracted metrics:
-
-```
-msgram calculate -ep .msgram -cp .msgram -o csv
-```
-
-The `-ep` argument is the path to the extracted metrics. The `-cp` argument is the path to the folder with `msgram.json`. The `-o` argument defines the output format.
-
-To see the options of a specific command, use:
-
-```
-msgram <command> -h
+# Apenas os linters
+make lint
 ```
 
-## Common errors
-If the project does not run, check these points first:
+Para rodar um arquivo de teste específico com o pytest:
 
-```
-python --version
-which python
-which msgram
-```
-
-If the error is `ModuleNotFoundError: No module named 'dotenv'`, the dependencies were probably not installed in the current environment. Activate the virtual environment and install the requirements again:
-
-```
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-If the `msgram` command is not found, check if the virtual environment is activated. You can also run the project using the Python entry point:
-
-```
-python3 main.py -h
-```
-
-If you use `msgram init -cp <path>`, make sure the parent directory already exists. The simplest option is to run `msgram init` inside the project folder.
-
-## How to run tests
-Install the dependencies:
-
-```
-pip install -r requirements.txt
-```
-
-We are using tox for the tests, so it is good to install tox:
-
-```
-pip install tox
-```
-
-Then you can run the tests using:
-
-```
-tox
-```
-
-If you want to specify a test file, use pytest:
-
-```
+```bash
 pip install pytest pytest-cov pytest-mock
 pytest tests/unit/test_calculate.py
 ```
 
-## License
+---
 
-AGPL-3.0 License
+## Documentação
 
-## Documentation
+A documentação oficial e completa é central: **[MeasureSoftGram Docs](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/)**. Este repositório guarda apenas o código do componente e um resumo. As páginas mais relevantes para esta CLI:
 
-- [Documentation of the component](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/componente-cli/)
-- [Official MeasureSoftGram documentation](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/)
+- [Primeiros passos](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/primeiros-passos/) — tutorial da instalação até o primeiro relatório de qualidade
+- [Referência da CLI](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/referencia-cli/) — subcomandos, flags, valores padrão e fluxo típico
+- [Como usar](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/como-usar/) — uso da CLI, como subir o sistema completo e problemas comuns
+- [Componente CLI](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/componente-cli/) — pré-requisitos, setup a partir do código-fonte, testes e publicação no PyPI
+- [Como contribuir](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/como-contribuir/) — fluxo de issue/branch/PR, padrão de commits e Definition of Done
 
-## Contribute
+## Informações Adicionais
 
-Do you want to contribute with our project? Check out our [Contribution Guide](./CONTRIBUTING.MD) and our [Code of Conduct](./code_of_conduct.md) before making changes.
+- **PyPI:** [msgram](https://pypi.org/project/msgram/)
+- **Docker Hub:** [Core](https://hub.docker.com/r/measuresoftgram/core) · [Service](https://hub.docker.com/r/measuresoftgram/service)
+- **Documentação:** [MeasureSoftGram Docs](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/)
+- **Guia de Contribuição:** Veja nosso [Guia de Contribuição](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/como-contribuir) e o arquivo [CONTRIBUTING.md](./CONTRIBUTING.md).
+- **Demais repositórios do produto:**
+  - [Core](https://github.com/fga-eps-mds/MeasureSoftGram-Core)
+  - [Service](https://github.com/fga-eps-mds/MeasureSoftGram-Service)
+  - [Front Web](https://github.com/fga-eps-mds/MeasureSoftGram-Front)
+  - [Action](https://github.com/fga-eps-mds/MeasureSoftGram-Action)
+  - [Parser](https://github.com/fga-eps-mds/MeasureSoftGram-Parser)
+  - [Docs](https://github.com/fga-eps-mds/MeasureSoftGram-Docs)
 
-## Another informations
-Our services are available on [Docker Hub](https://hub.docker.com/):
-- [Core](https://hub.docker.com/r/measuresoftgram/core)
-- [Service](https://hub.docker.com/r/measuresoftgram/service)
+## Contribuição
 
-### Wiki
-For more informations, you can see our wiki:
-- [Wiki](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/)
+As políticas de contribuição são as mesmas para todos os repositórios do produto e estão em **[Guia de Contribuição e Padrões](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/como-contribuir)**. Consulte também o [CONTRIBUTING.md](./CONTRIBUTING.md) deste repositório.
 
-### Demais repositórios do produto
-- [Core](https://github.com/fga-eps-mds/MeasureSoftGram-Core)
-- [Service](https://github.com/fga-eps-mds/MeasureSoftGram-Service)
-- [Front Web](https://github.com/fga-eps-mds/MeasureSoftGram-Front)
-- [Action](https://github.com/fga-eps-mds/MeasureSoftGram-Action)
-- [Parser](https://github.com/fga-eps-mds/MeasureSoftGram-Parser)
+## Código de Conduta
+
+Este projeto segue o **[Código de Conduta](https://fga-eps-mds.github.io/MeasureSoftGram-Docs/docs/codigo-de-conduta)** do MeasureSoftGram, único para todos os repositórios. Veja também o [code_of_conduct.md](./code_of_conduct.md).
+
+## Licença
+
+Este projeto é distribuído sob a licença [AGPL-3.0](./LICENSE).
