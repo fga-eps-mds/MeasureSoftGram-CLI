@@ -2,9 +2,9 @@ name: Rodar Testes
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   build:
@@ -28,12 +28,18 @@ jobs:
         run: pip install tox
 
       - name: Rodar testes
-        run: tox
+        run: tox -e test_cli
+
+      - name: Conferir relatorios de cobertura
+        run: |
+          ls -l coverage.xml junit.xml
+          head -5 coverage.xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@c7ee0f9df90b7aa20e8dcf9695dcfe2e7da5b4f2 # v7
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
             -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}

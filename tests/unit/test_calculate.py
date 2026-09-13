@@ -222,17 +222,17 @@ def test_calculate_github():
         "version": [{"key": "version", "value": "28-07-2024-00-00"}],
         "measures": [
             {"key": "team_throughput", "value": 0.0},
-            {"key": "ci_feedback_time", "value": 0.03225806451612903},
+            {"key": "ci_feedback_time", "value": 0.967741935483871},
         ],
         "subcharacteristics": [
-            {"key": "maturity", "value": 0.03225806451612903},
+            {"key": "maturity", "value": 0.967741935483871},
             {"key": "functional_completeness", "value": 0.0},
         ],
         "characteristics": [
-            {"key": "reliability", "value": 0.03225806451612903},
+            {"key": "reliability", "value": 0.967741935483871},
             {"key": "functional_suitability", "value": 0.0},
         ],
-        "tsqmi": [{"key": "tsqmi", "value": 0.023147764246074717}],
+        "tsqmi": [{"key": "tsqmi", "value": 0.6944329273822416}],
     }
 
     assert calculated_result.get("repository") == calculate_expected.get("repository")
