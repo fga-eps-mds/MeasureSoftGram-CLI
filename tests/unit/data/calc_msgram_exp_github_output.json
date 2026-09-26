@@ -1,0 +1,52 @@
+[
+    {
+        "repository": [
+            {
+                "key": "repository",
+                "value": "fga-eps-mds-2024.1-MeasureSoftGram-DOC"
+            }
+        ],
+        "version": [
+            {
+                "key": "version",
+                "value": "28-07-2024-00-00"
+            }
+        ],
+        "measures": [
+            {
+                "key": "team_throughput",
+                "value": 0.0
+            },
+            {
+                "key": "ci_feedback_time",
+                "value": 0.03225806451612903
+            }
+        ],
+        "subcharacteristics": [
+            {
+                "key": "maturity",
+                "value": 0.03225806451612903
+            },
+            {
+                "key": "functional_completeness",
+                "value": 0.0
+            }
+        ],
+        "characteristics": [
+            {
+                "key": "reliability",
+                "value": 0.03225806451612903
+            },
+            {
+                "key": "functional_suitability",
+                "value": 0.0
+            }
+        ],
+        "tsqmi": [
+            {
+                "key": "tsqmi",
+                "value": 0.023147764246074717
+            }
+        ]
+    }
+]

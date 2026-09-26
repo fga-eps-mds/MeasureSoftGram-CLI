@@ -1,2 +1,15 @@
 ###### Install local application in development mode. This will grab install_requires from setup.py.
 -e .
+requests~=2.32.3
+pandas~=2.2.0
+typing~=3.7.4.3
+tabulate~=0.9.0
+pytz~=2022.2.1
+termcolor~=2.4.0
+setuptools~=72.1.0
+python-dotenv
+rich
+validators==0.33.0
+msgram-core~=1.5.3
+msgram-parser~=1.2.1
+anytree

@@ -1,91 +1,66 @@
-import re
 from io import StringIO
-from src.cli.list import parse_list
+from pathlib import Path
+import sys
+import json
+import tempfile
+from src.cli.commands.cmd_init import command_init
+
+from src.cli.commands.cmd_list import command_list, print_json_tree
+from tests.unit.cli_output import normalize_cli_output
+
+import pytest
+
+INIT_ARGS = {"config_path": ".testmsgram"}
 
 
-class DummyResponse:
-    def __init__(self, status_code):
-        self.status_code = status_code
+def test_print_json_tree():
+    file = open("tests/unit/data/newmsgram.json")
+    data = json.load(file)
 
-    def json(self):
-        return [
-            {
-                "_id": "62656d15f354349ee4abfc7b",
-                "name": "pre-config-1",
-                "created_at": "2022-04-24 15:30:29+00:00",
-            },
-            {
-                "_id": "62656e79f354349ee4abfc7c",
-                "name": "pre-config-2",
-                "created_at": "2022-04-24 15:36:25+00:00",
-            },
-            {
-                "_id": "62656e7ef354349ee4abfc7d",
-                "name": "pre-config-3",
-                "created_at": "2022-04-24 15:36:30+00:00",
-            },
-        ]
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    characteristics = data.get("characteristics", [])
+
+    result = print_json_tree(characteristics[0])
+
+    fileExpected = open("tests/unit/data/expected_list.txt")
+
+    compare = fileExpected.read()
+
+    result = normalize_cli_output(result)
+    compare = normalize_cli_output(compare)
+
+    assert result == compare
 
 
-def test_pre_configs_list(mocker):
-    mocker.patch("requests.get", return_value=DummyResponse(200))
+def test_cmd_list():
+    temp_path = tempfile.mkdtemp()
+    config_path = f'{temp_path}/{INIT_ARGS["config_path"]}'
 
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-        parse_list()
+    captured_output = StringIO()
+    sys.stdout = captured_output
 
-        output_lines = fake_out.getvalue().splitlines()
+    command_init({"config_path": Path(config_path)})
 
-        assert len(output_lines) == 4
+    command_list({"config_path": Path(config_path)})
+    sys.stdout = sys.__stdout__
 
-        header_regexp = re.compile(r"ID\s+Name\s+Created at\s+Metrics file")
-
-        assert header_regexp.match(output_lines[0]) is not None
-
-        line_regexp = re.compile(
-            r"(?P<id>[0-9a-z]+)\s+(?P<name>[^\s]+)\s+"
-            + r"(?P<created_at>\d{2,}/\d{2,}/\d{4,}\s\d{2,}:\d{2,}:\d{2,})\s+"
-            + r"(?P<metrics_file>[^\s]+)"
-        )
-
-        expected_groups = [
-            (
-                "62656d15f354349ee4abfc7b",
-                "pre-config-1",
-                "04/24/2022 12:30:29",
-                "-",
-            ),
-            (
-                "62656e79f354349ee4abfc7c",
-                "pre-config-2",
-                "04/24/2022 12:36:25",
-                "-",
-            ),
-            (
-                "62656e7ef354349ee4abfc7d",
-                "pre-config-3",
-                "04/24/2022 12:36:30",
-                "-",
-            ),
-        ]
-
-        for i in range(1, 4):
-            match_data = line_regexp.match(output_lines[i])
-
-            assert (
-                match_data is not None
-            ), f"output_lines[{i}] does not match the expected line regexp"
-            assert (
-                match_data.groups() == expected_groups[i - 1]
-            ), f"{match_data.groups()} != {expected_groups[i - 1]}"
+    output = normalize_cli_output(captured_output.getvalue())
+    assert (
+        "Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
+        in output
+    )
 
 
-def test_error_in_pre_config_list(mocker):
-    mocker.patch("requests.get", return_value=DummyResponse(500))
+def test_cmd_list_if_path_not_exists():
+    captured_output = StringIO()
+    sys.stdout = captured_output
 
-    with mocker.patch("sys.stdout", new=StringIO()) as fake_out:
-        parse_list()
+    with pytest.raises(SystemExit):
+        command_list({"config_path": Path.cwd() / "invalid_path"})
 
-        assert (
-            "Error: an error occurred while fetching your pre configurations"
-            in fake_out.getvalue()
-        )
+    sys.stdout = sys.__stdout__
+
+    output = normalize_cli_output(captured_output.getvalue())
+    assert "O arquivo de configuração não foi encontrado." in output

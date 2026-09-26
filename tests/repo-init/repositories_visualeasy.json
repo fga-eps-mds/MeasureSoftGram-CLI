@@ -1,0 +1,11 @@
+{
+    "organization_name": "fga-eps-mds",
+ 
+    "product_name": "Visualeasy",
+ 
+    "repositories": [
+       "https://github.com/fga-eps-mds/2022-1-Visualeasy-Frontend",
+       "https://github.com/fga-eps-mds/2022-1-Visualeasy-Controle",
+       "https://github.com/fga-eps-mds/2022-1-Visualeasy-Usuario"
+    ] 
+}

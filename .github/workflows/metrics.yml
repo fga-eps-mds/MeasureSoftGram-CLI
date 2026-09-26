@@ -2,44 +2,44 @@ name: Export de métricas
 
 on:
   push:
+    branches: [main,develop]
     tags:
       - "v*"
-
+  workflow_dispatch:
 jobs:
   release:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Criar diretório
         run: mkdir analytics-raw-data
 
-      - name: Coletar métricas
-        run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
-
-      - name: Adiciona resultado das métricas
-        uses: actions/upload-artifact@v3
-        with:
-          name: metrics_results
-          path: ./analytics-raw-data/*
+      - name: Coletar métricas no SonarCloud
+        run: python parser.py "${{ github.event.repository.name }}" "${{ github.ref_name }}"
 
       - name: Envia métricas para repo de Doc
+        env:
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          API_TOKEN_DOC: ${{ secrets.API_TOKEN_DOC }}
         run: |
-          git config --global user.email "${{secrets.USER_EMAIL}}"
-          git config --global user.name "${{secrets.USER_NAME}}"
-          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_DOC_REPOSITORY}}@github.com/fga-eps-mds/2021-2-MeasureSoftGram-Doc.git" doc_repo
-          mkdir -p doc_repo/analytics-raw-data
-          cp -R analytics-raw-data/*.json doc_repo/analytics-raw-data
-          cd doc_repo
+          git config --global user.email "$USER_EMAIL"
+          git config --global user.name "$USER_NAME"
+          git clone --single-branch --branch main "https://x-access-token:$API_TOKEN_DOC@github.com/fga-eps-mds/2026.1-MeasureSoftGram-DOC" doc
+          mkdir -p doc/Analytics/data
+          cp -R analytics-raw-data/*.json doc/Analytics/data
+          cd doc/
           git add .
-          git commit -m "Adds metric file from ${{ github.event.repository.name }} ${{ github.ref_name }}"
+          git commit -m "Adicionando métricas do repositório ${{ github.event.repository.name }} ${{ github.ref_name }}"
           git push
 
-      - name: Faz upload das metricas como asset da release
+      - name: Envia métricas como assets da release
+        if: startsWith(github.ref, 'refs/tags')
         uses: AButler/upload-release-assets@v2.0
         with:
           files: 'analytics-raw-data/*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.TOKEN_GITHUB }}
           release-tag: ${{ github.ref_name }}

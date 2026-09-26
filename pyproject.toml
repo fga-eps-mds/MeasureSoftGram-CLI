@@ -1,6 +1,50 @@
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-testpaths = [
-    "tests",
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "msgram"
+version = "3.3.1rc2"
+description = "The msgram CLI is a command-line interface to use MeasureSoftGram software"
+readme = "README.md"
+authors = [
+    { name = "MeasureSoftGram", email = "measuresoftgram@gmail.com" }
 ]
+license = { file = "LICENSE" }
+classifiers = [
+    "Environment :: Console",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Natural Language :: Portuguese (Brazilian)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Utilities",
+]
+keywords = ["core", "measures", "quality", "algebraic model"]
+requires-python = ">=3.9"
+dependencies = [
+        "requests~=2.32.3",
+        "pytz",
+        "typing~=3.7.4.3",
+        "tabulate~=0.9.0",
+        "termcolor~=2.4.0",
+        "pandas~=2.2.2",
+        "setuptools~=72.1.0",
+        "python-dotenv",
+        "rich",
+        "validators~=0.33.0",
+        "msgram-core~=1.5.3",
+        "msgram-parser~=1.2.1",
+        "anytree"
+    ]
+
+[project.scripts]
+msgram = "src.cli.cli:main"
+
+[tool.mypy]
+strict = true
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "setuptools", "wheel"]
+
+[tool.setuptools.packages]
+find = {}
