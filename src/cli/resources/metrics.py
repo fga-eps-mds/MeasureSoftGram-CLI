@@ -9,6 +9,7 @@ def get_metric_value(extracted):
         "functions",
         "comment_lines_density",
         "duplicated_lines_density",
+        "sqale_debt_ratio",
         "resolved_issues",
         "total_issues",
         "sum_ci_feedback_times",

@@ -23,6 +23,29 @@ with open(os.path.join(TEST_DATA_DIR, "onlysonarmsgram.json"), "r") as file:
 with open(os.path.join(TEST_DATA_DIR, "onlygithubmsgram.json"), "r") as file:
     only_github_msgram = json.load(file)
 
+technical_debt_msgram = {
+    "characteristics": [
+        {
+            "key": "maintainability",
+            "weight": 100,
+            "subcharacteristics": [
+                {
+                    "key": "modifiability",
+                    "weight": 100,
+                    "measures": [
+                        {
+                            "key": "technical_debt_ratio",
+                            "weight": 100,
+                            "min_threshold": 0,
+                            "max_threshold": 20,
+                        }
+                    ],
+                }
+            ],
+        }
+    ]
+}
+
 
 @pytest.mark.parametrize(
     "config, expected_result",
@@ -30,6 +53,7 @@ with open(os.path.join(TEST_DATA_DIR, "onlygithubmsgram.json"), "r") as file:
         (config, True),
         (only_sonar_msgram, True),
         (only_github_msgram, True),
+        (technical_debt_msgram, True),
     ],
 )
 def test_should_process_metrics(config, expected_result):

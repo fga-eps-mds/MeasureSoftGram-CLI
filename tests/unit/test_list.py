@@ -64,3 +64,30 @@ def test_cmd_list_if_path_not_exists():
 
     output = normalize_cli_output(captured_output.getvalue())
     assert "O arquivo de configuração não foi encontrado." in output
+
+
+def test_print_json_tree_technical_debt_ratio():
+    file = open("tests/unit/data/newmsgram.json")
+    data = json.load(file)
+
+    maintainability = next(
+        characteristic
+        for characteristic in data.get("characteristics", [])
+        if characteristic.get("key") == "maintainability"
+    )
+    maintainability["subcharacteristics"][0]["measures"].append(
+        {
+            "key": "technical_debt_ratio",
+            "weight": 25,
+            "min_threshold": 0,
+            "max_threshold": 20,
+        }
+    )
+
+    result = normalize_cli_output(print_json_tree(maintainability))
+
+    assert (
+        "│ │ │ technical_debt_ratio │ │ │ Peso: 25% │ │ │ Métrica(s): "
+        "│ │ │ └─sqale_debt_ratio │ │ │ │ Valores de referência: Min = 0 e Max = 20"
+        in result
+    )

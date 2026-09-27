@@ -14,6 +14,7 @@ metrics["sonar"] = [
     "complexity",
     "comment_lines_density",
     "duplicated_lines_density",
+    "sqale_debt_ratio",
 ]
 
 metrics["github"] = [
@@ -32,6 +33,7 @@ measures["sonarqube"] = [
     "non_complex_file_density",
     "commented_file_density",
     "duplication_absense",
+    "technical_debt_ratio",
 ]
 
 measures["github"] = ["team_throughput", "ci_feedback_time"]
