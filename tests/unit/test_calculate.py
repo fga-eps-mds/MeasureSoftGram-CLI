@@ -237,6 +237,30 @@ def test_calculate_sonar_with_technical_debt_ratio():
     )
 
 
+@patch("src.cli.resources.measure.print_warn")
+def test_calculate_sonar_without_technical_debt_ratio(mock_print_warn):
+    file_name = "fga-eps-mds-2023-2-MeasureSoftGram-Service-12-11-2023-02-57-52-develop-extracted.metrics"
+    json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
+
+    calculated_result = calculate_all(json_data, file_name, pre_config)
+
+    measures = {m["key"]: m["value"] for m in calculated_result.get("measures")}
+    subcharacteristics = {
+        sc["key"]: sc["value"] for sc in calculated_result.get("subcharacteristics")
+    }
+
+    assert "technical_debt_ratio" not in measures
+    assert pytest.approx(subcharacteristics["modifiability"]) == 0.6072460066446832
+    assert (
+        pytest.approx(calculated_result.get("tsqmi")[0].get("value"))
+        == 0.7884429833371168
+    )
+    mock_print_warn.assert_called_once_with(
+        "Measure 'technical_debt_ratio' could not be calculated. "
+        "Missing metrics: sqale_debt_ratio"
+    )
+
+
 def test_calculate_github():
     file_name = "github_fga-eps-mds-2024.1-MeasureSoftGram-DOC-28-07-2024-00-00-22-extracted.metrics"
     json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
