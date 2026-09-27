@@ -36,6 +36,7 @@ def test_show_tree(capfd):
             {"key": "non_complex_file_density", "value": 0.44347274991556906},
             {"key": "commented_file_density", "value": 0.04318181818181818},
             {"key": "duplication_absence", "value": 1.0},
+            {"key": "technical_debt_ratio", "value": 0.59625},
             {"key": "team_throughput", "value": 0.6969696969696971},
             {"key": "ci_feedback_time", "value": 0.06117908787541713},
         ],
@@ -67,7 +68,8 @@ def test_show_tree(capfd):
         "├── maintainability: 0.6415437113263573\n"
         "│   └── modifiability 0.6415437113263573\n"
         "│       ├── non_complex_file_density 0.44347274991556906\n"
-        "│       └── commented_file_density 0.04318181818181818\n"
+        "│       ├── commented_file_density 0.04318181818181818\n"
+        "│       └── technical_debt_ratio 0.59625\n"
         "└── functional_suitability: 0.6969696969696971\n"
         "    └── functional_completeness 0.6969696969696971\n"
         "        └── team_throughput 0.6969696969696971"
@@ -207,6 +209,56 @@ def test_calculate_sonar():
     tsqmi_expected = calculate_expected.get("tsqmi")[0]
     assert tsqmi_result.get("key") == tsqmi_expected.get("key")
     assert pytest.approx(tsqmi_result.get("value")) == tsqmi_expected.get("value")
+
+
+def test_calculate_sonar_with_technical_debt_ratio():
+    file_name = "fga-eps-mds-2023-2-MeasureSoftGram-Service-12-11-2023-02-57-52-develop-extracted.metrics"
+    json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
+    file_paths = list(json_data.keys())[1:5]
+    for file_path, value in zip(file_paths, ["0.0", "8.3", "4.0", "32.5"]):
+        json_data[file_path].append({"metric": "sqale_debt_ratio", "value": value})
+
+    calculated_result = calculate_all(json_data, file_name, pre_config)
+
+    measures = {m["key"]: m["value"] for m in calculated_result.get("measures")}
+    subcharacteristics = {
+        sc["key"]: sc["value"] for sc in calculated_result.get("subcharacteristics")
+    }
+    characteristics = {
+        c["key"]: c["value"] for c in calculated_result.get("characteristics")
+    }
+
+    assert pytest.approx(measures["technical_debt_ratio"]) == 0.59625
+    assert pytest.approx(subcharacteristics["modifiability"]) == 0.6045157566717644
+    assert pytest.approx(characteristics["maintainability"]) == 0.6045157566717644
+    assert (
+        pytest.approx(calculated_result.get("tsqmi")[0].get("value"))
+        == 0.7873932509952024
+    )
+
+
+@patch("src.cli.resources.measure.print_warn")
+def test_calculate_sonar_without_technical_debt_ratio(mock_print_warn):
+    file_name = "fga-eps-mds-2023-2-MeasureSoftGram-Service-12-11-2023-02-57-52-develop-extracted.metrics"
+    json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
+
+    calculated_result = calculate_all(json_data, file_name, pre_config)
+
+    measures = {m["key"]: m["value"] for m in calculated_result.get("measures")}
+    subcharacteristics = {
+        sc["key"]: sc["value"] for sc in calculated_result.get("subcharacteristics")
+    }
+
+    assert "technical_debt_ratio" not in measures
+    assert pytest.approx(subcharacteristics["modifiability"]) == 0.6072460066446832
+    assert (
+        pytest.approx(calculated_result.get("tsqmi")[0].get("value"))
+        == 0.7884429833371168
+    )
+    mock_print_warn.assert_called_once_with(
+        "Measure 'technical_debt_ratio' could not be calculated. "
+        "Missing metrics: sqale_debt_ratio"
+    )
 
 
 def test_calculate_github():
