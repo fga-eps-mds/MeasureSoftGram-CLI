@@ -23,8 +23,9 @@ def get_configured_measures(config):
 def get_missing_measures(extracted, config, calculated_measures):
     configured_measures = get_configured_measures(config)
     supported_metrics = {
-        list(measure.keys())[0]: list(measure.values())[0]["metrics"]
+        measure_key: measure_info["metrics"]
         for measure in SUPPORTED_MEASURES
+        for measure_key, measure_info in measure.items()
     }
 
     missing_measures = {}
