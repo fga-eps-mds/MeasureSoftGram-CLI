@@ -71,6 +71,13 @@ SUPPORTED_MEASURES = [
         }
     },
     {
+        "technical_debt_ratio": {
+            "metrics": [
+                "sqale_debt_ratio",
+            ],
+        }
+    },
+    {
         "team_throughput": {
             "metrics": [
                 "total_issues",

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+from staticfiles import DEFAULT_PRE_CONFIG as pre_config
 
 from src.cli.jsonReader import open_json_file
 from src.cli.resources.measure import calculate_measures
@@ -31,3 +32,19 @@ def test_calculate_measures():
         assert pytest.approx(measure_result.get("value")) == measure_expected.get(
             "value"
         )
+
+
+def test_calculate_technical_debt_ratio():
+    json_data = {
+        "src/a.py": [{"metric": "sqale_debt_ratio", "value": "0.0"}],
+        "src/b.py": [{"metric": "sqale_debt_ratio", "value": "8.3"}],
+        "src/c.py": [{"metric": "sqale_debt_ratio", "value": "4.0"}],
+        "src/d.py": [{"metric": "sqale_debt_ratio", "value": "32.5"}],
+    }
+
+    infos, _ = calculate_measures(json_data, pre_config)
+
+    measure_result = infos.get("measures")
+    assert len(measure_result) == 1
+    assert measure_result[0].get("key") == "technical_debt_ratio"
+    assert pytest.approx(measure_result[0].get("value")) == 0.59625
