@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import command_extract
@@ -5,6 +6,7 @@ from src.cli.commands.cmd_calculate import command_calculate
 from src.cli.commands.cmd_list import command_list
 
 from src.cli.parsers import create_parser
+from src.config.settings import AVAILABLE_GEN_FORMATS
 
 
 def mock_command_init(args):
@@ -91,3 +93,19 @@ def test_parser_calculate_tabular():
     )
     assert args.func == command_calculate
     assert args.output_format == "tabular"
+
+
+def test_parser_calculate_help_lists_all_output_formats():
+    parser = create_parser()
+    subparsers_action = next(
+        action
+        for action in parser._subparsers._group_actions
+        if isinstance(action, argparse._SubParsersAction)
+    )
+    calculate_parser = subparsers_action.choices["calculate"]
+    output_format_action = next(
+        action for action in calculate_parser._actions if action.dest == "output_format"
+    )
+
+    for output_format in AVAILABLE_GEN_FORMATS:
+        assert output_format in output_format_action.help
