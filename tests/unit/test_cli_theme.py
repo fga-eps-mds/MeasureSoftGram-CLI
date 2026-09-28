@@ -53,6 +53,7 @@ def test_auto_theme_detects_terminal_background(monkeypatch):
 
 
 def test_auto_theme_fallback_is_safe_when_colorfgbg_is_missing(monkeypatch):
+    monkeypatch.setattr(cli_utils, "_detect_os_theme", lambda: None)
     monkeypatch.delenv("COLORFGBG", raising=False)
     monkeypatch.setenv("MSGRAM_COLOR_THEME", "dark")
 
@@ -150,6 +151,7 @@ def test_progress_styles_follow_active_theme():
 
 
 def test_invalid_theme_falls_back_to_safe_theme(monkeypatch):
+    monkeypatch.setattr(cli_utils, "_detect_os_theme", lambda: None)
     monkeypatch.delenv("COLORFGBG", raising=False)
 
     cli_utils.configure_theme("sepia")
