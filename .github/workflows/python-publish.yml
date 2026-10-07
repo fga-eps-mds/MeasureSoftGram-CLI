@@ -21,6 +21,8 @@ on:
 jobs:
   build:
     name: Build e validacoes
+    # Publicação só no repositório central; nos forks semestrais o job é pulado.
+    if: github.repository == 'fga-eps-mds/MeasureSoftGram-CLI'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.meta.outputs.version }}
