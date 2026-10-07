@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "msgram"
-version = "3.3.1rc2"
+version = "3.4.1rc1"
 description = "The msgram CLI is a command-line interface to use MeasureSoftGram software"
 readme = "README.md"
 authors = [
@@ -20,7 +20,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 keywords = ["core", "measures", "quality", "algebraic model"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
         "requests~=2.32.3",
         "pytz",
@@ -32,8 +32,8 @@ dependencies = [
         "python-dotenv",
         "rich",
         "validators~=0.33.0",
-        "msgram-core @ git+https://github.com/fga-eps-mds/2026.2-MeasureSoftGram-Core.git@335972eb2e14d82382c0374fa265cac0947d7533",
-        "msgram-parser~=1.2.1",
+        "msgram-core~=1.5.5rc2",
+        "msgram-parser~=1.2.2",
         "anytree"
     ]
 
