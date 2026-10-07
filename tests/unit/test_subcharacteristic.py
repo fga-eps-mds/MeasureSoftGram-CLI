@@ -1,5 +1,8 @@
 from pathlib import Path
 
+import pytest
+from staticfiles import DEFAULT_PRE_CONFIG as pre_config
+
 from src.cli.resources.subcharacteristic import calculate_subcharacteristics
 from src.cli.jsonReader import open_json_file
 
@@ -24,3 +27,19 @@ def test_calculate_subcharacteristics():
             {"key": "modifiability", "value": 0.650528195701257},
         ]
     }
+
+
+def test_calculate_modifiability_with_technical_debt_ratio():
+    measures = [
+        {"key": "non_complex_file_density", "value": 0.4829268292682926},
+        {"key": "commented_file_density", "value": 0.029230769230769227},
+        {"key": "duplication_absense", "value": 1.0},
+        {"key": "technical_debt_ratio", "value": 0.59625},
+    ]
+
+    infos, _ = calculate_subcharacteristics(pre_config, measures)
+
+    subcharacteristic_result = infos.get("subcharacteristics")
+    assert len(subcharacteristic_result) == 1
+    assert subcharacteristic_result[0].get("key") == "modifiability"
+    assert pytest.approx(subcharacteristic_result[0].get("value")) == 0.630394087614436

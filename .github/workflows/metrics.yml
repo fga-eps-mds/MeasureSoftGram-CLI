@@ -10,7 +10,7 @@ jobs:
   release:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
@@ -28,7 +28,7 @@ jobs:
         run: |
           git config --global user.email "$USER_EMAIL"
           git config --global user.name "$USER_NAME"
-          git clone --single-branch --branch main "https://x-access-token:$API_TOKEN_DOC@github.com/fga-eps-mds/2026.1-MeasureSoftGram-DOC" doc
+          git clone --single-branch --branch main "https://x-access-token:$API_TOKEN_DOC@github.com/fga-eps-mds/2026.2-MeasureSoftGram-DOC" doc
           mkdir -p doc/Analytics/data
           cp -R analytics-raw-data/*.json doc/Analytics/data
           cd doc/
@@ -38,7 +38,7 @@ jobs:
 
       - name: Envia métricas como assets da release
         if: startsWith(github.ref, 'refs/tags')
-        uses: AButler/upload-release-assets@v2.0
+        uses: AButler/upload-release-assets@ec6d3263266dc57eb6645b5f75e827987f7c217d # v2.0
         with:
           files: 'analytics-raw-data/*'
           repo-token: ${{ secrets.TOKEN_GITHUB }}

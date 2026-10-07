@@ -19,13 +19,13 @@
             },
             {
                 "key": "ci_feedback_time",
-                "value": 0.03225806451612903
+                "value": 0.967741935483871
             }
         ],
         "subcharacteristics": [
             {
                 "key": "maturity",
-                "value": 0.03225806451612903
+                "value": 0.967741935483871
             },
             {
                 "key": "functional_completeness",
@@ -35,7 +35,7 @@
         "characteristics": [
             {
                 "key": "reliability",
-                "value": 0.03225806451612903
+                "value": 0.967741935483871
             },
             {
                 "key": "functional_suitability",
@@ -45,7 +45,7 @@
         "tsqmi": [
             {
                 "key": "tsqmi",
-                "value": 0.023147764246074717
+                "value": 0.6944329273822416
             }
         ]
     }

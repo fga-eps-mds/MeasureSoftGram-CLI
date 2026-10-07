@@ -21,16 +21,18 @@ on:
 jobs:
   build:
     name: Build e validacoes
+    # Publicação só no repositório central; nos forks semestrais o job é pulado.
+    if: github.repository == 'fga-eps-mds/MeasureSoftGram-CLI'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.meta.outputs.version }}
       package: ${{ steps.meta.outputs.package }}
       is_prerelease: ${{ steps.meta.outputs.is_prerelease }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: "3.12"
 
@@ -72,7 +74,7 @@ jobs:
         run: python -m twine check dist/*
 
       - name: Subir artefato
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: dist
           path: dist/
@@ -87,13 +89,13 @@ jobs:
       id-token: write   # obrigatorio para Trusted Publishing (OIDC)
     steps:
       - name: Baixar artefato
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: dist
           path: dist/
 
       - name: Publicar no PyPI (pre-release)
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
 
   publish-release:
     name: Publicar versao final no PyPI
@@ -105,7 +107,7 @@ jobs:
       id-token: write   # obrigatorio para Trusted Publishing (OIDC)
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: "3.12"
 
@@ -144,10 +146,10 @@ jobs:
           PY
 
       - name: Baixar artefato
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: dist
           path: dist/
 
       - name: Publicar no PyPI (versao final)
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
