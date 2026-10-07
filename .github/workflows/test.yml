@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Em PRs vindos de fork o GitHub não repassa secrets; o scan só roda com token.
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -36,6 +39,7 @@ jobs:
           head -5 coverage.xml
 
       - name: SonarQube Scan
+        if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -43,3 +47,6 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
+      - name: SonarQube Scan indisponível (PR de fork)
+        if: env.SONAR_TOKEN == ''
+        run: echo "::notice::SONAR_TOKEN não disponível neste contexto (PR de fork). Testes e cobertura concluídos; a análise do SonarCloud roda no push para a develop."
