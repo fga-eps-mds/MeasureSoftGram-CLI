@@ -47,20 +47,6 @@ def get_infos_from_name(filename: str) -> str:
     return f"{file_name}-extracted.metrics"
 
 
-def parse_input_quotes(user_input):
-    # Aspas para normalizar
-    quotes = "“‘«”’»"
-
-    if user_input:
-        # Remove aspas no início
-        user_input = user_input[1:] if user_input[0] in quotes else user_input
-
-        # Remove aspas no final
-        user_input = user_input[:-1] if user_input[-1] in quotes else user_input
-
-    return user_input
-
-
 def extract_github(
     extracted_path: Path,
     gh_repository: str,
@@ -134,10 +120,6 @@ def extract_sonar(extracted_path: Path, sonar_path: Path, parser: GenericParser)
             f"\n\nMetrics successfully extracted [{valid_files}/{len(files)} "
             f"files - {time_extract:0.2f} seconds]!"
         )
-
-
-def extract_perf_eff():
-    pass
 
 
 def command_extract(args):

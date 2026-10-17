@@ -80,7 +80,6 @@ def save_github_metrics_runs():
 
     data = response.json()
 
-    # date = datetime.strptime("2023-03-23","%Y-%m-%d").strftime("%Y-%m-%d")
     data = all_request_pages(data)
 
     print("Quantidade de workflow_runs: " + str(len(data["workflow_runs"])))
