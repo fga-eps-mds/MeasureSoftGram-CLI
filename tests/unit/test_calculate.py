@@ -231,9 +231,10 @@ def test_calculate_sonar_with_technical_debt_ratio():
     assert pytest.approx(measures["technical_debt_ratio"]) == 0.59625
     assert pytest.approx(subcharacteristics["modifiability"]) == 0.6045157566717644
     assert pytest.approx(characteristics["maintainability"]) == 0.6045157566717644
+    # Pesos da pré-configuração sem performance_efficiency: 34/33/33.
     assert (
         pytest.approx(calculated_result.get("tsqmi")[0].get("value"))
-        == 0.7873932509952024
+        == 0.7922025700470549
     )
 
 
@@ -251,9 +252,10 @@ def test_calculate_sonar_without_technical_debt_ratio(mock_print_warn):
 
     assert "technical_debt_ratio" not in measures
     assert pytest.approx(subcharacteristics["modifiability"]) == 0.6072460066446832
+    # Pesos da pré-configuração sem performance_efficiency: 34/33/33.
     assert (
         pytest.approx(calculated_result.get("tsqmi")[0].get("value"))
-        == 0.7884429833371168
+        == 0.7932148195515184
     )
     mock_print_warn.assert_called_once_with(
         "Measure 'technical_debt_ratio' could not be calculated. "
