@@ -225,43 +225,52 @@ def get_obj_by_element(object_list: list, element_key: str, element_to_find):
     return next((obj for obj in object_list if obj[element_key] == element_to_find), {})
 
 
+def configured_entities(config_entries: list, calculated: list):
+    """Yields (config_entry, calculated_entity) for the entries that were calculated,
+    following the order of the user's msgram.json and matching by key."""
+    for entry in config_entries:
+        entity = get_obj_by_element(calculated, "key", entry["key"])
+        if entity:
+            yield entry, entity
+
+
+def add_measure_nodes(parent, measures_c, measures):
+    tree_muted = color_tag("muted")
+    for _, measure in configured_entities(measures_c, measures):
+        Node(f"{tree_muted}{measure['key']} {measure['value']}", parent=parent)
+
+
+def add_subcharacteristic_nodes(parent, subchars_c, subcharacteristics, measures):
+    tree_accent = color_tag("accent")
+    for subchar_c, subchar in configured_entities(subchars_c, subcharacteristics):
+        sub_char_tree = Node(
+            f"{tree_accent}{subchar['key']} {subchar['value']}", parent=parent
+        )
+        add_measure_nodes(sub_char_tree, subchar_c["measures"], measures)
+
+
 def show_tree(data_calculated, config):
     tsqmi = data_calculated["tsqmi"][0]
-    characteristics = data_calculated["characteristics"]
-    subcharacteristics = data_calculated["subcharacteristics"]
-    measures = data_calculated["measures"]
     tree_success = color_tag("success")
     tree_accent = color_tag("accent")
-    tree_muted = color_tag("muted")
 
     print_info("Overview - tree:\n\n")
     tsqmi_tree = Node(f"{tree_success}{tsqmi['key']}: {tsqmi['value']}")
 
     # Follows the user's msgram.json and matches entities by key, so removed or
     # reordered characteristics are shown as configured.
-    for char_c in config["characteristics"]:
-        char = get_obj_by_element(characteristics, "key", char_c["key"])
-        if not char:
-            continue
+    for char_c, char in configured_entities(
+        config["characteristics"], data_calculated["characteristics"]
+    ):
         char_tree = Node(
             f"{tree_accent}{char['key']}: {char['value']}", parent=tsqmi_tree
         )
-
-        for subchar_c in char_c["subcharacteristics"]:
-            subchar = get_obj_by_element(subcharacteristics, "key", subchar_c["key"])
-            if subchar:
-                sub_char_tree = Node(
-                    f"{tree_accent}{subchar['key']} {subchar['value']}",
-                    parent=char_tree,
-                )
-
-                for measure_c in subchar_c["measures"]:
-                    measure = get_obj_by_element(measures, "key", measure_c["key"])
-                    if measure:
-                        Node(
-                            f"{tree_muted}{measure['key']} {measure['value']}",
-                            parent=sub_char_tree,
-                        )
+        add_subcharacteristic_nodes(
+            char_tree,
+            char_c["subcharacteristics"],
+            data_calculated["subcharacteristics"],
+            data_calculated["measures"],
+        )
 
     for pre, fill, node in RenderTree(tsqmi_tree):
         print_info(f"{pre}{node.name}")
