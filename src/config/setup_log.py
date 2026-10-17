@@ -60,16 +60,9 @@ def basic_config(console_level_name, file_level_name, file_mode):
     console_handler = CLIConsoleHandler(sys.stdout)
     console_formatter = logging.Formatter(LOG_FORMATS[console_level_name], datefmt)
     console_handler.setFormatter(console_formatter)
-    # console_handler.setLevel(LOG_LEVELS[console_level_name])
-
-    # file_handler = logging.FileHandler(file_name, file_mode)
-    # file_formatter = logging.Formatter(LOG_FORMATS[file_level_name])
-    # file_handler.setFormatter(file_formatter)
-    # file_handler.setLevel(LOG_LEVELS[file_level_name])
 
     logger = logging.getLogger("msgram")
     logger.addHandler(console_handler)
-    # logger.addHandler(file_handler)
     logger.setLevel(LOG_LEVELS[console_level_name])
 
     logger_console = logging.getLogger("console")
@@ -77,20 +70,8 @@ def basic_config(console_level_name, file_level_name, file_mode):
     logger_console.setLevel(LOG_LEVELS[console_level_name])
 
     logger_file = logging.getLogger("file")
-    # logger_file.addHandler(file_handler)
     logger_file.addHandler(console_handler)
     logger_file.setLevel(LOG_LEVELS[file_level_name])
-
-
-# =================================================================================================
-# logging testing
-
-# logger.log(logging.DEBUG, "This is an debug message.")
-# logger.log(logging.INFO, "This is an info message.")
-# logger.log(logging.ERROR, "This is an error message.")
-# logger.log(logging.WARNING, "This is an warning message.")
-# logger.log(logging.CRITICAL, "This is an critical message.")
-# logger.error("[bold red blink]This is an error custom message[/]", extra={"markup": True})
 
 
 # =================================================================================================

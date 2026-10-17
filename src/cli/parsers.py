@@ -220,15 +220,6 @@ def create_parser():
     )
     add_theme_argument(parser_calculate, dest="command_theme")
 
-    # parser_calculate.add_argument(
-    #     "all",
-    #     type=str,
-    #     nargs="?",
-    #     help=(
-    #         "Returns the calculated value of the entities: measures, subcharacteristics, characteristics, tsqmi"
-    #     ),
-    # )
-
     parser_calculate.add_argument(
         "-ep",
         "--extracted_path",
