@@ -66,14 +66,14 @@ def command_demo(args):
 
     output_path.mkdir(parents=True, exist_ok=True)
 
-    # Remove a previous config so `init` never prompts for a replacement,
-    # keeping the demo fully non-interactive when re-run.
+    # Step 1: init - generate msgram.json from the default pre config only when
+    # it does not exist yet. An existing (possibly edited) config is reused, so
+    # re-running the demo reflects the user's changes and never prompts.
     config_file = output_path / "msgram.json"
     if config_file.exists():
-        config_file.unlink()
-
-    # Step 1: init - generate msgram.json from the default pre config.
-    command_init({"config_path": output_path})
+        print_info(f"> Using existing config file: {config_file}")
+    else:
+        command_init({"config_path": output_path})
 
     # Step 2: extract - read the embedded Sonar JSON into a .metrics file.
     command_extract(
@@ -103,6 +103,8 @@ def command_demo(args):
             "embedded sample dataset.\n"
             f"> Config file:  {config_file}\n"
             f"> Result file:  {result_file}\n"
+            "> Edit the config file and re-run the demo to see the effect of your "
+            "changes (delete it to go back to the default configuration).\n"
             "> Inspect the result or re-run with your own data following the README."
         ),
     )

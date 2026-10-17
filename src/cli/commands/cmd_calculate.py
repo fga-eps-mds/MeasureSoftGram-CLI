@@ -112,7 +112,7 @@ def command_calculate(args):
     if success:
         print_success("\nAll calculations performed successfully!")
 
-    show_results(output_format, data_calculated, config_path)
+    show_results(output_format, data_calculated, config_path, config)
     print_rule()
 
     print_panel(
@@ -162,7 +162,7 @@ def calculate_all(json_data, file_name, config):
     }
 
 
-def show_results(output_format, data_calculated, config_path):
+def show_results(output_format, data_calculated, config_path, config=None):
 
     if len(data_calculated) == 0:
         print_warn(
@@ -177,7 +177,7 @@ def show_results(output_format, data_calculated, config_path):
         print_output(data_calculated[0])
 
     elif output_format == "tree":
-        show_tree(data_calculated[0], pre_config)
+        show_tree(data_calculated[0], config or pre_config)
 
     elif output_format == "csv":
         print_info("Exporting CSV...")
@@ -225,7 +225,7 @@ def get_obj_by_element(object_list: list, element_key: str, element_to_find):
     return next((obj for obj in object_list if obj[element_key] == element_to_find), {})
 
 
-def show_tree(data_calculated, pre_config):
+def show_tree(data_calculated, config):
     tsqmi = data_calculated["tsqmi"][0]
     characteristics = data_calculated["characteristics"]
     subcharacteristics = data_calculated["subcharacteristics"]
@@ -237,7 +237,12 @@ def show_tree(data_calculated, pre_config):
     print_info("Overview - tree:\n\n")
     tsqmi_tree = Node(f"{tree_success}{tsqmi['key']}: {tsqmi['value']}")
 
-    for char_c, char in zip(pre_config["characteristics"], characteristics):
+    # Follows the user's msgram.json and matches entities by key, so removed or
+    # reordered characteristics are shown as configured.
+    for char_c in config["characteristics"]:
+        char = get_obj_by_element(characteristics, "key", char_c["key"])
+        if not char:
+            continue
         char_tree = Node(
             f"{tree_accent}{char['key']}: {char['value']}", parent=tsqmi_tree
         )
