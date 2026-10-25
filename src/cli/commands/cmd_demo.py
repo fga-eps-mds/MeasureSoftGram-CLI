@@ -1,4 +1,5 @@
 from importlib import resources
+import json
 import logging
 import sys
 from pathlib import Path
@@ -6,6 +7,8 @@ from pathlib import Path
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import command_extract
 from src.cli.commands.cmd_calculate import command_calculate
+from src.cli.aggregate_metrics import measures as source_measures
+from src.cli.resources.measure import get_configured_measures
 from src.cli.utils import (
     clear_console,
     print_error,
@@ -13,6 +16,7 @@ from src.cli.utils import (
     print_panel,
     print_rule,
     print_success,
+    print_warn,
 )
 
 logger = logging.getLogger("msgram")
@@ -53,6 +57,21 @@ def find_raw_data_dir() -> Path:
     )
 
 
+def github_measures_in_config(config_file: Path) -> list[str]:
+    """Return the configured measures that depend on GitHub data.
+
+    The embedded sample dataset only has SonarQube metrics, so these measures
+    (and the characteristics that depend only on them) are left out of the
+    demo result. Returns an empty list when the config cannot be read; the
+    calculate step reports invalid configs on its own.
+    """
+    try:
+        configured = get_configured_measures(json.loads(config_file.read_text()))
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+    return [measure for measure in source_measures["github"] if measure in configured]
+
+
 def command_demo(args):
     try:
         output_path: Path = args.get("output_path") or DEFAULT_DEMO_OUTPUT
@@ -86,6 +105,14 @@ def command_demo(args):
         print_info(f"> Using existing config file: {config_file}")
     else:
         command_init({"config_path": output_path})
+
+    github_measures = github_measures_in_config(config_file)
+    if github_measures:
+        print_warn(
+            "The sample dataset only has SonarQube metrics. These configured "
+            "measures need GitHub data and will not be calculated: "
+            f"{', '.join(github_measures)}"
+        )
 
     # Step 2: extract - read the embedded Sonar JSON into a .metrics file.
     command_extract(
