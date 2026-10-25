@@ -1,3 +1,4 @@
+from importlib import resources
 import logging
 import sys
 from pathlib import Path
@@ -16,22 +17,33 @@ from src.cli.utils import (
 
 logger = logging.getLogger("msgram")
 
-# Directory name of the embedded sample dataset shipped with the repository.
+# Directory name of the embedded sample dataset shipped with the package/repository.
+PACKAGE_RESOURCES = "src.cli.resources"
+DEMO_DATA_DIRNAME = "demo_data"
 EXAMPLES_DIRNAME = "examples"
 RAW_DATA_DIRNAME = "analytics-raw-data"
 DEFAULT_DEMO_OUTPUT = Path.cwd() / "msgram-demo"
 
 
+def _candidate_raw_data_dirs() -> list[Path]:
+    packaged_dir = Path(
+        str(resources.files(PACKAGE_RESOURCES).joinpath(DEMO_DATA_DIRNAME))
+    )
+    repo_dirs = [
+        parent / EXAMPLES_DIRNAME / RAW_DATA_DIRNAME
+        for parent in Path(__file__).resolve().parents
+    ]
+    return [packaged_dir, *repo_dirs]
+
+
 def find_raw_data_dir() -> Path:
     """Locate the embedded sample dataset.
 
-    The lookup is done relative to this module (not the current working
-    directory) so the demo keeps working when the CLI is installed and run
-    from outside the repository. We walk up the parents of this file looking
-    for `examples/analytics-raw-data`.
+    Checks the packaged resource (`src/cli/resources/demo_data`) first so
+    the demo works when the CLI is installed from PyPI/wheel, falling back
+    to `examples/analytics-raw-data` when running from a repository checkout.
     """
-    for parent in Path(__file__).resolve().parents:
-        candidate = parent / EXAMPLES_DIRNAME / RAW_DATA_DIRNAME
+    for candidate in _candidate_raw_data_dirs():
         if candidate.is_dir() and any(candidate.glob("*.json")):
             return candidate
 

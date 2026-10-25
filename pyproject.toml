@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "msgram"
-version = "3.4.1rc2"
+version = "3.4.1rc3"
 description = "The msgram CLI is a command-line interface to use MeasureSoftGram software"
 readme = "README.md"
 authors = [
@@ -48,3 +48,7 @@ dev = ["pytest", "pytest-cov", "setuptools", "wheel"]
 
 [tool.setuptools.packages]
 find = {}
+
+[tool.setuptools.package-data]
+"src.cli.resources" = ["demo_data/*.json"]
+
