@@ -2,51 +2,68 @@ name: Rodar Testes
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Em PRs vindos de fork o GitHub não repassa secrets; o scan só roda com token.
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Checkout do código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.10"
           cache: pip
 
-      - name: Instalar requirements
-        run: pip install -r requirements.txt
+      - name: Instalar dependências de build e lint
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 build tox
+          pip install -r requirements.txt
 
-      - name: Instalar tox
-        run: pip install tox
+      - name: Verificar Linter e Sintaxe
+        run: |
+          flake8 .
+          python -m compileall .
 
-      - name: Rodar testes
+      - name: Testar Empacotamento
+        run: |
+          python -m build
+
+      - name: Rodar testes e gerar cobertura
         run: tox -e test_cli
 
-      - name: Conferir relatorios de cobertura
-        run: |
-          ls -l coverage.xml junit.xml
-          head -5 coverage.xml
-
-      - name: SonarQube Scan
-        if: env.SONAR_TOKEN != ''
-        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
+      # O SonarCloud só deve ser executado se:
+      # 1. Não for disparado pelo Dependabot (que não possui acesso aos secrets de Actions)
+      # 2. O evento for push (merge) OU um PR interno do próprio repositório (não fork externo)
+      - name: Scanner do SonarCloud
+        if: >-
+          github.actor != 'dependabot[bot]' &&
+          (github.event_name != 'pull_request' ||
+           github.event.pull_request.head.repo.full_name == github.repository)
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
+        # 'sonar.qualitygate.wait=true' pausa a execução do step e consulta a API do SonarCloud
+        # até a conclusão da análise. Se o Quality Gate for reprovado (cobertura insuficiente, bugs,
+        # code smells), o scanner encerra com código de erro diferente de zero e quebra o CI na hora.
         with:
           args: >
             -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
-      - name: SonarQube Scan indisponível (PR de fork)
-        if: env.SONAR_TOKEN == ''
-        run: echo "::notice::SONAR_TOKEN não disponível neste contexto (PR de fork). Testes e cobertura concluídos; a análise do SonarCloud roda no push para a develop."
+            -Dsonar.qualitygate.wait=true
+
+      - name: Notificação de SonarCloud ignorado (Fork ou Dependabot)
+        if: >-
+          github.actor == 'dependabot[bot]' ||
+          (github.event_name == 'pull_request' &&
+           github.event.pull_request.head.repo.full_name != github.repository)
+        run: |
+          echo "::notice title=SonarCloud Ignorado::O scan foi ignorado pois foi disparado pelo Dependabot ou originou-se de um fork externo sem acesso aos secrets de repositório."

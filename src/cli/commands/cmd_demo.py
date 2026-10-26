@@ -1,3 +1,5 @@
+from importlib import resources
+import json
 import logging
 import sys
 from pathlib import Path
@@ -5,6 +7,8 @@ from pathlib import Path
 from src.cli.commands.cmd_init import command_init
 from src.cli.commands.cmd_extract import command_extract
 from src.cli.commands.cmd_calculate import command_calculate
+from src.cli.aggregate_metrics import measures as source_measures
+from src.cli.resources.measure import get_configured_measures
 from src.cli.utils import (
     clear_console,
     print_error,
@@ -12,26 +16,38 @@ from src.cli.utils import (
     print_panel,
     print_rule,
     print_success,
+    print_warn,
 )
 
 logger = logging.getLogger("msgram")
 
-# Directory name of the embedded sample dataset shipped with the repository.
+# Directory name of the embedded sample dataset shipped with the package/repository.
+PACKAGE_RESOURCES = "src.cli.resources"
+DEMO_DATA_DIRNAME = "demo_data"
 EXAMPLES_DIRNAME = "examples"
 RAW_DATA_DIRNAME = "analytics-raw-data"
 DEFAULT_DEMO_OUTPUT = Path.cwd() / "msgram-demo"
 
 
+def _candidate_raw_data_dirs() -> list[Path]:
+    packaged_dir = Path(
+        str(resources.files(PACKAGE_RESOURCES).joinpath(DEMO_DATA_DIRNAME))
+    )
+    repo_dirs = [
+        parent / EXAMPLES_DIRNAME / RAW_DATA_DIRNAME
+        for parent in Path(__file__).resolve().parents
+    ]
+    return [packaged_dir, *repo_dirs]
+
+
 def find_raw_data_dir() -> Path:
     """Locate the embedded sample dataset.
 
-    The lookup is done relative to this module (not the current working
-    directory) so the demo keeps working when the CLI is installed and run
-    from outside the repository. We walk up the parents of this file looking
-    for `examples/analytics-raw-data`.
+    Checks the packaged resource (`src/cli/resources/demo_data`) first so
+    the demo works when the CLI is installed from PyPI/wheel, falling back
+    to `examples/analytics-raw-data` when running from a repository checkout.
     """
-    for parent in Path(__file__).resolve().parents:
-        candidate = parent / EXAMPLES_DIRNAME / RAW_DATA_DIRNAME
+    for candidate in _candidate_raw_data_dirs():
         if candidate.is_dir() and any(candidate.glob("*.json")):
             return candidate
 
@@ -39,6 +55,21 @@ def find_raw_data_dir() -> Path:
         f"Could not find the embedded sample dataset '{EXAMPLES_DIRNAME}/"
         f"{RAW_DATA_DIRNAME}' with a Sonar JSON file."
     )
+
+
+def github_measures_in_config(config_file: Path) -> list[str]:
+    """Return the configured measures that depend on GitHub data.
+
+    The embedded sample dataset only has SonarQube metrics, so these measures
+    (and the characteristics that depend only on them) are left out of the
+    demo result. Returns an empty list when the config cannot be read; the
+    calculate step reports invalid configs on its own.
+    """
+    try:
+        configured = get_configured_measures(json.loads(config_file.read_text()))
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+    return [measure for measure in source_measures["github"] if measure in configured]
 
 
 def command_demo(args):
@@ -74,6 +105,14 @@ def command_demo(args):
         print_info(f"> Using existing config file: {config_file}")
     else:
         command_init({"config_path": output_path})
+
+    github_measures = github_measures_in_config(config_file)
+    if github_measures:
+        print_warn(
+            "The sample dataset only has SonarQube metrics. These configured "
+            "measures need GitHub data and will not be calculated: "
+            f"{', '.join(github_measures)}"
+        )
 
     # Step 2: extract - read the embedded Sonar JSON into a .metrics file.
     command_extract(

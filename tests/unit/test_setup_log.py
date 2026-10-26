@@ -22,7 +22,7 @@ def test_logging_config_verbose(caplog):
 def test_basic_config(caplog):
     caplog.set_level(logging.INFO)
 
-    basic_config("INFO", "ERROR", "w")
+    basic_config("INFO")
 
     logger = logging.getLogger("msgram")
     logger.info("This is an info message.")

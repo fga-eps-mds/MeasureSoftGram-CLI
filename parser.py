@@ -20,6 +20,7 @@ METRICS_SONAR = [
     "security_rating",
     "test_success_density",
     "reliability_rating",
+    "sqale_debt_ratio",
 ]
 
 BASE_URL_SONAR = (

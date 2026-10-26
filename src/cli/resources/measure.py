@@ -67,6 +67,17 @@ def get_measure_value(measures, subchar):
     return measures_calculated
 
 
+def _supported_measures_for_config(config: dict) -> list[dict]:
+    configured_measures = [m for m in get_configured_measures(config) if m]
+    if not configured_measures:
+        return SUPPORTED_MEASURES
+    return [
+        measures
+        for measures in SUPPORTED_MEASURES
+        if list(measures.keys())[0] in configured_measures
+    ]
+
+
 def calculate_measures(
     json_data,
     config: dict = {
@@ -76,7 +87,7 @@ def calculate_measures(
     extracted = get_metric_value(json_data)
 
     calculate_infos = []
-    for measures in SUPPORTED_MEASURES:
+    for measures in _supported_measures_for_config(config):
         calculate_infos.append(
             {
                 "key": list(measures.keys())[0],

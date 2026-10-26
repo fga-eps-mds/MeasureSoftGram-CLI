@@ -1,6 +1,5 @@
 import sys
 import logging
-from datetime import datetime
 
 LOG_LEVELS = {
     "DEBUG": logging.DEBUG,
@@ -21,19 +20,16 @@ LOG_FORMATS = {
 
 # =================================================================================================
 
-now = datetime.now()
-date = now.strftime("%y%m%d")
 datefmt = "%d %b %Y - %H:%M:%S"  # 30 Dec 2022 11:41:57
-file_name = "src/logs/debug.log"
 
 
 def config_logger(log_mod):
     if log_mod == "quiet":
-        basic_config("INFO", "WARNING", "w")
+        basic_config("INFO")
     elif log_mod == "verbose":
-        basic_config("DEBUG", "DEBUG", "w")
+        basic_config("DEBUG")
     else:
-        basic_config("WARNING", "ERROR", "w")
+        basic_config("WARNING")
 
 
 # =================================================================================================
@@ -56,7 +52,7 @@ class CLIConsoleHandler(logging.StreamHandler):
             self.handleError(record)
 
 
-def basic_config(console_level_name, file_level_name, file_mode):
+def basic_config(console_level_name):
     console_handler = CLIConsoleHandler(sys.stdout)
     console_formatter = logging.Formatter(LOG_FORMATS[console_level_name], datefmt)
     console_handler.setFormatter(console_formatter)
@@ -68,10 +64,6 @@ def basic_config(console_level_name, file_level_name, file_mode):
     logger_console = logging.getLogger("console")
     logger_console.addHandler(console_handler)
     logger_console.setLevel(LOG_LEVELS[console_level_name])
-
-    logger_file = logging.getLogger("file")
-    logger_file.addHandler(console_handler)
-    logger_file.setLevel(LOG_LEVELS[file_level_name])
 
 
 # =================================================================================================
