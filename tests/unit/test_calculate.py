@@ -14,7 +14,6 @@ from src.cli.commands.cmd_calculate import calculate_all, command_calculate, sho
 from src.cli.jsonReader import open_json_file
 from tests.unit.cli_output import normalize_cli_output
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
-from staticfiles import SECURITY_PRE_CONFIG
 
 CALCULATE_ARGS = {
     "output_format": "csv",
@@ -237,36 +236,6 @@ def test_calculate_sonar_with_technical_debt_ratio():
         pytest.approx(calculated_result.get("tsqmi")[0].get("value"))
         == 0.7922025700470549
     )
-
-
-def test_calculate_sonar_with_security_characteristic():
-    config = copy.deepcopy(pre_config)
-    config["characteristics"].extend(
-        copy.deepcopy(SECURITY_PRE_CONFIG["characteristics"])
-    )
-    for characteristic in config["characteristics"]:
-        characteristic["weight"] = 25
-    file_name = "fga-eps-mds-2023-2-MeasureSoftGram-Service-12-11-2023-02-57-52-develop-extracted.metrics"
-    json_data = open_json_file(Path(f"tests/unit/data/{file_name}"))
-    for file_path in list(json_data.keys())[1:5]:
-        json_data[file_path].extend(
-            [
-                {"metric": "security_review_rating", "value": "1.0"},
-                {"metric": "vulnerabilities", "value": "0"},
-            ]
-        )
-
-    calculated_result = calculate_all(json_data, file_name, config)
-
-    subcharacteristics = {
-        sc["key"] for sc in calculated_result.get("subcharacteristics")
-    }
-    characteristics = {c["key"] for c in calculated_result.get("characteristics")}
-
-    assert {"confidentiality", "integrity"} <= subcharacteristics
-    # Sem dados do GitHub no arquivo, functional_suitability não é calculada.
-    assert characteristics == {"reliability", "maintainability", "security"}
-    assert calculated_result.get("tsqmi")
 
 
 @patch("src.cli.resources.measure.print_warn")

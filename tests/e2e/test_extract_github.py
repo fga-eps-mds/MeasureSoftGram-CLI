@@ -30,8 +30,6 @@ def fake_github(url, headers=None):
         return FakeResponse(json.loads((API / "issues.json").read_text()))
     if url.endswith("/actions/runs"):
         return FakeResponse(json.loads((API / "runs.json").read_text()))
-    if "/dependabot/alerts?" in url:
-        return FakeResponse(json.loads((API / "dependabot_alerts.json").read_text()))
     raise AssertionError(f"chamada inesperada à API do GitHub: {url}")
 
 
@@ -50,18 +48,16 @@ def test_extract_github_then_calculate(msgram, tmp_path, monkeypatch, mocker, ca
     run_in_process(monkeypatch, "extract", "-gr", "fga-eps-mds/repo-falso", "-ep", cfg, "-gw", "build", "-gl", "US")
 
     assert "Traceback" not in capsys.readouterr().out
-    assert get.call_count == 3  # issues pela label US, workflow runs e alertas do Dependabot
+    assert get.call_count == 2  # uma busca de issues pela label US e uma de workflow runs
     (extracted,) = cfg.glob("github_fga-eps-mds-repo-falso-*-extracted.metrics")
     metrics = {m["metric"]: m["value"] for m in json.loads(extracted.read_text())["fga-eps-mds/repo-falso"]}
-    # 3 issues (2 fechadas); 2 runs "build" de 60 s e 120 s; o run "lint" fica fora pelo -gw; 3 alertas (1 aberto)
+    # 3 issues (2 fechadas); 2 runs "build" de 60 s e 120 s; o run "lint" fica fora pelo -gw
     assert metrics == {
         "total_issues": 3,
         "resolved_issues": 2,
         "resolved_ratio": 2 / 3,
         "sum_ci_feedback_times": 180,
         "total_builds": 2,
-        "security_alerts_open": 1,
-        "security_alerts_closed": 2,
     }
 
     result = msgram("calculate", "-ep", cfg, "-cp", cfg, "-o", "json")

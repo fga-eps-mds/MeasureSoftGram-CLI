@@ -76,34 +76,4 @@ SUPPORTED_MEASURES = [
             ],
         }
     },
-    {
-        "security_rating_measure": {
-            "metrics": [
-                "security_rating",
-            ],
-        }
-    },
-    {
-        "absence_of_vulnerabilities": {
-            "metrics": [
-                "vulnerabilities",
-                "ncloc",
-            ],
-        }
-    },
-    {
-        "security_review_rating_measure": {
-            "metrics": [
-                "security_review_rating",
-            ],
-        }
-    },
-    {
-        "security_alerts_resolution": {
-            "metrics": [
-                "security_alerts_open",
-                "security_alerts_closed",
-            ],
-        }
-    },
 ]
