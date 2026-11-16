@@ -51,3 +51,11 @@ def msgram(tmp_path, msgram_env):
 @pytest.fixture
 def json_snapshot(snapshot):
     return snapshot.use_extension(JSONSnapshotExtension)
+
+
+@pytest.fixture(autouse=True)
+def _acceptance_criteria(request, record_property):
+    """Grava no junit.xml os critérios de `@pytest.mark.us(...)`: scripts/acceptance_comment.py publica por CA."""
+    for marker in request.node.iter_markers("us"):
+        for criterion in marker.args:
+            record_property("ca", criterion)

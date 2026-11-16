@@ -40,6 +40,15 @@ jobs:
       - name: Rodar testes e gerar cobertura
         run: tox -e test_cli
 
+      # Comenta na issue de cada US (repositório DOC) o resultado dos testes marcados com @pytest.mark.us
+      # (mapa em tests/e2e/acceptance-issues.json); sem o secret DOC_ISSUES_TOKEN, o passo só avisa
+      - name: Publicar resultado nas issues das US
+        if: always() && github.event_name == 'push'
+        continue-on-error: true
+        env:
+          DOC_ISSUES_TOKEN: ${{ secrets.DOC_ISSUES_TOKEN }}
+        run: python scripts/acceptance_comment.py junit.xml
+
       # O SonarCloud só deve ser executado se:
       # 1. Não for disparado pelo Dependabot (que não possui acesso aos secrets de Actions)
       # 2. O evento for push (merge) OU um PR interno do próprio repositório (não fork externo)
