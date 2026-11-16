@@ -46,7 +46,7 @@ CASES = [
     pytest.param(["calculate", "-o", "xyz"], 2, "invalid choice: 'xyz'", id="calculate-formato-invalido"),
     pytest.param(
         ["calculate", "-ep", "ep", "-cp", "cfg"], 1, "No metrics files found",
-        id="calculate-sem-metrics", marks=bug("a decidir: sem .metrics só avisa e termina com 0"),
+        id="calculate-sem-metrics",
     ),
     pytest.param(
         ["list", "-cp", "nao-existe"], 1, "O arquivo de configuração não foi encontrado",
