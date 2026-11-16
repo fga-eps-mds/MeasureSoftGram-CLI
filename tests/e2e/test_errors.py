@@ -56,13 +56,16 @@ CASES = [
         ["diff", "-rp", UNIT_DATA / "missmatch-planned.json", "-rd", UNIT_DATA / "calculated.json"], 1,
         "The size between planned and developed release vectors is not equal", id="diff-tamanhos-diferentes",
     ),
-    pytest.param(["diff"], 1, None, id="diff-sem-argumentos", marks=bug("open_json_file(None) dá traceback")),
+    pytest.param(
+        ["diff"], 2, "the following arguments are required: -rd/--rd_path, -rp/--rp_path", id="diff-sem-argumentos",
+    ),
     pytest.param(
         ["norm_diff", "-rp", UNIT_DATA / "missmatch-planned.json", "-rd", UNIT_DATA / "calculated.json"], 1,
         "Planned and calculated files have different characteristics", id="norm-diff-chaves-diferentes",
     ),
     pytest.param(
-        ["norm_diff"], 1, None, id="norm-diff-sem-argumentos", marks=bug("open_json_file(None) dá traceback"),
+        ["norm_diff"], 2, "the following arguments are required: -rp/--rp_path, -rd/--rd_path",
+        id="norm-diff-sem-argumentos",
     ),
 ]
 
