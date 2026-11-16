@@ -15,6 +15,10 @@ metrics["sonar"] = [
     "comment_lines_density",
     "duplicated_lines_density",
     "sqale_debt_ratio",
+    "security_rating",
+    "security_review_rating",
+    "vulnerabilities",
+    "ncloc",
 ]
 
 metrics["github"] = [
@@ -22,6 +26,8 @@ metrics["github"] = [
     "total_issues",
     "sum_ci_feedback_times",
     "total_builds",
+    "security_alerts_open",
+    "security_alerts_closed",
 ]
 
 measures = {}
@@ -34,9 +40,16 @@ measures["sonarqube"] = [
     "commented_file_density",
     "duplication_absense",
     "technical_debt_ratio",
+    "security_rating_measure",
+    "absence_of_vulnerabilities",
+    "security_review_rating_measure",
 ]
 
-measures["github"] = ["team_throughput", "ci_feedback_time"]
+measures["github"] = [
+    "team_throughput",
+    "ci_feedback_time",
+    "security_alerts_resolution",
+]
 
 
 def should_process_metrics(config):

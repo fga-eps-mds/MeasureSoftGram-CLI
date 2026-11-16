@@ -1,0 +1,5 @@
+[
+  {"number": 1, "state": "open"},
+  {"number": 2, "state": "fixed"},
+  {"number": 3, "state": "dismissed"}
+]

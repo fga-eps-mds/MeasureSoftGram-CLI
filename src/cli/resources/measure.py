@@ -67,6 +67,15 @@ def get_measure_value(measures, subchar):
     return measures_calculated
 
 
+def _metric_value_list(value):
+    # Métrica de valor único chega como número ou texto e vira lista de um item
+    if value is None or value == []:
+        return None
+    if isinstance(value, list):
+        return [float(item) for item in value]
+    return [float(value)]
+
+
 def _supported_measures_for_config(config: dict) -> list[dict]:
     configured_measures = [m for m in get_configured_measures(config) if m]
     if not configured_measures:
@@ -94,11 +103,7 @@ def calculate_measures(
                 "metrics": [
                     {
                         "key": metric,
-                        "value": (
-                            [float(value) for value in extracted[metric]]
-                            if extracted.get(metric) and extracted[metric]
-                            else None
-                        ),
+                        "value": _metric_value_list(extracted.get(metric)),
                     }
                     for metric in list(measures.values())[0]["metrics"]
                 ],

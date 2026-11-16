@@ -30,6 +30,13 @@ def print_json_tree(data):
     measure_to_metric["technical_debt_ratio"] = ["sqale_debt_ratio"]
     measure_to_metric["team_throughput"] = ["resolved_issues", "total_issues"]
     measure_to_metric["ci_feedback_time"] = ["sum_ci_feedback_times", "total_builds"]
+    measure_to_metric["security_rating_measure"] = ["security_rating"]
+    measure_to_metric["absence_of_vulnerabilities"] = ["vulnerabilities", "ncloc"]
+    measure_to_metric["security_review_rating_measure"] = ["security_review_rating"]
+    measure_to_metric["security_alerts_resolution"] = [
+        "security_alerts_open",
+        "security_alerts_closed",
+    ]
 
     while stack:
         data, indent = stack.pop()

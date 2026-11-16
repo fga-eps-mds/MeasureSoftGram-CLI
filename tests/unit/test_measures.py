@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 from staticfiles import DEFAULT_PRE_CONFIG as pre_config
+from staticfiles import SECURITY_PRE_CONFIG
 
 from src.cli.jsonReader import open_json_file
 from src.cli.resources.measure import calculate_measures
@@ -51,6 +52,25 @@ def test_calculate_technical_debt_ratio():
     assert pytest.approx(measure_result[0].get("value")) == 0.59625
 
 
+# O msgram-parser entrega os valores como número: 0.0 não pode sumir e 12.0
+# não pode ser percorrido como texto.
+@pytest.mark.parametrize("test_failures,expected", [(0.0, 1.0), (12.0, 0.2)])
+def test_calculate_passed_tests_with_numeric_single_values(test_failures, expected):
+    json_data = {
+        "fga-eps-mds_repo": [
+            {"metric": "test_failures", "value": test_failures},
+            {"metric": "test_errors", "value": 0.0},
+        ],
+        "tests/test_a.py": [{"metric": "tests", "value": 10.0}],
+        "tests/test_b.py": [{"metric": "tests", "value": 5.0}],
+    }
+
+    infos, _ = calculate_measures(json_data, pre_config)
+
+    measures = {m["key"]: m["value"] for m in infos.get("measures")}
+    assert pytest.approx(measures["passed_tests"]) == expected
+
+
 @patch("src.cli.resources.measure.print_warn")
 def test_calculate_measures_warns_missing_metric(mock_print_warn):
     json_data = open_json_file(
@@ -95,3 +115,60 @@ def test_calculate_measures_does_not_warn_measures_not_configured(mock_print_war
     calculate_measures(json_data)
 
     mock_print_warn.assert_not_called()
+
+
+def test_calculate_security_measures_pairs_vulnerabilities_with_code_files():
+    json_data = {
+        "src/a.py": [
+            {"metric": "security_rating", "value": "1.0"},
+            {"metric": "security_review_rating", "value": "1.0"},
+            {"metric": "vulnerabilities", "value": "0"},
+            {"metric": "ncloc", "value": "1000"},
+        ],
+        "src/b.py": [
+            {"metric": "security_rating", "value": "3.0"},
+            {"metric": "security_review_rating", "value": "1.0"},
+            {"metric": "vulnerabilities", "value": "0"},
+            {"metric": "ncloc", "value": "500"},
+        ],
+        # Arquivo de teste: o SonarQube devolve vulnerabilities, mas não ncloc
+        "tests/test_a.py": [
+            {"metric": "security_rating", "value": "1.0"},
+            {"metric": "security_review_rating", "value": "1.0"},
+            {"metric": "vulnerabilities", "value": "5"},
+        ],
+        "fga-eps-mds_repo": [
+            {"metric": "security_alerts_open", "value": "1"},
+            {"metric": "security_alerts_closed", "value": "9"},
+        ],
+    }
+
+    infos, _ = calculate_measures(json_data, SECURITY_PRE_CONFIG)
+
+    measures = {m["key"]: m["value"] for m in infos.get("measures")}
+    assert set(measures) == {
+        "security_rating_measure",
+        "absence_of_vulnerabilities",
+        "security_review_rating_measure",
+        "security_alerts_resolution",
+    }
+    assert pytest.approx(measures["absence_of_vulnerabilities"]) == 1.0
+    # 9 de 10 alertas fechados: (90 - 45) / (100 - 45)
+    assert pytest.approx(measures["security_alerts_resolution"]) == 45 / 55
+
+
+@patch("src.cli.resources.measure.print_warn")
+def test_calculate_measures_warns_missing_security_alerts(mock_print_warn):
+    json_data = {
+        "fga-eps-mds_repo": [
+            {"metric": "total_issues", "value": "10"},
+            {"metric": "resolved_issues", "value": "8"},
+        ],
+    }
+
+    calculate_measures(json_data, SECURITY_PRE_CONFIG)
+
+    mock_print_warn.assert_called_once_with(
+        "Measure 'security_alerts_resolution' could not be calculated. "
+        "Missing metrics: security_alerts_open, security_alerts_closed"
+    )

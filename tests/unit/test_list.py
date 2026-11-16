@@ -4,6 +4,7 @@ import sys
 import json
 import tempfile
 from src.cli.commands.cmd_init import command_init
+from staticfiles import SECURITY_PRE_CONFIG
 
 from src.cli.commands.cmd_list import command_list, print_json_tree
 from tests.unit.cli_output import normalize_cli_output
@@ -90,4 +91,22 @@ def test_print_json_tree_technical_debt_ratio():
         "│ │ │ technical_debt_ratio │ │ │ Peso: 25% │ │ │ Métrica(s): "
         "│ │ │ └─sqale_debt_ratio │ │ │ │ Valores de referência: Min = 0 e Max = 20"
         in result
+    )
+
+
+def test_print_json_tree_with_security():
+    result = normalize_cli_output(
+        print_json_tree(SECURITY_PRE_CONFIG["characteristics"][0])
+    )
+
+    assert "confidentiality" in result
+    assert "integrity" in result
+    assert (
+        "│ │ │ absence_of_vulnerabilities │ │ │ Peso: 50% │ │ │ Métrica(s): "
+        "│ │ │ └─vulnerabilities │ │ │ └─ncloc │ │ │ │ Valores de referência: Min = 0 e Max = 1"
+        in result
+    )
+    assert (
+        "│ │ │ └─security_alerts_open │ │ │ └─security_alerts_closed "
+        "│ │ │ │ Valores de referência: Min = 45 e Max = 100" in result
     )
