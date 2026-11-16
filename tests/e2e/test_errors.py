@@ -83,7 +83,6 @@ def test_command_error(msgram, tmp_path, args, returncode, message):
         assert message in output
 
 
-@bug("init com msgram.json existente e sem terminal (stdin fechado) dá EOFError no Confirm.ask")
 def test_init_existing_config_without_terminal_keeps_file(msgram, tmp_path):
     write_default_config(tmp_path / "cfg")
     before = (tmp_path / "cfg" / "msgram.json").read_text()
