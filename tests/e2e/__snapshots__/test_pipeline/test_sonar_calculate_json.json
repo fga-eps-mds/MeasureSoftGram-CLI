@@ -1,0 +1,68 @@
+[
+  {
+    "characteristics": [
+      {
+        "key": "reliability",
+        "value": 0.842106
+      },
+      {
+        "key": "maintainability",
+        "value": 0.632069
+      }
+    ],
+    "measures": [
+      {
+        "key": "passed_tests",
+        "value": 1.0
+      },
+      {
+        "key": "test_builds",
+        "value": 0.999607
+      },
+      {
+        "key": "test_coverage",
+        "value": 0.402348
+      },
+      {
+        "key": "non_complex_file_density",
+        "value": 0.443473
+      },
+      {
+        "key": "commented_file_density",
+        "value": 0.043182
+      },
+      {
+        "key": "duplication_absense",
+        "value": 1.0
+      }
+    ],
+    "repository": [
+      {
+        "key": "repository",
+        "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"
+      }
+    ],
+    "subcharacteristics": [
+      {
+        "key": "testing_status",
+        "value": 0.842106
+      },
+      {
+        "key": "modifiability",
+        "value": 0.632069
+      }
+    ],
+    "tsqmi": [
+      {
+        "key": "tsqmi",
+        "value": 0.747628
+      }
+    ],
+    "version": [
+      {
+        "key": "version",
+        "value": "01-11-2023-21-59"
+      }
+    ]
+  }
+]

@@ -1,0 +1,237 @@
+# serializer version: 1
+# name: test_diff_and_norm_diff_against_planned
+  list([
+    dict({
+      'characteristic': 'maintainability',
+      'developed': 0.632069,
+      'diff': 0.067931,
+      'planned': '0.7',
+      'repository': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI',
+      'version': '01-11-2023-21-59',
+    }),
+    dict({
+      'characteristic': 'reliability',
+      'developed': 0.842106,
+      'diff': 0.057894,
+      'planned': '0.9',
+      'repository': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI',
+      'version': '01-11-2023-21-59',
+    }),
+  ])
+# ---
+# name: test_diff_and_norm_diff_against_planned.1
+  0.078281
+# ---
+# name: test_list_shows_config_created_by_init
+  '''
+  ℹ Será usado arquivo informado pelo usuário:
+  ─────────────────────────────────────────── Listing Configuration Parameters ───────────────────────────────────────────
+  
+  ℹ MSGram config file 'msgram.json' exists already!
+  ℹ
+  Característica:
+  reliability
+  Peso: 34%
+  Sub-característica(s):
+  Sub-característica(s):
+  │  maturity
+  │  Peso: 50%
+  │  │  Medida(s):
+  │  │  │  ci_feedback_time
+  │  │  │  Peso: 100%
+  │  │  │  Métrica(s):
+  │  │  │  └─sum_ci_feedback_times
+  │  │  │  └─total_builds
+  │  │  │  │ Valores de referência: Min = 1 e Max = 900
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  │  testing_status
+  │  Peso: 50%
+  │  │  Medida(s):
+  │  │  │  passed_tests
+  │  │  │  Peso: 33%
+  │  │  │  Métrica(s):
+  │  │  │  └─tests
+  │  │  │  └─test_failures
+  │  │  │  └─test_errors
+  │  │  │  │ Valores de referência: Min = 0 e Max = 1
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  test_builds
+  │  │  │  Peso: 33%
+  │  │  │  Métrica(s):
+  │  │  │  └─tests
+  │  │  │  └─test_execution_time
+  │  │  │  │ Valores de referência: Min = 0 e Max = 300000
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  test_coverage
+  │  │  │  Peso: 34%
+  │  │  │  Métrica(s):
+  │  │  │  └─coverage
+  │  │  │  │ Valores de referência: Min = 60 e Max = 100
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  Fim-Característica
+  ℹ
+  Característica:
+  maintainability
+  Peso: 33%
+  Sub-característica(s):
+  │  modifiability
+  │  Peso: 100%
+  │  │  Medida(s):
+  │  │  │  non_complex_file_density
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─functions
+  │  │  │  └─complexity
+  │  │  │  │ Valores de referência: Min = 0 e Max = 10
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  commented_file_density
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─comment_lines_density
+  │  │  │  │ Valores de referência: Min = 10 e Max = 30
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  duplication_absense
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─duplicated_lines_density
+  │  │  │  │ Valores de referência: Min = 0 e Max = 5
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  technical_debt_ratio
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─sqale_debt_ratio
+  │  │  │  │ Valores de referência: Min = 0 e Max = 20
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  Fim-Característica
+  ℹ
+  Característica:
+  functional_suitability
+  Peso: 33%
+  Sub-característica(s):
+  │  functional_completeness
+  │  Peso: 100%
+  │  │  Medida(s):
+  │  │  │  team_throughput
+  │  │  │  Peso: 100%
+  │  │  │  Métrica(s):
+  │  │  │  └─resolved_issues
+  │  │  │  └─total_issues
+  │  │  │  │ Valores de referência: Min = 45 e Max = 100
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  Fim-Característica
+  ℹ
+  Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:
+  ℹ vim .msgram/msgram.json
+  
+  '''
+# ---
+# name: test_sonar_calculate_csv
+  dict({
+    'commented_file_density': 0.043182,
+    'duplication_absense': 1.0,
+    'maintainability': 0.632069,
+    'modifiability': 0.632069,
+    'non_complex_file_density': 0.443473,
+    'passed_tests': 1.0,
+    'reliability': 0.842106,
+    'repository': 'fga-eps-mds-2022-2-MeasureSoftGram-CLI',
+    'test_builds': 0.999607,
+    'test_coverage': 0.402348,
+    'testing_status': 0.842106,
+    'tsqmi': 0.747628,
+    'version': '01-11-2023-21-59',
+  })
+# ---
+# name: test_sonar_calculate_terminal_output[tabular]
+  '''
+                                               ╭─────── TSQMI Score ────────╮
+                                               │                            │
+                                               │     0.7476276778292594     │
+                                               │                            │
+                                               ╰────────────────────────────╯
+  
+  
+                   characteristics                                                  subcharacteristics
+  ╭──────────────────────┬─────────────────────────╮                ╭────────────────────────┬───────────────────────╮
+  │ characteristics      │ values                  │                │ subcharacteristics     │ values                │
+  ├──────────────────────┼─────────────────────────┤                ├────────────────────────┼───────────────────────┤
+  │ reliability          │ 0.8421061048464034      │                │ testing_status         │ 0.8421061048464034    │
+  │ maintainability      │ 0.6320687592710055      │                │ modifiability          │ 0.6320687592710055    │
+  ╰──────────────────────┴─────────────────────────╯                ╰────────────────────────┴───────────────────────╯
+                       measures
+  ╭──────────────────────────┬─────────────────────╮
+  │ measures                 │ values              │
+  ├──────────────────────────┼─────────────────────┤
+  │ passed_tests             │ 1.0                 │
+  │ test_builds              │ 0.9996066627522133  │
+  │ test_coverage            │ 0.40234848484848484 │
+  │ non_complex_file_density │ 0.44347274991556906 │
+  │ commented_file_density   │ 0.04318181818181818 │
+  │ duplication_absense      │ 1.0                 │
+  ╰──────────────────────────┴─────────────────────╯
+  
+  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  
+  
+  
+  ╭──────────────────────────────────────────────────────── Done ────────────────────────────────────────────────────────╮
+  │                                                                                                                      │
+  │  > See the publications for more information:                                                                        │
+  │  https://dl.acm.org/doi/10.1145/3239235.3267438                                                                      │
+  │  https://dl.acm.org/doi/10.1145/3422392.3422450                                                                      │
+  │                                                                                                                      │
+  │                                                                                                                      │
+  ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  
+  '''
+# ---
+# name: test_sonar_calculate_terminal_output[tree]
+  '''
+  ℹ Overview - tree:
+  
+  
+  ℹ tsqmi: 0.7476276778292594
+  ℹ ├── reliability: 0.8421061048464034
+  ℹ │   └── testing_status 0.8421061048464034
+  ℹ │       ├── passed_tests 1.0
+  ℹ │       ├── test_builds 0.9996066627522133
+  ℹ │       └── test_coverage 0.40234848484848484
+  ℹ └── maintainability: 0.6320687592710055
+  ℹ     └── modifiability 0.6320687592710055
+  ℹ         ├── non_complex_file_density 0.44347274991556906
+  ℹ         ├── commented_file_density 0.04318181818181818
+  ℹ         └── duplication_absense 1.0
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  
+  
+  
+  ╭──────────────────────────────────────────────────────── Done ────────────────────────────────────────────────────────╮
+  │                                                                                                                      │
+  │  > See the publications for more information:                                                                        │
+  │  https://dl.acm.org/doi/10.1145/3239235.3267438                                                                      │
+  │  https://dl.acm.org/doi/10.1145/3422392.3422450                                                                      │
+  │                                                                                                                      │
+  │                                                                                                                      │
+  ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  
+  '''
+# ---
