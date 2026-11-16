@@ -148,7 +148,7 @@ def command_extract(args):
         print_error(
             "Error: Some pe_ parameters for extracting the performance efficiency data are missing"
         )
-        exit()
+        sys.exit(1)
 
     # First check if sonar_path and gh_repository are none
     if (sonar_path is None) and (gh_repository is None) and (pe_params == 0):

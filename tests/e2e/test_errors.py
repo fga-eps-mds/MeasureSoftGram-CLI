@@ -34,7 +34,7 @@ CASES = [
     ),
     pytest.param(
         ["extract", "-ep", "ep", "-p1", PERF_CSV_1], 1, "Some pe_ parameters",
-        id="extract-pe-incompleto", marks=bug("extract usa exit() sem código e termina com 0"),
+        id="extract-pe-incompleto",
     ),
     pytest.param(
         ["extract", "-ep", "ep", "-gr", "fga-eps-mds/repo"], 1, None,
@@ -50,7 +50,7 @@ CASES = [
     ),
     pytest.param(
         ["list", "-cp", "nao-existe"], 1, "O arquivo de configuração não foi encontrado",
-        id="list-sem-config", marks=bug("list usa exit() sem código e termina com 0"),
+        id="list-sem-config",
     ),
     pytest.param(
         ["diff", "-rp", UNIT_DATA / "missmatch-planned.json", "-rd", UNIT_DATA / "calculated.json"], 1,

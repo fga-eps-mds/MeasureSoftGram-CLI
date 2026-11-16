@@ -10,6 +10,7 @@ from pathlib import Path
 
 import json
 import os
+import sys
 
 
 def print_json_tree(data):
@@ -115,7 +116,7 @@ def command_list(args):
         print_info(
             "Ou use 'msgram init --config_path <path>' para informar o caminho ate o arquivo."
         )
-        exit()
+        sys.exit(1)
 
     print_info(f"MSGram config file '{FILE_CONFIG}' exists already!")
 
