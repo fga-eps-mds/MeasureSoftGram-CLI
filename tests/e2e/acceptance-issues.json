@@ -1,6 +1,7 @@
 {
   "repository": "fga-eps-mds/2026.2-MeasureSoftGram-DOC",
   "issues": {
-    "US01.01": 76
+    "US01.01": 76,
+    "US13.02": 135
   }
 }

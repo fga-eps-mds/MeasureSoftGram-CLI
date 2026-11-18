@@ -137,9 +137,9 @@
   │  │  Fim-Medida(s)
   Fim-SubCaracterística
   Fim-Característica
-  ℹ
-  Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:
-  ℹ vim .msgram/msgram.json
+  
+  ℹ Para definir os pesos por comparação, use: msgram weights
+  ℹ Para definir os pesos de forma manual, use: `vim .msgram/msgram.json`
   
   '''
 # ---

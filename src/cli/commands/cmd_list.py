@@ -1,4 +1,11 @@
-from src.cli.utils import clear_console, color_tag, print_error, print_info, print_rule
+from src.cli.utils import (
+    clear_console,
+    color_tag,
+    console,
+    print_error,
+    print_info,
+    print_rule,
+)
 
 from src.config.settings import (
     FILE_CONFIG,
@@ -128,7 +135,6 @@ def command_list(args):
         output_string = print_json_tree(characteristic)
         print_info(output_string)
 
-    print_info(
-        "\nPara editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
-    )
-    print_info("vim .msgram/msgram.json\n")
+    console.line()
+    print_info("Para definir os pesos por comparação, use: msgram weights")
+    print_info("Para definir os pesos de forma manual, use: `vim .msgram/msgram.json`")
