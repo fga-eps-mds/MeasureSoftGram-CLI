@@ -53,13 +53,15 @@ msgram -h
 
 ### 4. Ver a CLI funcionando (demo)
 
-Para executar o fluxo completo (init, extract e calculate) sobre o dataset de exemplo embutido em `examples/analytics-raw-data/`, sem precisar fornecer dados próprios nem acesso à rede:
+Para executar o fluxo completo (init, extract e calculate) sobre o dataset de exemplo que vem dentro do pacote (`src/cli/resources/demo_data/`), sem precisar fornecer dados próprios nem acesso à rede:
 
 ```bash
 msgram demo
 ```
 
-O resultado é gerado em `./msgram-demo/`.
+O resultado é gerado em `./msgram-demo/`. O dataset é um export real do SonarCloud da própria CLI (25/10/2026) e inclui `sqale_debt_ratio`, então a demo calcula a Dívida Técnica (`technical_debt_ratio`). Ele não tem dados do GitHub: medidas como `team_throughput` e `ci_feedback_time` não são calculadas, e a demo avisa quais são.
+
+Para ver o efeito de uma configuração diferente, edite `./msgram-demo/msgram.json` e rode `msgram demo` de novo (apague o arquivo para voltar à configuração padrão).
 
 ---
 

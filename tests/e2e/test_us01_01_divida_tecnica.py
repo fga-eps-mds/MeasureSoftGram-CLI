@@ -1,7 +1,7 @@
 """US01.01 — Operacionalizar a medição de Dívida Técnica na CLI (fga-eps-mds/2026.2-MeasureSoftGram-DOC#76).
 
 Cada teste marca os critérios que cobre com @pytest.mark.us("US01.01-CAn"); o resultado por CA é publicado na issue.
-A entrada é o Sonar de exemplo com `sqale_debt_ratio` acrescentado a cada arquivo (qualifier FIL).
+A entrada é o Sonar de exemplo com o `sqale_debt_ratio` de cada arquivo (qualifier FIL) trocado pelo valor do cenário.
 """
 
 import json
@@ -34,10 +34,12 @@ def calculate(msgram, tmp_path, config):
         sonar.mkdir(exist_ok=True)
         extracted.mkdir(exist_ok=True)  # mesmo cenário duas vezes (CA7): o .metrics é regravado
         data = json.loads(SONAR_FILE.read_text())
-        if debt_ratio is not None:
-            for component in data["components"]:
-                if component["qualifier"] == "FIL":
-                    component["measures"].append({"metric": "sqale_debt_ratio", "value": str(debt_ratio)})
+        # o dataset de exemplo (export 2026.2) já traz sqale_debt_ratio em FIL, UTS, DIR e no projeto:
+        # remove todos e põe só o valor do cenário nos arquivos (FIL)
+        for component in [data["baseComponent"], *data["components"]]:
+            component["measures"] = [m for m in component["measures"] if m["metric"] != "sqale_debt_ratio"]
+            if debt_ratio is not None and component["qualifier"] == "FIL":
+                component["measures"].append({"metric": "sqale_debt_ratio", "value": str(debt_ratio)})
         (sonar / SONAR_FILE.name).write_text(json.dumps(data))
         assert msgram("extract", "-sp", sonar, "-ep", extracted).returncode == 0
         result = msgram("calculate", "-ep", extracted, "-cp", cfg, "-o", "json")

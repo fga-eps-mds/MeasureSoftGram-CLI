@@ -3,11 +3,11 @@
     "characteristics": [
       {
         "key": "reliability",
-        "value": 0.842106
+        "value": 0.9404
       },
       {
         "key": "maintainability",
-        "value": 0.632069
+        "value": 0.764928
       }
     ],
     "measures": [
@@ -17,51 +17,55 @@
       },
       {
         "key": "test_builds",
-        "value": 0.999607
+        "value": 0.999348
       },
       {
         "key": "test_coverage",
-        "value": 0.402348
+        "value": 0.817125
       },
       {
         "key": "non_complex_file_density",
-        "value": 0.443473
+        "value": 0.586299
       },
       {
         "key": "commented_file_density",
-        "value": 0.043182
+        "value": 0.05075
       },
       {
         "key": "duplication_absense",
         "value": 1.0
+      },
+      {
+        "key": "technical_debt_ratio",
+        "value": 0.997065
       }
     ],
     "repository": [
       {
         "key": "repository",
-        "value": "fga-eps-mds-2022-2-MeasureSoftGram-CLI"
+        "value": "fga-eps-mds-2026.2-MeasureSoftGram-CLI"
       }
     ],
     "subcharacteristics": [
       {
         "key": "testing_status",
-        "value": 0.842106
+        "value": 0.9404
       },
       {
         "key": "modifiability",
-        "value": 0.632069
+        "value": 0.764928
       }
     ],
     "tsqmi": [
       {
         "key": "tsqmi",
-        "value": 0.747628
+        "value": 0.859767
       }
     ],
     "version": [
       {
         "key": "version",
-        "value": "01-11-2023-21-59"
+        "value": "25-10-2026-17-57"
       }
     ]
   }
