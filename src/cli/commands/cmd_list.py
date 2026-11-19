@@ -1,4 +1,11 @@
-from src.cli.utils import clear_console, color_tag, print_error, print_info, print_rule
+from src.cli.utils import (
+    clear_console,
+    color_tag,
+    console,
+    print_error,
+    print_info,
+    print_rule,
+)
 
 from src.config.settings import (
     FILE_CONFIG,
@@ -10,6 +17,7 @@ from pathlib import Path
 
 import json
 import os
+import sys
 
 
 def print_json_tree(data):
@@ -115,7 +123,7 @@ def command_list(args):
         print_info(
             "Ou use 'msgram init --config_path <path>' para informar o caminho ate o arquivo."
         )
-        exit()
+        sys.exit(1)
 
     print_info(f"MSGram config file '{FILE_CONFIG}' exists already!")
 
@@ -127,7 +135,6 @@ def command_list(args):
         output_string = print_json_tree(characteristic)
         print_info(output_string)
 
-    print_info(
-        "\nPara editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
-    )
-    print_info("vim .msgram/msgram.json\n")
+    console.line()
+    print_info("Para definir os pesos por comparação, use: msgram weights")
+    print_info("Para definir os pesos de forma manual, use: `vim .msgram/msgram.json`")

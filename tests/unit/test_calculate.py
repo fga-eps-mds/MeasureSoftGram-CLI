@@ -391,9 +391,11 @@ def test_calculate_invalid_extracted_file():
         "extracted_path": Path(extract_dirpath + f"/{extracted_file_name}"),
     }
 
-    command_calculate(args)
+    with pytest.raises(SystemExit) as excinfo:
+        command_calculate(args)
 
     sys.stdout = sys.__stdout__
+    assert excinfo.value.code == 1
     output = normalize_cli_output(captured_output.getvalue())
     assert "Error calculating" in output
     assert Path(extract_dirpath).name in output
@@ -517,7 +519,10 @@ def test_calculate_metrics_directory_empty():
         "extracted_path": Path(extract_dirpath),  # Empty directory
     }
 
-    command_calculate(args)
+    with pytest.raises(SystemExit) as excinfo:
+        command_calculate(args)
+
+    assert excinfo.value.code == 1
 
     # calc_msgram.json shouldn't be created since there's no data
     output_path = Path(f"{config_dirpath}/calc_msgram.json")

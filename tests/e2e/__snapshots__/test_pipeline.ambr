@@ -1,0 +1,240 @@
+# serializer version: 1
+# name: test_diff_and_norm_diff_against_planned
+  list([
+    dict({
+      'characteristic': 'maintainability',
+      'developed': 0.764928,
+      'diff': 0.0,
+      'planned': '0.7',
+      'repository': 'fga-eps-mds-2026.2-MeasureSoftGram-CLI',
+      'version': '25-10-2026-17-57',
+    }),
+    dict({
+      'characteristic': 'reliability',
+      'developed': 0.9404,
+      'diff': 0.0,
+      'planned': '0.9',
+      'repository': 'fga-eps-mds-2026.2-MeasureSoftGram-CLI',
+      'version': '25-10-2026-17-57',
+    }),
+  ])
+# ---
+# name: test_diff_and_norm_diff_against_planned.1
+  0.06707
+# ---
+# name: test_list_shows_config_created_by_init
+  '''
+  ℹ Será usado arquivo informado pelo usuário:
+  ─────────────────────────────────────────── Listing Configuration Parameters ───────────────────────────────────────────
+  
+  ℹ MSGram config file 'msgram.json' exists already!
+  ℹ
+  Característica:
+  reliability
+  Peso: 34%
+  Sub-característica(s):
+  Sub-característica(s):
+  │  maturity
+  │  Peso: 50%
+  │  │  Medida(s):
+  │  │  │  ci_feedback_time
+  │  │  │  Peso: 100%
+  │  │  │  Métrica(s):
+  │  │  │  └─sum_ci_feedback_times
+  │  │  │  └─total_builds
+  │  │  │  │ Valores de referência: Min = 1 e Max = 900
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  │  testing_status
+  │  Peso: 50%
+  │  │  Medida(s):
+  │  │  │  passed_tests
+  │  │  │  Peso: 33%
+  │  │  │  Métrica(s):
+  │  │  │  └─tests
+  │  │  │  └─test_failures
+  │  │  │  └─test_errors
+  │  │  │  │ Valores de referência: Min = 0 e Max = 1
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  test_builds
+  │  │  │  Peso: 33%
+  │  │  │  Métrica(s):
+  │  │  │  └─tests
+  │  │  │  └─test_execution_time
+  │  │  │  │ Valores de referência: Min = 0 e Max = 300000
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  test_coverage
+  │  │  │  Peso: 34%
+  │  │  │  Métrica(s):
+  │  │  │  └─coverage
+  │  │  │  │ Valores de referência: Min = 60 e Max = 100
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  Fim-Característica
+  ℹ
+  Característica:
+  maintainability
+  Peso: 33%
+  Sub-característica(s):
+  │  modifiability
+  │  Peso: 100%
+  │  │  Medida(s):
+  │  │  │  non_complex_file_density
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─functions
+  │  │  │  └─complexity
+  │  │  │  │ Valores de referência: Min = 0 e Max = 10
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  commented_file_density
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─comment_lines_density
+  │  │  │  │ Valores de referência: Min = 10 e Max = 30
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  duplication_absense
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─duplicated_lines_density
+  │  │  │  │ Valores de referência: Min = 0 e Max = 5
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  │  │  Medida(s):
+  │  │  │  technical_debt_ratio
+  │  │  │  Peso: 25%
+  │  │  │  Métrica(s):
+  │  │  │  └─sqale_debt_ratio
+  │  │  │  │ Valores de referência: Min = 0 e Max = 20
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  Fim-Característica
+  ℹ
+  Característica:
+  functional_suitability
+  Peso: 33%
+  Sub-característica(s):
+  │  functional_completeness
+  │  Peso: 100%
+  │  │  Medida(s):
+  │  │  │  team_throughput
+  │  │  │  Peso: 100%
+  │  │  │  Métrica(s):
+  │  │  │  └─resolved_issues
+  │  │  │  └─total_issues
+  │  │  │  │ Valores de referência: Min = 45 e Max = 100
+  │  │  │  Fim-Métrica(s)
+  │  │  Fim-Medida(s)
+  Fim-SubCaracterística
+  Fim-Característica
+  
+  ℹ Para definir os pesos por comparação, use: msgram weights
+  ℹ Para definir os pesos de forma manual, use: `vim .msgram/msgram.json`
+  
+  '''
+# ---
+# name: test_sonar_calculate_csv
+  dict({
+    'commented_file_density': 0.05075,
+    'duplication_absense': 1.0,
+    'maintainability': 0.764928,
+    'modifiability': 0.764928,
+    'non_complex_file_density': 0.586299,
+    'passed_tests': 1.0,
+    'reliability': 0.9404,
+    'repository': 'fga-eps-mds-2026.2-MeasureSoftGram-CLI',
+    'technical_debt_ratio': 0.997065,
+    'test_builds': 0.999348,
+    'test_coverage': 0.817125,
+    'testing_status': 0.9404,
+    'tsqmi': 0.859767,
+    'version': '25-10-2026-17-57',
+  })
+# ---
+# name: test_sonar_calculate_terminal_output[tabular]
+  '''
+                                               ╭─────── TSQMI Score ────────╮
+                                               │                            │
+                                               │     0.8597670967866401     │
+                                               │                            │
+                                               ╰────────────────────────────╯
+  
+  
+                    characteristics                                                 subcharacteristics
+  ╭───────────────────────┬─────────────────────────╮               ╭────────────────────────┬────────────────────────╮
+  │ characteristics       │ values                  │               │ subcharacteristics     │ values                 │
+  ├───────────────────────┼─────────────────────────┤               ├────────────────────────┼────────────────────────┤
+  │ reliability           │ 0.9404004808199908      │               │ testing_status         │ 0.940400480819991      │
+  │ maintainability       │ 0.7649283484621858      │               │ modifiability          │ 0.7649283484621858     │
+  ╰───────────────────────┴─────────────────────────╯               ╰────────────────────────┴────────────────────────╯
+                       measures
+  ╭──────────────────────────┬──────────────────────╮
+  │ measures                 │ values               │
+  ├──────────────────────────┼──────────────────────┤
+  │ passed_tests             │ 1.0                  │
+  │ test_builds              │ 0.999347675850905    │
+  │ test_coverage            │ 0.8171250000000001   │
+  │ non_complex_file_density │ 0.5862993287500676   │
+  │ commented_file_density   │ 0.050749999999999997 │
+  │ duplication_absense      │ 1.0                  │
+  │ technical_debt_ratio     │ 0.9970652173913043   │
+  ╰──────────────────────────┴──────────────────────╯
+  
+  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  
+  
+  
+  ╭──────────────────────────────────────────────────────── Done ────────────────────────────────────────────────────────╮
+  │                                                                                                                      │
+  │  > See the publications for more information:                                                                        │
+  │  https://dl.acm.org/doi/10.1145/3239235.3267438                                                                      │
+  │  https://dl.acm.org/doi/10.1145/3422392.3422450                                                                      │
+  │                                                                                                                      │
+  │                                                                                                                      │
+  ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  
+  '''
+# ---
+# name: test_sonar_calculate_terminal_output[tree]
+  '''
+  ℹ Overview - tree:
+  
+  
+  ℹ tsqmi: 0.8597670967866401
+  ℹ ├── reliability: 0.9404004808199908
+  ℹ │   └── testing_status 0.940400480819991
+  ℹ │       ├── passed_tests 1.0
+  ℹ │       ├── test_builds 0.999347675850905
+  ℹ │       └── test_coverage 0.8171250000000001
+  ℹ └── maintainability: 0.7649283484621858
+  ℹ     └── modifiability 0.7649283484621858
+  ℹ         ├── non_complex_file_density 0.5862993287500676
+  ℹ         ├── commented_file_density 0.050749999999999997
+  ℹ         ├── duplication_absense 1.0
+  ℹ         └── technical_debt_ratio 0.9970652173913043
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  
+  
+  
+  ╭──────────────────────────────────────────────────────── Done ────────────────────────────────────────────────────────╮
+  │                                                                                                                      │
+  │  > See the publications for more information:                                                                        │
+  │  https://dl.acm.org/doi/10.1145/3239235.3267438                                                                      │
+  │  https://dl.acm.org/doi/10.1145/3422392.3422450                                                                      │
+  │                                                                                                                      │
+  │                                                                                                                      │
+  ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  
+  '''
+# ---

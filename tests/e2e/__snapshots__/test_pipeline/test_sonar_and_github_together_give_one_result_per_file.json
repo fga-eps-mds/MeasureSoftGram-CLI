@@ -1,0 +1,122 @@
+[
+  {
+    "characteristics": [
+      {
+        "key": "reliability",
+        "value": 0.967742
+      },
+      {
+        "key": "functional_suitability",
+        "value": 0.0
+      }
+    ],
+    "measures": [
+      {
+        "key": "team_throughput",
+        "value": 0.0
+      },
+      {
+        "key": "ci_feedback_time",
+        "value": 0.967742
+      }
+    ],
+    "repository": [
+      {
+        "key": "repository",
+        "value": "fga-eps-mds-2024.1-MeasureSoftGram-DOC"
+      }
+    ],
+    "subcharacteristics": [
+      {
+        "key": "maturity",
+        "value": 0.967742
+      },
+      {
+        "key": "functional_completeness",
+        "value": 0.0
+      }
+    ],
+    "tsqmi": [
+      {
+        "key": "tsqmi",
+        "value": 0.694433
+      }
+    ],
+    "version": [
+      {
+        "key": "version",
+        "value": "28-07-2024-00-00"
+      }
+    ]
+  },
+  {
+    "characteristics": [
+      {
+        "key": "reliability",
+        "value": 0.9404
+      },
+      {
+        "key": "maintainability",
+        "value": 0.764928
+      }
+    ],
+    "measures": [
+      {
+        "key": "passed_tests",
+        "value": 1.0
+      },
+      {
+        "key": "test_builds",
+        "value": 0.999348
+      },
+      {
+        "key": "test_coverage",
+        "value": 0.817125
+      },
+      {
+        "key": "non_complex_file_density",
+        "value": 0.586299
+      },
+      {
+        "key": "commented_file_density",
+        "value": 0.05075
+      },
+      {
+        "key": "duplication_absense",
+        "value": 1.0
+      },
+      {
+        "key": "technical_debt_ratio",
+        "value": 0.997065
+      }
+    ],
+    "repository": [
+      {
+        "key": "repository",
+        "value": "fga-eps-mds-2026.2-MeasureSoftGram-CLI"
+      }
+    ],
+    "subcharacteristics": [
+      {
+        "key": "testing_status",
+        "value": 0.9404
+      },
+      {
+        "key": "modifiability",
+        "value": 0.764928
+      }
+    ],
+    "tsqmi": [
+      {
+        "key": "tsqmi",
+        "value": 0.859767
+      }
+    ],
+    "version": [
+      {
+        "key": "version",
+        "value": "25-10-2026-17-57"
+      }
+    ]
+  }
+]

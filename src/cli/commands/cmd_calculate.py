@@ -2,6 +2,7 @@ import csv
 import json
 import logging
 import re
+import sys
 from pathlib import Path
 
 from anytree import Node, RenderTree
@@ -109,8 +110,12 @@ def command_calculate(args):
 
     data_calculated, success = calculate_metrics(extracted_path, config)
 
-    if success:
-        print_success("\nAll calculations performed successfully!")
+    if not success:
+        # nada foi calculado (sem .metrics ou arquivo inválido); o motivo já foi impresso
+        print_rule()
+        sys.exit(1)
+
+    print_success("\nAll calculations performed successfully!")
 
     show_results(output_format, data_calculated, config_path, config)
     print_rule()

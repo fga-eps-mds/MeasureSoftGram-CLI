@@ -265,6 +265,19 @@ def test_make_progress_bar_uses_themed_error_style():
     assert progress is not None
 
 
+def test_confirm_without_terminal_answers_no(monkeypatch):
+    dummy_console = DummyConsole()
+    monkeypatch.setattr(cli_utils, "console", dummy_console)
+
+    def eof_confirm(prompt, console):
+        raise EOFError
+
+    monkeypatch.setattr(cli_utils.Confirm, "ask", eof_confirm)
+
+    assert cli_utils.ask_confirm("> Continue?") is False
+    assert dummy_console.popped == 1
+
+
 def test_confirm_wrapper_uses_themed_text_and_returns_boolean(monkeypatch):
     dummy_console = DummyConsole()
     monkeypatch.setattr(cli_utils, "console", dummy_console)

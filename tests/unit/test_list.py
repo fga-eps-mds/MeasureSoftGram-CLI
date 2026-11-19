@@ -47,10 +47,12 @@ def test_cmd_list():
     sys.stdout = sys.__stdout__
 
     output = normalize_cli_output(captured_output.getvalue())
+    assert "Para definir os pesos por comparação, use: msgram weights" in output
     assert (
-        "Para editar o arquivo de configuração utilize em seu terminal o seguinte comando:"
+        "Para definir os pesos de forma manual, use: `vim .msgram/msgram.json`"
         in output
     )
+    assert "Para editar o arquivo de configuração" not in output
 
 
 def test_cmd_list_if_path_not_exists():

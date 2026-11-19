@@ -186,6 +186,10 @@ def ask_confirm(prompt: str) -> bool:
     console.push_theme(_prompt_theme())
     try:
         return Confirm.ask(prompt_text, console=console)
+    except EOFError:
+        # sem terminal (stdin fechado, CI, pipe): responde "não", que preserva o arquivo existente
+        console.line()
+        return False
     finally:
         console.pop_theme()
 

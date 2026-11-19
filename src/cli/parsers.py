@@ -10,6 +10,7 @@ from src.cli.commands.cmd_calculate import command_calculate
 from src.cli.commands.cmd_demo import command_demo
 from src.cli.commands.cmd_list import command_list
 from src.cli.commands.cmd_norm_diff import command_norm_diff
+from src.cli.commands.cmd_weights import command_weights
 
 from src.config.settings import (
     DEFAULT_CONFIG_PATH,
@@ -133,6 +134,29 @@ def create_parser():
     )
 
     parser_list_config.set_defaults(func=command_list)  # function command list config
+
+    # =====================================< COMMAND weights >=====================================
+    parser_weights = subparsers.add_parser(
+        "weights",
+        help="Define the model weights by pairwise comparison (AHP).",
+    )
+    add_theme_argument(parser_weights, dest="command_theme")
+
+    parser_weights.add_argument(
+        "-cp",
+        "--config_path",
+        type=lambda p: Path(p).absolute(),
+        default=DEFAULT_CONFIG_PATH,
+        help="Path to the directory with the model configuration file (msgram.json).",
+    )
+
+    parser_weights.add_argument(
+        "--group",
+        type=str,
+        default=None,
+        help="Redefine only one group, e.g. characteristics or reliability/subcharacteristics.",
+    )
+    parser_weights.set_defaults(func=command_weights)  # function command weights
 
     # =====================================< COMMAND extract >=====================================
     parser_extract = subparsers.add_parser("extract", help="Extract supported metrics")
@@ -261,6 +285,7 @@ def create_parser():
         "-rp",
         "--rp_path",
         type=lambda p: Path(p).absolute(),
+        required=True,
         help="path to the .json file with the planned/wished values ​​for the quality "
         "characteristics of a release. quality requirements goals for a release.",
     )
@@ -269,6 +294,7 @@ def create_parser():
         "-rd",
         "--rd_path",
         type=lambda p: Path(p).absolute(),
+        required=True,
         help="path to the .json file with the model-calculated values ​​for a release's "
         "quality characteristics observed/developed.",
     )
@@ -289,6 +315,7 @@ def create_parser():
         "-rd",
         "--rd_path",
         type=lambda p: Path(p).absolute(),
+        required=True,
         help="Path to the .json file with the model-calculated values for a release's quality"
         "characteristics observed/developed.",
     )
@@ -297,6 +324,7 @@ def create_parser():
         "-rp",
         "--rp_path",
         type=lambda p: Path(p).absolute(),
+        required=True,
         help="Path to the .json file with the planned/wished values for the quality characteristics"
         "of a release. Quality requirements goals for a release.",
     )
