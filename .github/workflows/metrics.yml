@@ -10,7 +10,7 @@ jobs:
   release:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -38,7 +38,7 @@ jobs:
 
       - name: Envia métricas como assets da release
         if: startsWith(github.ref, 'refs/tags')
-        uses: AButler/upload-release-assets@ec6d3263266dc57eb6645b5f75e827987f7c217d # v2.0
+        uses: AButler/upload-release-assets@3d6774fae0ed91407dc5ae29d576b166536d1777 # v3.0
         with:
           files: 'analytics-raw-data/*'
           repo-token: ${{ secrets.TOKEN_GITHUB }}
